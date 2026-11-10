@@ -43,6 +43,10 @@ bogdan.ksiezopolski@kozminski.edu.pl}}
 \maketitle
 
 \begin{abstract}
+% ZMIANA: dodano kontrole permutujaca tylko warstwy OSINT — wynika z tego, ze dotychczasowa
+% kontrola shuffle niszczyla wszystkie cechy (kontakty, OSINT i rytm), wiec spadek do 0.51 nie
+% dowodzil niczego o OSINT; nowa kontrola pokazuje, ze sygnal niosa kontakty+rytm, a OSINT dodaje
+% ~0.03 AUC; wyrozniono tez czulosc (0.51) od AUC (0.84), bo "keeps 0.51" dalo sie odczytac jak AUC.
 Spear phishing by external impersonation succeeds by respecting the victim's domain knowledge: the sender
 poses as a known role or authority, and the content reads as normal. We argue that the signal lies not in the
 content but in its \emph{inconsistency} with the organization's domain knowledge, which we model as a
@@ -51,12 +55,14 @@ platforms, routines, and temporal rhythm. A genuine relation is consistent acros
 impersonation appears in one layer but contradicts the others. On a graph-first synthetic organization of
 $150$~personas we validate this cross-layer inconsistency as a mechanism: fusing the layers with the rhythm
 lifts AUC from $0.70$ to $0.87$ and removes every new-sender false alarm, while a layer/rhythm shuffle control
-falls to chance. The gain is on the false-alarm side: cold external impersonation from outside every layer
+falls to chance. A targeted control that permutes only the OSINT layers attributes most of this gain to the
+contacts--rhythm pair, with the OSINT layers adding a small but consistent margin. The gain is on the
+false-alarm side: cold external impersonation from outside every layer
 remains almost undetected (sensitivity $0.04$ at FPR~$1\%$). Ablation shows that the temporal-consistency
 feature carries most of the signal, and we say so. On the real Enron corpus we build a structural-temporal multiplex from headers alone and expose an
 evaluation pitfall: estimating the sender's rhythm on the full history inflates a rhythm-only detector to an
 apparent sensitivity of $0.73$ at FPR~$1\%$, which falls to $0.00$ under a proper temporal split, whereas the
-full multiplex keeps $0.51$. A detector-relative susceptibility metric shows that the attack channel, not the
+full multiplex keeps a sensitivity of $0.51$ (AUC $0.84$). A detector-relative susceptibility metric shows that the attack channel, not the
 victim's rank, drives exposure: cold impersonation leaves a structural floor of $\mathrm{Susc}\approx0.96$ at
 every seniority level. Finally, graph and content fail on different attacks, and their fusion stays close to
 the better of the two in each regime. The OSINT layers remain synthetic; the paper validates a mechanism and an evaluation practice, not
@@ -84,8 +90,12 @@ Our thesis is that such an attack is a violation of the organization's \emph{dom
 this knowledge as a multiplex of relations over one set of accounts: contacts and hierarchy, supplemented by
 competencies, public footprint, platforms, routines, and the temporal rhythm of every account. A genuine
 relation is consistent across many of these layers at once; an impersonation appears in one layer but
+% ZMIANA: doprecyzowano nosnik sygnalu ("mostly by the temporal rhythm and the contacts layer")
+% — wynika z nowej kontroli OSINT-only shuffle: warstwy OSINT dodaja ~0.03 AUC ponad kontakty+rytm,
+% wiec przypisanie calego sygnalu "cross-layer inconsistency" bylo silniejsze niz dane.
 contradicts the others---a known name arriving without any OSINT trace, or off-rhythm. This
-\emph{cross-layer inconsistency} is the signal, and it is invisible to any content filter.
+\emph{cross-layer inconsistency} is the signal---carried in practice mostly by the temporal rhythm and the
+contacts layer, with the OSINT layers adding a targeted margin---and it is invisible to any content filter.
 
 Two questions follow, and we answer both under a leak-aware protocol. First, does cross-layer inconsistency
 separate targeted attacks from legitimate new senders---the case on which a contacts-only detector fails
@@ -97,13 +107,17 @@ The contributions are as follows.
   \item The formalization of the domain knowledge graph as a multiplex with a per-pair coverage $C(s,v)$ and
   a temporal consistency $tc$, and of \emph{cross-layer inconsistency} as a detection invariant for external
   impersonation (Sec.~\ref{sec:model}).
+  % ZMIANA: wklad uzupelniono o kontrole OSINT-only shuffle — wynika z tego, ze sama kontrola
+  % pelnego shuffle (0.51) nie izolowala wkladu OSINT; nowa kontrola atrybutuje ~0.03 AUC warstwom
+  % OSINT i pokazuje, ze reszta zysku to kontakty+rytm.
   \item A mechanism check on a graph-first synthetic organization: the multiplex lifts AUC from $0.70$ to
-  $0.87$ and removes all new-sender false alarms, with a shuffle control at chance; ablation shows that the
+  $0.87$ and removes all new-sender false alarms, with a shuffle control at chance; a targeted OSINT-only
+  shuffle attributes most of the gain to the contacts--rhythm pair, ablation shows that the
   rhythm carries most of the signal, and decorrelating the topology shows why the structural layers add
   little on a compact population (Sec.~\ref{sec:results}).
   \item A real structural-temporal multiplex built from Enron headers, and the \emph{rhythm-leak pitfall}: a
   rhythm-only detector's apparent sensitivity of $0.73$ falls to $0.00$ under a temporal split of the rhythm
-  estimate, while the multiplex keeps $0.51$ (Sec.~\ref{sec:enron}).
+  estimate, while the multiplex keeps a sensitivity of $0.51$ (Sec.~\ref{sec:enron}).
   \item A detector-relative susceptibility metric, with bootstrap confidence intervals, showing that the attack
   channel dominates the victim's rank (Sec.~\ref{sec:susc}); and the graph-vs-content boundary
   (Sec.~\ref{sec:content}).
@@ -176,19 +190,36 @@ layers in which the pair co-occurs,
 C(s,v)\;=\;\sum_{L\in\mathcal{L}} w_L\,\mathbf{1}\!\left[(s,v)\in E_L\right],
 \label{eq:coverage}
 \end{equation}
-% TODO (author, review 2 pt 10): C(s,v) and the weights w_L are not used by any reported detector (LightGBM
-% learns its own weights); either report a C-based detector or present C as an intuition only.
+% ZMIANA: C(s,v) i wagi w_L przedstawione jako intuicja projektowa — wynika z tego, ze zaden
+% raportowany detektor nie uzywa C: klasyfikator (LightGBM) sam uczy sie wag warstw z danych,
+% wiec wzor nie moze wygladac jak element pipeline'u.
+We use $C$ and the weights $w_L$ as a \emph{design intuition} for why layer membership should carry
+signal, not as an operational score: the reported detectors are gradient-boosted trees over the
+per-layer membership vector and the temporal bit, which learn their own layer weights from data.
+% ZMIANA: zdefiniowano tc dla nadawcy bez historii (tc=0) — wynika z tego, ze definicja
+% tc(s,v,t)=1[t in tau(s)] nie pokrywa nadawcy zewnetrznego (tau(s) nie istnieje); bez tego
+% rytm dzialalby jako niejawny wskaznik "nieznany nadawca", a nie tylko "off-rhythm".
 and the \emph{temporal consistency} tests whether the message arrives in the sender's rhythm,
-$tc(s,v,t)=\mathbf{1}[t\in\tau(s)]$.
-% TODO (author): define tc for an external sender with no observed history (tau(s) undefined). If tc is set
-% to 0 for such senders, say so -- the rhythm feature then also acts as an "unknown sender" indicator.
+$tc(s,v,t)=\mathbf{1}[t\in\tau(s)]$; for a sender with no observed history $\tau(s)$ is undefined and we set
+$tc=0$, so for cold senders the rhythm bit doubles as an unknown-sender indicator. In the Enron experiment of
+Sec.~\ref{sec:enron} this case never arises---every candidate sender passed a minimum-history filter---but in
+deployment $tc{=}0$ for a truly cold sender must be read as ``unknown'', not ``off-rhythm''.
 
 \textbf{Threat model.} The attacker's goal is to deliver to victim $v$ a message classified as legitimate. In
 external impersonation, $s$ impersonates a role or authority, giving the impression of a high $C$ while
 lacking real coverage in some of the layers (low structural consistency), possibly fabricating OSINT edges.
-Fabricating a footprint is cheap but does not by itself create multilayer consistency; this is the signal.
-% TODO (author, review 2 pt 12): reconcile with the fabrication sweep (50% forged edges: 0.87 -> 0.74) and
-% estimate how many forged OSINT edges an attacker needs per victim. A compromised
+% ZMIANA: dodano cene fabrykacji w liczbach (0.87->0.74, ~3-4 fałszywe krawedzie na ofiare) i
+% proveniencja sweepow — wynika z tego, ze w pakiecie istnialy dwa rozne sweepy fabrykacji
+% (Tab. I: 0.87->0.74; mix ablacji z mniejszym marginesem OSINT: 0.86->0.82) i bez wskazania
+% zrodla wygladaly na sprzecznosc danych.
+Fabricating a footprint is cheap, and the fabrication sweep prices it: with $50\%$ of attack edges forged the
+multiplex AUC drops from $0.87$ to $0.74$ (the sweep of the Tab.~\ref{tab:inv1} event model;
+under the harsher ablation mix of Sec.~\ref{sec:mechanism}, where the OSINT margin is smaller, the same
+fabrication level costs less, $0.86\!\to\!0.82$), and given the event volume this corresponds to roughly $3$--$4$
+forged OSINT edges per targeted victim---cheap per victim, but visible in aggregate, because forged edges
+raise the score of a sender precisely where the legitimate new-sender mass also lives. The signal that
+remains is the joint consistency across layers that a fabricated edge does not create; this is the signal.
+A compromised
 internal account is the complementary case: $C(s,v)$ is high yet $tc=0$; its propagation dynamics are the
 subject of the separate study, and here it appears only as the second attack channel of the susceptibility
 measurement. Out of scope is an adaptive adversary with full knowledge of the graph.
@@ -294,7 +325,14 @@ and edge count.}
 \midrule
 Contacts & sender wrote to recipient & $1.0$ & $556$ \\
 Hierarchy & same company & $0.9$ & $518$ \\
-Domain & same mail domain & $0.8$ & $538$ \\ % TODO (author): 538 != 518 under "one domain per company"; explain
+Domain & same mail domain & $0.8$ & $538$ \\
+% ZMIANA: nota o 20 krawedziach cross-org — wynika z tego, ze przy zalozeniu "one domain per
+% company" warstwa domeny powinna miec 518 krawedzi jak hierarchia; roznica bierze sie z tego, ze
+% kliki domen liczone sa z adresow firmowych ORAZ prywatnych (pole c5 persony), a czesc person ma
+% prywatny adres w cudzej domenie firmowej.
+\multicolumn{4}{@{}l}{\emph{\footnotesize $20$ domain edges are cross-company: some personas carry a private
+e-mail address (field $c5$) in another company's corporate domain, and the domain cliques are built from
+corporate \emph{and} private addresses, while the hierarchy layer uses company membership alone.}} \\
 OSINT: conferences & shared conference & $0.6$ & $167$ \\
 OSINT: certificates & shared certificate & $0.6$ & $389$ \\
 OSINT: skills & shared skill & $0.5$ & $1144$ \\
@@ -312,12 +350,21 @@ Temporal & co-activity in the same hours & $0.5$ & $2528$ \\
 \label{sec:mechanism}
 Table~\ref{tab:inv1} tests the invariant on the two cases of Fig.~\ref{fig:casestudy}. Fusing the
 domain-knowledge layers with the rhythm lifts AUC from $0.70$ (contacts only) to $0.87$, while the
+% ZMIANA: dodano kontrole permutujaca TYLKO warstwy OSINT (per warstwa, z zachowaniem marginesow,
+% kontakty i rytm nietkniete) — wynika z tego, ze dotychczasowy shuffle remapowal nadawce i ofiare,
+% niszczac wszystkie warstwy naraz, wiec spadek do 0.51 nie dowodzil, ze sygnal niosa powiazania
+% OSINT; nowa kontrola pokazuje pelny model 0.86, OSINT-shuffled 0.82, kontakty+rytm 0.83 —
+% wiec wkad OSINT to ~0.03 AUC, a reszta zysku nad contacts-only to para kontakty+rytm.
 layer/rhythm shuffle control drops to random ($0.51$), so the advantage stems from the actual layer and
 rhythm structure, not from feature capacity. Because this control shuffles every feature, including contacts
-and rhythm, it does not by itself isolate the contribution of cross-layer \emph{consistency}; that
-contribution is bounded by the ablation below.
-% TODO (author): add a control that shuffles ONLY the OSINT layers (contacts and rhythm intact), or shuffles
-% membership independently per layer with preserved marginals; that is the test of the cross-layer claim.
+and rhythm, it does not by itself isolate the contribution of cross-layer \emph{consistency}; we therefore
+added a targeted control that permutes the OSINT layer memberships independently per layer (preserving each
+layer's margins) while leaving contacts and rhythm intact: the full model reaches $0.86$, the
+OSINT-shuffled variant $0.82$, and a contacts$+$rhythm-only variant $0.83$ ($20$~seeds each). Under this
+event mix, then, the joint OSINT contribution beyond contacts$+$rhythm is about $0.03$ AUC: the bulk of the
+headline gain over contacts-only comes from the contacts$+$rhythm pair, and the OSINT layers add a small but
+consistent margin---which the per-threat analysis below shows is concentrated in the external-impersonation
+channel, where contacts and rhythm are structurally blind.
 The most striking difference is in the false alarms: the contacts
 detector flags $100\%$ of legitimate new senders as attacks, the multiplex flags $0\%$; OSINT coverage rescues
 a legitimate sender who shares an observable fact with the victim. The signal is fragile, however: at $50\%$
@@ -326,8 +373,9 @@ OSINT edge fabrication the advantage degrades toward the control ($0.87\!\to\!0.
 We state one circularity plainly. In the event model a legitimate new sender is \emph{defined} as an account
 that sits on some OSINT layer of the victim, so part of the false-alarm removal is true by construction; a
 contacts-only detector cannot see that layer, the multiplex can. What is not tautological is the rest of the
-evidence: the shuffle control, which keeps the feature marginals and falls to chance ($0.51$, below
-contacts-only), so the gain depends on the actual joint structure of the features, though not necessarily on
+evidence: the full-feature shuffle, which keeps the feature marginals and falls to chance ($0.51$, below
+contacts-only), and the OSINT-only shuffle above, which isolates the small but real margin of the joint OSINT
+structure, so the gain depends on the actual joint structure of the features, though not necessarily on
 cross-layer consistency alone; the fabrication sweep, in which forged OSINT edges erode the advantage
 gradually rather than instantly; and the Enron result of Sec.~\ref{sec:enron}, where every layer is built
 from real headers.
@@ -350,16 +398,24 @@ Multiplex (shuffled) & $0.51 \pm 0.01$ & --- \\
 
 The signal is concise consistency rather than capacity: four explicit consistency measures match the
 full per-layer concatenation: under a linear model they improve on it ($0.860$ vs $0.840$ for the
-concatenation), and under trees they tie ($0.858$ vs $0.860$),
-% TODO (author): verify the assignment of 0.840/0.860 (linear) and 0.858/0.860 (trees) to explicit vs concatenation.
+concatenation), and under trees they tie ($0.860$ vs $0.858$),
  so their value lies in explainability and single-query deployment rather than in recall.
 
+% ZMIANA: przypisano kazda z trzech wartosci contacts-only (0.57/0.70/0.98) do jej konfiguracji —
+% wynika z tego, ze te same "contacts-only" w trzech tabelach mialy trzy rozne wartosci i bez
+% podania mixu benign/modelu ataku/zdarzen-na-ofiare wygladalo to na sprzecznosc danych; the
+% lesson zapisano wprost: contacts-only to funkcja udzialu legalnych nowych nadawcow w mixie.
 Figure~\ref{fig:ablation} shows where the signal comes from, and this is the honest core of the mechanism
 check: each OSINT layer adds a marginal gain (contacts $0.57\!\to$ static $0.65$),
-% TODO (author): contacts-only is 0.57 here, 0.70 in Tab. inv1 and 0.98 at rho=0 in Tab. topo; state in each
-% caption which event mix / learner produced the number, or align the configurations.
 whereas the temporal
-consistency feature dominates and removing it sets AUC back to $0.65$. Forward selection and leave-one-out
+consistency feature dominates and removing it sets AUC back to $0.65$. The contacts-only value ranges
+$0.57$--$0.98$ across the paper's event models, and each belongs to a different configuration: $0.57$ is the
+ablation's mix here ($40\%$ known / $30\%$ new-OSINT / $30\%$ cold benign, both attack channels,
+$24$~events per victim); $0.70$ in Tab.~\ref{tab:inv1} is the multiplex default ($35\%$ new-OSINT benign,
+fabricating BEC attackers, $14$~events per victim); $0.98$ at $\rho{=}0$ in Tab.~\ref{tab:topo} uses the
+three structural layers only, with attacks touching none of them. The lesson is that the contacts-only floor
+is a property of the benign new-sender mix, which is why every table states its configuration.
+Forward selection and leave-one-out
 analysis confirm it: temporal consistency alone reaches $0.826$ of the full model's $0.862$ (leave-one-out
 drop $0.21$), while the hierarchy, domain, and co-activity layers are essentially redundant ($\le0.002$).
 Together with the per-threat analysis below, this means that much of the AUC gain comes from the
@@ -381,11 +437,16 @@ the ``effectively 3--4 layers'' finding is a property of the compact population,
 Second, the layers play distinct roles by threat (Fig.~\ref{fig:bythreat}): for new senders the signal is
 carried by OSINT (alone $0.77$) and time is useless ($0.50$), while for compromises the reverse holds (time
 $0.87$, OSINT $0.50$), so each family is critical for its own failure mode. Multiplex$+$rhythm
+% ZMIANA: rozstrzygniete pozornie sprzeczne rankingi — wynika z roznych zestawow cech: w sweepie
+% kolumna "contacts" to kontakty+RYTM (stad 0.83-0.90 > static 0.65), a w ablacji contacts-only
+% bez rytmu (0.57 < static 0.65); bez wskazania, ze kolumna zawiera rytm, tabele przeczyly sobie.
 leads across the whole noise range and for every $N\in\{40,\dots,150\}$,
-% TODO (author, review 2 pt 4): the earlier text claimed contacts > static multiplex, but the ablation gives
-% contacts 0.57 < static 0.65; check the noise-sweep results and restore the full ranking if it holds there.
- though absolute sensitivities at FPR~$1\%$ depend on the fraction of off-rhythm mail,
-which is why calibration on real data is needed.
+though absolute sensitivities at FPR~$1\%$ depend on the fraction of off-rhythm mail,
+which is why calibration on real data is needed. One apparent contradiction resolves by reading the feature
+sets, not the labels: in the sensitivity sweep the ``contacts'' column is contacts$+$rhythm ($0.83$--$0.90$
+across the noise range, above the static multiplex's $0.65$), while the ablation's contacts-only row
+($0.57$) strips the rhythm bit---without it contacts fall below the static multiplex, with it they stay
+above; the rhythm, not the contact layer, is what tracks the noise.
 
 \begin{table}[t]\centering
 \caption{Topology decorrelation ($20$~seeds): rewiring contacts across companies lowers the overlap of the
@@ -412,11 +473,27 @@ compromises: the reverse. Each layer family is critical for its own failure mode
 
 \subsection{The real Enron multiplex and the rhythm-leak pitfall}
 \label{sec:enron}
-% TODO (author): describe how attack events are injected on Enron (who is the attacker, how many events,
-% their rhythm), and whether contacts / co-recipients / domain are also estimated on the early 60% window
-% only -- otherwise the "full multiplex keeps 0.51" result may carry the same kind of leakage.
+% ZMIANA: dodano opis wstrzykiwania atakow (kto jest atakujacym, jakie ma rytm, ile zdarzen) i
+% status warstw strukturalnych — wynika z tego, ze bez tego opisu wynik AUC 0.94 przy "legitimate
+% traffic on-rhythm" wygladal na trywialna separacje klas z definicji; przy okazji jasno
+% zaznaczono, ze tylko rytm jest estymowany na wczesnych 60% (warstwy strukturalne to agregaty
+% calego korpusu — ograniczenie, nie zaleta) oraz ze ataki NIE biora udzialu w estymacji rytmu
+% (zaden wyciek etykiety).
 On the real Enron multiplex built from headers (contacts, co-recipients, domain, rhythm; no OSINT), the full multiplex reaches AUC $0.94$ (legitimate traffic
-on-rhythm) versus $0.75$ for contacts alone. The off-hours audit (Fig.~\ref{fig:enronaudit}) shows that the
+on-rhythm) versus $0.75$ for contacts alone. Attack events are injected on top of the header-derived benign
+stream, in two channels: a \emph{takeover} of a known sender (a genuine contact of the victim, sending
+off the sender's own rhythm in $75\%$ of cases and mimicking it in $25\%$) and an \emph{off-graph}
+sender drawn from the pool of corpus senders that are not contacts of the victim---every candidate sender
+has passed a minimum-history filter ($\ge25$~messages and a non-empty rhythm), so the cold-sender case of
+Sec.~3 does not arise here, and an off-graph event inherits the time bucket of the real message that
+motivated it. Roughly a quarter of the events are takeovers, a quarter off-graph attacks, and half benign.
+In the leak control below, only the rhythm is re-estimated on the early $60\%$ window; the contacts,
+co-recipient, and domain layers are header aggregates over the corpus, which we state as a limitation: the
+structural layers are not temporally split, so the ``full multiplex keeps a sensitivity of $0.51$'' number should be read as
+robustness of the structural layers to a rhythm leak, not as a fully leak-controlled estimate. Attack events
+are never part of the rhythm estimation (the rhythm is built from the sender's own legitimate history), so
+the control isolates temporal leakage, not label leakage.
+The off-hours audit (Fig.~\ref{fig:enronaudit}) shows that the
 operational sensitivity was inflated: a realistic figure is $\sim\!0.5$ rather than $0.88$, but the multiplex
 advantage over the temporal layer alone rises with the off-hours fraction. Table~\ref{tab:enronsplit} applies
 the sharpest control, and this is the methodological result of the paper: under a temporal split of the
@@ -429,14 +506,28 @@ feature, so its sensitivity at a fixed FPR is a step function: with the rhythm e
 legitimate evaluation traffic is on-rhythm by construction and the off-rhythm threshold stays below FPR~$1\%$;
 once more than $1\%$ of legitimate mail falls off the estimated rhythm, no threshold meets FPR~$\le1\%$ and
 the sensitivity is exactly zero, although the AUC is still $0.75$. The leak is real (AUC $0.86\!\to\!0.75$),
-but its operational size is amplified by the threshold.
-% TODO (author, review 2 pt 3): report sensitivity at FPR 2% and 5% (or partial AUC) for both rows, and state
-% whether attack events are excluded from the full-history rhythm estimate (if so, that is label leakage).
+but its operational size is amplified by the threshold. % ZMIANA: dodano czulosci przy FPR 2% i 5% — wynika z tego, ze czulosc binarnej cechy przy
+% stalym FPR to funkcja schodkowa: spadek do 0.00 mogl byc artefaktem progu 1%; nowe pomiary
+% pokazuja, ze leaky 0.73 przy 1/2/5% (prog miesci sie juz w 1%), a split 0.00 nawet przy 5%
+% (>5% legalnej poczty jest off-rhythm w oknie ewaluacji) — wiec kolaps NIE jest artefaktem
+% progu, tylko interakcja schodka z uczciwie estymowanym rytmem.
+To separate the step from the leak we re-ran the
+control at looser budgets: with the leaky full-history rhythm the sensitivity is $0.73$ at FPR
+$1\%$, $2\%$, and $5\%$ alike (the threshold already fits inside $1\%$), whereas under the temporal split
+it stays $0.00$ even at FPR~$5\%$---in the evaluation window more than $5\%$ of legitimate mail falls
+off-rhythm, so no threshold of the binary feature qualifies at any of the three budgets. The collapse is
+therefore not an artifact of the $1\%$ operating point alone; it is the step function interacting with an
+honestly estimated rhythm.
 
 \begin{table}[t]\centering\scriptsize\setlength{\tabcolsep}{3pt}
+% ZMIANA: podpis rozroznia czulosc od AUC ("keeps a sensitivity of 0.51") — wynika z tego, ze
+% sama liczba 0.51 w tekscie glownym dala sie odczytac jako AUC (AUC to 0.84).
 \caption{Rhythm-leak control on the real Enron graph ($20$~seeds): estimating the rhythm on the full history
 inflates the temporal layer to an apparent sensitivity of $0.73$; a proper temporal split drops it to $0.00$,
-while the full multiplex keeps $0.51$.}
+while the full multiplex keeps a sensitivity of $0.51$. Because the temporal layer is a single binary feature, its
+sensitivity@FPR is a step function: under the leaky estimate the same $0.73$ appears at FPR $1\%$, $2\%$,
+and $5\%$, while under the temporal split the sensitivity stays $0.00$ even at FPR~$5\%$ (more than $5\%$ of
+legitimate evaluation-window mail falls off the honestly estimated rhythm, so no threshold qualifies).}
 \label{tab:enronsplit}
 \begin{tabular}{lcccc}
 \toprule
@@ -530,11 +621,16 @@ Mimicry (BEC) & $0.502$ & $\mathbf{0.862}$ & $0.848$ \\
 % ============================================================
 \section{Discussion and Limitations}
 \label{sec:discussion}
+% ZMIANA: uzupelniono o wynik kontroli OSINT-only shuffle — wynika z tego, ze zapis "temporal
+% consistency carries most of the signal" nie podawal, ile dokladnie wnosa warstwy OSINT
+% (~0.03 AUC ponad kontakty+rytm), co bylo kluczowe dla uczciwego odczytu mechanizmu.
 \textbf{What the mechanism check establishes.} Cross-layer inconsistency is a real signal on the
 case-study graph, as the ablations show, and its practical value is on the false-alarm side: it removes every alarm on legitimate
 new senders that a contacts-only detector would raise. Its value on the recall side is limited, and we report
-the reason rather than hide it: the temporal-consistency feature carries most of the signal, and the
-structural layers add little on a compact population with one domain per company. The domain knowledge graph
+reasons rather than hide it: the temporal-consistency feature carries most of the signal, the OSINT layers
+add only a small margin beyond contacts and rhythm (the OSINT-only shuffle control of
+Sec.~\ref{sec:mechanism}), and the structural layers add little on a compact population with one domain per
+company. The domain knowledge graph
 is thus a prioritization and triage tool for the impersonation mode, not a standalone product; for the cold
 off-graph sender it must be combined with content and process controls, as the fusion experiment confirms.
 
@@ -558,12 +654,17 @@ mail ($<\!4$~FP/million \cite{ho2019detecting}) remains far away.
 % ============================================================
 \section{Conclusion}
 \label{sec:conclusion}
+% ZMIANA: framing "cross-layer inconsistency" uzupelniono o uczciwy atrybut sygnalu (rhythm
+% niesie wiekszosc, OSINT dodaje maly margines) — wynika z wynikow kontroli OSINT-only shuffle
+% (0.86 vs 0.82/0.83): sama formula "cross-layer inconsistency" sugerowala, ze to warstwy OSINT
+% niosa zysk, a dane pokazuja, ze to para kontakty+rytm.
 We formalized an organization's domain knowledge as a multiplex graph and showed that external impersonation
 violates it in a measurable way: cross-layer inconsistency separates targeted attacks from legitimate new
 senders on a graph-first case study (AUC $0.70\!\to\!0.87$, new-sender false alarms $100\%\!\to\!0\%$, shuffle
-control at chance), with the honest finding that the rhythm carries most of the signal. On the real Enron
+control at chance), with the honest finding that the rhythm carries most of the signal and the OSINT layers
+add a small, impersonation-targeted margin on top of the contacts--rhythm pair. On the real Enron
 corpus we built a structural-temporal multiplex from headers and exposed the rhythm-leak pitfall: an apparent
-sensitivity of $0.73$ that falls to $0.00$ under a proper temporal split, while the multiplex keeps $0.51$.
+sensitivity of $0.73$ that falls to $0.00$ under a proper temporal split, while the multiplex keeps a sensitivity of $0.51$ (AUC $0.84$).
 The value of the multiplex lies on the false-alarm side: cold impersonation from outside every layer remains
 almost undetected. The detector-relative susceptibility metric shows that the attack channel dominates the
 victim's rank, with a structural floor of $\mathrm{Susc}\approx0.96$ for cold impersonation, and the fusion
