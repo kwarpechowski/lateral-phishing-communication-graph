@@ -38,7 +38,7 @@ We make the thesis testable through two research questions, each paired with a m
   \item[RQ1 (signal).] Can a compromised account, consistent with every static relation, be detected from
   cascade dynamics, and does the signal survive a stealthy attacker who spreads the sends over time?
   Sub-thesis~T1: a temporal detector reading the receiving-side wave beats volume-based detection at low FPR
-  and degrades less than volume detection under a stealthy attacker; the advantage vanishes under a
+  and stays above it under a stealthy attacker; the advantage vanishes under a
   time-shuffle control and transfers in direction to real topologies.
   \item[RQ2 (limits).] What are the operational limits of the signal? Sub-thesis~T2: the signal needs
   fan-out (a single-recipient attack is invisible), degrades gracefully under label noise and scale, and at
@@ -63,10 +63,11 @@ Our contributions are as follows.
   % wolumetryczny daje 0.51 — wynik ponizej losowosci wychodzil tylko przez usterke kodu.
   \item The receiving-side cascade signal as a detection invariant: a hierarchy of detectors of increasing
   temporal awareness, a causal time-shuffle control, and the headline result that volume-based detection
-  collapses to near chance against a stealthy attacker while the receiving-side signal degrades
-  less and stays above chance (RQ1; T1).
+  never develops a usable signal under a stealthy attacker while the receiving-side signal stays
+  above it at every level (RQ1; T1).
   \item Replication of the mechanism on three real communication graphs (Enron, \texttt{email-Eu-core},
-  \texttt{CollegeMsg}), with the regime-level contrast reproduced in direction on each graph (RQ1; T1).
+  \texttt{CollegeMsg}): the hierarchy and shuffle effect on Enron, the regime contrast on the SNAP
+  graphs (RQ1; T1).
   \item A leak-aware evaluation methodology and an operational definition of detection effectiveness for the
   targeted tail, with the limits stated explicitly: blind spot, label noise, scale, and base rate (RQ2; T2).
 \end{enumerate}

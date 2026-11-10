@@ -46,28 +46,27 @@ bogdan.ksiezopolski@kozminski.edu.pl}}
 % ZMIANA: dodano kontrole, ktora tasuje TYLKO warstwy OSINT (kontakty i rytm zostaja).
 % Powod: dotychczasowa kontrola tasowala wszystko naraz, wiec spadek do 0.51 nic nie
 % mowil o OSINT. Nowa kontrola pokazuje, ze sygnal niosa kontakty i rytm, a OSINT
-% doklada ~0.03. Zmieniono tez 'keeps 0.51' na 'keeps a sensitivity of 0.51 (AUC 0.84)':
-% sama liczba 0.51 dala sie odczytac jak AUC, a to czulosc.
-Spear phishing by external impersonation succeeds by respecting the victim's domain knowledge: the sender
-poses as a known role or authority, and the content reads as normal. We argue that the signal lies not in the
-content but in its \emph{inconsistency} with the organization's domain knowledge, which we model as a
-multiplex graph of relations over one set of accounts---contacts, hierarchy, competencies, public footprint,
-platforms, routines, and temporal rhythm. A genuine relation is consistent across many layers at once; an
-impersonation appears in one layer but contradicts the others. On a graph-first synthetic organization of
-$150$~personas we validate this cross-layer inconsistency as a mechanism: fusing the layers with the rhythm
-lifts AUC from $0.70$ to $0.87$ and removes every new-sender false alarm, while a layer/rhythm shuffle control
-falls to chance. A targeted control that permutes only the OSINT layers attributes most of this gain to the
-contacts--rhythm pair, with the OSINT layers adding a small but consistent margin. The gain is on the
-false-alarm side: cold external impersonation from outside every layer
-remains almost undetected (sensitivity $0.04$ at FPR~$1\%$). Ablation shows that the temporal-consistency
-feature carries most of the signal, and we say so. On the real Enron corpus we build a structural-temporal multiplex from headers alone and expose an
-evaluation pitfall: estimating the sender's rhythm on the full history inflates a rhythm-only detector to an
-apparent sensitivity of $0.73$ at FPR~$1\%$, which falls to $0.00$ under a proper temporal split, whereas the
-full multiplex keeps a sensitivity of $0.51$ (AUC $0.84$). A detector-relative susceptibility metric shows that the attack channel, not the
-victim's rank, drives exposure: cold impersonation leaves a structural floor of $\mathrm{Susc}\approx0.96$ at
-every seniority level. Finally, graph and content fail on different attacks, and their fusion stays close to
-the better of the two in each regime. The OSINT layers remain synthetic; the paper validates a mechanism and an evaluation practice, not
-the detection of real intrusions.
+% doklada ~0.03. Liczba enronskiego multipleksu przeliczona po policzeniu warstw
+% strukturalnych z wczesnego okna: czulosc 0.14 (AUC 0.82), nie 0.51 — stara wartosc
+% byla zawyzona tym samym wyciekiem czasowym, ktory praca demaskuje.
+Spear phishing by external impersonation respects the victim's domain knowledge: the sender
+poses as a known role, and the content reads as normal. We argue the signal lies in its
+\emph{inconsistency} with the organization's domain knowledge, modeled as a multiplex over one set of
+accounts---contacts, hierarchy, competencies, public footprint, platforms, routines, and temporal
+rhythm. On a graph-first synthetic organization of $150$~personas, fusing the layers with the rhythm
+lifts AUC from $0.70$ to $0.87$ and removes every new-sender false alarm; a shuffle control falls to
+chance, and a control permuting only the OSINT layers attributes most of the gain to the
+contacts--rhythm pair, with OSINT adding a small but consistent margin. The gain is on the
+false-alarm side: cold impersonation remains almost undetected (sensitivity $0.04$ at FPR~$1\%$), and
+ablation shows the temporal-consistency feature carries most of the signal. On the real Enron corpus
+we expose an evaluation pitfall: a rhythm estimated on the full history inflates a rhythm-only
+detector to an apparent sensitivity of $0.73$ at FPR~$1\%$, which falls to $0.00$ under a proper
+temporal split, whereas the multiplex keeps a sensitivity of $0.14$ (AUC $0.82$). A
+detector-relative susceptibility metric shows the attack channel, not the victim's rank, drives
+exposure ($\mathrm{Susc}\approx0.96$ for cold impersonation at every seniority level), and graph and
+content fail on different attacks, fusing to near the better of the two in each regime. The OSINT
+layers remain synthetic: this validates a mechanism and an evaluation practice, not the detection of
+real intrusions.
 \end{abstract}
 
 \begin{IEEEkeywords}
@@ -118,7 +117,7 @@ The contributions are as follows.
   little on a compact population (Sec.~\ref{sec:results}).
   \item A real structural-temporal multiplex built from Enron headers, and the \emph{rhythm-leak pitfall}: a
   rhythm-only detector's apparent sensitivity of $0.73$ falls to $0.00$ under a temporal split of the rhythm
-  estimate, while the multiplex keeps a sensitivity of $0.51$ (Sec.~\ref{sec:enron}).
+  estimate, while the multiplex keeps a sensitivity of $0.14$ (Sec.~\ref{sec:enron}).
   \item A detector-relative susceptibility metric, with bootstrap confidence intervals, showing that the attack
   channel dominates the victim's rank (Sec.~\ref{sec:susc}); and the graph-vs-content boundary
   (Sec.~\ref{sec:content}).
@@ -318,7 +317,8 @@ flagged.}
 
 \begin{table}[t]\centering\footnotesize
 \caption{Multiplex layers of the case study: edge semantics, confidence weight $w_L$ (Eq.~\eqref{eq:coverage}),
-and edge count.}
+and edge count. The weights $w_L$ are the design intuition behind Eq.~\eqref{eq:coverage}; no reported
+detector uses them---the gradient-boosted trees learn their own layer weights from data.}
 \label{tab:layers}
 \begin{tabular}{llcc}
 \toprule
@@ -487,22 +487,25 @@ stream, in two channels: a \emph{takeover} of a known sender (a genuine contact 
 off the sender's own rhythm in $75\%$ of cases and mimicking it in $25\%$) and an \emph{off-graph}
 sender drawn from the pool of corpus senders that are not contacts of the victim---every candidate sender
 has passed a minimum-history filter ($\ge25$~messages and a non-empty rhythm), so the cold-sender case of
-Sec.~3 does not arise here, and an off-graph event inherits the time bucket of the real message that
+Sec.~\ref{sec:model} does not arise here, and an off-graph event inherits the time bucket of the real message that
 motivated it. Roughly a quarter of the events are takeovers, a quarter off-graph attacks, and half benign.
-In the leak control below, only the rhythm is re-estimated on the early $60\%$ window; the contacts,
-co-recipient, and domain layers are header aggregates over the corpus, which we state as a limitation: the
-structural layers are not temporally split, so the ``full multiplex keeps a sensitivity of $0.51$'' number should be read as
-robustness of the structural layers to a rhythm leak, not as a fully leak-controlled estimate. Attack events
-are never part of the rhythm estimation (the rhythm is built from the sender's own legitimate history), so
-the control isolates temporal leakage, not label leakage.
+In the leak control below, the rhythm \emph{and} the temporal layers (contacts, co-recipients) are
+re-estimated on the early $60\%$ window of each sender's history---an earlier version of this control
+split only the rhythm, while the structural layers were corpus-wide aggregates; since legitimate
+evaluation events are the real late-window messages themselves, corpus-wide contacts contained them by
+construction, inflating the full-multiplex sensitivity to an apparent $0.51$. The domain layer stays
+static (the address is an identity attribute, not a history). Attack events
+are never part of the layer or rhythm estimation (both are built from the sender's own legitimate
+history), so the control isolates temporal leakage, not label leakage.
 The off-hours audit (Fig.~\ref{fig:enronaudit}) shows that the
 operational sensitivity was inflated: a realistic figure is $\sim\!0.5$ rather than $0.88$, but the multiplex
 advantage over the temporal layer alone rises with the off-hours fraction. Table~\ref{tab:enronsplit} applies
 the sharpest control, and this is the methodological result of the paper: under a temporal split of the
 rhythm estimate (rhythm from the early $60\%$, evaluation on the later $40\%$) together with off-hours
 traffic, the temporal layer alone collapses operationally (sensitivity at FPR~$1\%$ $\to 0$) while the full
-multiplex stays robust (AUC $0.84$, sensitivity $0.51$), and its advantage over time rises once the leakage is
-removed. A rhythm-only detector evaluated without a temporal split therefore reports an operational number
+multiplex stays clearly ahead of the rhythm-only detector (AUC $0.82$ vs $0.75$; sensitivity $0.14$ vs $0.00$
+at FPR~$1\%$) even with every time-derived layer---rhythm, contacts, and co-recipients---estimated on the
+early window alone, and its advantage over time rises once the leakage is removed. A rhythm-only detector evaluated without a temporal split therefore reports an operational number
 inflated by leakage. Two readings of the drop to $0.00$ need care. The temporal layer alone is a single binary
 feature, so its sensitivity at a fixed FPR is a step function: with the rhythm estimated on the full history,
 legitimate evaluation traffic is on-rhythm by construction and the off-rhythm threshold stays below FPR~$1\%$;
@@ -523,11 +526,15 @@ therefore not an artifact of the $1\%$ operating point alone; it is the step fun
 honestly estimated rhythm.
 
 \begin{table}[t]\centering\scriptsize\setlength{\tabcolsep}{3pt}
-% ZMIANA jezykowa: 'keeps 0.51' -> 'keeps a sensitivity of 0.51'. Powod: liczbe 0.51
-% dalo sie odczytac jako AUC (AUC to 0.84) — teraz wyraznie napisano, ze to czulosc.
-\caption{Rhythm-leak control on the real Enron graph ($20$~seeds): estimating the rhythm on the full history
-inflates the temporal layer to an apparent sensitivity of $0.73$; a proper temporal split drops it to $0.00$,
-while the full multiplex keeps a sensitivity of $0.51$. Because the temporal layer is a single binary feature, its
+% ZMIANA (po recenzji zewnetrznej): warstwy strukturalne (kontakty, wspolodbiorcy) liczone
+% teraz z wczesnych 60% historii, jak rytm. Powod: pelnohistoryczne kontakty zawieraly
+% definicyjnie kazda pare legalna (legalne zdarzenia ewaluacyjne to prawdziwe, pozne
+% wiadomosci), wiec czulosc 0.51 pelnego multipleksu byla zawyzona przez ten sam wyciek
+% czasowy, ktory praca demaskuje. Nowe, uczciwe liczby: AUC 0.82, czulosc@1% = 0.14.
+\caption{Rhythm-leak control on the real Enron graph ($20$~seeds; rhythm, contacts, and co-recipients all
+estimated on the early $60\%$ window): estimating the rhythm on the full history inflates the temporal
+layer to an apparent sensitivity of $0.73$; a proper temporal split drops it to $0.00$, while the full
+multiplex keeps a sensitivity of $0.14$ (AUC $0.82$). Because the temporal layer is a single binary feature, its
 sensitivity@FPR is a step function: under the leaky estimate the same $0.73$ appears at FPR $1\%$, $2\%$,
 and $5\%$, while under the temporal split the sensitivity stays $0.00$ even at FPR~$5\%$ (more than $5\%$ of
 legitimate evaluation-window mail falls off the honestly estimated rhythm, so no threshold qualifies).}
@@ -536,11 +543,11 @@ legitimate evaluation-window mail falls off the honestly estimated rhythm, so no
 \toprule
  & \multicolumn{2}{c}{temporal layer} & \multicolumn{2}{c}{full multiplex} \\
 \cmidrule(lr){2-3}\cmidrule(lr){4-5}
-Rhythm estimated from & AUC & sens.@1\% & AUC & sens.@1\% \\
+Rhythm (and structural layers) estimated from & AUC & sens.@1\% & AUC & sens.@1\% \\
 \midrule
 full history (\emph{with leakage}) & $0.86$ & $0.73$ & $0.94$ & $0.88$ \\
-early window (\emph{temporal split}) & $0.75$ & $0.00$ & $0.87$ & $0.51$ \\
-early window $+\,$off-hours (\emph{both}) & $0.68$ & $0.00$ & $\mathbf{0.84}$ & $\mathbf{0.51}$ \\
+early window (\emph{temporal split}) & $0.75$ & $0.00$ & $\mathbf{0.82}$ & $\mathbf{0.14}$ \\
+early window $+\,$off-hours (\emph{both}) & $0.68$ & $0.00$ & $0.77$ & $0.01$ \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -667,7 +674,7 @@ senders on a graph-first case study (AUC $0.70\!\to\!0.87$, new-sender false ala
 control at chance), with the honest finding that the rhythm carries most of the signal and the OSINT layers
 add a small, impersonation-targeted margin on top of the contacts--rhythm pair. On the real Enron
 corpus we built a structural-temporal multiplex from headers and exposed the rhythm-leak pitfall: an apparent
-sensitivity of $0.73$ that falls to $0.00$ under a proper temporal split, while the multiplex keeps a sensitivity of $0.51$ (AUC $0.84$).
+sensitivity of $0.73$ that falls to $0.00$ under a proper temporal split, while the multiplex keeps a sensitivity of $0.14$ (AUC $0.82$).
 The value of the multiplex lies on the false-alarm side: cold impersonation from outside every layer remains
 almost undetected. The detector-relative susceptibility metric shows that the attack channel dominates the
 victim's rank, with a structural floor of $\mathrm{Susc}\approx0.96$ for cold impersonation, and the fusion

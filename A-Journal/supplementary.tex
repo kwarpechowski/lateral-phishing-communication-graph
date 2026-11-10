@@ -43,7 +43,9 @@ volumetric / path-based (LightGBM) & $\mathrm{n\_estimators}{=}200$, $\mathrm{se
 \bottomrule
 \end{tabular}
 \caption{Detector hyperparameters: fixed \emph{uniformly} for all models of a given family, framework
-defaults or lightly chosen, without grid search.}
+defaults or lightly chosen, without grid search. Architecture check ($5$~seeds, AUC / sensitivity@FPR$1\%$,
+\texttt{exp\_cascade\_arch.csv}): TGN-lite $0.889/0.114$, TGAT-lite $0.902/0.133$, hand-crafted context
+$0.807/0.040$---the attention variant of the temporal model matches or exceeds it at every seed.}
 \label{stab:hparams}
 \end{table}
 
@@ -141,7 +143,10 @@ $20\%$  & $0.59$ & $\mathbf{0.63}$ & $0.61$ & $0.60$ \\
 \caption{Audit of noisy training labels (AUC; stealthy attack at $K{=}3$ in the second harness
 (\texttt{cascadebench}, $600$-account organization; the baseline table of the main text);
 $20$~seeds): the learned temporal model
-degrades fastest ($0.73\!\to\!0.60$), so its advantage shrinks under realistic label noise.}
+degrades fastest ($0.73\!\to\!0.60$), so its advantage shrinks under realistic label noise. Values at
+$K{=}3$ differ from the corresponding row of the baseline table by $\le 0.02$ AUC owing to run-to-run
+nondeterminism of the temporal model's training (thread scheduling in the GNN step); the qualitative
+ordering of detectors is unchanged.}
 \label{stab:labelnoise}
 \end{table}
 
@@ -207,7 +212,7 @@ headline-contrast tables) implement identical feature definitions.
   updated bucket by bucket with a GRU cell from the mean of the messages $\sigma(W_m m_u^{(b-1)})$ of the
   senders that reached the node in bucket $b$ (Eq.~(3)); an event of bucket $b$ is scored from the memories of
   bucket $b-1$ (Eq.~(2)) by the same head as the static GNN. TGAT-lite replaces the mean pooling by attention
-  with an $8$-dimensional time encoding. Training: Adam ($\mathrm{lr}{=}0.01$, weight decay $5\cdot10^{-4}$),
+  with an $8$-dimensional time encoding, in the spirit of TGAT (Xu et al., 2020). Training: Adam ($\mathrm{lr}{=}0.01$, weight decay $5\cdot10^{-4}$),
   $100$~epochs, binary cross-entropy.
 \end{itemize}
 
@@ -225,13 +230,13 @@ Experiment & Table / figure & Seeds \\
 Detector hierarchy (case study) & main-text detector table, Fig.~S1 & $5$ \\
 Library TGN (extra row) & main-text detector table & $3$ \\
 Architecture robustness (TGN-lite / TGAT-lite) & Sec.~S1 & $5$ \\
-Stealthy attacker sweep & main-text stealth table, Fig.~S2 & $20$ \\
+Stealthy attacker sweep & main-text stealth table and figure & $20$ \\
 Baselines (a) stealth / (b) surgical & main-text baseline table & $20$ \\
 Headline contrasts (Wilcoxon, Cliff's $\delta$) & main-text rigor section & $20$ \\
 Label-noise audit & Tab.~S4 & $20$ \\
 Static-blindness audit (compromised senders) & --- & $20$ \\
 Cascade-model sweep & Tab.~S2 & $8$ \\
-Inductive validation ($19$ / $30$ / $200$ org.) & Tab.~S3, Fig.~S3 & $5$ / $3$ / $3$ \\
+Inductive validation ($19$ / $30$ / $200$ org.) & Tab.~S3, Fig.~S2 & $5$ / $3$ / $3$ \\
 Sensitivity--FPR curve & Fig.~S5 & $10$ \\
 Enron cascade & main-text real-graph table (a), Fig.~S4 & $8$ \\
 SNAP graphs (\texttt{email-Eu-core}, \texttt{CollegeMsg}) & main-text real-graph table (b) & $3$ \\
