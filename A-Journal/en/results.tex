@@ -143,7 +143,7 @@ Temporal (time shuffled) & $0.73$ & $0.026$ \\
 \bottomrule
 \end{tabular}
 \caption{Cascade detectors on the case-study graph (victim split, $5$~seeds; library TGN row: $3$~seeds):
-only the temporal model with node memory reaches operational sensitivity ($0.121$ at FPR~$1\%$), and
+only the temporal models with node memory reach operational sensitivity ($0.121$ and $0.109$ at FPR~$1\%$), and
 shuffling the time order removes the advantage ($\to\!0.026$), so the signal depends on temporal order.}
 \label{tab:detectors}
 \end{table}
@@ -224,8 +224,8 @@ Table~\ref{tab:baselines} places this result against the two strong practical ba
 of the threat model. This table comes from the second experiment harness (Supplementary Sec.~S6), so its
 $K{=}1$ values differ slightly from Tab.~\ref{tab:stealth}. In the stealthy regime (block~a) the
 path-based detector and the hand-crafted context lead under extreme stealth ($K{=}1$: $0.76$ and $0.75$,
-ahead of the temporal GNN $0.67$) but degrade with reach (path $0.76\!\to\!0.65$), while the temporal GNN is
-the only detector that improves monotonically with reach and leads from $K{=}3$ on. The two harnesses
+ahead of the temporal GNN $0.67$) but degrade with reach (path $0.76\!\to\!0.65$), while the temporal GNN
+has the largest end-to-end gain ($0.67\!\to\!0.85$) and leads from $K{=}3$ on. The two harnesses
 differ in the generator and the population, not in the feature definitions: Tab.~\ref{tab:stealth} uses the
 $150$-account case-study graph with consecutive-bucket stealth and uniform benign buckets, while
 Tab.~\ref{tab:baselines} uses a $600$-account synthetic organization with an $8$-bucket send spacing,
@@ -266,8 +266,8 @@ fan-out $5$ & \textbf{0.84} & 0.51 & 0.54 & \textbf{0.93} \\
 \end{tabular}
 \caption{Baselines and the boundary of the threat model (AUC, $20$~seeds; path-based baseline in the spirit of
 Hopper \citep{ho2021hopper}). (a)~Under a stealthy cascade the path-based detector and the hand-crafted
-context lead only at $K{=}1$, the path-based detector degrades with reach, and the temporal GNN is the only
-detector that improves with reach, leading from $K{=}3$ on. (b)~With no
+context lead only at $K{=}1$, the path-based detector degrades with reach, and the temporal GNN
+has the largest end-to-end gain, leading from $K{=}3$ on. (b)~With no
 propagation, a single-recipient attack is invisible to every detector ($0.50$--$0.53$); the signal needs
 fan-out~$\ge2$. The two blocks are not comparable at ``1'': in (a) $K{=}1$ still propagates, in (b) fan-out~$1$
 is a surgical attack with no cascade at all.}

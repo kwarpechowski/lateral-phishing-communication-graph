@@ -147,8 +147,12 @@ degrades fastest ($0.73\!\to\!0.60$), so its advantage shrinks under realistic l
 
 \begin{figure}[h]\centering
 \includegraphics[width=\linewidth]{fig_cascade_fpr.pdf}
-\caption{Sensitivity--FPR curve ($10$~seeds). At low FPR all methods are weak; the volume detector dominates
-the blast and breaks down under the stealthy attack, where the receiving-side signal degrades less.}
+% ZMIANA jezykowa: usunieto 'the volume detector dominates the blast' — powod: po zasadzie
+% 'cechy tylko z przeszlosci' detektor wolumetryczny nie wygrywa nawet blast (AUC 0.63 vs 0.89
+% dla temporalu); jego czulosc @5% to 0.13 pod blast i 0.05 pod stealth.
+\caption{Sensitivity--FPR curve ($10$~seeds). At low FPR all methods are weak; the temporal
+detector stays ahead of the volumetric one in both regimes, and the gap is largest under the
+stealthy attack.}
 \label{sfig:fpr}
 \end{figure}
 
