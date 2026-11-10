@@ -56,8 +56,7 @@ table of the main text. The temporal GNN dominates; time shuffling (red) levels 
 \label{sfig:detectors}
 \end{figure}
 
-% ZMIANA: wartosci przeliczone z nowych CSV (exp_cascade_sweep, exp_cascade_org, scale240/1600)
-% po usunieciu wycieku danych w cechach.
+% ZMIANA: wartosci policzono od nowa z nowych plikow wynikowych po naprawie kodu.
 \begin{table}[h]\centering\small
 \begin{tabular}{l ccccccc}
 \toprule
@@ -125,9 +124,9 @@ time shuffle bringing the temporal detector back close to the hand-crafted resul
 \clearpage
 \section*{S5. Rigor: label noise and the sensitivity--FPR curve}
 
-% ZMIANA: podpis podaje reżim (skryty K=3) i harness (cascadebench, 600-kontowa organizacja) —
-% bez tego wartosci przy 0% szumu nie odpowiadaly zadnemu reżimowi z tabel glownych; wartosci
-% przeliczone z cb_labelnoise.csv.
+% ZMIANA: podpis podaje teraz, dla jakiego ataku (skryty K=3) i ktorego zestawu
+% eksperymentow sa te liczby. Powod: wartosci przy 0% szumu nie pasowaly do zadnego
+% wiersza tabel w glownym tekscie i nie dalo sie sprawdzic, skad pochodza.
 \begin{table}[h]\centering
 \begin{tabular}{lcccc}
 \toprule
@@ -164,11 +163,10 @@ temporal-consistency bit $tc$. The two experiment harnesses of the package (\tex
 cascade, stealth, scale, and real-graph tables; \texttt{cascadebench/} for the baseline, label-noise, and
 headline-contrast tables) implement identical feature definitions.
 
-% ZMIANA: wzory cech zaktualizowane do strict-past — wynika z usunietych wyciekow: momentum mialo
-% okno [b, b+W] (PRZYSZLE kubełki = look-ahead), liczniki volumetryczne byly liczone na calym
-% strumieniu (w tym zbior testowy), burst/propagation obejmowaly kubełek b (asymetria vs pamiec
-% TGN czytajaca stan z <= b-1), a cechy wezlow GNN liczono ze calego strumienia; po naprawie
-% wszystkie eksperymenty powtorzono.
+% ZMIANA: wzory cech przystosowane do nowej zasady (cechy tylko z przeszlosci). Powod —
+% trzy usterki kodu: momentum liczyl wysylki z PRZYSZLYCH kubełkow [b, b+W], liczniki
+% wolumetryczne patrzyly na caly strumien (tez na dane testowe), a burst i propagacja
+% uwzglednialy biezacy kubełek. Po naprawie wszystkie eksperymenty powtorzono.
 \begin{itemize}
   \item \textbf{1-hop (tabular).} For event $s\!\to\!v$ in bucket $b$: $\mathbf{1}[s\in\mathcal{N}(v)]$,
   $\mathrm{rhythm}(s,b)$, $|\mathcal{N}(v)|$, $|\mathcal{N}(s)|$.
@@ -210,8 +208,9 @@ headline-contrast tables) implement identical feature definitions.
 \end{itemize}
 
 \clearpage
-% NOWE: zbiorcza tabela liczby seedow per eksperyment — liczba seedow zaleznie od tabeli byla
-% rozna (5/20/8/3) i rozsypywala sie po podpisach; jedna tabela ulatwia weryfikowanie istotnosci.
+% NOWE: tabela liczby nasion losowosci dla kazdego eksperymentu. Powod: w roznych
+% tabelach bylo ich 5, 8, 3 lub 20 i byly rozsypane po podpisach — jedna tabela
+% ulatwia sprawdzanie istotnosci wynikow.
 \section*{S7. Seed counts per experiment}
 
 \begin{table}[h]\centering\small

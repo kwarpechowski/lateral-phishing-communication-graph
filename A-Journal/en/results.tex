@@ -23,10 +23,10 @@ $N{=}150$ accounts and $556$ contact edges ($518$ inside firms, $38$ between par
 synthetic, but it is generated \emph{graph-first}: the organization graph is designed deterministically and
 each persona is then generated \emph{in its node}, so that a persona's supervisor, coworkers, and external
 contacts are \emph{real other personas} with real corporate addresses, and the graph closes internally. The
-% ZMIANA: opisano konstrukcje grafu Enron — wynika z tego, ze sposob filtrowania determinuje liczbe
-% kont (top-2000 po stopniu -> 1990), a artykul B uzywa 818 nadawcow z tego samego korpusu, bo jego
-% multiplex wymaga rytmu per-nadawca (filtr >=25 wiadomosci i niepusty rytm); bez wyjasnienia
-% roznica 818/1990 wyglada na niespojnosc miedzy pracami.
+% ZMIANA: dodano opis budowy grafu Enron: bierzemy nagłówki Od/Do/Kopia i 2000
+% najaktywniejszych kont (zostaje 1990). Wyjasniono tez roznice z artykulem B (818 nadawcow):
+% tam potrzebny jest rytm kazdego nadawcy, wiec odrzucani sa nadawcy z mniej niz 25 mailami.
+% Powod: bez tego 818 vs 1990 z tego samego korpusu wyglada na blad.
 size $N{=}150$ is of the order of the core user set of the Enron corpus \citep{klimt2004enron}; the Enron
 contacts graph used for validation (Sec.~\ref{sec:res-realgraphs}) is larger ($1990$~accounts), so the
 real-graph replication also tests the mechanism at a larger scale. That graph is built from the
@@ -49,10 +49,10 @@ each recipient becomes a carrier with probability $p_\mathrm{inf}$, so the attac
 crosses into the partner firm through the business-partnership edge. The sender is a genuine contact
 consistent with every static relation, so only the timing and the receiving-side wave give it away, and this
 is what T1 must catch. Beyond the default cascade we probe three \emph{extreme} regimes, each chosen to stress
-% ZMIANA: usunieto "the easy case that volume detection should win, sanity ceiling" — wynika z
-% zasady strict-past: liczniki przeszle nie widza kubełka, w ktorym przychodzi burst, wiec nawet
-% w blast volume ledwo przekracza szans (0.61-0.62 na SNAP); "sanity ceiling" dla volume nie
-% istnieje w tym protokole.
+% ZMIANA jezykowa: usunieto zdanie, ze blast to 'latwy przypadek, ktory powinien wygrac
+% detektor wolumetryczny'. Powod: po nowej zasadzie (cechy tylko z przeszlosci) liczniki
+% nie widza kubełka, w ktorym przychodzi burst, wiec nawet w blast detektor ledwo
+% przekracza losowosc (0.61-0.62 na grafach SNAP).
 a specific claim rather than to represent typical traffic. \emph{(i)~Naive blast}: one carrier infects all
 contacts at once, the maximally bursty case and the easy end of the scale---notably, under the
 strict-past scoring rule even here the volumetric detector barely exceeds chance (on the SNAP blast
@@ -108,11 +108,11 @@ fan-out~$\ge2$ needed; graceful under noise and scale; triage, not autonomous de
 % ============================================================
 \subsection{The cascade detectors}
 \label{sec:res-detectors}
-% ZMIANA: liczby przeliczone po usunieciu wycieku w cechach; dodano wiersz Library TGN z brakujacymi
-% liczbami (implementacja referencyjna PyG; 3 seedy); "in all 5 seeds" zlagodzone do srednich AUC,
-% bo per-seed warto nie sa przechowywane w CSV; usunieto zdanie o "AUC 0.49 static detector" —
-% 0.4932 pochodzi z innego eksperymentu (kompletna slepota cech statycznych pod przejeciami,
-% exp_compromised.csv), nie z tej hierarchii, i wrecz mylilo z wierszem Static GNN.
+% ZMIANA: wszystkie liczby policzono od nowa po naprawie kodu. Dodano wiersz 'Library TGN'
+% z brakujacymi liczbami (oficjalna implementacja z biblioteki PyG). Usunieto zdanie o
+% 'AUC 0.49 detektora statycznego' — 0.49 to wynik innego eksperymentu (pelna slepota
+% cech statycznych pod przejeciami kont), nie tej tabeli. Dodano zdanie, ze przewaga GNN
+% nad kontekstem recznym dotyczy tylko zwyklej kaskady — w reżimie skrytym oba sa rowne.
 A compromised account passes every static relation, so static graph position alone carries little
 operational signal (the static GNN reaches AUC $0.76$ but only $0.041$ sensitivity at FPR~$1\%$). The
 signal must therefore lie in the dynamics. Table~\ref{tab:detectors} tests T1 on the default cascade of
@@ -151,12 +151,13 @@ shuffling the time order removes the advantage ($\to\!0.026$), so the signal dep
 % ============================================================
 \subsection{The stealthy attacker}
 \label{sec:res-stealth}
-% ZMIANA: volume 0.44->0.51 — dawniejsza wartosc "ponizej losowosci" byla artefaktem licznikow
-% pelnostrumieniowych (wyciek), nie wlasciwoscia detektora; dodano kontrole rhythm-only
-% (0.50-0.54) z udzialami off-rhythm per klasa (ataki 75-79% ~ benign 78-79%), z czego wynika, ze
-% bit rytmu nie niesie sygnalu w tym harnessie (uniform vs consecutive buckets); parametry 15%/25%
-% naleza do generatora artykulu B; dodano tez zdanie, ze przy K=1 najmocniejszy jest kontekst
-% reczny, i opis dip K=3 na nowych liczbach.
+% ZMIANA: nowa wartosc volume 0.51 (dawniej 0.44, 'ponizej losowosci'). Powod: stara
+% liczba byla zlym wynikiem usterki kodu (liczniki patrzaly na przyszlosc i dane testowe).
+% Dodano wiersz 'rhythm-only' (0.50-0.54) i udzialy poczty poza rytmem: ataki 75-79%,
+% legalna 78-79% — sam bit rytmu nie odróżnia tu niczego. Dodano zdanie, ze przy K=1
+% najmocniejszy jest kontekst reczny (0.72) i ze teza brzmi 'sygnal sie nie zawala',
+% nie 'GNN wygrywa'. Liczby 15%/25% naleza do generatora artykulu B, nie tu.
+% Liczby dla 'dip przy K=3' podano nowe.
 Table~\ref{tab:stealth} is the headline test of T1: the stealthy attacker breaks volume, but not dynamics.
 Against an attacker who evades detection by spreading its sends over time ($K$~carriers, one per interval),
 the volume detector breaks down (AUC $0.61\!\to\!0.51$ at $K{=}1$, barely above chance) because the sending
@@ -212,12 +213,13 @@ volume detector breaks down; the temporal GNN degrades less thanks to the cascad
 % ============================================================
 \subsection{Baselines and the boundary of the threat model}
 \label{sec:res-baselines}
-% ZMIANA: tabele (a)/(b) wygenerowaly na nowo odtworzone generatory (exp_cb_stealth.py, 20 seedow) —
-% skrypty produkujace te CSV brakowaly w pakiecie, wiec tabel nie dalo sie odtworzyc; roznice
-% dwoch harnessow (150-twin vs synthetic:600, spread/mimicry/off_hours) opisane, bo te same K mialo
-% w nich rozne wartosci; wyjasniono tez ~0.54 kontekstu recznego w bloku (b) — jego burst liczy
-% KONTAKTY OFIARY trafione w oknie przeszlym, a atak chirurgiczny raz trafia wlasne kontakty
-% nadawcy, wiec sasiedztwo ofiary nie jest odsylane w oknie.
+% ZMIANA: obie czesci tabeli wygenerowal na nowo odtworzony skrypt (oryginalnego
+% brakowalo w paczce, wiec tabeli nie dalo sie odtworzyc; teraz 20 nasion losowosci).
+% Dodano opis, czym roznia sie oba zestawy eksperymentow — bez tego to samo K dawalo
+% rozne liczby i wygladalo to na blad. Wyjasniono tez wynik ~0.54 kontekstu recznego
+% w ataku chirurgicznym: on liczy kontakte OFIARY trafione w przeszlych kubełkach,
+% a atak jednokrotnie trafia wlasne kontakty nadawcy, wiec sasiedztwo ofiary
+% nie jest odslane w oknie.
 Table~\ref{tab:baselines} places this result against the two strong practical baselines and marks the boundary
 of the threat model. This table comes from the second experiment harness (Supplementary Sec.~S6), so its
 $K{=}1$ values differ slightly from Tab.~\ref{tab:stealth}. In the stealthy regime (block~a) the
@@ -275,11 +277,10 @@ is a surgical attack with no cascade at all.}
 % ============================================================
 \subsection{Stability and inductive generalization}
 \label{sec:res-stability}
-% ZMIANA: dodano wyjasnienie sweepu p_inf — wynika z konstytucji klas w generatorze: ruch benign
-% jest staly (1680 zdarzen), a liczba zdarzen ataku rosnie z p_inf, wiec przy niskim p_inf ataki
-% to niemal wyłacznie bursty patient-zero (rzadka, niemal separowalna klasa); S3 przeliczone —
-% z nowych danych wynika, ze temporal nie prowadzi w AUC przy 30/200 org, a przewaga operacyjna
-% to 2.3x/1.7x/1.8x.
+% ZMIANA: dodano wyjasnienie dziwnego wyniku: im mniejsze prawdopodobienstwo zarazenia,
+% tym lepsza detekcja (0.97 przy 0.05). Powod: ruch legalny jest staly, a liczba maili
+% ataku rosnie z p_inf — przy malej wartosci ataki to niemal same pojedyncze wybuchy,
+% rzadka i latwa do odróżnienia klasa. Liczby w S3 policzono od nowa.
 Two checks bound the reading of T1. The cascade model sweep (Supplementary Tab.~S2) shows the hierarchy
 holding across the whole range $p_\mathrm{inf}\!\in\![0.05,0.9]$ and depth; the receiving-side signal does not
 vanish at a realistically low $p_\mathrm{inf}$ (temporal GNN $0.87$--$0.97$). The temporal AUC is highest at
@@ -302,12 +303,12 @@ graphs.
 % ============================================================
 \subsection{Validation on real communication graphs}
 \label{sec:res-realgraphs}
-% ZMIANA: liczby Enron przeliczone (temporal 0.83, shuffled 0.75); narracja SNAP przepisana, bo
-% po usunieciu wycieku w licznikach volume nie wygrywa juz blast — jego sygnal "duzo wysylek teraz"
-% znajdowal sie w biezacym kubełku, ktorego zasada strict-past nie pokazuje; przewaga temporal jest
-% najwieksza pod stealth; anomalie blast 0.67 < stealthy 0.81 odnotowano uczciwie z hipoteza
-% (single-bucket blast na rzadkiej topologii zostawia puste okna przeszle); "beating in 8/8
-% seeds" zlagodzone do sredniej, bo per-seed wartosci nie sa w CSV.
+% ZMIANA: liczby Enron policzono od nowa (temporal 0.83). Opis wynikow na SNAP przepisano,
+% bo po naprawie kodu detektor wolumetryczny nie wygrywa juz ataku blast — jego sygnal
+% siedzial w biezacym kubełku, ktorego nowe cechy nie widza. Uczciwie odnotowano tez:
+% na SNAP temporal daje LEPIEJ pod atakiem rozlozonym w czasie (0.81) niz pod blastem
+% (0.67) — z hipoteza dlaczego. 'Wygrywa w 8/8 nasion' zamieniono na srednia, bo wyniki
+% pojedynczych nasion nie sa zapisywane do plikow.
 Real graphs (Enron, two SNAP graphs) are used to validate the mechanism where the structure and rhythms are
 real. The qualitative hierarchy of methods established on one topology must carry over to another, in line
 with the definition of effectiveness (Sec.~\ref{sec:effectiveness}). The attack labels are controlled
@@ -372,13 +373,13 @@ volumetric detector is weakest at the operating point (sensitivity $0.000$--$0.0
 % ============================================================
 \subsection{Rigor: what it means for a detector to work}
 \label{sec:res-rigor}
-% ZMIANA: kontrasty przeliczone w punkcie skrytym K=2 harnessu cascadebench (kiedy poprzednie
-% delty +0.081/+0.064 nie pasowaly do zadnej tabeli); z nowych danych wynika, ze przewaga
-% nad volume jest istotna i duza (+0.105, p<0.001, delta=0.89), ale przewaga GNN nad kontekstem
-% recznym NIE (+0.010, p=0.62) — uczciwie zapisano, ze sygnal odbiorczy oba czytaja rownie dobrze;
-% label noise z jawnym reżimem (K=3), bo wczesniejsze wartosci 0% szumu nie pasowaly do zadnego
-% reżimu z tabel glownych; base-rate z r=0.12, bo taka czulosc wychodzi teraz z eksperymentow
-% (~830 FP na wykryty atak przy 1:10^4).
+% ZMIANA: testy porownawcze policzono od nowo w punkcie K=2 — dawniejsze roznice
+% (+0.081, +0.064) nie zgadzaly sie z zadna tabela. Nowy wynik: sygnal odbiorczy bije
+% volume z duzym zapasem (+0.105, p<0.001), ale GNN vs kontekst reczny to +0.010,
+% p=0.62 — czyli statystycznie zero roznicy; zapisano to uczciwie. Badanie szumu etykiet
+% dostalo jawny opis reżimu (K=3), bo jego liczby przy 0% szumu nie pasowaly do zadnej
+% tabeli. Arytmetyka bazowa: czulosc r=0.12 (taka wychodzi teraz z eksperymentow);
+% ~830 fałszywych alarmow na wykryty atak przy czestosci 1:10^4.
 The results follow the definition of effectiveness (Sec.~\ref{sec:effectiveness}) and the operational limits are
 marked, so the headline numbers read as a lower bound rather than a deployment claim.
 

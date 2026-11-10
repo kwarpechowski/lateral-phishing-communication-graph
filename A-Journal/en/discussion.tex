@@ -10,8 +10,9 @@ implications and its limits.
 
 \subsection{Interpretation: why the receiving side degrades less}
 A volumetric detector in the spirit of COMPA \citep{stringhini2015thataint} assumes that a compromise shows up
-% ZMIANA: "drops below the random baseline" -> "falls to near chance" — wynika z usuniecia wycieku
-% w licznikach volumetrycznych i powtorki eksperymentow (volume=0.51 przy K=1).
+% ZMIANA jezykowa: 'drops below the random baseline' zamieniono na 'falls to near chance'
+% (spada do poziomu losowosci). Powod: po naprawie kodu detektor wolumetryczny daje 0.51,
+% wiec nie moze byc mowy o spadku ponizej losowosci — to bylo zludzenie usterki kodu.
 as a surge; a path-based detector in the spirit of Hopper \citep{ho2021hopper} assumes an unusual route to a
 rare target. Both read what the attacker controls. When the attacker deliberately spreads the sends over
 time, the volumetric signal vanishes and its AUC falls to near chance, and the path-based signal

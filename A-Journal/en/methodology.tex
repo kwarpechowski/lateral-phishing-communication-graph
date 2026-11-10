@@ -53,10 +53,10 @@ signal is the cascade context, since within the wave's window many of $v$'s neig
 hit just before. Four detectors of increasing temporal awareness are compared: a 1-hop tabular model (a lower
 bound), a hand-crafted cascade context (1-hop plus burst, freshness, and wave density), a static GNN (topology,
 no time), and a temporal GNN with node memory.
-% ZMIANA: dodano jawny opis protokolu per-reżim — wynika z tego, ze interpretacja kolapsu
-% volumetrycznego zalezy od protokolu treningu (gdyby detektor uczyl sie na mieszanie reżimow,
-% spadek AUC mozna by tlumaczyc przesunieciem train-test; tu kazdy K jest samodzielnym zadaniem,
-% wiec kolaps jest wlasciwoscia reżimu).
+% ZMIANA: dodano opis treningu w eksperymencie stealth: kazdy poziom K to osobne zadanie,
+% detektor uczy sie i jest sprawdzany w jednym reżimie. Powod: bez tej informacji czytelnik
+% mogl podejrzewac, ze zly wynik detektora wolumetrycznego bierze sie z rozjazdu miedzy
+% daniem treningowym a testowym.
 In the stealth experiment each regime is a self-contained
 training task: for every stealth level $K$ the scenario (attack plus matched benign) is generated, the split is
 victim-disjoint, and every detector is trained and tested \emph{within that regime only}---no detector ever
@@ -67,10 +67,11 @@ regime shift.
 look forward in time. The static score summarizes a node by its neighbors in the whole aggregated graph, seeing
 who is connected to whom but not in what order. The temporal score keeps a running memory updated
 bucket by bucket and read one bucket before the event it scores, so its memory can only use the past.
-% ZMIANA: dodano akapit o uniform strict-past rule — wynika z usunięcia wycieku danych: wczesniejsza
-% wersja pakietu liczyla cechy strumieniowe (momentum, liczniki volume, burst) na calym strumieniu,
-% w tym na zdarzeniach przyszlych i testowych; w pracy o leak-aware evaluation byl to wlasny wyciek,
-% wiec kod naprawiono i wszystkie eksperymenty powtorzono.
+% ZMIANA: dodano zasade: kazda cecha liczona jest wylacznie z przeszlych kubełkow
+% (do b-1), a cechy wezlow GNN — tylko z danych treningowych. Powod: wczesniejsza wersja
+% pakietu liczyla cechy na calym strumieniu zdarzen, czyli patrzyla w przyszlosc i na
+% dane testowe; w pracy o ocenie bez wyciekow byl to sam wyciek, wiec kod naprawiono
+% i wyniki policzono od nowa.
 This strict-past rule is enforced uniformly across the whole detector panel: every stream-derived
 feature---the volumetric counters, the burst/freshness/propagation windows of the hand-crafted context,
 and the momentum window of the path-based baseline---is computed from buckets $\le b-1$ only, never from
