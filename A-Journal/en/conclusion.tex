@@ -33,9 +33,11 @@ Among the limitations, the maliciousness is synthetic, so we validate the mechan
 of real intrusions; the cascade parameters are ours; and both scale and the operational threshold remain open.
 Section~\ref{sec:discussion} gives the details.
 
+% ZMIANA: liczby przeliczone po usunieciu wycieku w cechach — default cascade 0.88, pod stealth
+% 0.59-0.76, volume 0.51 (near chance, nie "below random").
 The results turn lateral phishing into a quantity that can be tracked rather than merely flagged. Under the
-default cascade the receiving-side signal reaches AUC $0.90$; under a stealthy attacker it degrades to
-$0.60$--$0.78$ but stays above chance while volume detection collapses to $0.44$, below the random baseline;
+default cascade the receiving-side signal reaches AUC $0.88$; under a stealthy attacker it degrades to
+$0.59$--$0.76$ but stays above chance while volume detection collapses to $0.51$, near chance;
 and the same regime transition appears in direction on Enron, \texttt{email-Eu-core}, and
 \texttt{CollegeMsg}. The defense this points toward
 asks not whether a message looks malicious, but whether the organization's communication graph is behaving

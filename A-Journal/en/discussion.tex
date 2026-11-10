@@ -10,13 +10,15 @@ implications and its limits.
 
 \subsection{Interpretation: why the receiving side degrades less}
 A volumetric detector in the spirit of COMPA \citep{stringhini2015thataint} assumes that a compromise shows up
+% ZMIANA: "drops below the random baseline" -> "falls to near chance" — wynika z usuniecia wycieku
+% w licznikach volumetrycznych i powtorki eksperymentow (volume=0.51 przy K=1).
 as a surge; a path-based detector in the spirit of Hopper \citep{ho2021hopper} assumes an unusual route to a
 rare target. Both read what the attacker controls. When the attacker deliberately spreads the sends over
-time, the volumetric signal vanishes and its AUC drops below the random baseline, and the path-based signal
+time, the volumetric signal vanishes and its AUC falls to near chance, and the path-based signal
 degrades as the cascade reaches further. Cascade dynamics instead respond to the recipient side, the
 wave-like signature among the neighbors, which the sender cannot hide without giving up fan-out
 altogether---and a single recipient is exactly the surgical regime, which we mark as the blind spot. Pacing
-the sends weakens this signal (AUC $0.60$ at $K{=}1$) but much less than it weakens volume. This
+the sends weakens this signal (AUC $0.59$ at $K{=}1$) but much less than it weakens volume. This
 agrees with Ho et al.\ \citep{ho2019detecting} that lateral phishing needs a signal beyond the content of a
 single message; we differ in locating that signal in the dynamics of the communication graph rather than in
 headers or relays. The time-shuffle control supports the temporal reading: shuffling removes the temporal

@@ -56,14 +56,16 @@ table of the main text. The temporal GNN dominates; time shuffling (red) levels 
 \label{sfig:detectors}
 \end{figure}
 
+% ZMIANA: wartosci przeliczone z nowych CSV (exp_cascade_sweep, exp_cascade_org, scale240/1600)
+% po usunieciu wycieku danych w cechach.
 \begin{table}[h]\centering\small
 \begin{tabular}{l ccccccc}
 \toprule
 $p_\mathrm{inf}$ & $0.05$ & $0.1$ & $0.2$ & $0.3$ & $0.5$ & $0.7$ & $0.9$ \\
 \midrule
 1-hop        & $0.60$ & $0.56$ & $0.59$ & $0.60$ & $0.68$ & $0.73$ & $0.79$ \\
-manual & $0.89$ & $0.87$ & $0.85$ & $0.84$ & $0.85$ & $0.87$ & $0.89$ \\
-temporal   & $\mathbf{0.96}$ & $\mathbf{0.96}$ & $\mathbf{0.91}$ & $\mathbf{0.88}$ & $\mathbf{0.88}$ & $\mathbf{0.90}$ & $\mathbf{0.93}$ \\
+manual & $0.75$ & $0.77$ & $0.77$ & $0.79$ & $0.79$ & $0.81$ & $0.85$ \\
+temporal   & $\mathbf{0.97}$ & $\mathbf{0.95}$ & $\mathbf{0.90}$ & $\mathbf{0.87}$ & $\mathbf{0.87}$ & $\mathbf{0.89}$ & $\mathbf{0.92}$ \\
 \bottomrule
 \end{tabular}
 \caption{Cascade model sweep (AUC, depth~$4$, $8$~seeds): the hierarchy holds across the whole range of the
@@ -82,21 +84,22 @@ $p_\mathrm{inf}$.}
 \cmidrule(lr){2-3}\cmidrule(lr){4-5}
 Organizations & temp. & manual & temp. & manual \\
 \midrule
-$19$  & $0.83$ & $0.86$ & $\mathbf{0.123}$ & $0.028$ \\
-$30$  & $0.80$ & $0.86$ & $\mathbf{0.087}$ & $0.054$ \\
-$200$ & $0.84$ & $0.88$ & $\mathbf{0.107}$ & $0.077$ \\
+$19$  & $0.76$ & $0.75$ & $\mathbf{0.062}$ & $0.027$ \\
+$30$  & $0.69$ & $0.75$ & $\mathbf{0.041}$ & $0.025$ \\
+$200$ & $0.78$ & $0.81$ & $\mathbf{0.076}$ & $0.042$ \\
 \bottomrule
 \end{tabular}
 \caption{Inductive validation on unseen organizations ($19$~organizations: $5$~seeds; $30$ and
 $200$~organizations: $3$~seeds): the temporal detector's operational advantage over the hand-crafted context
-holds on companies never seen in training, but shrinks with scale ($4.4\times\!\to\!1.4\times$).}
+holds on companies never seen in training at every scale ($2.3\times$, $1.7\times$, $1.8\times$), while its
+AUC does not lead at the two larger scales.}
 \label{stab:scale}
 \end{table}
 
 \begin{figure}[h]\centering
 \includegraphics[width=0.62\linewidth]{fig_cascade_scale.pdf}
 \caption{Inductive validation: sensitivity@FPR1\% on unseen organizations against the number of companies
-(values as in Tab.~S3). The advantage holds inductively but decreases ($4.4\times\!\to\!1.4\times$).}
+(values as in Tab.~S3). The advantage holds inductively at every scale ($2.3\times$, $1.7\times$, $1.8\times$).}
 \label{sfig:scale}
 \end{figure}
 
@@ -105,8 +108,9 @@ holds on companies never seen in training, but shrinks with scale ($4.4\times\!\
 
 \begin{figure}[h]\centering
 \includegraphics[width=\linewidth]{fig_cascade_realgraphs.pdf}
-\caption{Two real topologies (\texttt{email-Eu-core}, \texttt{CollegeMsg}). The volume detector (red) wins
-the naive blast, but drops under the stealthy attack; the temporal GNN (blue) stays higher. Values as in block~(b) of the real-graph table of the main text.}
+\caption{Two real topologies (\texttt{email-Eu-core}, \texttt{CollegeMsg}). The volumetric detector is
+weak in both regimes; the temporal GNN (blue) is ahead in both and its advantage is largest under the
+stealthy attack, where the volumetric operating point collapses. Values as in block~(b) of the real-graph table of the main text.}
 \label{sfig:realgraphs}
 \end{figure}
 
@@ -114,28 +118,31 @@ the naive blast, but drops under the stealthy attack; the temporal GNN (blue) st
 \includegraphics[width=\linewidth]{fig_cascade_enron.pdf}
 \caption{The cascade invariant on Enron (values as in block~(a) of the real-graph table of the main text):
 the same hierarchy as on the case-study graph (1-hop $<$ hand-crafted context $<$ temporal GNN), with the
-time shuffle leveling the temporal detector to the hand-crafted result.}
+time shuffle bringing the temporal detector back close to the hand-crafted result.}
 \label{sfig:enroncasc}
 \end{figure}
 
 \clearpage
 \section*{S5. Rigor: label noise and the sensitivity--FPR curve}
-% TODO (author, review 2 pt 8): at 0% noise this table gives vol 0.79 / path 0.72, which matches no stealthy
-% row of the main-text tables (volume 0.44-0.78, path <= 0.68). State the K and the harness used here.
 
+% ZMIANA: podpis podaje reżim (skryty K=3) i harness (cascadebench, 600-kontowa organizacja) —
+% bez tego wartosci przy 0% szumu nie odpowiadaly zadnemu reżimowi z tabel glownych; wartosci
+% przeliczone z cb_labelnoise.csv.
 \begin{table}[h]\centering
 \begin{tabular}{lcccc}
 \toprule
 Label noise & vol. & path & manual & temp. \\
 \midrule
-$0\%$   & $0.79$ & $0.72$ & $0.66$ & $\mathbf{0.82}$ \\
-$5\%$   & $0.78$ & $0.71$ & $0.65$ & $\mathbf{0.80}$ \\
-$10\%$  & $0.78$ & $0.71$ & $0.64$ & $\mathbf{0.76}$ \\
-$20\%$  & $\mathbf{0.75}$ & $0.68$ & $0.62$ & $0.70$ \\
+$0\%$   & $0.60$ & $0.66$ & $0.67$ & $\mathbf{0.73}$ \\
+$5\%$   & $0.60$ & $0.66$ & $0.66$ & $\mathbf{0.70}$ \\
+$10\%$  & $0.60$ & $0.65$ & $0.65$ & $\mathbf{0.66}$ \\
+$20\%$  & $0.59$ & $\mathbf{0.63}$ & $0.61$ & $0.60$ \\
 \bottomrule
 \end{tabular}
-\caption{Audit of noisy training labels (AUC, stealthy attack; $20$~seeds): the learned temporal model
-degrades fastest, so its advantage shrinks under realistic label noise.}
+\caption{Audit of noisy training labels (AUC; stealthy attack at $K{=}3$ in the second harness
+(\texttt{cascadebench}, $600$-account organization; the baseline table of the main text);
+$20$~seeds): the learned temporal model
+degrades fastest ($0.73\!\to\!0.60$), so its advantage shrinks under realistic label noise.}
 \label{stab:labelnoise}
 \end{table}
 
@@ -157,34 +164,40 @@ temporal-consistency bit $tc$. The two experiment harnesses of the package (\tex
 cascade, stealth, scale, and real-graph tables; \texttt{cascadebench/} for the baseline, label-noise, and
 headline-contrast tables) implement identical feature definitions.
 
+% ZMIANA: wzory cech zaktualizowane do strict-past — wynika z usunietych wyciekow: momentum mialo
+% okno [b, b+W] (PRZYSZLE kubełki = look-ahead), liczniki volumetryczne byly liczone na calym
+% strumieniu (w tym zbior testowy), burst/propagation obejmowaly kubełek b (asymetria vs pamiec
+% TGN czytajaca stan z <= b-1), a cechy wezlow GNN liczono ze calego strumienia; po naprawie
+% wszystkie eksperymenty powtorzono.
 \begin{itemize}
   \item \textbf{1-hop (tabular).} For event $s\!\to\!v$ in bucket $b$: $\mathbf{1}[s\in\mathcal{N}(v)]$,
   $\mathrm{rhythm}(s,b)$, $|\mathcal{N}(v)|$, $|\mathcal{N}(s)|$.
-  \item \textbf{Hand-crafted cascade context.} The 1-hop features plus three receiving-side statistics:
-  \emph{burst} $=|(\mathcal{N}(v)\setminus\{s\})\cap\bigcup_{b'=b-W}^{b}\mathrm{recv}(b')|/|\mathcal{N}(v)|$
-  (how many of the victim's other contacts were hit within the window); \emph{freshness}
+  \item \textbf{Hand-crafted cascade context.} The 1-hop features plus three receiving-side statistics,
+  all computed from strictly past buckets ($\le b-1$):
+  \emph{burst} $=|(\mathcal{N}(v)\setminus\{s\})\cap\bigcup_{b'=b-W}^{b-1}\mathrm{recv}(b')|/|\mathcal{N}(v)|$
+  (how many of the victim's other contacts were hit within the past window); \emph{freshness}
   $=\mathbf{1}[s\in\bigcup_{b'=b-W}^{b-1}\mathrm{recv}(b')]$ (the sender was itself hit just before);
-  \emph{propagation} $=|(\mathcal{N}(v)\setminus\{s\})\cap\bigcup_{b'=b-W}^{b}\mathrm{sent}(b')|/|\mathcal{N}(v)|$
+  \emph{propagation} $=|(\mathcal{N}(v)\setminus\{s\})\cap\bigcup_{b'=b-W}^{b-1}\mathrm{sent}(b')|/|\mathcal{N}(v)|$
   (how many of the victim's other contacts are themselves sending).
   \item \textbf{Volumetric baseline (inspired by COMPA).} Three per-event deviations of the sender from its own
-  profile, computed on the observed stream: recipient novelty $1/(1+\#\{s\!\to\!v\})$, time novelty
-  $1/(1+\#\{\text{events of } s \text{ in bucket } b\})$, and sender activity $\#\{\text{events of } s\}$. COMPA
+  profile, computed from strictly past buckets ($<b$): recipient novelty $1/(1+\#\{s\!\to\!v \text{ before } b\})$, time novelty
+  $1/(1+\#\{\text{events of } s \text{ in buckets} < b\})$, and sender activity $\#\{\text{events of } s \text{ before } b\}$. COMPA
   itself detects compromised accounts on social networks by comparing each new message with a behavioral
   profile of the account (time of day, source, language, links, topics); we transfer only its
   per-sender-deviation idea to email headers, restricted to volume and timing.
   \item \textbf{Path-based baseline (inspired by Hopper).} \emph{Precursor} $=\mathbf{1}[s\in\bigcup_{b'=b-W}^{b-1}\mathrm{recv}(b')]$
-  % TODO (author): "momentum" counts targets in [b, b+W], i.e. FUTURE buckets, while the temporal GNN is
-  % strictly past-only. Check the code: if the window really looks ahead, change it to [b-W, b] and rerun
-  % the path-based baseline; if the text is a typo, fix the interval here.
   (the sender was reached just before, i.e.\ is part of a chain); \emph{momentum} $=$ number of distinct
-  targets of $s$ in buckets $[b,b+W]$; \emph{rare target} $=1/(1+\text{popularity of } v \text{ as a recipient})$;
+  targets of $s$ in buckets $[b-W,b-1]$; \emph{rare target} $=1/(1+\text{popularity of } v \text{ as a recipient before } b)$;
   \emph{unexplained} $=1-\mathrm{rhythm}(s,b)$; and the conjunction $\text{precursor}\times\text{unexplained}$.
+  All windows are strictly past, matching the temporal model's memory: an earlier draft of the package
+  defined momentum over $[b,b+W]$ (future buckets) and the volumetric counters over the full stream; both
+  were look-ahead leaks, and every experiment was re-run after the fix.
   Hopper itself detects lateral movement in enterprise networks from authentication logs, by reconstructing
   login paths between machines and flagging paths with no benign explanation; it does not process email. We
   transfer its causal-path idea (a precursor that explains the hop, and a rare target) to the email
   communication graph.
   \item \textbf{Static GNN.} Node features $X=\log(1+[\,|\mathcal{N}(u)|,\ \text{in-degree}(u),\ \text{out-degree}(u)\,])$
-  (three dimensions, from the event stream), projected to $\mathrm{DIM}{=}24$ and propagated through two
+  (three dimensions, the stream degrees computed from the \emph{training} split only), projected to $\mathrm{DIM}{=}24$ and propagated through two
   layers with the normalized adjacency (Eq.~(1) of the main text). The head $g$ is an MLP with $48$ hidden
   units and dropout $0.2$ over $[Z_s, Z_v, Z_s\!\odot\!Z_v, x_{sv}]$, where $x_{sv}$ is the 1-hop feature vector
   of the event.
@@ -195,5 +208,37 @@ headline-contrast tables) implement identical feature definitions.
   with an $8$-dimensional time encoding. Training: Adam ($\mathrm{lr}{=}0.01$, weight decay $5\cdot10^{-4}$),
   $100$~epochs, binary cross-entropy.
 \end{itemize}
+
+\clearpage
+% NOWE: zbiorcza tabela liczby seedow per eksperyment — liczba seedow zaleznie od tabeli byla
+% rozna (5/20/8/3) i rozsypywala sie po podpisach; jedna tabela ulatwia weryfikowanie istotnosci.
+\section*{S7. Seed counts per experiment}
+
+\begin{table}[h]\centering\small
+\begin{tabular}{llc}
+\toprule
+Experiment & Table / figure & Seeds \\
+\midrule
+Detector hierarchy (case study) & main-text detector table, Fig.~S1 & $5$ \\
+Library TGN (extra row) & main-text detector table & $3$ \\
+Architecture robustness (TGN-lite / TGAT-lite) & Sec.~S1 & $5$ \\
+Stealthy attacker sweep & main-text stealth table, Fig.~S2 & $20$ \\
+Baselines (a) stealth / (b) surgical & main-text baseline table & $20$ \\
+Headline contrasts (Wilcoxon, Cliff's $\delta$) & main-text rigor section & $20$ \\
+Label-noise audit & Tab.~S4 & $20$ \\
+Static-blindness audit (compromised senders) & --- & $20$ \\
+Cascade-model sweep & Tab.~S2 & $8$ \\
+Inductive validation ($19$ / $30$ / $200$ org.) & Tab.~S3, Fig.~S3 & $5$ / $3$ / $3$ \\
+Sensitivity--FPR curve & Fig.~S5 & $10$ \\
+Enron cascade & main-text real-graph table (a), Fig.~S4 & $8$ \\
+SNAP graphs (\texttt{email-Eu-core}, \texttt{CollegeMsg}) & main-text real-graph table (b) & $3$ \\
+\bottomrule
+\end{tabular}
+\caption{Number of random seeds behind every reported aggregate. The stealthy, baseline,
+label-noise, and contrast experiments use $20$~seeds; the detector hierarchy and architecture checks
+$5$; real-graph replications use $8$ (Enron) and $3$ (SNAP), and are reported as directional
+confirmations.}
+\label{stab:seeds}
+\end{table}
 
 \end{document}

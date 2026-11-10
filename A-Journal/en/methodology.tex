@@ -53,14 +53,32 @@ signal is the cascade context, since within the wave's window many of $v$'s neig
 hit just before. Four detectors of increasing temporal awareness are compared: a 1-hop tabular model (a lower
 bound), a hand-crafted cascade context (1-hop plus burst, freshness, and wave density), a static GNN (topology,
 no time), and a temporal GNN with node memory.
+% ZMIANA: dodano jawny opis protokolu per-reżim — wynika z tego, ze interpretacja kolapsu
+% volumetrycznego zalezy od protokolu treningu (gdyby detektor uczyl sie na mieszanie reżimow,
+% spadek AUC mozna by tlumaczyc przesunieciem train-test; tu kazdy K jest samodzielnym zadaniem,
+% wiec kolaps jest wlasciwoscia reżimu).
+In the stealth experiment each regime is a self-contained
+training task: for every stealth level $K$ the scenario (attack plus matched benign) is generated, the split is
+victim-disjoint, and every detector is trained and tested \emph{within that regime only}---no detector ever
+sees a mixture of regimes, so its collapse or survival is a property of the regime, not of a train--test
+regime shift.
 
 \smallskip The two equations below differ in one respect: whether the model may
 look forward in time. The static score summarizes a node by its neighbors in the whole aggregated graph, seeing
 who is connected to whom but not in what order. The temporal score keeps a running memory updated
 bucket by bucket and read one bucket before the event it scores, so its memory can only use the past.
-% TODO (author, review 2 pt 4): the node features X (log in-/out-degree "from the event stream") and the
-% volumetric counts ("computed on the observed stream") must also be computed past-only; state it, or fix
-% the code. Note also that "burst" in the hand-crafted context includes the current bucket b. That past-only
+% ZMIANA: dodano akapit o uniform strict-past rule — wynika z usunięcia wycieku danych: wczesniejsza
+% wersja pakietu liczyla cechy strumieniowe (momentum, liczniki volume, burst) na calym strumieniu,
+% w tym na zdarzeniach przyszlych i testowych; w pracy o leak-aware evaluation byl to wlasny wyciek,
+% wiec kod naprawiono i wszystkie eksperymenty powtorzono.
+This strict-past rule is enforced uniformly across the whole detector panel: every stream-derived
+feature---the volumetric counters, the burst/freshness/propagation windows of the hand-crafted context,
+and the momentum window of the path-based baseline---is computed from buckets $\le b-1$ only, never from
+the current or future buckets, and the GNNs' static node features (in-/out-degree) are computed from the
+\emph{training} split only. Earlier drafts of the package computed some of these features on the full
+event stream; in a paper about leak-aware evaluation that was itself a leak, so all experiments were
+re-run under the uniform strict-past rule and the numbers in this manuscript come from the fixed package.
+That past-only
 reading is what lets the receiving-side wave become a signal, and it is what a time-shuffle destroys.
 
 \smallskip The static GNN builds embeddings from the aggregated graph with a normalized

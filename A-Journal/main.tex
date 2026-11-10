@@ -67,10 +67,13 @@ and the content can be clean. We argue that such an attack is a violation of the
 graph in time. The compromised account writes off-rhythm and, decisively, propagates, so the cascade leaves a
 receiving-side wave signature that no single message reveals.
 
+% ZMIANA: liczby przeliczone po usunieciu wycieku danych w cechach (liczniki volumetryczne byly
+% liczone na calym strumieniu, w tym na zbiorze testowym); kolaps volume to teraz 0.51 przy K=1 —
+% dawniejsze 0.44 "ponizej losowosci" bylo artefaktem tego wycieku, nie wlasciwoscia detektora.
 The main result is that this signature degrades far less than volume under a stealthy attacker. Against an attacker who spreads the
-sends over time, volume-based detection---the class of methods deployed in practice---collapses below the
-random baseline (AUC $0.44$), while a temporal graph network reading the receiving side degrades less and
-stays above chance (AUC $0.60$); the advantage vanishes under a time-shuffle control, and the regime-level
+sends over time, volume-based detection---the class of methods deployed in practice---collapses to near
+chance (AUC $0.51$), while a temporal graph network reading the receiving side degrades less and
+stays above chance (AUC $0.59$); the advantage vanishes under a time-shuffle control, and the regime-level
 contrast replicates in direction on three real communication graphs (Enron, \texttt{email-Eu-core},
 \texttt{CollegeMsg}). We also mark the boundary: a single-recipient attack without propagation is invisible to
 every detector.
