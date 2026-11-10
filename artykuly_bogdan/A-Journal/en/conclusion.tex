@@ -1,0 +1,43 @@
+% ============================================================
+% Conclusions — Paper A (JNCA)
+% ============================================================
+\section{Conclusions}
+\label{sec:conclusion}
+
+Modern phishing detection works in aggregate, yet a residual fraction---spear phishing and BEC---remains the
+most costly and largely evades content filters, and lateral phishing from a compromised account is its hardest
+case, because every static relation the sender exhibits is genuine. The gap is temporal. By modeling the
+organization's communication graph with its rhythm, the violation becomes measurable in the dynamics.
+
+We answer the two research questions in turn.
+\begin{description}[noitemsep,topsep=2pt]
+  \item[RQ1 (signal, T1):] A compromised account consistent with every static relation is detected from the
+  receiving-side wave of its cascade. Unlike volume-based detection, the temporal detector degrades less and
+  stays above chance against a stealthy attacker who spreads the sends over time (Section~\ref{sec:res-stealth}); the
+  advantage vanishes under a time-shuffle control and transfers in direction to three real communication graphs
+  (Section~\ref{sec:res-realgraphs}).
+  \item[RQ2 (limits, T2):] The signal needs fan-out: a single-recipient attack is invisible to every
+  detector (Section~\ref{sec:res-baselines}). The advantage degrades gracefully with scale and shrinks under
+  label noise, and at a realistic base rate the detectors act as triage instruments, with effectiveness defined
+  operationally through low-FPR sensitivity under ablation controls and explicit prevalence arithmetic
+  (Section~\ref{sec:res-rigor}).
+\end{description}
+
+As its contributions, the paper offers a formalization of lateral phishing as a temporal violation of the
+organizational communication graph, with a cascade threat model that includes the stealthy attacker; the
+receiving-side cascade signal as a detection invariant, with a hierarchy of detectors, a time-shuffle control, and
+validation on three real communication graphs; and a leak-aware evaluation methodology with an operational
+definition of detection effectiveness for the targeted tail.
+
+Among the limitations, the maliciousness is synthetic, so we validate the mechanism rather than the detection
+of real intrusions; the cascade parameters are ours; and both scale and the operational threshold remain open.
+Section~\ref{sec:discussion} gives the details.
+
+The results turn lateral phishing into a quantity that can be tracked rather than merely flagged. Under the
+default cascade the receiving-side signal reaches AUC $0.90$; under a stealthy attacker it degrades to
+$0.60$--$0.78$ but stays above chance while volume detection collapses to $0.44$, below the random baseline;
+and the same regime transition appears in direction on Enron, \texttt{email-Eu-core}, and
+\texttt{CollegeMsg}. The defense this points toward
+asks not whether a message looks malicious, but whether the organization's communication graph is behaving
+the way it usually does. Turning that question into an operational filter in the SOC pipeline, at the
+precision real deployment demands, remains an open problem.

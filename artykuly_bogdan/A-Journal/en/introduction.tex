@@ -1,0 +1,75 @@
+% ============================================================
+% Introduction — Paper A (JNCA): lateral phishing as a violation of the
+% organizational communication graph; cascade dynamics + leak-aware evaluation
+% ============================================================
+\section{Introduction}
+\label{sec:intro}
+
+A mailbox is compromised on a Monday morning. Before noon, its owner's contacts in two departments and in a partner firm receive a short, plausible message with a link, each from a colleague they correspond with every week; some of them click, and an hour later their own contacts receive the same message. Nothing in any single message betrays the deception \citep{butavicius2022why,sturman2025security}. This is \emph{lateral} phishing: a campaign sent from a genuinely compromised internal account, which \citet{ho2019detecting} characterized at scale as attacks that reach many recipients inside and around the organization. FBI IC3 reports show that Business Email Compromise (BEC), of which lateral phishing is the inside-out variant, caused adjusted losses of approximately \$2.9 billion in 2023 \citep{fbi2024ic3}. The sender is a known contact, the address is real, and the content is typically clean; the deception lies in \emph{who} sends \emph{when}, and in what happens next.
+
+Phishing detection is often framed as an almost solved problem. Modern email filters, built on content and
+reputation, classify mass campaigns at $\sim$98\% accuracy on typical benchmarks
+\citep{birthriya2025detection,tan2020graph}. However, this figure is misleading. Benchmark accuracy is
+dominated by the mass tail, while the targeted residual---spear phishing and BEC---is rare, drives a large share of financial losses
+\citep{cidon2019high,ho2019detecting} while largely evading content-based methods. This residual is
+the core of the problem, and lateral phishing is its hardest case: a compromised account passes every check
+that looks at identity, reputation, or relationship, because all of them are genuine.
+
+Our thesis is that lateral phishing is a violation of the organization's \emph{communication graph in time}.
+We model the organization as a graph of who corresponds with whom, with a temporal rhythm for every account.
+A compromised account breaks this structure in two ways that no content filter can see. First, it writes
+outside its own rhythm. Second, and decisively, it propagates: the attack spreads as a cascade, and a cascade
+leaves a \emph{receiving-side} signature---within a short window many accounts in one neighborhood are hit,
+each by a sender that was itself hit just before---which no single message reveals. This signature is what
+we detect, and pacing the sends weakens it far less than it weakens the sending-side burst. We are explicit
+about what this excludes: a single, surgical message from a compromised account to one recipient---the
+classic ``CEO to CFO'' transfer request---does not propagate and leaves no wave. It is the blind spot of every
+detector studied here; we measure it as such (Sec.~\ref{sec:res-baselines}), and it remains the domain of
+out-of-band process controls.
+
+From a network-applications standpoint, corporate email is a networked service, and the organization's
+communication graph is an operational monitoring object of the same kind as the flow, alert, and provenance
+graphs used for intrusion and anomaly detection \citep{nayeri2026alert,weng2024rtapt}. The detectors studied
+here are accordingly designed as components of a SOC triage pipeline that scores events on that graph, not as
+a standalone mail filter.
+
+We make the thesis testable through two research questions, each paired with a measurable sub-thesis.
+\begin{description}[leftmargin=1.4em,noitemsep,topsep=2pt]
+  \item[RQ1 (signal).] Can a compromised account, consistent with every static relation, be detected from
+  cascade dynamics, and does the signal survive a stealthy attacker who spreads the sends over time?
+  Sub-thesis~T1: a temporal detector reading the receiving-side wave beats volume-based detection at low FPR
+  and degrades less than volume detection under a stealthy attacker; the advantage vanishes under a
+  time-shuffle control and transfers in direction to real topologies.
+  \item[RQ2 (limits).] What are the operational limits of the signal? Sub-thesis~T2: the signal needs
+  fan-out (a single-recipient attack is invisible), degrades gracefully under label noise and scale, and at
+  a realistic base rate the detectors serve as a triage instrument rather than an autonomous defense.
+\end{description}
+\noindent The learning models used here---a temporal graph network with node memory and gradient
+boosting---are standard tools; the contribution is the framing of lateral phishing as a measurable violation of
+the communication graph and the evidence that the receiving-side signal depends on temporal order, transfers in direction to real
+graphs, and degrades less than volume detection under stealth. Graph-based detectors are easy to inflate: real-world anchors leak rhythm, degree, or community
+alignment with labels, and synthetic generators can favor a model class. Following \citet{arp2022dos} and the
+TESSERACT protocol \citep{pendlebury2019tesseract}, every result below is produced under a leak-aware protocol
+with causal controls and explicit base-rate accounting, which also yields an operational definition of what it
+means for a detector of this class to work.
+
+Our contributions are as follows.
+\begin{enumerate}[noitemsep,topsep=2pt]
+  \item A formalization of lateral phishing as a temporal violation of the organizational communication
+  graph, with a cascade threat model that covers both the naive blast and the stealthy, time-spread attacker
+  (Section~\ref{sec:model}).
+  \item The receiving-side cascade signal as a detection invariant: a hierarchy of detectors of increasing
+  temporal awareness, a causal time-shuffle control, and the headline result that volume-based detection
+  collapses below the random baseline against a stealthy attacker while the receiving-side signal degrades
+  less and stays above chance (RQ1; T1).
+  \item Replication of the mechanism on three real communication graphs (Enron, \texttt{email-Eu-core},
+  \texttt{CollegeMsg}), with the regime-level contrast reproduced in direction on each graph (RQ1; T1).
+  \item A leak-aware evaluation methodology and an operational definition of detection effectiveness for the
+  targeted tail, with the limits stated explicitly: blind spot, label noise, scale, and base rate (RQ2; T2).
+\end{enumerate}
+
+The rest of the paper is organized as follows. Related work (Sec.~\ref{sec:related}) precedes the model
+(Sec.~\ref{sec:model}), methodology (Sec.~\ref{sec:method}), and the case study with results
+(Sec.~\ref{sec:results}); the discussion (Sec.~\ref{sec:discussion}) follows. The complementary mode of
+targeted email---external impersonation of a role or authority, which requires knowledge beyond the
+communication graph---is out of scope here and is treated in a separate study.

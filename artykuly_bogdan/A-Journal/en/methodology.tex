@@ -1,0 +1,168 @@
+% ============================================================
+% Methodology — Paper A (JNCA): verification procedure for the cascade invariant.
+% Procedure, variables, metrics, controls. NO concrete instantiation
+% values (those live in the Case Study, Sec.~\ref{sec:results}).
+% ============================================================
+\section{Methodology}
+\label{sec:method}
+
+The procedure turns the cascade invariant into detectors, guards against inflated results, and checks the
+metrics against the definition of effectiveness (Sec.~\ref{sec:effectiveness}). Concrete values---population,
+time buckets, cascade parameters, hyperparameters---are stated once, in the Case Study (Sec.~\ref{sec:results}).
+
+\subsection{Overview of the verification procedure}
+\label{sec:m-overview}
+The procedure has four steps that mirror the model. First, instantiate the communication graph $G$
+(Def.~\ref{def:cg}) on a population, deriving the contacts $E$ and the temporal rhythm $\tau$. Then build
+detectors of increasing temporal awareness, as standard learning instruments over graph-position features, and
+two strong practical baselines that read the sending side. Evaluation follows under the leak-aware protocol
+below, so that any advantage due to leakage or capacity is destroyed by a control; the last step checks
+transfer to real topologies.
+
+\subsection{Leak-aware evaluation protocol}
+\label{sec:eval}
+Graph detectors are easy to inflate, and the protocol below uses four safeguards against that.
+
+A matched design makes legitimate traffic and attack edges share the same
+distribution of endpoints and degrees, meaning they differ only by the temporal pattern and the
+degree/identity confounder is removed \citep{arp2022dos}. A time-shuffle control permutes the temporal order of
+events, which removes the advantage if it comes from dynamics and leaves it intact if it is an artifact of
+topology or identity \citep{pendlebury2019tesseract}; an inductive split by organization checks that nothing is memorized about
+the accounts seen in training, and an audit of noisy training labels checks that the learned detector does not
+depend on clean labels. Operational metrics report sensitivity at a low FPR, with explicit base-rate
+arithmetic, rather than relying on headline AUC alone. A \emph{predictivity probe} then asks whether what was established on one
+topology carries over to another (real Enron, SNAP graphs). The probe checks two properties: that the
+\emph{qualitative hierarchy} of detectors---which class wins, and in which attack regime it breaks down---is
+reproduced on each real graph, and that the headline contrast (receiving-side signal vs.\ volume) keeps its
+direction there; with the few seeds available per real graph this is a directional check, not a
+significance test. We deliberately do not reduce the probe to a single rank-correlation
+coefficient: over a handful of detectors such a coefficient is underpowered, and the transferable claim is the
+regime-level contrast, not a full ranking. Together these give the working definition of effectiveness of
+Sec.~\ref{sec:effectiveness}: a method works when its advantage meets the standard defined there.
+
+\subsection{Detectors and causal controls}
+\label{sec:m-detectors}
+The design principle is uniform: features encode graph position and timing, never identity. This makes every detector
+inductive and applicable to accounts unseen in training.
+
+\smallskip The invariant operates on the contacts graph
+$G=(V,E)$ with time divided into $T$ buckets. An attack is a cascade where a patient-zero $s_0$ sends malicious mail
+to contacts; each recipient becomes a carrier with probability $p_\mathrm{inf}$ and propagates to depth $H$
+(Fig.~\ref{fig:cascade}). A single event $u\!\to\!v$ is locally indistinguishable from legitimate mail; the
+signal is the cascade context, since within the wave's window many of $v$'s neighbors receive mail and $u$ was
+hit just before. Four detectors of increasing temporal awareness are compared: a 1-hop tabular model (a lower
+bound), a hand-crafted cascade context (1-hop plus burst, freshness, and wave density), a static GNN (topology,
+no time), and a temporal GNN with node memory.
+
+\smallskip The two equations below differ in one respect: whether the model may
+look forward in time. The static score summarizes a node by its neighbors in the whole aggregated graph, seeing
+who is connected to whom but not in what order. The temporal score keeps a running memory updated
+bucket by bucket and read one bucket before the event it scores, so its memory can only use the past.
+% TODO (author, review 2 pt 4): the node features X (log in-/out-degree "from the event stream") and the
+% volumetric counts ("computed on the observed stream") must also be computed past-only; state it, or fix
+% the code. Note also that "burst" in the hand-crafted context includes the current bucket b. That past-only
+reading is what lets the receiving-side wave become a signal, and it is what a time-shuffle destroys.
+
+\smallskip The static GNN builds embeddings from the aggregated graph with a normalized
+adjacency $\hat{A}$ and features $X$,
+\begin{equation}
+Z = \hat{A}\,\sigma\!\big(\hat{A}\,X\,W_1\big)\,W_2,
+\qquad
+\mathrm{score}_{\mathrm{stat}}(s,v) = g\!\big([\,Z_s,\,Z_v,\,Z_s\!\odot\!Z_v,\,x_{sv}\,]\big),
+\label{eq:static}
+\end{equation}
+whereas the temporal GNN maintains a memory $m_v^{(b)}$ and scores an event of bucket $b$ using the state from
+before its update, which preserves causality and avoids leakage,
+\begin{align}
+\mathrm{score}_{\mathrm{temp}}(s,v,b) &= g\!\big([\,m_s^{(b-1)},\,m_v^{(b-1)},\,m_s^{(b-1)}\!\odot\!m_v^{(b-1)},\,x_{sv}\,]\big),
+\label{eq:temp-score}\\
+m_v^{(b)} &= \mathrm{GRU}\!\Big(\tfrac{1}{d_v^{(b)}}\!\!\sum_{u:\,(u\to v)\in b}\!\!\sigma\!\big(W_m\,m_u^{(b-1)}\big),\; m_v^{(b-1)}\Big),
+\label{eq:temp-mem}
+\end{align}
+where $d_v^{(b)}$ is the in-degree of node $v$ within bucket $b$ (a normalizer for the mean-pooled message).
+
+The shuffle control is a temporal ablation. Since $\mathrm{score}_{\mathrm{stat}}$ is permutation-invariant in
+time while $\mathrm{score}_{\mathrm{temp}}$ is not, the drop in $\mathrm{AUC}_{\mathrm{temp}}$ after time
+shuffling indicates how much the model relies on temporal order. The ablation is not perfectly selective:
+shuffling also breaks the co-occurrence of events within a bucket, so the drop is an upper bound on the
+contribution of order alone (consistent with the shuffled temporal model falling slightly below the static
+GNN, Tab.~\ref{tab:detectors}). We use ``causal'' in this ablation sense throughout, not in the sense of
+causal identification.
+
+\smallskip Beyond the GNN we implement two strong practical methods, both of which read the sending side.
+\begin{itemize}[noitemsep,topsep=2pt]
+  \item A volumetric baseline inspired by COMPA \citep{egele2013compa,stringhini2015thataint} scores an event
+  by the sender's deviation from its own volume profile---how unusual the recipient, the time bucket, and the
+  sender's overall activity are (three per-event features, Supplementary Sec.~S6)---with the same
+  gradient-boosting learner as the other tabular detectors,
+  \item and a path-based baseline that transfers the causal-path idea of Hopper \citep{ho2021hopper}, a
+  detector of lateral movement in login graphs, to the email graph: it looks for a causal precursor,
+  momentum, and a rare target.
+\end{itemize}
+We implement their structural-temporal core rather than the full systems, which is why we label them ``volumetric'' and
+``path-based''; the exact feature set of every detector is listed in Supplementary Sec.~S6, together with what
+the full systems add on top. Hyperparameters of all detectors are fixed uniformly, without intensive tuning,
+so that no detector enjoys a tuning advantage; the concrete settings are given in Supplementary Tab.~S1.
+
+\begin{figure}[pos=tbp]\centering
+\resizebox{0.92\textwidth}{!}{%
+\begin{tikzpicture}[>=Latex, every node/.style={font=\small},
+  acc/.style={circle, draw, minimum size=7mm, inner sep=1pt},
+  inf/.style={acc, fill=red!18, draw=red!70!black},
+  ben/.style={acc, fill=blue!8},
+  mal/.style={-{Latex[length=2mm]}, red!70!black, thick}]
+  \node[inf] (p) at (0,0) {$s_0$};
+  \node[ben] (a) at (2.4,0.9) {$A$};
+  \node[ben] (b) at (2.4,-0.9) {$B$};
+  \draw[mal] (p)--(a); \draw[mal] (p)--(b);
+  \node[ben] (c) at (4.8,1.6) {$C$};
+  \node[ben] (d) at (4.8,0.4) {$D$};
+  \node[ben] (e) at (4.8,-0.9) {$E$};
+  \draw[mal] (a)--(c); \draw[mal] (a)--(d); \draw[mal] (b)--(e);
+  \node[ben] (f) at (7.0,1.0) {$F$};
+  \draw[mal] (c)--(f);
+  \node[gray] at (0,-2.1) {bucket $t_0$};
+  \node[gray] at (3.6,-2.1) {$t_1$};
+  \node[gray] at (5.9,-2.1) {$t_2$};
+  \draw[gray, dashed] (1.2,-1.8) -- (1.2,2.1);
+  \draw[gray, dashed] (3.6,-1.8) -- (3.6,2.1);
+  \draw[gray, dashed] (5.9,-1.8) -- (5.9,2.1);
+  \node[red!70!black, align=center, font=\scriptsize] at (3.6,2.7)
+    {edge $A\!\to\!C$ \emph{locally} = ordinary mail from a known contact;\\
+     signal = \emph{synchronized burst} of the wave and sender \emph{freshness}};
+\end{tikzpicture}}
+\caption[Lateral phishing as a temporal cascade]{Lateral phishing as a temporal cascade: a carrier ($s_0$)
+infects contacts, and those in turn infect their own, so the wave propagates across the graph. Detection requires \emph{multi-hop,
+temporal} propagation context.}
+\label{fig:cascade}
+\end{figure}
+
+\subsection{Event model and data split}
+\label{sec:m-events}
+An event is a pair (sender $s$, victim $v$) with a bucket $b$, labeled legitimate or attack, with two-sided noise so
+that the classes are not perfectly separable. Legitimate events are messages between known contacts in rhythm,
+with a fraction arriving off-rhythm (an irreducible source of false positives). Attacks are the events of a
+cascade seeded at a compromised account, a fraction of which mimic the sender's rhythm. We use two split
+regimes, victim-wise (disjoint victim sets) and organization-wise (test organizations disjoint from training
+ones, an inductive validation). Headline claims are hardened over many seeds; validations on real graphs use
+fewer seeds, since variance is lower on a fixed structure, with a Wilcoxon test where significance matters.
+Seed counts for each experiment are given in the respective table or figure caption.
+
+\subsection{Metrics, base rate, and threats to validity}
+\label{sec:m-metrics}
+The headline metric is sensitivity at a fixed low FPR, the operational working point,
+$\text{sensitivity}@\mathrm{FPR} = \max\{\mathrm{TPR}(\theta):\mathrm{FPR}(\theta)\le\alpha\}$ (where $\alpha=0.01$ for our primary analysis); AUC is reported
+alongside it. Real systems operate at a far stricter FPR ($<\!4$~FP/million, \citep{ho2019detecting}), so the FPR
+reported here (an FPR of $10^{-2}$ against $4\cdot10^{-6}$) is a liberal operating point rather than a
+deployment threshold; at a realistic prevalence, precision
+follows from Bayes' theorem, which we make explicit in the Case Study (Sec.~\ref{sec:res-rigor}). To isolate the
+signal we use the temporal-order shuffle as the causal control: if the signal is truly dynamic, the control
+must destroy the advantage.
+
+\smallskip\noindent\textbf{Threats to validity.} The internal threats are label leakage, which we counter by
+separating features from the hidden infection state and letting the shuffle control isolate the mechanism, and
+dependence on the cascade parameters, which we counter by sweeping the infection probability and depth
+(Supplementary Tab.~S2). The external threat is that the maliciousness is synthetic, so we validate the mechanism on
+real Enron and two SNAP graphs under controlled injections; the synthetic data lets us control the cascade at
+the cost of absolute effects. The construct threat is addressed by preferring sensitivity at low FPR to
+headline AUC, in line with \citep{arp2022dos,pendlebury2019tesseract}.

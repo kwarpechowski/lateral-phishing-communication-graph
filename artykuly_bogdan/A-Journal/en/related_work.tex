@@ -1,0 +1,95 @@
+% ============================================================
+% Related work — Paper A (JNCA): lateral phishing, graph/temporal learning, evaluation rigor
+% ============================================================
+\section{Related Work}
+\label{sec:related}
+
+The review follows the chain of the thesis: lateral phishing and why content is insufficient
+(\ref{sec:rw-spear}), the graph and temporal-learning apparatus we borrow (\ref{sec:rw-graph}), and
+evaluation rigor (\ref{sec:rw-eval}), closing with the gaps (\ref{sec:rw-gap}).
+
+\subsection{Lateral phishing and BEC: why content is insufficient}
+\label{sec:rw-spear}
+Targeted attacks---spear phishing, whaling, and Business Email Compromise---differ from mass phishing in their personalization and context.
+A recent survey in \emph{Computers \& Security} systematizes the techniques and gaps
+of the area \citep{birthriya2025detection}. Content-side classifiers, such as hybrid ensembles over email
+content and metadata \citep{bountakas2022helphed}, remain highly effective for the mass tail, but they
+inherit the content signal's blindness to clean-content, context-borne deception, and language models now
+make personalization cheap \citep{bethany2024evaluating}.
+\citet{ho2019detecting} characterized lateral phishing from
+compromised accounts across $113$~million emails and fixed an operational low-FPR threshold of $<\!4$~FP/million.
+\citet{cidon2019high} targeted payload-free BEC in production, and BEC surveys trace its evolution and cost
+\citep{atlam2023business}. What the effective methods share is a departure from content: per-sender behavioral
+profiles \citep{gascon2018reading,stringhini2015thataint}, header and stylometry models
+\citep{duman2016emailprofiler}, as well as analysis of relay infrastructure \citep{luo2024characterizing} all catch mail
+from compromised legitimate accounts whose content reads as normal. Two families of behavioral defense
+transfer to a compromised mail account: \emph{per-sender deviation} from the account's own profile, as in COMPA
+for social-network accounts \citep{egele2013compa} and in behavioral models of email senders
+\citep{stringhini2015thataint}, of which a sudden spike in volume is the simplest form; and \emph{causal-path}
+analysis, as in Hopper for lateral movement in enterprise login graphs \citep{ho2021hopper}, which flags a hop to
+a rare target without a precursor that explains it. Transferred to email headers, both read the
+\emph{sending} side. We show that a stealthy attacker who paces the sends largely removes that signal, and that the receiving side of the
+cascade is what remains.
+
+\subsection{Graph and temporal learning for communication graphs}
+\label{sec:rw-graph}
+The cascade invariant rests on a mature apparatus of graph learning, organized here into the threads that
+indicate what we borrow and what is missing for the communication graph of an organization.
+
+On the foundations of inductive learning, modern graph networks learn node representations through
+neighborhood aggregation: the \emph{inductive} GraphSAGE \citep{hamilton2017inductive} (generalization to nodes
+unseen during training) and the attention-based GAT \citep{velickovic2018graph} establish the paradigm; our \emph{structural} (rather than identity-based) node features are a deliberately
+lightweight variant of it, to preserve inductive generalization \citep{xu2020inductive,hao2020inductive}. Link-prediction and scalable-embedding tasks
+\citep{zhang2018link,zhang2018scalable} provide heads for classifying $(s\!\to\!v)$ events.
+
+The invariant requires a model of time: the memory-based TGN
+\citep{rossi2020temporal}, the attention-based DySAT \citep{sankar2020dysat}, EvolveGCN \citep{pareja2020evolvegcn},
+ROLAND \citep{you2022roland}, and streaming and spatio-temporal GNNs
+\citep{yu2023streaming,wang2022tsgn,nayebi2025spatiotemporal,behrouz2022anomaly} capture graph evolution.
+Temporal graph networks are by now standard instruments for operational network security, from
+security-alert prediction on real networks \citep{nayeri2026alert} to real-time anomaly detection on
+large-scale provenance graphs \citep{weng2024rtapt}. Our
+TGN-lite is a minimal realization of this paradigm by design, allowing the time-shuffle control to isolate the
+\emph{mechanism} rather than the capacity of the architecture.
+
+The receiving-side wave has close relatives in the study of diffusion on networks. Outbreak detection asks
+where to place sensors so that a spreading process is caught early \citep{leskovec2007outbreak}; source
+localization infers the origin of a diffusion from which nodes were reached and when \citep{pinto2012locating,shah2011rumors};
+cascade prediction and rumor detection learn from the shape and timing of a spread whether and how far it
+will go \citep{cheng2014cascades,vosoughi2018spread,bian2020rumor}. These works model a spreading process on
+a known graph, as we do, but they classify the \emph{cascade} or locate its \emph{source}; we classify a
+single \emph{event} by the state of its recipient's neighborhood, under a matched design in which every event
+is locally legitimate, and we ask specifically whether that signal survives an attacker who paces the
+spread.
+
+The closest apparatus comes from fraud detection robust to
+\emph{camouflage} and \emph{class imbalance}: CARE-GNN \citep{dou2020enhancing}, GraphConsis \citep{liu2020alleviating},
+PC-GNN \citep{liu2021pick}, H2-FDetector \citep{shi2022h2fdetector}, GraphSMOTE \citep{zhao2021graphsmote},
+distribution-shift correction \citep{gao2023alleviating,tang2022rethinking}, and the detection of money laundering
+and transactional fraud \citep{weber2019antimoney,li2022ttagn,rayana2015collective}. The broader graph-anomaly
+literature \citep{ding2019deep,park2020unsupervised,liu2021anomaly,ma2021comprehensive,zhang2021mcgc,li2025umgad}, as well as predicting user dynamics and roles
+\citep{kumar2019predicting,wu2020who,li2022pdgnn}, provides techniques, yet operates on graphs of
+\emph{transactions/reviews} and has yet to address the \emph{propagation dynamics of a compromise} in a
+communication graph. Graph-based phishing detection has so far
+targeted mainly \emph{web pages} and \emph{transactions}: graph-theoretic and visual approaches for web pages
+\citep{tan2020graph,lin2021phishpedia,abdelnabi2020visualphishnet}, attention over the email graph
+\citep{safran2025phishinggnn}, edge-feature GraphSAGE \citep{lo2021egraphsage}, and propagation over URL--IP graphs
+\citep{guo2025efficient,li2022pdgnn}. To our knowledge, the receiving-side dynamics of a lateral cascade have
+not been operationalized as a detection signal for corporate email.
+
+\subsection{Evaluation rigor: pitfalls and leak control}
+\label{sec:rw-eval}
+A central caution is that ML detectors in security are easily inflated by leaks, unfair splitting, and headline
+AUC in place of operational metrics \citep{arp2022dos}; time-aware evaluation (TESSERACT) shows how temporal
+leakage distorts results \citep{pendlebury2019tesseract}. These works motivate our leak-aware protocol and
+predictivity probe, which ask not how high the AUC is but whether the result transfers beyond a single corpus and
+whether it is an artifact of the generator. We use the same standard to define a method's effectiveness.
+
+\subsection{Gaps and positioning of the work}
+\label{sec:rw-gap}
+Several gaps emerge from the review. Detection of lateral phishing reads the sending side (volume, paths,
+sender profiles), which a patient attacker controls. The propagation dynamics of a compromise on the
+organization's communication graph have not been used as a detection signal, and evaluations rarely control for
+leaks or test transfer across topologies, so effectiveness tends to be ill-defined. The present work addresses
+these gaps: a temporal formalization of the communication graph, the cascade invariant with its causal control,
+replication on three real graphs, and a leak-aware methodology that defines effectiveness.
