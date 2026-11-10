@@ -68,9 +68,9 @@ graph in time. The compromised account writes off-rhythm and, decisively, propag
 receiving-side wave signature that no single message reveals.
 
 The main result is that this signature degrades far less than volume under a stealthy attacker. Against an attacker who spreads the
-sends over time, volume-based detection---the class of methods deployed in practice---collapses below the
-random baseline (AUC $0.44$), while a temporal graph network reading the receiving side degrades less and
-stays above chance (AUC $0.60$); the advantage vanishes under a time-shuffle control, and the regime-level
+sends over time, volume-based detection---the class of methods deployed in practice---collapses to near
+chance (AUC $0.51$), while a temporal graph network reading the receiving side degrades less and
+stays above chance (AUC $0.59$); the advantage vanishes under a time-shuffle control, and the regime-level
 contrast replicates in direction on three real communication graphs (Enron, \texttt{email-Eu-core},
 \texttt{CollegeMsg}). We also mark the boundary: a single-recipient attack without propagation is invisible to
 every detector.
