@@ -143,3 +143,108 @@ Poprawki dzielą się na dwa rodzaje:
 
 ## Lista otwartych TODO
 `grep -rn "TODO (author" A-Journal B-Conference --include=*.tex`
+
+---
+---
+
+# Runda 3 (2026-11-09)
+
+**Podstawa:** otwarte TODO z rund 1–2. Kod eksperymentów odzyskano z repozytorium
+doktorat (`projects/graph-phishing-detection/release/code` → `code/`,
+`projects/graph-phishing-softwarex/research_local` → `research_local/`).
+
+## Fix kodu (leak-aware, recenzja r1 pkt 1 / r2 A pkt 4 — KRYTYCZNE)
+- **momentum** (`cascadebench/features.py`): okno zmienione z look-ahead `[b, b+W]`
+  na ściśle przeszłe `[b−W, b−1]`. To był realny wyciek przyszłości, nie literówka.
+- **liczniki COMPA/volume** (features.py, exp_cascade_sweep.py): liczone tylko z
+  kubełków `< b` (wcześniej: cały strumień, w tym zbiór testowy i przyszłość).
+- **cechy węzłów X obu GNN-ów**: stopnie in/out liczone wyłącznie ze splitu
+  treningowego (train mask przekazywany przez `detect.py` i wszystkie call-site'y).
+- **burst/propagation** (kontekst ręczny): okna `[b−W, b−1]` (wcześniej obejmowały
+  kubełek b — asymetria vs TGN czytający pamięć z ≤ b−1).
+- **Wszystkie eksperymenty artykułu A powtórzone po fixie** (momentum zmienia wyniki
+  baselinów path-based; liczniki zmieniają volume; X zmienia GNN-y).
+- Przeniesiono też zależności: `data/realgraphs/` (SNAP, pobrane),
+  ścieżki maildira Enron → `projects/personalized-phishing-defense/...`.
+
+## Odtworzone brakujące generatory
+- `exp_cb_stealth.py`: **cb_hopper_stealth** (Tab. 3a; K=1–5 + blast,
+  CascadeStrategy(fanout=K, spread=8, mimicry=0.3), off_hours=0.15, 20 seedów),
+  **cb_labelnoise** (S4; reżim skryty K=3, szum etykiet w train, 20 seedów),
+  **cb_surgical_fanout** (blok (b); p_inf=0, fan-out 1/2/3/5, 20 seedów).
+- `exp_osint_shuffle.py`: nowa kontrola tasująca TYLKO warstwy OSINT (recenzja B r1 pkt 3 / r2 pkt 5).
+- `exp_cascade_stealth.py`: +20 seedów (deklaracja w tekście), + detektor
+  rhythm-only, + udziały off-rhythm per klasa (`exp_cascade_stealth_tc.csv`).
+- `exp_enron_temporal_split.py`: + czułości @FPR 2% i 5% (recenzja r2 B pkt 3).
+
+## Kluczowe nowe wyniki (wszystkie tabele A zaktualizowane)
+- **Volume < 0.5 zniknęło**: K=1 vol 0.51 (było 0.44) — anomala była artefaktem
+  liczników pełnostrumieniowych; temporal 0.59.
+- **Rhythm-only = 0.51** w harnessie A (off-rhythm: ataki 78% ≈ benign 79%) —
+  recenzja r2 A pkt 3 rozstrzygnięta: w tym harnessie rytm nie niesie sygnału;
+  15%/25% to parametry generatora artykułu B.
+- **Kontrast temp vs ręczny: +0.010, p=0.62 (nieistotne)**; temp vs COMPA +0.105
+  (p<0.001, δ=0.89); ręczny vs COMPA +0.095 (p<0.001, δ=0.99). Sekcja Rigor
+  przepisana uczciwie.
+- **Volume już nie wygrywa blast** nigdzie (ściśle przeszłe liczniki pozbawiają go
+  sygnału z bieżącego kubełka): narracja SNAP przepisana na „przewaga temporalna
+  największa pod stealth"; odnotowano nierozwiązaną obserwację blast 0.67 < stealthy 0.81
+  na rzadkich topologiach (hipoteza: interakcja strict-past z single-bucket blast).
+- TGN-pyg do Tab. 1: 0.79 / 0.109 (3 seedy). Enron: 0.83/0.062. S2/S3/S4 przeliczone.
+- Base-rate: r=0.12 (było 0.14), ~830 FP/atak przy 1:10⁴.
+- **B: OSINT-only shuffle**: full 0.86 / osint_shuf 0.82 / bez-OSINT 0.83 / all-shuf
+  0.50 (20 seedów) — wkład OSINT ponad kontakty+rytm ≈ 0.03 AUC (uczciwie opisane).
+- **B: rhythm-leak @FPR 1/2/5%**: leaky 0.73/0.73/0.73; split 0.00/0.00/0.00 —
+  >5% benign off-rhythm w oknie ewaluacji, żaden próg nie spełnia FPR≤5%.
+
+## Zamknięte TODO w .tex
+Wszystkie z wyjątkiem **DOI Zenodo** (decyzja autorów). Dodatkowo opisano:
+konstrukcję grafu Enron (1990 vs 818), różnicę dwóch harnessów, tc=0 dla cold
+sendera (+ brak cold senderów na Enronie), wstrzykiwanie ataków na Enronie
+(+ ograniczenie: warstwy strukturalne bez podziału czasowego, ataki wyłączone
+z estymacji rytmu), domenę 538 vs 518 (prywatne adresy c5), trzy konfiguracje
+contacts-only (0.57/0.70/0.98), ranking contacts vs static (sweep „contacts"
+= contact+rytm), fabrykację (~3–4 fałszywe krawędzie/ofiarę przy 50%),
+C(s,v)/w_L zdegradowane do intuicji.
+
+## Figury i kompilacja
+- `analysis/plot_cascade.py` — figury A zregenerowane z nowych CSV i skopiowane do
+  `A-Journal/figures/`.
+- Kompilacja: **tectonic w Docker** (`fabianhauser/tectonic`) — A-Journal main.pdf
+  (20 str.) + supplementary.pdf (6 str.), B-Conference main.pdf (8 str.).
+  Zero nierozwiązanych referencji (??).
+
+---
+---
+
+# Runda 4 (2026-11-10): recenzja modelem Gemma 4 31B + mini-fixy
+
+**Podstawa:** `review3_A-Journal.md`, `review3_B-Conference.md` — niezależna runda
+recenzencka modelem **gemma-4-31b** (bezpośrednie API NASK, omijając CLI; skrypt
+`code/gemma_review.py`). Werdykty Gemmy: A — *minor revision*, B — *major revision*.
+
+**Triage uwag (z kontekstem rund 1–3, którego Gemma nie miała):**
+- Prawdziwe (naniesione): B — niejasność „multiplex keeps 0.51" (sensitivity czy AUC?);
+  B — dwa sweepy fabrykacji (0.87→0.74 z Tab. inv1 vs 0.86→0.82 z mixu ablacji) bez
+  proveniencji; A — brak zdania łączącego przewagę temporal-GNN (Tab. 1, default
+  cascade) z nieistotnością temporal-vs-ręczny w reżimie skrytym (p=0.62); A — brak
+  zbiorczej tabeli seedów.
+- False positives (odrzucone, już obsłużone w rundzie 3): B „zakres 0.57–0.98"
+  (tekst już rozróżnia konfiguracje), B „zaokrąglenie 0.83" (poprawne), A „leading
+  from K=3" (zgodne z danymi), A „beats volume przy K=1" (tekst już mówi odwrotnie).
+
+**Naniesione poprawki:**
+1. **B (4 miejsca):** „the full multiplex keeps **a sensitivity of** 0.51
+   **(AUC 0.84)**" — abstrakt, wkład 3, sekcja Enron, wnioski + zacytowane zdanie
+   w akapicie o ograniczeniach.
+2. **B (threat model):** proveniencja sweepu fabrykacji — „the sweep of the Tab. I
+   event model; under the harsher ablation mix of Sec. V-B the same fabrication level
+   costs less, 0.86→0.82".
+3. **A (detektory):** zdanie „This lead is specific to the default cascade: under the
+   stealthy regime of the second harness the temporal GNN and the hand-crafted
+   context are statistically indistinguishable (Sec. rigor)".
+4. **A (suplement):** nowa sekcja **S7. Seed counts per experiment** — tabela
+   eksperyment → tabela/figura → liczba seedów (20/5/3/8).
+
+**Kompilacja po fixach:** A main 20 str. + supplementary **7 str.** + B 8 str.;
+zero `??`.

@@ -1,0 +1,282 @@
+{
+ "A: Abstract + highlights": {
+  "choice": "ok",
+  "conf": 0.376,
+  "probs": {
+   "poprawa": 0.07,
+   "redakcja": 0.257,
+   "korekta": 0.297,
+   "ok": 0.376
+  },
+  "liczby_spojne": 0.793,
+  "jezyk_poprawny": 0.723,
+  "chars": 2203,
+  "sec": 1
+ },
+ "A: Introduction": {
+  "choice": "ok",
+  "conf": 0.494,
+  "probs": {
+   "poprawa": 0.079,
+   "redakcja": 0.181,
+   "korekta": 0.245,
+   "ok": 0.494
+  },
+  "liczby_spojne": 0.615,
+  "jezyk_poprawny": 0.748,
+  "chars": 7032,
+  "sec": 1
+ },
+ "A: Related Work": {
+  "choice": "ok",
+  "conf": 0.399,
+  "probs": {
+   "poprawa": 0.052,
+   "redakcja": 0.218,
+   "korekta": 0.33,
+   "ok": 0.399
+  },
+  "liczby_spojne": 0.566,
+  "jezyk_poprawny": 0.751,
+  "chars": 7974,
+  "sec": 1
+ },
+ "A: Model": {
+  "choice": "ok",
+  "conf": 0.522,
+  "probs": {
+   "poprawa": 0.033,
+   "redakcja": 0.142,
+   "korekta": 0.304,
+   "ok": 0.522
+  },
+  "liczby_spojne": 0.386,
+  "jezyk_poprawny": 0.746,
+  "chars": 8759,
+  "sec": 1
+ },
+ "A: Methodology": {
+  "choice": "ok",
+  "conf": 0.556,
+  "probs": {
+   "poprawa": 0.051,
+   "redakcja": 0.142,
+   "korekta": 0.251,
+   "ok": 0.556
+  },
+  "liczby_spojne": 0.421,
+  "jezyk_poprawny": 0.759,
+  "chars": 12679,
+  "sec": 1
+ },
+ "A: Results": {
+  "choice": "ok",
+  "conf": 0.487,
+  "probs": {
+   "poprawa": 0.086,
+   "redakcja": 0.148,
+   "korekta": 0.279,
+   "ok": 0.487
+  },
+  "liczby_spojne": 0.784,
+  "jezyk_poprawny": 0.759,
+  "chars": 29394,
+  "sec": 1
+ },
+ "A: Discussion": {
+  "choice": "korekta",
+  "conf": 0.372,
+  "probs": {
+   "poprawa": 0.066,
+   "redakcja": 0.224,
+   "korekta": 0.372,
+   "ok": 0.338
+  },
+  "liczby_spojne": 0.699,
+  "jezyk_poprawny": 0.753,
+  "chars": 5604,
+  "sec": 1
+ },
+ "A: Conclusion": {
+  "choice": "ok",
+  "conf": 0.435,
+  "probs": {
+   "poprawa": 0.046,
+   "redakcja": 0.187,
+   "korekta": 0.332,
+   "ok": 0.435
+  },
+  "liczby_spojne": 0.743,
+  "jezyk_poprawny": 0.737,
+  "chars": 3163,
+  "sec": 1
+ },
+ "A: Supplementary (S1–S7)": {
+  "choice": "ok",
+  "conf": 0.506,
+  "probs": {
+   "poprawa": 0.135,
+   "redakcja": 0.112,
+   "korekta": 0.247,
+   "ok": 0.506
+  },
+  "liczby_spojne": 0.734,
+  "jezyk_poprawny": 0.724,
+  "chars": 12291,
+  "sec": 1
+ },
+ "B: Abstract": {
+  "choice": "ok",
+  "conf": 0.299,
+  "probs": {
+   "poprawa": 0.285,
+   "redakcja": 0.198,
+   "korekta": 0.218,
+   "ok": 0.299
+  },
+  "liczby_spojne": 0.642,
+  "jezyk_poprawny": 0.734,
+  "chars": 1969,
+  "sec": 1
+ },
+ "B: Introduction": {
+  "choice": "ok",
+  "conf": 0.342,
+  "probs": {
+   "poprawa": 0.226,
+   "redakcja": 0.187,
+   "korekta": 0.245,
+   "ok": 0.342
+  },
+  "liczby_spojne": 0.615,
+  "jezyk_poprawny": 0.727,
+  "chars": 3582,
+  "sec": 1
+ },
+ "B: Related Work": {
+  "choice": "redakcja",
+  "conf": 0.31,
+  "probs": {
+   "poprawa": 0.107,
+   "redakcja": 0.31,
+   "korekta": 0.287,
+   "ok": 0.296
+  },
+  "liczby_spojne": 0.533,
+  "jezyk_poprawny": 0.685,
+  "chars": 3716,
+  "sec": 1
+ },
+ "B: Model": {
+  "choice": "ok",
+  "conf": 0.343,
+  "probs": {
+   "poprawa": 0.086,
+   "redakcja": 0.238,
+   "korekta": 0.332,
+   "ok": 0.343
+  },
+  "liczby_spojne": 0.601,
+  "jezyk_poprawny": 0.707,
+  "chars": 4634,
+  "sec": 3
+ },
+ "B: Results — organization": {
+  "choice": "poprawa",
+  "conf": 0.4,
+  "probs": {
+   "poprawa": 0.4,
+   "redakcja": 0.09,
+   "korekta": 0.233,
+   "ok": 0.278
+  },
+  "liczby_spojne": 0.616,
+  "jezyk_poprawny": 0.737,
+  "chars": 3265,
+  "sec": 1
+ },
+ "B: Results — mechanism": {
+  "choice": "redakcja",
+  "conf": 0.298,
+  "probs": {
+   "poprawa": 0.204,
+   "redakcja": 0.298,
+   "korekta": 0.239,
+   "ok": 0.259
+  },
+  "liczby_spojne": 0.742,
+  "jezyk_poprawny": 0.704,
+  "chars": 7471,
+  "sec": 1
+ },
+ "B: Results — Enron/rhythm-leak": {
+  "choice": "ok",
+  "conf": 0.297,
+  "probs": {
+   "poprawa": 0.209,
+   "redakcja": 0.237,
+   "korekta": 0.257,
+   "ok": 0.297
+  },
+  "liczby_spojne": 0.84,
+  "jezyk_poprawny": 0.712,
+  "chars": 5156,
+  "sec": 1
+ },
+ "B: Results — susceptibility": {
+  "choice": "ok",
+  "conf": 0.295,
+  "probs": {
+   "poprawa": 0.232,
+   "redakcja": 0.177,
+   "korekta": 0.295,
+   "ok": 0.295
+  },
+  "liczby_spojne": 0.804,
+  "jezyk_poprawny": 0.771,
+  "chars": 2737,
+  "sec": 1
+ },
+ "B: Results — graph–content boundary": {
+  "choice": "ok",
+  "conf": 0.429,
+  "probs": {
+   "poprawa": 0.093,
+   "redakcja": 0.124,
+   "korekta": 0.354,
+   "ok": 0.429
+  },
+  "liczby_spojne": 0.895,
+  "jezyk_poprawny": 0.726,
+  "chars": 1354,
+  "sec": 1
+ },
+ "B: Discussion and Limitations": {
+  "choice": "korekta",
+  "conf": 0.289,
+  "probs": {
+   "poprawa": 0.194,
+   "redakcja": 0.254,
+   "korekta": 0.289,
+   "ok": 0.263
+  },
+  "liczby_spojne": 0.619,
+  "jezyk_poprawny": 0.713,
+  "chars": 2490,
+  "sec": 1
+ },
+ "B: Conclusion": {
+  "choice": "poprawa",
+  "conf": 0.307,
+  "probs": {
+   "poprawa": 0.307,
+   "redakcja": 0.224,
+   "korekta": 0.266,
+   "ok": 0.203
+  },
+  "liczby_spojne": 0.508,
+  "jezyk_poprawny": 0.653,
+  "chars": 1223,
+  "sec": 1
+ }
+}
