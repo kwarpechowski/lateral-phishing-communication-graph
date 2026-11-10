@@ -1,0 +1,5 @@
+model,auc,recall_fpr1
+LR_concat,0.8397,0.0491
+LR_consist,0.8602,0.0192
+GB_concat,0.8576,0.0659
+GB_consist,0.8602,0.0341

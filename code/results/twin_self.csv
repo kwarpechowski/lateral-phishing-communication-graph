@@ -1,0 +1,151 @@
+twin_id,name,address,domain,org,role
+twin-0001,Oskar Moreau,oskar.moreau@northwind-capital.com,northwind-capital.com,Northwind Capital Partners,Managing Director
+twin-0002,Felix Vogel,felix.vogel@northwind-capital.com,northwind-capital.com,Northwind Capital Partners,Senior Manager
+twin-0003,Iris Sundqvist,iris.sundqvist@northwind-capital.com,northwind-capital.com,Northwind Capital Partners,Specialist
+twin-0004,Anna Novak,anna.novak@northwind-capital.com,northwind-capital.com,Northwind Capital Partners,Analyst
+twin-0005,Felix Marchetti,felix.marchetti@northwind-capital.com,northwind-capital.com,Northwind Capital Partners,Specialist
+twin-0006,Marek Berger,marek.berger@northwind-capital.com,northwind-capital.com,Northwind Capital Partners,Analyst
+twin-0007,Greta Lindholm,greta.lindholm@northwind-capital.com,northwind-capital.com,Northwind Capital Partners,Specialist
+twin-0008,Oskar Vogel,oskar.vogel@northwind-capital.com,northwind-capital.com,Northwind Capital Partners,Analyst
+twin-0009,Marta Keller,marta.keller@meridian-health.org,meridian-health.org,Meridian Health Group,Managing Director
+twin-0010,Iris Janssen,iris.janssen@meridian-health.org,meridian-health.org,Meridian Health Group,Senior Manager
+twin-0011,Marta Reuter,marta.reuter@meridian-health.org,meridian-health.org,Meridian Health Group,Specialist
+twin-0012,Pawel Lindholm,pawel.lindholm@meridian-health.org,meridian-health.org,Meridian Health Group,Analyst
+twin-0013,Pawel Falk,pawel.falk@meridian-health.org,meridian-health.org,Meridian Health Group,Specialist
+twin-0014,Lena Vogel,lena.vogel@meridian-health.org,meridian-health.org,Meridian Health Group,Analyst
+twin-0015,Pawel Dvorak,pawel.dvorak@meridian-health.org,meridian-health.org,Meridian Health Group,Specialist
+twin-0016,Mira Moreau,mira.moreau@meridian-health.org,meridian-health.org,Meridian Health Group,Analyst
+twin-0017,Mira Berger,mira.berger@cobaltsystems.io,cobaltsystems.io,Cobalt Systems,Managing Director
+twin-0018,Marek Schmidt,marek.schmidt@cobaltsystems.io,cobaltsystems.io,Cobalt Systems,Senior Manager
+twin-0019,Tomas Lindholm,tomas.lindholm@cobaltsystems.io,cobaltsystems.io,Cobalt Systems,Specialist
+twin-0020,Sophie Lindholm,sophie.lindholm@cobaltsystems.io,cobaltsystems.io,Cobalt Systems,Analyst
+twin-0021,Lena Brandt,lena.brandt@cobaltsystems.io,cobaltsystems.io,Cobalt Systems,Specialist
+twin-0022,Bartek Janssen,bartek.janssen@cobaltsystems.io,cobaltsystems.io,Cobalt Systems,Analyst
+twin-0023,Iris Novak,iris.novak@cobaltsystems.io,cobaltsystems.io,Cobalt Systems,Specialist
+twin-0024,Stefan Lindholm,stefan.lindholm@cobaltsystems.io,cobaltsystems.io,Cobalt Systems,Analyst
+twin-0025,Eva Berger,eva.berger@lexharbor.com,lexharbor.com,Lex Harbor Legal,Managing Director
+twin-0026,Lukas Lindholm,lukas.lindholm@lexharbor.com,lexharbor.com,Lex Harbor Legal,Senior Manager
+twin-0027,Oskar Keller,oskar.keller@lexharbor.com,lexharbor.com,Lex Harbor Legal,Specialist
+twin-0028,Anna Sundqvist,anna.sundqvist@lexharbor.com,lexharbor.com,Lex Harbor Legal,Analyst
+twin-0029,Pawel Sokolov,pawel.sokolov@lexharbor.com,lexharbor.com,Lex Harbor Legal,Specialist
+twin-0030,Viktor Berger,viktor.berger@lexharbor.com,lexharbor.com,Lex Harbor Legal,Analyst
+twin-0031,Greta Moreau,greta.moreau@lexharbor.com,lexharbor.com,Lex Harbor Legal,Specialist
+twin-0032,Felix Brandt,felix.brandt@lexharbor.com,lexharbor.com,Lex Harbor Legal,Analyst
+twin-0033,Sophie Novak,sophie.novak@greenfield-ind.com,greenfield-ind.com,Greenfield Industries,Managing Director
+twin-0034,Adrian Reuter,adrian.reuter@greenfield-ind.com,greenfield-ind.com,Greenfield Industries,Senior Manager
+twin-0035,Sophie Dvorak,sophie.dvorak@greenfield-ind.com,greenfield-ind.com,Greenfield Industries,Specialist
+twin-0036,Tomas Marchetti,tomas.marchetti@greenfield-ind.com,greenfield-ind.com,Greenfield Industries,Analyst
+twin-0037,Adrian Sundqvist,adrian.sundqvist@greenfield-ind.com,greenfield-ind.com,Greenfield Industries,Specialist
+twin-0038,Hannah Marchetti,hannah.marchetti@greenfield-ind.com,greenfield-ind.com,Greenfield Industries,Analyst
+twin-0039,Greta Dvorak,greta.dvorak@greenfield-ind.com,greenfield-ind.com,Greenfield Industries,Specialist
+twin-0040,Greta Dvorak,greta.dvorak.0040@greenfield-ind.com,greenfield-ind.com,Greenfield Industries,Analyst
+twin-0041,Marek Sokolov,marek.sokolov@arcadia-logistics.com,arcadia-logistics.com,Arcadia Logistics,Managing Director
+twin-0042,Lukas Lindholm,lukas.lindholm@arcadia-logistics.com,arcadia-logistics.com,Arcadia Logistics,Senior Manager
+twin-0043,Stefan Kowalski,stefan.kowalski@arcadia-logistics.com,arcadia-logistics.com,Arcadia Logistics,Specialist
+twin-0044,Iris Reuter,iris.reuter@arcadia-logistics.com,arcadia-logistics.com,Arcadia Logistics,Analyst
+twin-0045,Sophie Schmidt,sophie.schmidt@arcadia-logistics.com,arcadia-logistics.com,Arcadia Logistics,Specialist
+twin-0046,Eva Lindholm,eva.lindholm@arcadia-logistics.com,arcadia-logistics.com,Arcadia Logistics,Analyst
+twin-0047,Nina Berger,nina.berger@arcadia-logistics.com,arcadia-logistics.com,Arcadia Logistics,Specialist
+twin-0048,Greta Moreau,greta.moreau@arcadia-logistics.com,arcadia-logistics.com,Arcadia Logistics,Analyst
+twin-0049,Viktor Lindholm,viktor.lindholm@helvetia-insure.com,helvetia-insure.com,Helvetia Insurance,Managing Director
+twin-0050,Greta Wojcik,greta.wojcik@helvetia-insure.com,helvetia-insure.com,Helvetia Insurance,Senior Manager
+twin-0051,Bartek Brandt,bartek.brandt@helvetia-insure.com,helvetia-insure.com,Helvetia Insurance,Specialist
+twin-0052,Daniel Keller,daniel.keller@helvetia-insure.com,helvetia-insure.com,Helvetia Insurance,Analyst
+twin-0053,Felix Dvorak,felix.dvorak@helvetia-insure.com,helvetia-insure.com,Helvetia Insurance,Specialist
+twin-0054,Viktor Falk,viktor.falk@helvetia-insure.com,helvetia-insure.com,Helvetia Insurance,Analyst
+twin-0055,Marek Dvorak,marek.dvorak@helvetia-insure.com,helvetia-insure.com,Helvetia Insurance,Specialist
+twin-0056,Eva Dvorak,eva.dvorak@helvetia-insure.com,helvetia-insure.com,Helvetia Insurance,Analyst
+twin-0057,Oskar Adamczyk,oskar.adamczyk@brightpath-edu.org,brightpath-edu.org,Brightpath Education,Managing Director
+twin-0058,Mira Wojcik,mira.wojcik@brightpath-edu.org,brightpath-edu.org,Brightpath Education,Senior Manager
+twin-0059,Jonas Sokolov,jonas.sokolov@brightpath-edu.org,brightpath-edu.org,Brightpath Education,Specialist
+twin-0060,Viktor Sokolov,viktor.sokolov@brightpath-edu.org,brightpath-edu.org,Brightpath Education,Analyst
+twin-0061,Mira Schmidt,mira.schmidt@brightpath-edu.org,brightpath-edu.org,Brightpath Education,Specialist
+twin-0062,Eva Wojcik,eva.wojcik@brightpath-edu.org,brightpath-edu.org,Brightpath Education,Analyst
+twin-0063,Eva Moreau,eva.moreau@brightpath-edu.org,brightpath-edu.org,Brightpath Education,Specialist
+twin-0064,Greta Schmidt,greta.schmidt@brightpath-edu.org,brightpath-edu.org,Brightpath Education,Analyst
+twin-0065,Marek Adamczyk,marek.adamczyk@vantage-retail.com,vantage-retail.com,Vantage Retail Group,Managing Director
+twin-0066,Lena Brandt,lena.brandt@vantage-retail.com,vantage-retail.com,Vantage Retail Group,Senior Manager
+twin-0067,Tomas Haas,tomas.haas@vantage-retail.com,vantage-retail.com,Vantage Retail Group,Specialist
+twin-0068,Nina Lindholm,nina.lindholm@vantage-retail.com,vantage-retail.com,Vantage Retail Group,Analyst
+twin-0069,Lukas Berger,lukas.berger@vantage-retail.com,vantage-retail.com,Vantage Retail Group,Specialist
+twin-0070,Oskar Falk,oskar.falk@vantage-retail.com,vantage-retail.com,Vantage Retail Group,Analyst
+twin-0071,Lena Wojcik,lena.wojcik@vantage-retail.com,vantage-retail.com,Vantage Retail Group,Specialist
+twin-0072,Tomas Berger,tomas.berger@vantage-retail.com,vantage-retail.com,Vantage Retail Group,Analyst
+twin-0073,Felix Novak,felix.novak@aurora-media.tv,aurora-media.tv,Aurora Media,Managing Director
+twin-0074,Viktor Brandt,viktor.brandt@aurora-media.tv,aurora-media.tv,Aurora Media,Senior Manager
+twin-0075,Bartek Adamczyk,bartek.adamczyk@aurora-media.tv,aurora-media.tv,Aurora Media,Specialist
+twin-0076,Hannah Haas,hannah.haas@aurora-media.tv,aurora-media.tv,Aurora Media,Analyst
+twin-0077,Lukas Adamczyk,lukas.adamczyk@aurora-media.tv,aurora-media.tv,Aurora Media,Specialist
+twin-0078,Julia Marchetti,julia.marchetti@aurora-media.tv,aurora-media.tv,Aurora Media,Analyst
+twin-0079,Felix Reuter,felix.reuter@aurora-media.tv,aurora-media.tv,Aurora Media,Specialist
+twin-0080,Tomas Falk,tomas.falk@aurora-media.tv,aurora-media.tv,Aurora Media,Analyst
+twin-0081,Viktor Lindholm,viktor.lindholm@sterling-build.com,sterling-build.com,Sterling Construction,Managing Director
+twin-0082,Sophie Haas,sophie.haas@sterling-build.com,sterling-build.com,Sterling Construction,Senior Manager
+twin-0083,Jonas Berger,jonas.berger@sterling-build.com,sterling-build.com,Sterling Construction,Specialist
+twin-0084,Eva Brandt,eva.brandt@sterling-build.com,sterling-build.com,Sterling Construction,Analyst
+twin-0085,Nina Adamczyk,nina.adamczyk@sterling-build.com,sterling-build.com,Sterling Construction,Specialist
+twin-0086,Bartek Marchetti,bartek.marchetti@sterling-build.com,sterling-build.com,Sterling Construction,Analyst
+twin-0087,Marta Haas,marta.haas@sterling-build.com,sterling-build.com,Sterling Construction,Specialist
+twin-0088,Lukas Vogel,lukas.vogel@sterling-build.com,sterling-build.com,Sterling Construction,Analyst
+twin-0089,Bartek Reuter,bartek.reuter@polaris-pharma.com,polaris-pharma.com,Polaris Pharma,Managing Director
+twin-0090,Tomas Reuter,tomas.reuter@polaris-pharma.com,polaris-pharma.com,Polaris Pharma,Senior Manager
+twin-0091,Sophie Haas,sophie.haas@polaris-pharma.com,polaris-pharma.com,Polaris Pharma,Specialist
+twin-0092,Adrian Novak,adrian.novak@polaris-pharma.com,polaris-pharma.com,Polaris Pharma,Analyst
+twin-0093,Marta Haas,marta.haas@polaris-pharma.com,polaris-pharma.com,Polaris Pharma,Specialist
+twin-0094,Lena Janssen,lena.janssen@polaris-pharma.com,polaris-pharma.com,Polaris Pharma,Analyst
+twin-0095,Oskar Wojcik,oskar.wojcik@polaris-pharma.com,polaris-pharma.com,Polaris Pharma,Specialist
+twin-0096,Hannah Lindholm,hannah.lindholm@polaris-pharma.com,polaris-pharma.com,Polaris Pharma,Analyst
+twin-0097,Eva Moreau,eva.moreau@ironclad-sec.com,ironclad-sec.com,Ironclad Security,Managing Director
+twin-0098,Daniel Sundqvist,daniel.sundqvist@ironclad-sec.com,ironclad-sec.com,Ironclad Security,Senior Manager
+twin-0099,Pawel Schmidt,pawel.schmidt@ironclad-sec.com,ironclad-sec.com,Ironclad Security,Specialist
+twin-0100,Eva Vogel,eva.vogel@ironclad-sec.com,ironclad-sec.com,Ironclad Security,Analyst
+twin-0101,Marta Lindholm,marta.lindholm@ironclad-sec.com,ironclad-sec.com,Ironclad Security,Specialist
+twin-0102,Tomas Sundqvist,tomas.sundqvist@ironclad-sec.com,ironclad-sec.com,Ironclad Security,Analyst
+twin-0103,Jonas Vogel,jonas.vogel@ironclad-sec.com,ironclad-sec.com,Ironclad Security,Specialist
+twin-0104,Eva Vogel,eva.vogel.0104@ironclad-sec.com,ironclad-sec.com,Ironclad Security,Analyst
+twin-0105,Stefan Janssen,stefan.janssen@continental-foods.com,continental-foods.com,Continental Foods,Managing Director
+twin-0106,Felix Marchetti,felix.marchetti@continental-foods.com,continental-foods.com,Continental Foods,Senior Manager
+twin-0107,Daniel Keller,daniel.keller@continental-foods.com,continental-foods.com,Continental Foods,Specialist
+twin-0108,Nina Dvorak,nina.dvorak@continental-foods.com,continental-foods.com,Continental Foods,Analyst
+twin-0109,Tomas Marchetti,tomas.marchetti@continental-foods.com,continental-foods.com,Continental Foods,Specialist
+twin-0110,Lena Schmidt,lena.schmidt@continental-foods.com,continental-foods.com,Continental Foods,Analyst
+twin-0111,Anna Janssen,anna.janssen@continental-foods.com,continental-foods.com,Continental Foods,Specialist
+twin-0112,Adrian Schmidt,adrian.schmidt@continental-foods.com,continental-foods.com,Continental Foods,Analyst
+twin-0113,Viktor Kowalski,viktor.kowalski@zephyr-air.com,zephyr-air.com,Zephyr Airlines Services,Managing Director
+twin-0114,Bartek Marchetti,bartek.marchetti@zephyr-air.com,zephyr-air.com,Zephyr Airlines Services,Senior Manager
+twin-0115,Stefan Lindqvist,stefan.lindqvist@zephyr-air.com,zephyr-air.com,Zephyr Airlines Services,Specialist
+twin-0116,Julia Lindqvist,julia.lindqvist@zephyr-air.com,zephyr-air.com,Zephyr Airlines Services,Analyst
+twin-0117,Stefan Wojcik,stefan.wojcik@zephyr-air.com,zephyr-air.com,Zephyr Airlines Services,Specialist
+twin-0118,Oskar Adamczyk,oskar.adamczyk@zephyr-air.com,zephyr-air.com,Zephyr Airlines Services,Analyst
+twin-0119,Stefan Vogel,stefan.vogel@zephyr-air.com,zephyr-air.com,Zephyr Airlines Services,Specialist
+twin-0120,Bartek Berger,bartek.berger@zephyr-air.com,zephyr-air.com,Zephyr Airlines Services,Analyst
+twin-0121,Hannah Berger,hannah.berger@quantis-consult.com,quantis-consult.com,Quantis Consulting,Managing Director
+twin-0122,Lena Wojcik,lena.wojcik@quantis-consult.com,quantis-consult.com,Quantis Consulting,Senior Manager
+twin-0123,Tomas Wojcik,tomas.wojcik@quantis-consult.com,quantis-consult.com,Quantis Consulting,Specialist
+twin-0124,Sophie Moreau,sophie.moreau@quantis-consult.com,quantis-consult.com,Quantis Consulting,Analyst
+twin-0125,Jonas Reuter,jonas.reuter@quantis-consult.com,quantis-consult.com,Quantis Consulting,Specialist
+twin-0126,Daniel Keller,daniel.keller@quantis-consult.com,quantis-consult.com,Quantis Consulting,Analyst
+twin-0127,Jonas Moreau,jonas.moreau@quantis-consult.com,quantis-consult.com,Quantis Consulting,Specialist
+twin-0128,Nina Sokolov,nina.sokolov@quantis-consult.com,quantis-consult.com,Quantis Consulting,Analyst
+twin-0129,Lena Falk,lena.falk@atlas-mining.com,atlas-mining.com,Atlas Mining Corporation,Managing Director
+twin-0130,Hannah Janssen,hannah.janssen@atlas-mining.com,atlas-mining.com,Atlas Mining Corporation,Senior Manager
+twin-0131,Viktor Schmidt,viktor.schmidt@atlas-mining.com,atlas-mining.com,Atlas Mining Corporation,Specialist
+twin-0132,Pawel Falk,pawel.falk@atlas-mining.com,atlas-mining.com,Atlas Mining Corporation,Analyst
+twin-0133,Sophie Wojcik,sophie.wojcik@atlas-mining.com,atlas-mining.com,Atlas Mining Corporation,Specialist
+twin-0134,Iris Adamczyk,iris.adamczyk@atlas-mining.com,atlas-mining.com,Atlas Mining Corporation,Analyst
+twin-0135,Tomas Dvorak,tomas.dvorak@atlas-mining.com,atlas-mining.com,Atlas Mining Corporation,Specialist
+twin-0136,Oskar Lindqvist,oskar.lindqvist@atlas-mining.com,atlas-mining.com,Atlas Mining Corporation,Analyst
+twin-0137,Greta Sundqvist,greta.sundqvist@marlowe.gov,marlowe.gov,Marlowe Public Office,Managing Director
+twin-0138,Lena Dvorak,lena.dvorak@marlowe.gov,marlowe.gov,Marlowe Public Office,Senior Manager
+twin-0139,Iris Novak,iris.novak@marlowe.gov,marlowe.gov,Marlowe Public Office,Specialist
+twin-0140,Nina Keller,nina.keller@marlowe.gov,marlowe.gov,Marlowe Public Office,Analyst
+twin-0141,Eva Falk,eva.falk@marlowe.gov,marlowe.gov,Marlowe Public Office,Specialist
+twin-0142,Iris Berger,iris.berger@marlowe.gov,marlowe.gov,Marlowe Public Office,Analyst
+twin-0143,Sophie Novak,sophie.novak@marlowe.gov,marlowe.gov,Marlowe Public Office,Specialist
+twin-0144,Tomas Haas,tomas.haas@beacon-telecom.net,beacon-telecom.net,Beacon Telecom,Managing Director
+twin-0145,Hannah Schmidt,hannah.schmidt@beacon-telecom.net,beacon-telecom.net,Beacon Telecom,Senior Manager
+twin-0146,Felix Lindqvist,felix.lindqvist@beacon-telecom.net,beacon-telecom.net,Beacon Telecom,Specialist
+twin-0147,Iris Janssen,iris.janssen@beacon-telecom.net,beacon-telecom.net,Beacon Telecom,Analyst
+twin-0148,Mira Reuter,mira.reuter@beacon-telecom.net,beacon-telecom.net,Beacon Telecom,Specialist
+twin-0149,Tomas Brandt,tomas.brandt@beacon-telecom.net,beacon-telecom.net,Beacon Telecom,Analyst
+twin-0150,Anna Keller,anna.keller@beacon-telecom.net,beacon-telecom.net,Beacon Telecom,Specialist

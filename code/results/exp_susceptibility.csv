@@ -1,0 +1,16 @@
+group,recall_fpr1,susc,n_attacks_mean,n_seeds
+channel:bec_off,0.0384,0.9616,272.2,20
+channel:compromised,0.1454,0.8546,327.1,20
+overall,0.0976,0.9024,599.3,20
+seniority:executive,0.0592,0.9408,74.8,20
+seniority:executive|bec_off,0.0379,0.9621,32.5,20
+seniority:executive|compromised,0.0761,0.9239,42.2,20
+seniority:junior,0.1033,0.8967,228.6,20
+seniority:junior|bec_off,0.0351,0.9649,106.9,20
+seniority:junior|compromised,0.1599,0.8401,121.7,20
+seniority:mid,0.1084,0.8916,227.3,20
+seniority:mid|bec_off,0.0415,0.9585,102.2,20
+seniority:mid|compromised,0.1617,0.8383,125.0,20
+seniority:senior,0.0908,0.9092,68.6,20
+seniority:senior|bec_off,0.04,0.96,30.5,20
+seniority:senior|compromised,0.1346,0.8654,38.1,20

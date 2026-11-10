@@ -1,0 +1,3 @@
+regime,content_auc,content_r1,mux_auc,mux_r1,fusion_auc,fusion_r1
+tell,0.997,0.96,0.859,0.037,0.998,0.971
+mimicry,0.496,0.009,0.859,0.037,0.851,0.092

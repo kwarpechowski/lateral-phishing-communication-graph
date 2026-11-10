@@ -1,0 +1,4 @@
+features,f1_cechy,f1_fuzja,zysk_grafu,auc_cechy,auc_fuzja
+lokalne (93),0.7492,0.7366,-0.0126,0.9342,0.9302
+agregaty (72),0.628,0.596,-0.032,0.9148,0.8917
+pelne (165),0.8067,0.731,-0.0757,0.9393,0.8776

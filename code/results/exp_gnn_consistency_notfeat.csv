@@ -1,0 +1,13 @@
+mode,model,auc,recall_fpr1,recall_fpr01,n_seeds
+victim,idgnn,0.5194,0.0124,0.002,5
+victim,featgnn_l0.0,0.5,0.0,0.0,5
+victim,featgnn_l0.1,0.5,0.0,0.0,5
+victim,featgnn_l0.5,0.5161,0.0124,0.0004,5
+victim,featgnn_l1.0,0.5152,0.0104,0.0011,5
+victim,lgbm,0.6467,0.0101,0.0,5
+org_strict,idgnn,0.5188,0.0124,0.0007,5
+org_strict,featgnn_l0.0,0.5,0.0,0.0,5
+org_strict,featgnn_l0.1,0.5,0.0,0.0,5
+org_strict,featgnn_l0.5,0.5119,0.0066,0.0007,5
+org_strict,featgnn_l1.0,0.5074,0.0125,0.0007,5
+org_strict,lgbm,0.6363,0.004,0.0007,5

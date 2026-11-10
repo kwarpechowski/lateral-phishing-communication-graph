@@ -1,0 +1,4 @@
+strategia,zasieg,1-hop,COMPA,GCN-statyczny,reczny-kontekst,temporalny-GNN
+naiwna,0.998,0.7067,0.7241,0.7366,0.6935,0.7498
+stealth-spread,0.998,0.7055,0.736,0.7341,0.6898,0.7417
+niski-zasieg,0.736,0.5364,0.5194,0.6662,0.566,0.6762

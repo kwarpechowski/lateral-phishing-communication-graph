@@ -1,0 +1,5 @@
+wariant,metryka,1-hop,COMPA,hopper,anomaly-forest,GCN-statyczny,reczny-kontekst,temporalny-GNN,temporalny-GNN-uwaga
+nieadaptacyjny,auc,0.711,0.81,0.798,0.608,0.773,0.736,0.853,0.858
+nieadaptacyjny,recall_fpr1,0.0,0.135,0.053,0.018,0.026,0.04,0.097,0.109
+white-box:K3-g16-m0.3,auc,0.664,0.706,0.659,0.676,0.808,0.661,0.718,0.713
+white-box:K3-g16-m0.3,recall_fpr1,0.0,0.023,0.025,0.048,0.08,0.031,0.03,0.052

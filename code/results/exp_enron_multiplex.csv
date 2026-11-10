@@ -1,0 +1,3 @@
+model,auc,recall@fpr0.001,recall@fpr0.005,recall@fpr0.01,recall@fpr0.05
+full,0.9371,0.5001,0.8758,0.876,0.8765
+contact,0.7501,0.5001,0.5001,0.5001,0.5001
