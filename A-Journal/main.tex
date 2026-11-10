@@ -1,0 +1,144 @@
+%% Paper A — Elsevier CAS template (single-column) — target: Journal of Network and Computer Applications (JNCA)
+%% Split from the combined manuscript: this paper carries the cascade invariant (lateral phishing),
+%% the real-graph replication, and the leak-aware methodology. The cross-layer (OSINT multiplex)
+%% invariant, the rhythm-leak control on Enron, and the susceptibility metric form the companion
+%% conference paper (../paper-B-conf).
+\documentclass[a4paper,fleqn]{cas-sc}
+
+\usepackage[authoryear,longnamesfirst]{natbib}
+
+%% Content packages (CAS already loads: graphicx, amsmath, booktabs, multirow, array, hyperref, xcolor)
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{siunitx}\sisetup{output-decimal-marker={.}, group-separator={}, per-mode=symbol}
+\usepackage{tikz}\usetikzlibrary{positioning, fit, arrows.meta}
+\usepackage{enumitem}
+\graphicspath{{figures/}}
+
+%% Theorem-like environments (used in the Model section)
+\newtheorem{definition}{Definition}
+
+%% Float packing: allow fuller float pages and more floats per page,
+%% so tables/figures interleave with the text instead of piling up at section ends.
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.6}
+\renewcommand{\textfraction}{0.07}
+\renewcommand{\floatpagefraction}{0.75}
+\setcounter{topnumber}{3}
+\setcounter{totalnumber}{5}
+
+\begin{document}
+\let\WriteBookmarks\relax
+
+%% Running head
+\shorttitle{Lateral phishing and the communication graph}
+\shortauthors{K. Warpechowski, B. Ksi{\k{e}}{\.z}opolski}
+
+%% Main title
+\title[mode=title]{Lateral Phishing as a Violation of the Organizational Communication Graph:
+Cascade Dynamics and Leak-Aware Evaluation}
+
+%% First (corresponding) author, affiliations 1 and 2
+\author[1,2]{Kamil Warpechowski}
+\cormark[1]
+\ead{kamil.warpechowski@kozminski.edu.pl}
+\credit{Conceptualization, Methodology, Software, Experiments, Writing -- original draft}
+
+\affiliation[1]{organization={Kozminski University},
+            city={Warsaw},
+            country={Poland}}
+\affiliation[2]{organization={NASK National Research Institute},
+            city={Warsaw},
+            country={Poland}}
+
+%% Second author
+\author[1]{Bogdan Ksi{\k{e}}{\.z}opolski}
+\ead{bogdan.ksiezopolski@kozminski.edu.pl}
+\credit{Supervision, Conceptualization, Writing -- review and editing}
+
+\cortext[1]{Corresponding author}
+
+%% Abstract (inlined -- CAS abstract environment does not expand \input reliably)
+\begin{abstract}
+Modern email filters detect mass phishing with high accuracy ($\sim$98\%) from content and reputation, yet
+the residual traffic---spear phishing and Business Email Compromise (BEC)---is the most costly. Its hardest case
+is lateral phishing from a compromised internal account: the sender is a known contact, the address is real,
+and the content can be clean. We argue that such an attack is a violation of the organization's communication
+graph in time. The compromised account writes off-rhythm and, decisively, propagates, so the cascade leaves a
+receiving-side wave signature that no single message reveals.
+
+The main result is that this signature degrades far less than volume under a stealthy attacker. Against an attacker who spreads the
+sends over time, volume-based detection---the class of methods deployed in practice---collapses below the
+random baseline (AUC $0.44$), while a temporal graph network reading the receiving side degrades less and
+stays above chance (AUC $0.60$); the advantage vanishes under a time-shuffle control, and the regime-level
+contrast replicates in direction on three real communication graphs (Enron, \texttt{email-Eu-core},
+\texttt{CollegeMsg}). We also mark the boundary: a single-recipient attack without propagation is invisible to
+every detector.
+
+The methodological contribution is a leak-aware evaluation protocol---matched design, causal time-shuffle
+control, inductive organization split, label-noise audit---with explicit base-rate accounting: at a
+realistic prevalence each detected attack comes with hundreds of false alarms, so detectors of this class are
+triage instruments, not autonomous defenses. The work reframes lateral phishing as a measurable property of
+the communication graph: measurable, though not yet operationally solved.
+\end{abstract}
+
+%% Research highlights (each <= 85 characters incl. spaces)
+\begin{highlights}
+\item Lateral phishing leaves a receiving-side wave on the communication graph.
+\item The cascade signal degrades less than volume detection under stealthy attacks.
+\item A time-shuffle control shows the advantage is temporal, not topological.
+\item The regime-level contrast replicates on Enron and two SNAP graphs.
+\item Base-rate arithmetic makes the detectors triage instruments, not autonomous defenses.
+\end{highlights}
+
+%% Keywords
+\begin{keywords}
+lateral phishing \sep Business Email Compromise \sep organizational communication graph \sep
+cascade dynamics \sep temporal graph networks \sep leak-aware evaluation
+\end{keywords}
+
+\maketitle
+
+%% ==== Main text (English sections) ====
+\input{en/introduction}
+\input{en/related_work}
+\input{en/model}
+\input{en/methodology}
+\input{en/results}
+\input{en/discussion}
+\input{en/conclusion}
+
+%% ==== Back matter: required declarations (Elsevier / JNCA Guide for Authors) ====
+\section*{CRediT authorship contribution statement}
+\textbf{Kamil Warpechowski:} Conceptualization, Methodology, Software, Investigation, Validation,
+Writing -- original draft. \textbf{Bogdan Ksi{\k{e}}{\.z}opolski:} Supervision, Conceptualization,
+Writing -- review \& editing.
+
+\section*{Declaration of competing interests}
+The authors declare that they have no known competing financial interests or personal relationships
+that could have appeared to influence the work reported in this paper.
+
+\section*{Funding}
+% TODO: confirm with co-author/NASK whether a specific grant supported this work; replace if so.
+This research did not receive any specific grant from funding agencies in the public, commercial,
+or not-for-profit sectors.
+
+\section*{Data availability}
+% TODO (author): deposit the package on Zenodo (make_zenodo_archive.ps1) BEFORE submission and
+% insert the DOI below — reviewers increasingly expect the package to be available at review time.
+The reproducibility package, including the synthetic population generator, all experiment and analysis code, the generated population of $150$~personas, and the computed results from which the tables and figures are produced, is openly archived on Zenodo (DOI: to be inserted upon deposit). The real
+communication graphs used for validation are public: the Enron email corpus \citep{klimt2004enron}
+and the SNAP datasets \texttt{email-Eu-core} and \texttt{CollegeMsg} \citep{leskovec2014snap}.
+
+\section*{Declaration of generative AI and AI-assisted technologies in the manuscript preparation process}
+During the preparation of this work the authors used Claude (Anthropic) in order to translate the
+manuscript from Polish into English and to copy-edit the prose. After using this tool, the authors
+reviewed and edited the content as needed and take full responsibility for the content of the
+published article.
+
+%% Bibliography in Elsevier CAS author-year style
+\clearpage
+\bibliographystyle{cas-model2-names}
+\bibliography{bibliography}
+
+\end{document}

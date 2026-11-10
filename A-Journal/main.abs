@@ -1,0 +1,19 @@
+Modern email filters detect mass phishing with high accuracy ($\sim$98\%) from content and reputation, yet
+the residual traffic---spear phishing and Business Email Compromise (BEC)---is the most costly. Its hardest case
+is lateral phishing from a compromised internal account: the sender is a known contact, the address is real,
+and the content can be clean. We argue that such an attack is a violation of the organization's communication
+graph in time. The compromised account writes off-rhythm and, decisively, propagates, so the cascade leaves a
+receiving-side wave signature that no single message reveals.
+
+The main result is that this signature survives a stealthy attacker. Against an attacker who spreads the
+sends over time, volume-based detection---the class of methods deployed in practice---collapses below the
+random baseline (AUC $0.44$), while a temporal graph network reading the receiving side holds (AUC $0.60$);
+the advantage vanishes under a time-shuffle control and replicates on three real communication graphs (Enron,
+\texttt{email-Eu-core}, \texttt{CollegeMsg}) with large effect sizes. We also mark the boundary: a
+single-recipient attack without propagation is invisible to every detector.
+
+The methodological contribution is a leak-aware evaluation protocol---matched design, causal time-shuffle
+control, inductive organization split, label-noise audit---with explicit base-rate accounting: at a
+realistic prevalence each detected attack comes with hundreds of false alarms, so detectors of this class are
+triage instruments, not autonomous defenses. The work reframes lateral phishing as a measurable property of
+the communication graph: measurable, though not yet operationally solved.

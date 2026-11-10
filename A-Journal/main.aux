@@ -1,0 +1,242 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\providecommand \babel@aux [2]{\global \let \babel@toc \@gobbletwo }
+\@nameuse{bbl@beforestart}
+\csgdef{mark@corau1}{1}
+\emailauthor{kamil.warpechowski@kozminski.edu.pl}{Kamil Warpechowski}
+\creditauthor{Conceptualization, Methodology, Software, Experiments, Writing -- original draft}{Kamil Warpechowski}
+\emailauthor{bogdan.ksiezopolski@kozminski.edu.pl}{Bogdan Ksi{\k {e}}{\.z}opolski}
+\creditauthor{Supervision, Conceptualization, Writing -- review and editing}{Bogdan Ksi{\k {e}}{\.z}opolski}
+\babel@aux{english}{}
+\citation{butavicius2022why,sturman2025security}
+\citation{ho2019detecting}
+\citation{fbi2024ic3}
+\citation{birthriya2025detection,tan2020graph}
+\citation{cidon2019high,ho2019detecting}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
+\newlabel{sec:intro}{{1}{1}{Introduction}{section.1}{}}
+\citation{nayeri2026alert,weng2024rtapt}
+\citation{arp2022dos}
+\citation{pendlebury2019tesseract}
+\citation{birthriya2025detection}
+\citation{bountakas2022helphed}
+\citation{bethany2024evaluating}
+\citation{ho2019detecting}
+\citation{cidon2019high}
+\citation{atlam2023business}
+\citation{gascon2018reading,stringhini2015thataint}
+\citation{duman2016emailprofiler}
+\citation{luo2024characterizing}
+\citation{egele2013compa,stringhini2015thataint}
+\citation{ho2021hopper}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Related Work}{2}{section.2}\protected@file@percent }
+\newlabel{sec:related}{{2}{2}{Related Work}{section.2}{}}
+\citation{hamilton2017inductive}
+\citation{velickovic2018graph}
+\citation{xu2020inductive,hao2020inductive}
+\citation{zhang2018link,zhang2018scalable}
+\citation{rossi2020temporal}
+\citation{sankar2020dysat}
+\citation{pareja2020evolvegcn}
+\citation{you2022roland}
+\citation{yu2023streaming,wang2022tsgn,nayebi2025spatiotemporal,behrouz2022anomaly}
+\citation{nayeri2026alert}
+\citation{weng2024rtapt}
+\citation{leskovec2007outbreak}
+\citation{pinto2012locating,shah2011rumors}
+\citation{cheng2014cascades,vosoughi2018spread,bian2020rumor}
+\citation{dou2020enhancing}
+\citation{liu2020alleviating}
+\citation{liu2021pick}
+\citation{shi2022h2fdetector}
+\citation{zhao2021graphsmote}
+\citation{gao2023alleviating,tang2022rethinking}
+\citation{weber2019antimoney,li2022ttagn,rayana2015collective}
+\citation{ding2019deep,park2020unsupervised,liu2021anomaly,ma2021comprehensive,zhang2021mcgc,li2025umgad}
+\citation{kumar2019predicting,wu2020who,li2022pdgnn,mcauley2015image}
+\citation{tan2020graph,lin2021phishpedia,abdelnabi2020visualphishnet}
+\citation{safran2025phishinggnn}
+\citation{lo2021egraphsage}
+\citation{guo2025efficient,li2022pdgnn}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}Lateral phishing and BEC: why content is insufficient}{3}{subsection.2.1}\protected@file@percent }
+\newlabel{sec:rw-spear}{{2.1}{3}{Lateral phishing and BEC: why content is insufficient}{subsection.2.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Graph and temporal learning for communication graphs}{3}{subsection.2.2}\protected@file@percent }
+\newlabel{sec:rw-graph}{{2.2}{3}{Graph and temporal learning for communication graphs}{subsection.2.2}{}}
+\citation{arp2022dos}
+\citation{pendlebury2019tesseract}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Evaluation rigor: pitfalls and leak control}{4}{subsection.2.3}\protected@file@percent }
+\newlabel{sec:rw-eval}{{2.3}{4}{Evaluation rigor: pitfalls and leak control}{subsection.2.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.4}Gaps and positioning of the work}{4}{subsection.2.4}\protected@file@percent }
+\newlabel{sec:rw-gap}{{2.4}{4}{Gaps and positioning of the work}{subsection.2.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Model}{4}{section.3}\protected@file@percent }
+\newlabel{sec:model}{{3}{4}{Model}{section.3}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces General model}}{4}{figure.1}\protected@file@percent }
+\newlabel{fig:model}{{1}{4}{General model}{figure.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}The organizational communication graph}{4}{subsection.3.1}\protected@file@percent }
+\newlabel{sec:cg}{{3.1}{4}{The organizational communication graph}{subsection.3.1}{}}
+\newlabel{def:cg}{{1}{4}{The organizational communication graph}{subsection.3.1}{}}
+\citation{ho2019detecting}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Notation used throughout the paper. Concrete instantiations of the free parameters ($N$, $T$, $p_\mathrm  {inf}$, $H$) are given in the Case Study (Sec.~\ref {sec:results}).}}{5}{table.1}\protected@file@percent }
+\newlabel{tab:notation}{{1}{5}{Notation used throughout the paper. Concrete instantiations of the free parameters ($N$, $T$, $p_\mathrm {inf}$, $H$) are given in the Case Study (Sec.~\ref {sec:results})}{table.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}Threat model: the compromised account}{5}{subsection.3.2}\protected@file@percent }
+\newlabel{sec:threat}{{3.2}{5}{Threat model: the compromised account}{subsection.3.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}The cascade invariant}{5}{subsection.3.3}\protected@file@percent }
+\newlabel{sec:invariant}{{3.3}{5}{The cascade invariant}{subsection.3.3}{}}
+\citation{arp2022dos}
+\citation{pendlebury2019tesseract}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Definition of detection effectiveness}{6}{subsection.3.4}\protected@file@percent }
+\newlabel{sec:effectiveness}{{3.4}{6}{Definition of detection effectiveness}{subsection.3.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Methodology}{6}{section.4}\protected@file@percent }
+\newlabel{sec:method}{{4}{6}{Methodology}{section.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Overview of the verification procedure}{6}{subsection.4.1}\protected@file@percent }
+\newlabel{sec:m-overview}{{4.1}{6}{Overview of the verification procedure}{subsection.4.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Leak-aware evaluation protocol}{6}{subsection.4.2}\protected@file@percent }
+\newlabel{sec:eval}{{4.2}{6}{Leak-aware evaluation protocol}{subsection.4.2}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Detectors and causal controls}{6}{subsection.4.3}\protected@file@percent }
+\newlabel{sec:m-detectors}{{4.3}{6}{Detectors and causal controls}{subsection.4.3}{}}
+\citation{egele2013compa,stringhini2015thataint}
+\citation{ho2021hopper}
+\citation{ho2019detecting}
+\citation{arp2022dos,pendlebury2019tesseract}
+\newlabel{eq:static}{{1}{7}{Detectors and causal controls}{equation.1}{}}
+\newlabel{eq:temp-score}{{2}{7}{Detectors and causal controls}{equation.2}{}}
+\newlabel{eq:temp-mem}{{3}{7}{Detectors and causal controls}{equation.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Event model and data split}{7}{subsection.4.4}\protected@file@percent }
+\newlabel{sec:m-events}{{4.4}{7}{Event model and data split}{subsection.4.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}Metrics, base rate, and threats to validity}{7}{subsection.4.5}\protected@file@percent }
+\newlabel{sec:m-metrics}{{4.5}{7}{Metrics, base rate, and threats to validity}{subsection.4.5}{}}
+\citation{klimt2004enron}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Lateral phishing as a temporal cascade}}{8}{figure.2}\protected@file@percent }
+\newlabel{fig:cascade}{{2}{8}{Lateral phishing as a temporal cascade}{figure.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Case Study and Results}{8}{section.5}\protected@file@percent }
+\newlabel{sec:results}{{5}{8}{Case Study and Results}{section.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Case study: the organization and what is tested on it}{8}{subsection.5.1}\protected@file@percent }
+\newlabel{sec:cs-setup}{{5.1}{8}{Case study: the organization and what is tested on it}{subsection.5.1}{}}
+\@writefile{toc}{\contentsline {paragraph}{What the case study tests}{8}{section*.1}\protected@file@percent }
+\citation{rossi2020temporal}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Case-study organization}}{9}{figure.3}\protected@file@percent }
+\newlabel{fig:casestudy}{{3}{9}{Case-study organization}{figure.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Results overview}{9}{subsection.5.2}\protected@file@percent }
+\newlabel{sec:res-overview}{{5.2}{9}{Results overview}{subsection.5.2}{}}
+\citation{ho2021hopper}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Map from research questions to evidence. Each verdict is established in the section listed.}}{10}{table.2}\protected@file@percent }
+\newlabel{tab:roadmap}{{2}{10}{Map from research questions to evidence. Each verdict is established in the section listed}{table.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Cascade detectors on the case-study graph (victim split, $5$~seeds): only the temporal model with node memory reaches operational sensitivity ($0.139$ at FPR~$1\%$), and shuffling the time order removes the advantage ($\to \!0.027$), so the signal is causally temporal.}}{10}{table.3}\protected@file@percent }
+\newlabel{tab:detectors}{{3}{10}{Cascade detectors on the case-study graph (victim split, $5$~seeds): only the temporal model with node memory reaches operational sensitivity ($0.139$ at FPR~$1\%$), and shuffling the time order removes the advantage ($\to \!0.027$), so the signal is causally temporal}{table.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}The cascade detectors}{10}{subsection.5.3}\protected@file@percent }
+\newlabel{sec:res-detectors}{{5.3}{10}{The cascade detectors}{subsection.5.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.4}The stealthy attacker}{10}{subsection.5.4}\protected@file@percent }
+\newlabel{sec:res-stealth}{{5.4}{10}{The stealthy attacker}{subsection.5.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.5}Baselines and the boundary of the threat model}{10}{subsection.5.5}\protected@file@percent }
+\newlabel{sec:res-baselines}{{5.5}{10}{Baselines and the boundary of the threat model}{subsection.5.5}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Stealthy attacker on the case-study graph ($K$~carriers spread over time; $20$~seeds): as $K\!\to \!1$ the volume detector falls below random ($0.44$) while the receiving-side temporal detector holds ($0.60$), the headline operational result behind T1.}}{11}{table.4}\protected@file@percent }
+\newlabel{tab:stealth}{{4}{11}{Stealthy attacker on the case-study graph ($K$~carriers spread over time; $20$~seeds): as $K\!\to \!1$ the volume detector falls below random ($0.44$) while the receiving-side temporal detector holds ($0.60$), the headline operational result behind T1}{table.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Stealth vs volume breakdown}}{11}{figure.4}\protected@file@percent }
+\newlabel{fig:stealth}{{4}{11}{Stealth vs volume breakdown}{figure.4}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces Baselines and the boundary of the threat model (AUC, $20$~seeds; path-based baseline in the spirit of Hopper \citep  {ho2021hopper}). (a)~Under a stealthy cascade the path-based detector wins only at $K{=}1$ and degrades with reach, while the temporal GNN is the only detector without a breakdown regime. (b)~With no propagation, a single-recipient attack is invisible to every detector ($\sim \!0.46$); the signal needs fan-out~$\ge 2$. The two blocks are not comparable at ``1'': in (a) $K{=}1$ still propagates, in (b) fan-out~$1$ is a surgical attack with no cascade at all.}}{11}{table.5}\protected@file@percent }
+\newlabel{tab:baselines}{{5}{11}{Baselines and the boundary of the threat model (AUC, $20$~seeds; path-based baseline in the spirit of Hopper \citep {ho2021hopper}). (a)~Under a stealthy cascade the path-based detector wins only at $K{=}1$ and degrades with reach, while the temporal GNN is the only detector without a breakdown regime. (b)~With no propagation, a single-recipient attack is invisible to every detector ($\sim \!0.46$); the signal needs fan-out~$\ge 2$. The two blocks are not comparable at ``1'': in (a) $K{=}1$ still propagates, in (b) fan-out~$1$ is a surgical attack with no cascade at all}{table.5}{}}
+\citation{paranjape2017motifs}
+\citation{panzarasa2009patterns}
+\citation{leskovec2014snap}
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces Replication on three real communication graphs. (a)~On Enron the case-study hierarchy is reproduced (1-hop $<$ hand-crafted context $<$ temporal GNN) and the time shuffle levels the temporal detector to the hand-crafted result, so the advantage is causally temporal on a real topology. (b)~On two SNAP graphs the regime transition replicates: the volume detector wins the naive blast and collapses under the stealthy attacker, while the temporal detector holds.}}{12}{table.6}\protected@file@percent }
+\newlabel{tab:realgraphs}{{6}{12}{Replication on three real communication graphs. (a)~On Enron the case-study hierarchy is reproduced (1-hop $<$ hand-crafted context $<$ temporal GNN) and the time shuffle levels the temporal detector to the hand-crafted result, so the advantage is causally temporal on a real topology. (b)~On two SNAP graphs the regime transition replicates: the volume detector wins the naive blast and collapses under the stealthy attacker, while the temporal detector holds}{table.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.6}Stability and inductive generalization}{12}{subsection.5.6}\protected@file@percent }
+\newlabel{sec:res-stability}{{5.6}{12}{Stability and inductive generalization}{subsection.5.6}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.7}Validation on real communication graphs}{12}{subsection.5.7}\protected@file@percent }
+\newlabel{sec:res-realgraphs}{{5.7}{12}{Validation on real communication graphs}{subsection.5.7}{}}
+\citation{ho2019detecting}
+\citation{stringhini2015thataint}
+\citation{ho2021hopper}
+\citation{ho2019detecting}
+\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces Base-rate arithmetic for the temporal GNN operating point (sensitivity $0.14$, FPR$1\%$): at a realistic prevalence of $1{:}10^4$ each detected attack comes with $\sim \!700$ false alarms, three orders of magnitude above the deployment threshold, which is why the detectors are triage instruments. ``FP per detected attack'' is $\alpha (1-\pi )/(r\pi )$, where $r$ is sensitivity, $\alpha $ is FPR, and $\pi $ is prevalence.}}{13}{table.7}\protected@file@percent }
+\newlabel{tab:baserate}{{7}{13}{Base-rate arithmetic for the temporal GNN operating point (sensitivity $0.14$, FPR$1\%$): at a realistic prevalence of $1{:}10^4$ each detected attack comes with $\sim \!700$ false alarms, three orders of magnitude above the deployment threshold, which is why the detectors are triage instruments. ``FP per detected attack'' is $\alpha (1-\pi )/(r\pi )$, where $r$ is sensitivity, $\alpha $ is FPR, and $\pi $ is prevalence}{table.7}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.8}Rigor: what it means for a detector to work}{13}{subsection.5.8}\protected@file@percent }
+\newlabel{sec:res-rigor}{{5.8}{13}{Rigor: what it means for a detector to work}{subsection.5.8}{}}
+\newlabel{eq:baserate}{{4}{13}{Rigor: what it means for a detector to work}{equation.4}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Discussion}{13}{section.6}\protected@file@percent }
+\newlabel{sec:discussion}{{6}{13}{Discussion}{section.6}{}}
+\citation{ho2019detecting}
+\citation{pendlebury2019tesseract}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Interpretation: why the receiving side survives}{14}{subsection.6.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Practical implications}{14}{subsection.6.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}Limitations}{14}{subsection.6.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.4}Future work directions}{14}{subsection.6.4}\protected@file@percent }
+\citation{klimt2004enron}
+\citation{leskovec2014snap}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Conclusions}{15}{section.7}\protected@file@percent }
+\newlabel{sec:conclusion}{{7}{15}{Conclusions}{section.7}{}}
+\bibstyle{cas-model2-names}
+\bibdata{bibliography}
+\bibcite{abdelnabi2020visualphishnet}{{1}{2020}{{Abdelnabi et~al.}}{{Abdelnabi, Krombholz and Fritz}}}
+\bibcite{arp2022dos}{{2}{2022}{{Arp et~al.}}{{Arp, Quiring, Pendlebury, Warnecke, Pierazzi, Wressnegger, Cavallaro and Rieck}}}
+\bibcite{atlam2023business}{{3}{2023}{{Atlam and Oluwatimilehin}}{{}}}
+\bibcite{behrouz2022anomaly}{{4}{2022}{{Behrouz and Seltzer}}{{}}}
+\bibcite{bethany2024evaluating}{{5}{2024}{{Bethany et~al.}}{{Bethany, Galiopoulos, Bethany, Karkevandi, Vishwamitra and Najafirad}}}
+\bibcite{bian2020rumor}{{6}{2020}{{Bian et~al.}}{{Bian, Xiao, Xu, Zhao, Huang and Rong}}}
+\bibcite{birthriya2025detection}{{7}{2025}{{Birthriya et~al.}}{{Birthriya, Ahlawat and Jain}}}
+\bibcite{bountakas2022helphed}{{8}{2022}{{Bountakas and Xenakis}}{{}}}
+\bibcite{butavicius2022why}{{9}{2022}{{Butavicius et~al.}}{{Butavicius, Taib and Han}}}
+\bibcite{cheng2014cascades}{{10}{2014}{{Cheng et~al.}}{{Cheng, Adamic, Dow, Kleinberg and Leskovec}}}
+\bibcite{cidon2019high}{{11}{2019}{{Cidon et~al.}}{{Cidon, Gavish, Bleier, Korshun, Schweighauser and Tsitkin}}}
+\bibcite{ding2019deep}{{12}{2019}{{Ding et~al.}}{{Ding, Li, Bhanushali and Liu}}}
+\bibcite{dou2020enhancing}{{13}{2020}{{Dou et~al.}}{{Dou, Liu, Sun, Deng, Peng and Yu}}}
+\bibcite{duman2016emailprofiler}{{14}{2016}{{Duman et~al.}}{{Duman, Kalkan-Cakmakci, Egele, Robertson and Kirda}}}
+\bibcite{egele2013compa}{{15}{2013}{{Egele et~al.}}{{Egele, Stringhini, Kruegel and Vigna}}}
+\bibcite{fbi2024ic3}{{16}{2024}{{Federal Bureau of Investigation}}{{}}}
+\bibcite{gao2023alleviating}{{17}{2023}{{Gao et~al.}}{{Gao, Wang, He, Liu, Feng and Zhang}}}
+\bibcite{gascon2018reading}{{18}{2018}{{Gascon et~al.}}{{Gascon, Ullrich, Stritter and Rieck}}}
+\bibcite{guo2025efficient}{{19}{2025}{{Guo et~al.}}{{Guo, Wang, Yue, Sun and Hu}}}
+\bibcite{hamilton2017inductive}{{20}{2017}{{Hamilton et~al.}}{{Hamilton, Ying and Leskovec}}}
+\bibcite{hao2020inductive}{{21}{2020}{{Hao et~al.}}{{Hao, Cao, Fang, Xie and Wang}}}
+\bibcite{ho2019detecting}{{22}{2019}{{Ho et~al.}}{{Ho, Cidon, Gavish, Schweighauser, Paxson, Savage, Voelker and Wagner}}}
+\bibcite{ho2021hopper}{{23}{2021}{{Ho et~al.}}{{Ho, Dhiman, Akhawe, Paxson, Savage, Voelker and Wagner}}}
+\bibcite{klimt2004enron}{{24}{2004}{{Klimt and Yang}}{{}}}
+\bibcite{kumar2019predicting}{{25}{2019}{{Kumar et~al.}}{{Kumar, Zhang and Leskovec}}}
+\bibcite{leskovec2007outbreak}{{26}{2007}{{Leskovec et~al.}}{{Leskovec, Krause, Guestrin, Faloutsos, VanBriesen and Glance}}}
+\bibcite{leskovec2014snap}{{27}{2014}{{Leskovec and Krevl}}{{}}}
+\bibcite{li2022ttagn}{{28}{2022a}{{Li et~al.}}{{Li, Gou, Liu, Hou, Li and Xiong}}}
+\bibcite{li2022pdgnn}{{29}{2022b}{{Li et~al.}}{{Li, Xu, Xie, Zhou and Xuan}}}
+\bibcite{li2025umgad}{{30}{2025}{{Li et~al.}}{{Li, Qi, Zhao, Zheng, Cao, Dong and Yu}}}
+\bibcite{lin2021phishpedia}{{31}{2021}{{Lin et~al.}}{{Lin, Liu, Divakaran, Dong, Ng, Jiang, Chen, Zhang, Lau and Dong}}}
+\bibcite{liu2021pick}{{32}{2021a}{{Liu et~al.}}{{Liu, Ao, Qin, Chi, Feng, Yang and He}}}
+\bibcite{liu2021anomaly}{{33}{2021b}{{Liu et~al.}}{{Liu, Li, Pan, Gong, Zhou and Karypis}}}
+\bibcite{liu2020alleviating}{{34}{2020}{{Liu et~al.}}{{Liu, Dou, Yu, Deng and Peng}}}
+\bibcite{lo2021egraphsage}{{35}{2021}{{Lo et~al.}}{{Lo, Layeghy, Sarhan, Gallagher and Portmann}}}
+\bibcite{luo2024characterizing}{{36}{2024}{{Luo et~al.}}{{Luo, Young, Ho, Schweighauser, Katz-Bassett and Cidon}}}
+\bibcite{ma2021comprehensive}{{37}{2021}{{Ma et~al.}}{{Ma, Wu, Xue, Yang, Zhou, Sheng, Xiong and Akoglu}}}
+\bibcite{mcauley2015image}{{38}{2015}{{McAuley et~al.}}{{McAuley, Targett, Shi and van~den Hengel}}}
+\bibcite{nayebi2025spatiotemporal}{{39}{2025}{{Nayebi~Kerdabadi et~al.}}{{Nayebi~Kerdabadi, Byron, Sun and Iranitalab}}}
+\bibcite{nayeri2026alert}{{40}{2026}{{Nayeri and Rezvani}}{{}}}
+\bibcite{panzarasa2009patterns}{{41}{2009}{{Panzarasa et~al.}}{{Panzarasa, Opsahl and Carley}}}
+\bibcite{paranjape2017motifs}{{42}{2017}{{Paranjape et~al.}}{{Paranjape, Benson and Leskovec}}}
+\bibcite{pareja2020evolvegcn}{{43}{2020}{{Pareja et~al.}}{{Pareja, Domeniconi, Chen, Ma, Suzumura, Kanezashi, Kaler, Schardl and Leiserson}}}
+\bibcite{park2020unsupervised}{{44}{2020}{{Park et~al.}}{{Park, Kim, Han and Yu}}}
+\bibcite{pendlebury2019tesseract}{{45}{2019}{{Pendlebury et~al.}}{{Pendlebury, Pierazzi, Jordaney, Kinder and Cavallaro}}}
+\bibcite{pinto2012locating}{{46}{2012}{{Pinto et~al.}}{{Pinto, Thiran and Vetterli}}}
+\bibcite{rayana2015collective}{{47}{2015}{{Rayana and Akoglu}}{{}}}
+\bibcite{rossi2020temporal}{{48}{2020}{{Rossi et~al.}}{{Rossi, Chamberlain, Frasca, Eynard, Monti and Bronstein}}}
+\bibcite{safran2025phishinggnn}{{49}{2025}{{Safran and Musleh}}{{}}}
+\bibcite{sankar2020dysat}{{50}{2020}{{Sankar et~al.}}{{Sankar, Wu, Gou, Zhang and Yang}}}
+\bibcite{shah2011rumors}{{51}{2011}{{Shah and Zaman}}{{}}}
+\bibcite{shi2022h2fdetector}{{52}{2022}{{Shi et~al.}}{{Shi, Cao, Shang, Zhou, Zhou and Wu}}}
+\bibcite{stringhini2015thataint}{{53}{2015}{{Stringhini and Thonnard}}{{}}}
+\bibcite{sturman2025security}{{54}{2025}{{Sturman et~al.}}{{Sturman, Auton and Morrison}}}
+\bibcite{tan2020graph}{{55}{2020}{{Tan et~al.}}{{Tan, Chiew, Yong, Sze, Abdullah and Sebastian}}}
+\bibcite{tang2022rethinking}{{56}{2022}{{Tang et~al.}}{{Tang, Li, Gao and Li}}}
+\bibcite{velickovic2018graph}{{57}{2018}{{Veli{\v {c}}kovi{\'c} et~al.}}{{Veli{\v {c}}kovi{\'c}, Cucurull, Casanova, Romero, Li{\`o} and Bengio}}}
+\bibcite{vosoughi2018spread}{{58}{2018}{{Vosoughi et~al.}}{{Vosoughi, Roy and Aral}}}
+\bibcite{wang2022tsgn}{{59}{2022}{{Wang et~al.}}{{Wang, Chen, Xu, Wu, Shen, Xuan and Yang}}}
+\bibcite{weber2019antimoney}{{60}{2019}{{Weber et~al.}}{{Weber, Domeniconi, Chen, Weidele, Bellei, Robinson and Leiserson}}}
+\bibcite{weng2024rtapt}{{61}{2024}{{Weng et~al.}}{{Weng, Zhang, Zhu, Dou, Sun, Ye and Tian}}}
+\bibcite{wu2020who}{{62}{2020}{{Wu et~al.}}{{Wu, Yuan, Lin, You, Chen, Chen and Zheng}}}
+\bibcite{xu2020inductive}{{63}{2020}{{Xu et~al.}}{{Xu, Ruan, Korpeoglu, Kumar and Achan}}}
+\bibcite{you2022roland}{{64}{2022}{{You et~al.}}{{You, Du and Leskovec}}}
+\bibcite{yu2023streaming}{{65}{2023}{{Yu et~al.}}{{Yu, Xia, Liu and Wu}}}
+\bibcite{zhang2021mcgc}{{66}{2021}{{Zhang and Chen}}{{}}}
+\bibcite{zhang2018scalable}{{67}{2018}{{Zhang et~al.}}{{Zhang, Qiu, Yi and Song}}}
+\bibcite{zhang2018link}{{68}{2018}{{Zhang and Chen}}{{}}}
+\bibcite{zhao2021graphsmote}{{69}{2021}{{Zhao et~al.}}{{Zhao, Zhang and Wang}}}
+\csxdef{lastpage}{18}
+\gdef \@abspage@last{19}

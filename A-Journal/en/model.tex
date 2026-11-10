@@ -1,0 +1,128 @@
+% ============================================================
+% Model — Paper A (JNCA): the organizational communication graph in time
+% and the cascade invariant. Variables only; numbers live in the Case Study.
+% ============================================================
+\section{Model}
+\label{sec:model}
+
+The model formalizes the organization's communication graph in time and defines the invariant that a
+compromised account violates. All quantities here are variables; the numbers that instantiate them are stated
+in the Case Study (Sec.~\ref{sec:results}). Figure~\ref{fig:model} gives an overview.
+
+\begin{figure}[pos=htbp]\centering
+\resizebox{0.98\textwidth}{!}{%
+\begin{tikzpicture}[>=Latex, font=\small, node distance=6mm,
+  box/.style={draw, rounded corners=2pt, align=center, minimum height=8mm, inner sep=3pt, fill=blue!4},
+  lay/.style={draw, align=center, minimum width=22mm, minimum height=6mm, inner sep=2pt, fill=blue!8},
+  det/.style={box, fill=red!5}, flow/.style={-{Latex[length=2mm]}, thick}]
+  \node[box] (org) {Organization\\\scriptsize accounts $V$, roles, partners};
+  \node[lay, right=14mm of org, yshift=5mm] (l1) {contacts $E$\\\scriptsize who writes to whom};
+  \node[lay, below=2mm of l1] (l2) {rhythm $\tau$\\\scriptsize active windows};
+  \node[box, right=16mm of l1, yshift=-5mm] (inv) {Cascade invariant\\\scriptsize off-rhythm $tc{=}0$ $+$\\receiving-side wave $m_v^{(b)}$};
+  \node[det, right=14mm of inv] (d) {temporal detector\\\scriptsize node memory};
+  \node[box, right=12mm of d, fill=green!6] (eff) {Effectiveness\\\scriptsize leak-aware, low-FPR,\\base rate (Sec.~\ref{sec:effectiveness})};
+  \node[draw, dashed, rounded corners, fit=(l1)(l2), inner sep=4pt, label=above:{\footnotesize communication graph $G$ (Def.~\protect\ref{def:cg})}] (cg) {};
+  \draw[flow] (org) -- (cg);
+  \draw[flow] (cg.east) -- (inv.west);
+  \draw[flow] (inv) -- (d);
+  \draw[flow] (d) -- (eff);
+\end{tikzpicture}}
+\caption[General model]{The model, general to detailed (left to right). An organization induces the
+communication graph $G$ with a rhythm per account; a compromised account violates it by writing off-rhythm
+and by propagating, which leaves a receiving-side wave; a temporal detector with node memory reads that wave,
+and is judged by one \emph{definition of effectiveness}.}
+\label{fig:model}
+\end{figure}
+
+\begin{table}[pos=tbp]\centering\small
+\caption{Notation used throughout the paper. Concrete instantiations of the free
+parameters ($N$, $T$, $p_\mathrm{inf}$, $H$) are given in the Case Study (Sec.~\ref{sec:results}).}
+\label{tab:notation}
+\begin{tabular}{ll}
+\toprule
+\textbf{Symbol} & \textbf{Meaning} \\
+\midrule
+$G=(V,E,\tau)$ & organizational communication graph with rhythm \\
+$V$ & set of accounts (people/roles), $|V|=N$ \\
+$E$ & contacts: $(s,v)\in E$ iff $s$ corresponds with $v$ \\
+$\tau(s)$ & temporal rhythm (active windows) of sender $s$ \\
+$T$ & number of time buckets partitioning the period \\
+$b$ & a single time bucket, $b\in\{1,\dots,T\}$ \\
+$tc(s,v,t)$ & temporal consistency of $(s,v)$ at time $t$ \\
+$s,v$ & sender, victim (recipient); $s_0$ the compromised account \\
+$p_\mathrm{inf}$ & per-contact infection probability of a cascade \\
+$H$ & maximum cascade depth (hops) \\
+$K$ & number of carriers of a stealthy attacker (one send per bucket) \\
+$Z$ & static-GNN node embedding matrix, Eq.~\eqref{eq:static} \\
+$d_v^{(b)}$ & in-degree of node $v$ within bucket $b$, Eq.~\eqref{eq:temp-mem} \\
+$m_v^{(b)}$ & temporal-GNN memory of node $v$ after bucket $b$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{The organizational communication graph}
+\label{sec:cg}
+An organization's communication is relational and rhythmic: who corresponds with whom follows the
+organizational chart (supervisors, coworkers, business partners), and each account is active in
+characteristic windows of the week. Both facts are observable from mail headers alone, without content.
+
+\begin{definition}[Organizational communication graph]
+\label{def:cg}
+A communication graph is $G=(V,E,\tau)$, where $V$ is the set of accounts (people/roles), $E\subseteq V\times V$
+is the set of contacts ($(s,v)\in E$ iff $s$ corresponds with $v$; induced by the organization's hierarchy,
+coworker, and partner relations), and $\tau:V\to\mathcal{T}$ assigns to every sender a \emph{temporal
+rhythm}, the set of its active time windows. The temporal consistency of a message from $s$ to $v$ at time
+$t$ is $tc(s,v,t)=\mathbf{1}[t\in\tau(s)]$.
+\end{definition}
+
+\noindent A message from a known contact in its rhythm, $(s,v)\in E$ and $tc=1$, is the normal case. A known
+contact writing \emph{off-rhythm}, $tc=0$, is the canonical signature of a compromise: the relation is
+genuine, the timing is not. This single bit is weak on its own (legitimate mail also arrives off-hours, and an
+attacker with mailbox access can mimic the rhythm), which is why the invariant below reads the dynamics of the
+whole neighborhood rather than one message.
+
+\subsection{Threat model: the compromised account}
+\label{sec:threat}
+The attacker has gained mailbox access to an internal account $s_0$ (the \emph{patient zero}) and wants to
+deliver to victims messages classified as legitimate. From $s_0$ the attacker mails the account's own
+contacts; each recipient becomes a carrier with probability $p_\mathrm{inf}$ and propagates to its own
+contacts, up to depth $H$. The attack is therefore a \emph{cascade} on $G$ (Fig.~\ref{fig:cascade} in
+Sec.~\ref{sec:method}). The term follows \citet{ho2019detecting}, who coined \emph{lateral phishing} for
+phishing sent from compromised enterprise accounts and characterized it at scale; the multi-hop cascade with
+a per-contact infection probability is our formalization of the compounding they observed, in which newly
+compromised recipients become the next senders. Every single message in it is locally plausible: the sender is a genuine contact,
+the address is real, and the content can be clean.
+
+On capabilities: having mailbox access, the attacker knows the victim's rhythm and can mimic it; the attacker
+can also \emph{pace} the sends---$K$ carriers, one send per time bucket---so that no sending burst ever appears
+(the \emph{stealthy} attacker, who defeats volumetric detection by construction); and the attacker can restrict
+the attack to a single recipient with no propagation at all (the \emph{surgical} attack). Out of scope is an
+adaptive adversary with full knowledge of the graph and training poisoning, and external impersonation from
+outside the graph, which requires knowledge beyond $G$ and is treated in a separate study. We treat the signal
+as a cost increase for the attacker; no detection is final.
+
+\subsection{The cascade invariant}
+\label{sec:invariant}
+Lateral phishing is a propagation process, and propagation has two sides. On the \emph{sending} side a
+compromise shows up as a surge in one account's volume, or as an unusual path to a rare target; this is what
+practical defenses read, and it is what a patient attacker controls. On the \emph{receiving} side the cascade
+leaves a signature that no single message reveals and that the attacker cannot pace away: within the wave's
+window many of $v$'s neighbors receive mail, and the sender $u$ of the message to $v$ was itself hit just
+before. This receiving-side wave is the invariant. A learned temporal model with node memory registers it by
+scoring an event using the state from \emph{before} its bucket, so that it can only use the past (made precise
+in Sec.~\ref{sec:method}); a static model of the same topology, which sees who is connected to whom but not
+in what order, cannot. The invariant is testable by ablation: shuffling the time order of events destroys
+the order it relies on (together with within-bucket co-occurrence, Sec.~\ref{sec:m-detectors}), so the drop in
+performance under a time shuffle bounds how much of the signal is dynamics rather than topology.
+
+\subsection{Definition of detection effectiveness}
+\label{sec:effectiveness}
+Every result in the Case Study follows a standard that is detector-independent and operational; the
+Methodology (Sec.~\ref{sec:method}) is the protocol that operationalizes it.
+
+A high benchmark accuracy alone does not attest to detecting lateral phishing. A method works operationally
+for the targeted tail only when its advantage is temporal, vanishing under a control that destroys the
+temporal order, and transferable, so that the qualitative hierarchy of methods---which class wins, and where it
+breaks down---carries over to other topologies. Effectiveness is judged by sensitivity at a low
+false-positive rate with explicit base-rate accounting, rather than by headline AUC. The leak-aware protocol of
+Sec.~\ref{sec:method} implements this standard.
