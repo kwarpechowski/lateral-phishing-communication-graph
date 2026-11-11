@@ -1,0 +1,5 @@
+metric,mean,n_seeds
+static_auc,0.5,5
+static_r1,0.0,5
+temporal_auc,0.8732,5
+temporal_r1,0.7512,5

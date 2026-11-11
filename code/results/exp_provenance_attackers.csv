@@ -1,0 +1,4 @@
+attacker,auc,auc_ci,recall_at_fpr1,recall_ci
+external_freemail,0.88,0.002,0.0,0.0
+lookalike_domain,0.88,0.002,0.0,0.0
+compromised_account,0.506,0.001,0.0,0.0

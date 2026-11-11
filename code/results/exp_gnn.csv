@@ -1,0 +1,5 @@
+metric,mean,n_seeds
+gnn_auc,0.7844,5
+gnn_r1,0.054,5
+lgb_auc,0.8591,5
+lgb_r1,0.052,5

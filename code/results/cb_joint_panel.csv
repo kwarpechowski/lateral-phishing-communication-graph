@@ -1,0 +1,4 @@
+wariant,metryka,reach,1-hop,COMPA,hopper,anomaly-forest,GCN-statyczny,reczny-kontekst,temporalny-GNN,temporalny-GNN-uwaga
+nieadaptacyjny,auc,0.816,0.716,0.82,0.801,0.622,0.783,0.748,0.866,0.869
+joint:K5-g16-m0.3,auc,0.677,0.701,0.755,0.631,0.661,0.787,0.682,0.783,0.774
+joint:K5-g16-m0.3,recall_fpr1,0.677,0.0,0.057,0.069,0.031,0.07,0.033,0.081,0.044

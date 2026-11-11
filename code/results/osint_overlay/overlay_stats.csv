@@ -1,0 +1,8 @@
+category,n_edges,mean_degree,cross_org_frac,genuine_frac
+osint_mailing_list,659,8.79,0.74,1.0
+osint_oss_project,582,7.76,0.59,1.0
+osint_affiliation,950,12.67,0.79,1.0
+osint_vendor,723,9.64,0.73,1.0
+osint_certification,804,10.72,0.64,1.0
+osint_event,775,10.33,0.73,1.0
+osint_social,1170,15.6,0.63,1.0

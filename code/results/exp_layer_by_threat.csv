@@ -1,0 +1,11 @@
+task,config,auc
+nowi_nadawcy,full,0.845
+nowi_nadawcy,bez_OSINT,0.6999
+nowi_nadawcy,bez_czasu,0.845
+nowi_nadawcy,tylko_OSINT,0.7666
+nowi_nadawcy,tylko_czas,0.5
+przejecia,full,0.8717
+przejecia,bez_OSINT,0.8742
+przejecia,bez_czasu,0.4992
+przejecia,tylko_OSINT,0.4992
+przejecia,tylko_czas,0.8742

@@ -1,0 +1,7 @@
+metric,mean,ci95,n_seeds
+content_auc,0.5087,0.0349,8
+prov_auc,0.7803,0.0158,8
+comb_auc,0.7689,0.0246,8
+shuf_auc,0.5,0.0,8
+prov_recall1,0.0,0.0,8
+prov_fpr,0.2033,0.0239,8

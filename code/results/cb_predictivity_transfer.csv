@@ -1,0 +1,12 @@
+graph,kind,rank_transfer,struct_dist,deg_gini,clustering
+org-800,org,0.976,0.038,0.05,0.848
+ER-k6,rand,0.905,0.369,0.222,0.011
+ER-k12,rand,0.857,0.315,0.16,0.021
+BA-m2,rand,0.929,0.468,0.394,0.016
+BA-m5,rand,0.857,0.396,0.351,0.043
+WS-b03,rand,0.857,0.237,0.099,0.211
+email-Eu-core,real,0.571,0.543,0.5,0.269
+CollegeMsg,real,0.667,0.54,0.586,0.059
+sx-mathoverflow,real,0.381,0.808,0.438,0.226
+sx-askubuntu,real,0.429,0.634,0.449,0.17
+sx-superuser,real,0.429,0.744,0.416,0.194

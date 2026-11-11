@@ -1,0 +1,23 @@
+# Artefakty kompilacji LaTeX
+*.aux
+*.log
+*.out
+*.bbl
+*.blg
+*.synctex.gz
+*.xcp
+*.run.xml
+*.pdf
+!figures/*.pdf
+
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Logi re-runow
+logs/
+
+# Duze dane zewnetrzne (publiczny korpus Enron — patrz README)
+code/data/enron/
+code/data/topo_tmp/

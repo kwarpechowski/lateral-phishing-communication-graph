@@ -1,0 +1,14 @@
+layer,n_edges,mean_degree,cross_org_frac,weight
+contact,556,7.41,0.07,1.0
+org_hierarchy,518,6.91,0.0,0.9
+shared_domain,538,7.17,0.04,0.8
+osint_oss,3,0.04,0.0,0.7
+osint_publication,8,0.11,0.0,0.7
+osint_conference,167,2.23,0.08,0.6
+osint_certification,389,5.19,0.68,0.6
+osint_skill,1144,15.25,0.84,0.5
+osint_routine,397,5.29,0.8,0.4
+osint_event,134,1.79,0.62,0.4
+osint_pretext,159,2.12,0.82,0.3
+osint_platform,534,7.12,0.88,0.4
+interest_sim,53,0.71,0.11,0.3

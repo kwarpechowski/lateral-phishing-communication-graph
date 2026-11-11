@@ -1,0 +1,4 @@
+model,auc,recall_fpr1,n_seeds
+tab_1hop,0.7138,0.0,3
+tab_ctx,0.8058,0.0424,3
+gnn_temporal,0.7845,0.0764,3

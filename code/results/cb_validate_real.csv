@@ -1,0 +1,4 @@
+graph,1-hop,COMPA,anomaly-forest,GCN-statyczny,reczny-kontekst,temporalny-GNN,temporalny-GNN-uwaga
+synthetic:600,0.7076,0.8202,0.6269,0.8053,0.6996,0.816,0.8126
+email-Eu-core,0.6674,0.5778,0.5267,0.6631,0.665,0.6636,0.6614
+CollegeMsg,0.6443,0.5981,0.4523,0.6396,0.6374,0.6571,0.6487

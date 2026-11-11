@@ -1,0 +1,9 @@
+dataset,off_hours,model,auc,recall_fpr1
+email-Eu-core,0.0,static,0.5,0.0
+email-Eu-core,0.0,temporal,0.851,0.7055
+email-Eu-core,0.15,static,0.5,0.0
+email-Eu-core,0.15,temporal,0.7804,0.0
+CollegeMsg,0.0,static,0.5,0.0
+CollegeMsg,0.0,temporal,0.8549,0.0
+CollegeMsg,0.15,static,0.5,0.0
+CollegeMsg,0.15,temporal,0.7838,0.0
