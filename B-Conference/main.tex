@@ -83,7 +83,7 @@ Business Email Compromise caused adjusted losses of approximately \$2.9 billion 
 Modern filters built on content and reputation classify mass campaigns at $\sim$98\% accuracy
 \cite{birthriya2025detection,tan2020graph}, but that figure is dominated by the mass tail; the rare targeted
 residual---spear phishing by \emph{external impersonation} of a role or authority---evades them by design, because the message respects everything the
-victim knows: the right name, the right project, the right tone \cite{dewan2014analyzing,brown2025web}, at a cost
+victim knows: the right name, the right project, the right tone \cite{dewan2014analyzing}, at a cost
 that language models keep lowering \cite{bethany2024evaluating}.
 
 Our thesis is that such an attack is a violation of the organization's \emph{domain knowledge graph}. We model
@@ -132,11 +132,12 @@ study.
 \label{sec:related}
 \textbf{The knowledge-side attack.} Spear phishing draws its credibility from open-source intelligence
 (OSINT); automated harvesting of such traces has been studied since early work \cite{edwards2017panning}.
-\cite{dewan2014analyzing,dewan2017facebook} found that raw social and OSINT features added little beyond content
+\cite{dewan2014analyzing} found that raw social and stylometric features added little beyond content
 and URLs---a caution we take seriously: OSINT helps as a \emph{relation constructor}, a shared list or
 affiliation, and treating it as a flat feature is a known pitfall. Language models drastically lower the cost
 of personalization: automated campaigns match human experts in human-subject studies \cite{bethany2024evaluating},
-and realistic OSINT traces can be generated synthetically \cite{brown2025web}. Once content can be generated
+and enterprise credential spear phishing is caught in deployment only by sender and domain reputation
+\cite{ho2017detecting}. Once content can be generated
 perfectly, the defense must exploit relations rather than style.
 
 \textbf{Spear-phishing and BEC detection.} Targeted attacks differ from mass phishing in their
@@ -159,10 +160,10 @@ given role and attack channel (Sec.~\ref{sec:susc}).
 \textbf{Multiplex and heterogeneous graphs.} The formalism for fusing multiple relations over one set of
 accounts is the multiplex network \cite{kivela2014multilayer,dedomenico2013mathematical,magnani2013combinatorial,jeude2019multilayer}.
 Heterogeneous GNNs learn to fuse relation types: HAN \cite{wang2019heterogeneous}, HGT \cite{hu2020heterogeneous},
-MAGNN \cite{fu2020magnn}, and attributed-network embedding \cite{christophides2021overview,cen2019representation}.
+MAGNN \cite{fu2020magnn}, and attributed-network embedding \cite{cen2019representation}.
 Cross-view inconsistency as an anomaly signal is known in fraud detection \cite{liu2020alleviating}, and graph
 structure attacks \cite{zugner2018adversarial,zugner2019adversarial,dai2022towards} and defenses
-\cite{zhang2020gnnguard,jin2020graph,cai2021structural,wang2023label} matter because an attacker can fabricate
+\cite{zhang2020gnnguard,jin2020graph} matter because an attacker can fabricate
 edges. To our knowledge, cross-layer inconsistency has not been operationalized as a domain knowledge graph of
 corporate email for security.
 
@@ -217,7 +218,16 @@ multiplex AUC drops from $0.87$ to $0.74$ (the sweep of the Tab.~\ref{tab:inv1} 
 under the harsher ablation mix of Sec.~\ref{sec:mechanism}, where the OSINT margin is smaller, the same
 fabrication level costs less, $0.86\!\to\!0.82$), and given the event volume this corresponds to roughly $3$--$4$
 forged OSINT edges per targeted victim---cheap per victim, but visible in aggregate, because forged edges
-raise the score of a sender precisely where the legitimate new-sender mass also lives. The signal that
+raise the score of a sender precisely where the legitimate new-sender mass also lives.
+% ZMIANA: dodano punkt fab100 (nowy po recenzji zewnetrznej). Powod: recenzent chcial
+% pelnej krzywej fabrykacji. Przy 100% ( kazda krawedz ataku ma falszywy slad) multipleks
+% spada do poziomu kontroli shuffle (0.86 vs 0.855) i falszywe alarmy na legalnych nowych
+% nadawcach wracaja (0.10) — pelny falszywy slad jest nierozroznialny od prawdziwego
+% pokrycia OSINT; to uczciwa granica metody, nie usterka.
+At full fabrication ($100\%$, every attack edge carries a forged trace) the multiplex falls to the shuffle
+level ($0.86$ vs $0.855$) and the rescued new-sender false alarms reappear ($0.10$): a complete fake
+footprint is indistinguishable from genuine OSINT coverage, which marks the honest boundary of the method.
+The signal that
 remains is the joint consistency across layers that a fabricated edge does not create; this is the signal.
 A compromised
 internal account is the complementary case: $C(s,v)$ is high yet $tc=0$; its propagation dynamics are the
@@ -273,7 +283,8 @@ disjoint from training victims; headline numbers average $20$~seeds; the headlin
 FPR~$1\%$, with AUC reported alongside.
 
 \textbf{Real Enron multiplex and the leak control.} From the Enron headers we build a real
-structural-temporal multiplex over $818$~senders and $\sim\!170$k~events. The ``full'' feature set on Enron
+structural-temporal multiplex over $818$~senders and $\sim\!170$k~events, in the tradition of anomaly
+analysis on the Enron communication graph \cite{priebe2005scan}. The ``full'' feature set on Enron
 is contacts, co-recipients (accounts addressed together), same mail domain, and the sender's rhythm, all
 derived from headers; \emph{no OSINT layer is used on Enron}. The OSINT layers exist only in the synthetic
 case study, a deliberate split that keeps the real-data result free of synthetic overlays. The rhythm of a sender is estimated either
@@ -361,11 +372,25 @@ rhythm structure, not from feature capacity. Because this control shuffles every
 and rhythm, it does not by itself isolate the contribution of cross-layer \emph{consistency}; we therefore
 added a targeted control that permutes the OSINT layer memberships independently per layer (preserving each
 layer's margins) while leaving contacts and rhythm intact: the full model reaches $0.86$, the
-OSINT-shuffled variant $0.82$, and a contacts$+$rhythm-only variant $0.83$ ($20$~seeds each). Under this
+OSINT-shuffled variant $0.82$, and a contacts$+$rhythm-only variant $0.83$ ($20$~seeds each; bootstrap
+$95\%$ CIs are within $\pm0.005$ of each of these). Under this
 event mix, then, the joint OSINT contribution beyond contacts$+$rhythm is about $0.03$ AUC: the bulk of the
 headline gain over contacts-only comes from the contacts$+$rhythm pair, and the OSINT layers add a small but
 consistent margin---which the per-threat analysis below shows is concentrated in the external-impersonation
 channel, where contacts and rhythm are structurally blind.
+% ZMIANA: nowy eksperyment tc-split (po recenzji zewnetrznej). Powod: globalne AUC nie
+% mowi, KTORE zdarzenia korzystaja na multipleksie. Plaster po plastrze: przy znanych
+% nadawcach (rytm/kontakty) multipleks nic nie zmienia (0.79 vs 0.79) — caly zysek siedzi
+% na plasterku 'w rytmie' (0.58 -> 0.64, najtrudniejszy: atak mimicry) i 'nowy nadawca'
+% (0.81 -> 0.90). Tasowanie OSINT cofa oba plasterki do poziomu kontakty+rytm (0.57/0.81),
+% wiec to jest przyczynowy wkad OSINT, a nie dodatkowa pojemnosc cech.
+The slice-level breakdown (\texttt{exp\_tc\_split.csv}) locates this margin precisely: on the
+known-sender slice---events where the sender is a contact of the victim---the multiplex changes nothing
+($0.79$ vs $0.79$ for contacts$+$rhythm); on the hardest slice, in-rhythm events (where an attacker mimics
+the rhythm), it lifts AUC from $0.58$ to $0.64$; and on the new-sender slice it lifts $0.81$ to $0.90$
+(sensitivity@FPR$1\%$ $0.07\!\to\!0.11$). The OSINT shuffle reverts both gains to the contacts$+$rhythm level
+($0.57$ and $0.81$), so the margin is a causal OSINT contribution, not feature capacity, and it works
+exactly where contacts and rhythm are structurally blind.
 The most striking difference is in the false alarms: the contacts
 detector flags $100\%$ of legitimate new senders as attacks, the multiplex flags $0\%$; OSINT coverage rescues
 a legitimate sender who shares an observable fact with the victim. The signal is fragile, however: at $50\%$

@@ -44,7 +44,7 @@ volumetric / path-based (LightGBM) & $\mathrm{n\_estimators}{=}200$, $\mathrm{se
 \end{tabular}
 \caption{Detector hyperparameters: fixed \emph{uniformly} for all models of a given family, framework
 defaults or lightly chosen, without grid search. Architecture check ($5$~seeds, AUC / sensitivity@FPR$1\%$,
-\texttt{exp\_cascade\_arch.csv}): TGN-lite $0.889/0.114$, TGAT-lite $0.902/0.133$, hand-crafted context
+\texttt{exp\_cascade\_arch.csv}): TGN-lite $0.874/0.103$, TGAT-lite $0.901/0.123$, hand-crafted context
 $0.807/0.040$---the attention variant of the temporal model matches or exceeds it at every seed.}
 \label{stab:hparams}
 \end{table}
@@ -58,7 +58,10 @@ table of the main text. The temporal GNN dominates; time shuffling (red) levels 
 \label{sfig:detectors}
 \end{figure}
 
-% ZMIANA: wartosci policzono od nowa z nowych plikow wynikowych po naprawie kodu.
+% ZMIANA: liczby policzono od nowa po przepisaniu licznikow wolumetrycznych na przyczynowosc
+% zdarzeniowa. Dodano wiersz wolumetrycznego: po naprawie widzi on rozwijajacy sie burst
+% (0.82-0.88 w calym sweepie) i uczciwie pokazac, ze zwykla kaskade lapie tez volume —
+% przewaga sygnalu odbiorczego nie wynika ze slomianego baselinu.
 \begin{table}[h]\centering\small
 \begin{tabular}{l ccccccc}
 \toprule
@@ -66,11 +69,13 @@ $p_\mathrm{inf}$ & $0.05$ & $0.1$ & $0.2$ & $0.3$ & $0.5$ & $0.7$ & $0.9$ \\
 \midrule
 1-hop        & $0.60$ & $0.56$ & $0.59$ & $0.60$ & $0.68$ & $0.73$ & $0.79$ \\
 manual & $0.75$ & $0.77$ & $0.77$ & $0.79$ & $0.79$ & $0.81$ & $0.85$ \\
-temporal   & $\mathbf{0.97}$ & $\mathbf{0.95}$ & $\mathbf{0.90}$ & $\mathbf{0.87}$ & $\mathbf{0.87}$ & $\mathbf{0.89}$ & $\mathbf{0.92}$ \\
+volume & $0.87$ & $0.88$ & $0.86$ & $0.83$ & $0.83$ & $0.82$ & $0.86$ \\
+temporal   & $\mathbf{0.97}$ & $\mathbf{0.95}$ & $\mathbf{0.91}$ & $\mathbf{0.87}$ & $\mathbf{0.87}$ & $\mathbf{0.89}$ & $\mathbf{0.92}$ \\
 \bottomrule
 \end{tabular}
 \caption{Cascade model sweep (AUC, depth~$4$, $8$~seeds): the hierarchy holds across the whole range of the
-infection probability, and the receiving-side signal does not vanish at a realistically low
+infection probability, the volumetric baseline (with its event-causal counters) is a solid mid-table
+detector of the \emph{naive} cascade, and the receiving-side signal does not vanish at a realistically low
 $p_\mathrm{inf}$.}
 \label{stab:pinf}
 \end{table}
@@ -85,14 +90,14 @@ $p_\mathrm{inf}$.}
 \cmidrule(lr){2-3}\cmidrule(lr){4-5}
 Organizations & temp. & manual & temp. & manual \\
 \midrule
-$19$  & $0.76$ & $0.75$ & $\mathbf{0.062}$ & $0.027$ \\
-$30$  & $0.69$ & $0.75$ & $\mathbf{0.041}$ & $0.025$ \\
-$200$ & $0.78$ & $0.81$ & $\mathbf{0.076}$ & $0.042$ \\
+$19$  & $0.77$ & $0.75$ & $\mathbf{0.077}$ & $0.027$ \\
+$30$  & $0.70$ & $0.75$ & $\mathbf{0.049}$ & $0.025$ \\
+$200$ & $0.79$ & $0.81$ & $\mathbf{0.076}$ & $0.042$ \\
 \bottomrule
 \end{tabular}
 \caption{Inductive validation on unseen organizations ($19$~organizations: $5$~seeds; $30$ and
 $200$~organizations: $3$~seeds): the temporal detector's operational advantage over the hand-crafted context
-holds on companies never seen in training at every scale ($2.3\times$, $1.7\times$, $1.8\times$), while its
+holds on companies never seen in training at every scale ($2.9\times$, $2.0\times$, $1.8\times$), while its
 AUC does not lead at the two larger scales.}
 \label{stab:scale}
 \end{table}
@@ -100,7 +105,7 @@ AUC does not lead at the two larger scales.}
 \begin{figure}[h]\centering
 \includegraphics[width=0.62\linewidth]{fig_cascade_scale.pdf}
 \caption{Inductive validation: sensitivity@FPR1\% on unseen organizations against the number of companies
-(values as in Tab.~S3). The advantage holds inductively at every scale ($2.3\times$, $1.7\times$, $1.8\times$).}
+(values as in Tab.~S3). The advantage holds inductively at every scale ($2.9\times$, $2.0\times$, $1.8\times$).}
 \label{sfig:scale}
 \end{figure}
 
@@ -109,41 +114,42 @@ AUC does not lead at the two larger scales.}
 
 \begin{figure}[h]\centering
 \includegraphics[width=\linewidth]{fig_cascade_realgraphs.pdf}
-\caption{Two real topologies (\texttt{email-Eu-core}, \texttt{CollegeMsg}). The volumetric detector is
-weak in both regimes; the temporal GNN (blue) is ahead in both and its advantage is largest under the
-stealthy attack, where the volumetric operating point collapses. Values as in block~(b) of the real-graph table of the main text.}
+\caption{Two real topologies (\texttt{email-Eu-core}, \texttt{CollegeMsg}). The volumetric detector wins the
+naive blast (its event-causal counters see the burst) and collapses under the stealthy attack, where the
+temporal GNN (blue) stays ahead. Values as in block~(b) of the real-graph table of the main text.}
 \label{sfig:realgraphs}
 \end{figure}
 
 \begin{figure}[h]\centering
 \includegraphics[width=\linewidth]{fig_cascade_enron.pdf}
-\caption{The cascade invariant on Enron (values as in block~(a) of the real-graph table of the main text):
-the same hierarchy as on the case-study graph (1-hop $<$ hand-crafted context $<$ temporal GNN), with the
-time shuffle bringing the temporal detector back close to the hand-crafted result.}
+\caption{The cascade invariant on Enron, in both regimes (values as in block~(a) of the real-graph table
+of the main text): under the naive blast the same hierarchy as on the case-study graph (1-hop $<$
+hand-crafted context $<$ temporal GNN) with the time shuffle bringing the temporal detector back close to
+the hand-crafted result; under the stealthy attacker the receiving-side signal persists at full strength
+($0.88$/$0.86$) while 1-hop drops to $0.60$.}
 \label{sfig:enroncasc}
 \end{figure}
 
 \clearpage
 \section*{S5. Rigor: label noise and the sensitivity--FPR curve}
 
-% ZMIANA: podpis podaje teraz, dla jakiego ataku (skryty K=3) i ktorego zestawu
-% eksperymentow sa te liczby. Powod: wartosci przy 0% szumu nie pasowaly do zadnego
-% wiersza tabel w glownym tekscie i nie dalo sie sprawdzic, skad pochodza.
+% ZMIANA: liczby policzono od nowa po przepisaniu licznikow COMPA na przyczynowosc
+% zdarzeniowa; dodano kolumne 'path (no precursor)' (ablacja z tabeli baselines).
 \begin{table}[h]\centering
-\begin{tabular}{lcccc}
+\begin{tabular}{lccccc}
 \toprule
-Label noise & vol. & path & manual & temp. \\
+Label noise & vol. & path & path (no precursor) & manual & temp. \\
 \midrule
-$0\%$   & $0.60$ & $0.66$ & $0.67$ & $\mathbf{0.73}$ \\
-$5\%$   & $0.60$ & $0.66$ & $0.66$ & $\mathbf{0.70}$ \\
-$10\%$  & $0.60$ & $0.65$ & $0.65$ & $\mathbf{0.66}$ \\
-$20\%$  & $0.59$ & $\mathbf{0.63}$ & $0.61$ & $0.60$ \\
+$0\%$   & $0.61$ & $0.67$ & $0.62$ & $0.67$ & $\mathbf{0.72}$ \\
+$5\%$   & $0.60$ & $0.66$ & $0.62$ & $0.65$ & $\mathbf{0.68}$ \\
+$10\%$  & $0.60$ & $\mathbf{0.65}$ & $0.62$ & $0.64$ & $0.64$ \\
+$20\%$  & $0.58$ & $\mathbf{0.63}$ & $0.61$ & $0.60$ & $0.60$ \\
 \bottomrule
 \end{tabular}
 \caption{Audit of noisy training labels (AUC; stealthy attack at $K{=}3$ in the second harness
 (\texttt{cascadebench}, $600$-account organization; the baseline table of the main text);
 $20$~seeds): the learned temporal model
-degrades fastest ($0.73\!\to\!0.60$), so its advantage shrinks under realistic label noise. Values at
+degrades fastest ($0.72\!\to\!0.60$), so its advantage shrinks under realistic label noise. Values at
 $K{=}3$ differ from the corresponding row of the baseline table by $\le 0.02$ AUC owing to run-to-run
 nondeterminism of the temporal model's training (thread scheduling in the GNN step); the qualitative
 ordering of detectors is unchanged.}
@@ -152,12 +158,12 @@ ordering of detectors is unchanged.}
 
 \begin{figure}[h]\centering
 \includegraphics[width=\linewidth]{fig_cascade_fpr.pdf}
-% ZMIANA jezykowa: usunieto 'the volume detector dominates the blast' — powod: po zasadzie
-% 'cechy tylko z przeszlosci' detektor wolumetryczny nie wygrywa nawet blast (AUC 0.63 vs 0.89
-% dla temporalu); jego czulosc @5% to 0.13 pod blast i 0.05 pod stealth.
-\caption{Sensitivity--FPR curve ($10$~seeds). At low FPR all methods are weak; the temporal
-detector stays ahead of the volumetric one in both regimes, and the gap is largest under the
-stealthy attack.}
+% ZMIANA jezykowa: po przepisaniu licznikow na przyczynowosc zdarzeniowa detektor
+% wolumetryczny ZNOWU wygrywa blast (widzi rozwijajacy sie burst w kubełku) i przegrywa
+% tylko w reżimie skrytym — to jest cala teza artykulu, wiec tak trzeba napisac.
+\caption{Sensitivity--FPR curve ($10$~seeds). At low FPR all methods are weak; the volumetric detector
+leads under the naive blast (its event-causal counters see the burst build up), while the temporal detector
+stays ahead of it under the stealthy attack.}
 \label{sfig:fpr}
 \end{figure}
 
@@ -187,8 +193,12 @@ headline-contrast tables) implement identical feature definitions.
   \emph{propagation} $=|(\mathcal{N}(v)\setminus\{s\})\cap\bigcup_{b'=b-W}^{b-1}\mathrm{sent}(b')|/|\mathcal{N}(v)|$
   (how many of the victim's other contacts are themselves sending).
   \item \textbf{Volumetric baseline (inspired by COMPA).} Three per-event deviations of the sender from its own
-  profile, computed from strictly past buckets ($<b$): recipient novelty $1/(1+\#\{s\!\to\!v \text{ before } b\})$, time novelty
-  $1/(1+\#\{\text{events of } s \text{ in buckets} < b\})$, and sender activity $\#\{\text{events of } s \text{ before } b\}$. COMPA
+  profile, computed \emph{event-causally}: recipient novelty $1/(1+\#\{s\!\to\!v \text{ earlier}\})$, time novelty
+  $1/(1+\#\{\text{events of } s \text{ earlier}\})$, and sender activity $\#\{\text{events of } s \text{ earlier}\}$,
+  where ``earlier'' covers all earlier buckets \emph{and} the earlier events of the current bucket (in a fixed
+  stream order), so a burst building up within a bucket is visible to the detector. An earlier draft of the
+  package counted these statistics over the full stream (a look-ahead leak); after the fix the counters are
+  causal, and every experiment was re-run. COMPA
   itself detects compromised accounts on social networks by comparing each new message with a behavioral
   profile of the account (time of day, source, language, links, topics); we transfer only its
   per-sender-deviation idea to email headers, restricted to volume and timing.
@@ -232,6 +242,7 @@ Library TGN (extra row) & main-text detector table & $3$ \\
 Architecture robustness (TGN-lite / TGAT-lite) & Sec.~S1 & $5$ \\
 Stealthy attacker sweep & main-text stealth table and figure & $20$ \\
 Baselines (a) stealth / (b) surgical & main-text baseline table & $20$ \\
+Legal broadcast waves (hard negatives) & main-text baselines section & $20$ \\
 Headline contrasts (Wilcoxon, Cliff's $\delta$) & main-text rigor section & $20$ \\
 Label-noise audit & Tab.~S4 & $20$ \\
 Static-blindness audit (compromised senders) & --- & $20$ \\

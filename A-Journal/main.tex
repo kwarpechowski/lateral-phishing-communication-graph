@@ -67,21 +67,23 @@ and the content can be clean. We argue that such an attack is a violation of the
 graph in time. The compromised account writes off-rhythm and, decisively, propagates, so the cascade leaves a
 receiving-side wave signature that no single message reveals.
 
-% ZMIANA: nowe liczby. Kod eksperymentow liczyl niektore cechy tak, ze widzial przyszlosc
-% i dane testowe; po naprawie wszystkie wyniki policzono od nowa. Detektor wolumetryczny
-% daje teraz 0.51 przy K=1 — dawniejsze 0.44 (ponizej losowosci) bylo zlym wynikiem tej
-% wlasnie usterki, a nie wlasciwoscia detektora.
+% ZMIANA: liczby policzono od nowa po przepisaniu licznikow wolumetrycznych na
+% przyczynowosc zdarzeniowa (liczniki widza wczesniejsze zdarzenia TEGO kubełka). Powod: przy podziale na
+% poziomie kubełka detektor wolumetryczny nie widzial rozwijajacego sie burstu — byl
+% slomiana kuka, a to zbyt latwe twierdzenie. Po naprawie widzi burst (0.63 w blast na
+% grafie case study, 0.83 na SNAP), ale w reżimie skrytym nadal nie ma z czego liczyc
+% sygnalu (0.50 przy K=1), wiec teza zostaje, tylko uczciwiejsza.
 % ZMIANA jezykowa: 'degrades far less than volume' zamieniono na 'stays above the volumetric one'.
-% Powod: w liczbach absolutnych temporal traci WIECEJ (0.86->0.59 od blast do K=1, volume 0.61->0.51),
-% prawdziwe jest tylko to, ze temporal jest powyzej volume na kazdym poziomie K. Zawezone tez
-% 'regime-level contrast on three graphs': na Enronie replikuje sie hierarchia i efekt shuffle,
-% nie kontrast reżimow (brak reżimu stealth w eksperymencie Enron).
+% Powod: w liczbach absolutnych temporal traci WIECEJ (0.86->0.57 od blast do K=1, volume 0.63->0.50),
+% prawdziwe jest tylko to, ze temporal jest powyzej volume na kazdym poziomie K. Enron ma teraz
+% oba reżimy (blast i stealth), wiec hierarchia replikuje sie tam w obu.
 The main result is that this signal stays above the volumetric detector under a stealthy attacker. Against an attacker who spreads the
 sends over time, volume-based detection---the class of methods deployed in practice---never develops a
-usable signal (AUC $0.51$ at $K{=}1$, and no stronger under the naive blast), while a temporal graph
-network reading the receiving side stays above it at every level (AUC $0.59$ vs $0.51$ at $K{=}1$); the
-advantage vanishes under a time-shuffle control, the hierarchy replicates on Enron, and the regime
-contrast on two SNAP graphs (\texttt{email-Eu-core}, \texttt{CollegeMsg}). We also mark the boundary: a single-recipient attack without propagation is invisible to
+usable signal (AUC $0.50$ at $K{=}1$; it does catch the naive blast, but that is the case the attacker can
+trivially avoid), while a temporal graph
+network reading the receiving side stays above it at every level (AUC $0.57$ vs $0.50$ at $K{=}1$); the
+advantage vanishes under a time-shuffle control, the hierarchy replicates on Enron in both regimes, and the
+regime contrast on two SNAP graphs (\texttt{email-Eu-core}, \texttt{CollegeMsg}). We also mark the boundary: a single-recipient attack without propagation is invisible to
 every detector.
 
 The methodological contribution is a leak-aware evaluation protocol---matched design, causal time-shuffle
@@ -94,7 +96,6 @@ the communication graph: measurable, though not yet operationally solved.
 %% Research highlights (each <= 85 characters incl. spaces)
 \begin{highlights}
 \item Lateral phishing leaves a receiving-side wave on the communication graph.
-% ZMIANA jezykowa: jak wyzej — prawdziwe jest 'powyzej volume na kazdym poziomie'.
 \item The cascade signal stays above volume detection at every stealth level.
 \item A time-shuffle control shows the advantage is temporal, not topological.
 \item The hierarchy replicates on Enron; the regime contrast on two SNAP graphs.
