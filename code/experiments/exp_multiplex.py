@@ -131,7 +131,7 @@ REAL_OSINT = ["osint_conference", "osint_certification", "osint_skill", "osint_r
               "osint_event", "osint_pretext", "osint_platform", "interest_sim"]
 
 
-def run(p_cross, fabrication_rate, real=False):
+def run(p_cross, fabrication_rate, real=False, perseed_out=None):
     base = build_layers()
     contact = {"contact": base["contact"]}
     accum = {k: [] for k in ["contact_auc", "mux_auc", "shuf_auc",
@@ -186,6 +186,9 @@ def run(p_cross, fabrication_rate, real=False):
         newm = (yte == 0) & (st_te == "new_osint")
         accum["fp_newsender_contact"].append(float((sc[newm] >= thr_c).mean()) if newm.any() else 0.0)
         accum["fp_newsender_mux"].append(float((sm[newm] >= thr_m).mean()) if newm.any() else 0.0)
+        if perseed_out is not None:
+            for k, v in accum.items():
+                perseed_out.append([seed, k, round(float(v[-1]), 4)])
     means = {k: (float(np.mean(v)) if v else 0.0) for k, v in accum.items()}
     sds = {k + "_sd": (float(np.std(v, ddof=1)) if len(v) > 1 else 0.0) for k, v in accum.items()}
     return {**means, **sds}
@@ -199,14 +202,18 @@ def _self_rows():
 def main():
     out = RESULTS / "exp_multiplex.csv"
     grid = [("default", 0.5, 0.0), ("low_cross", 0.2, 0.0), ("high_cross", 0.8, 0.0),
-            ("fab20", 0.5, 0.2), ("fab50", 0.5, 0.5)]
+            ("fab20", 0.5, 0.2), ("fab50", 0.5, 0.5), ("fab100", 0.5, 1.0)]
     rowsout = []
+    perseed = []
     print(f"{'config':11s} | {'AUC contact/mux/shuf':>22s} | {'R@1% contact/mux/shuf':>22s} "
           f"| {'newsndr-FP c/m':>14s}")
     for name, pc, fab in grid:
         # glowny wynik RQ2 ("default") na REALNYCH warstwach; sweepy p_cross/fabrykacji
         # na syntetycznym kontrolowanym wariancie (realne warstwy nie maja tych pokretel).
-        r = run(pc, fab, real=(name == "default"))
+        _ps = []
+        r = run(pc, fab, real=(name == "default"), perseed_out=_ps)
+        for row in _ps:
+            perseed.append([name, pc, fab] + row)
         rowsout.append({"config": name, "p_cross": pc, "fabrication": fab, **{k: round(v, 3) for k, v in r.items()}})
         print(f"{name:11s} | {r['contact_auc']:6.3f} {r['mux_auc']:6.3f} {r['shuf_auc']:6.3f}     | "
               f"{r['contact_r1']:6.3f} {r['mux_r1']:6.3f} {r['shuf_r1']:6.3f}     | "
@@ -214,6 +221,11 @@ def main():
     with out.open("w", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=list(rowsout[0])); w.writeheader(); w.writerows(rowsout)
     print(f"\n[exp-multiplex] wrote {out}")
+    out_ps = RESULTS / "exp_multiplex_perseed.csv"
+    with out_ps.open("w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["config", "p_cross", "fabrication", "seed", "metric", "value"])
+        w.writerows(perseed)
 
 
 if __name__ == "__main__":

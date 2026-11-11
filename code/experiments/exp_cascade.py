@@ -436,6 +436,7 @@ def run_seed(seed):
 
 def main():
     agg = {}
+    perseed = []
     seeds = SEEDS[:3] if SCALE_N else SEEDS
     for seed in seeds:
         res, na, nt = run_seed(seed)
@@ -443,6 +444,7 @@ def main():
             agg.setdefault(k, {"auc": [], "r1": []})
             agg[k]["auc"].append(a)
             agg[k]["r1"].append(r)
+            perseed.append([seed, k, round(a, 4), round(r, 4)])
         line = " | ".join(f"{k} auc={v[0]:.3f} r1={v[1]:.3f}" for k, v in res.items())
         print(f"  seed={seed} (ataki {na}/{nt}): {line}", flush=True)
     tag = f"_scale{SCALE_N}" if SCALE_N else ""
@@ -461,6 +463,14 @@ def main():
                 ]
             )
     print(f"\n[cascade] zapisano {out}")
+    tag_ps = f"_scale{SCALE_N}" if SCALE_N else ""
+    tag_ps += "_org" if SPLIT == "org" else ""
+    out_ps = RESULTS / f"exp_cascade{tag_ps}_perseed.csv"
+    with out_ps.open("w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["seed", "model", "auc", "recall_fpr1"])
+        w.writerows(perseed)
+    print(f"[cascade-perseed] -> {out_ps}")
     for k in ["tab_1hop", "tab_ctx", "gnn_static", "gnn_temporal", "gnn_temporal_shuf"]:
         if k in agg:
             print(

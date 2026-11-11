@@ -209,7 +209,9 @@ def _feat(rows, contact, corecip, domain, active_rhythm, full):
     return np.array(X, np.float32)
 
 
-def _eval(rows, contact, corecip, domain, active_rhythm, seed, contact_e=None, corecip_e=None):
+def _eval(
+    rows, contact, corecip, domain, active_rhythm, seed, contact_e=None, corecip_e=None
+):
     # LEAK-AWARE: w trybach split warstwy strukturalne pochodza z wczesnego okna
     contact_e = contact_e if contact_e is not None else contact
     corecip_e = corecip_e if corecip_e is not None else corecip
@@ -227,8 +229,14 @@ def _eval(rows, contact, corecip, domain, active_rhythm, seed, contact_e=None, c
     tr = ~te
     out = {}
     for tag, full in (("temporal", False), ("full", True)):
-        X = _feat(rows, contact_e if full else contact, corecip_e if full else corecip,
-                            domain, active_rhythm, full)
+        X = _feat(
+            rows,
+            contact_e if full else contact,
+            corecip_e if full else corecip,
+            domain,
+            active_rhythm,
+            full,
+        )
         clf = LGBMClassifier(
             n_jobs=1, random_state=42, n_estimators=150, verbose=-1
         ).fit(X[tr], y[tr])
@@ -247,8 +255,17 @@ def main():
         print(f"[split] brak maildira {ENRON}")
         return
     print("[split] parsowanie Enrona (chronologicznie)...", flush=True)
-    (sent, eval_msgs, active_full, active_early, contact, corecip, domain,
-     contact_early, corecip_early) = parse()
+    (
+        sent,
+        eval_msgs,
+        active_full,
+        active_early,
+        contact,
+        corecip,
+        domain,
+        contact_early,
+        corecip_early,
+    ) = parse()
     print(
         f"[split] nadawcow z podzialem={len(sent)} (SPLIT_FRAC={SPLIT_FRAC})",
         flush=True,
@@ -256,18 +273,33 @@ def main():
 
     OFF = 0.175  # 15-20% legalnej poczty off-hours (srodek przedzialu) dla kontroli laczonej
     acc = defaultdict(lambda: defaultdict(list))
+    perseed = []
     for seed in SEEDS:
         # leaky: rytm z calej historii (reprodukcja); split: rytm z wczesnego okna (bez wycieku);
         # split+oh: OBIE kontrole naraz (podzial czasowy + ~17.5% off-hours) -> najuczciwsza liczba.
         for mode, rhythm, orate, cl, cc in (
-            ("leaky", active_full, 0.0, contact, corecip),            # pelne warstwy + rytm z calosci
-            ("split", active_early, 0.0, contact_early, corecip_early),  # warstwy I rytm z wczesnych 60%
+            (
+                "leaky",
+                active_full,
+                0.0,
+                contact,
+                corecip,
+            ),  # pelne warstwy + rytm z calosci
+            (
+                "split",
+                active_early,
+                0.0,
+                contact_early,
+                corecip_early,
+            ),  # warstwy I rytm z wczesnych 60%
             ("split+oh", active_early, OFF, contact_early, corecip_early),
         ):
             rows = _events(eval_msgs, rhythm, contact, seed, orate)
-            for k, v in _eval(rows, cl, cc, domain, rhythm, seed,
-                              contact_e=cl, corecip_e=cc).items():
+            for k, v in _eval(
+                rows, cl, cc, domain, rhythm, seed, contact_e=cl, corecip_e=cc
+            ).items():
                 acc[mode][k].append(v)
+                perseed.append([mode, seed, k, round(float(v), 4)])
     out = RESULTS / "exp_enron_temporal_split.csv"
     with out.open("w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
@@ -275,6 +307,11 @@ def main():
         for mode in ("leaky", "split", "split+oh"):
             for k, v in acc[mode].items():
                 w.writerow([mode, k, round(float(np.mean(v)), 4), len(v)])
+    out_ps = RESULTS / "exp_enron_temporal_split_perseed.csv"
+    with out_ps.open("w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["mode", "seed", "metric", "value"])
+        w.writerows(perseed)
     print(
         f"[split] Enron, rytm z calej historii (leaky) vs podzial czasowy (split) vs +off-hours:"
     )

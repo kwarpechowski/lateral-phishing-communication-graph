@@ -17,34 +17,48 @@ Wszystkie liczby w artykułach pochodzą wprost z plików `code/results/*.csv`.
 
 - **Hierarchia detektorów** (kaskada, graf 150 kont): lokalne cechy 1-hop są bezużyteczne (AUC 0.70),
   statyczny GNN 0.76, ręczny kontekst 0.81, **temporal GNN 0.88** — jedyny detektor z realną czujnością
-  operacyjną (0.121 przy FPR 1%). Tasowanie kolejności zdarzeń zabiera mu przewagę (→ 0.73), więc
+  operacyjną (0.120 przy FPR 1%). Tasowanie kolejności zdarzeń zabiera mu przewagę (→ 0.72), więc
   sygnał jest dynamiczny, nie topologiczny.
-- **Atak rozłożony w czasie (stealth)**: detektor wolumetryczny kładzie się (0.51 przy K=1, czujność 0.00),
-  temporal trzyma się powyżej losowości (0.59). Kluczowa statystyka: temporal vs volume **+0.105 AUC,
-  p<0.001, δ=0.89**; temporal vs kontekst ręczny — **brak istotnej różnicy (p=0.62)**: sygnał odbiorczy
-  czytają równie dobrze model i cechy ręczne.
+- **Atak rozłożony w czasie (stealth)**: detektor wolumetryczny nie ma sygnału (0.50 przy K=1, czujność
+  0.00) — liczniki COMPA są przyczynowo-zdarzeniowe (widzą wczesniejsze zdarzenia bieżącego kubełka), więc
+  widzą burst w blast (0.63 na grafie case study, 0.83 na SNAP), ale jedno wysłanie na kubełek zostawia
+  każde okno przyczynowe puste. Temporal trzyma się powyżej (0.57 przy K=1). Kluczowa statystyka:
+  temporal vs volume **+0.104 AUC, p<0.001, δ=0.96**; temporal vs kontekst ręczny — **brak istotnej różnicy
+  (−0.008, p=0.39, w obu protokołach benign)**: sygnał odbiorczy czytają równie dobrze model i cechy ręczne.
 - **Sam bit rytmu nie wnosi nic** w tym harnessie (rhythm-only 0.51; poczta poza rytmem: ataki 78% ≈
   legalna 79%) — sygnałem jest fala po stronie *odbiorców*, nie rytm nadawcy.
 - **Granica modelu zagrożeń**: sygnał wymaga fan-outu ≥ 2 — atak chirurgiczny na jednego odbiorcę jest
   niewidoczny dla wszystkich detektorów (~0.50). Propagacja (kaskada) nie jest konieczna — wystarcza
-  synchroniczna wysyłka do kilku odbiorców (volume 0.69–0.84, temporal 0.68–0.93 przy p_inf=0).
-- **Walidacja na prawdziwych topologiach**: Enron 1990 kont (temporal 0.83, tasowanie → 0.75) i dwa grafy
-  SNAP — przewaga temporal nad volume największa pod stealth (+0.16/+0.19 AUC); po uczciwej zasadzie
-  liczenia cech volume nie wygrywa już nawet blast.
+  synchroniczna wysyłka do kilku odbiorców (volume 0.70–0.83, temporal 0.71–0.93 przy p_inf=0). Ablacja hoppera bez cechy precursor
+  (hopper-bez-precursor) pokazuje, że to precursor (≈ freshness kontekstu ręcznego) nosi jego sygnał
+  stealth: 0.72→0.61 przy K=1. Trudne negatywy (łagodne fale legalne, 30% liczby ataków, w rytmie)
+  prawie nic nie kosztują: ≤0.013 AUC każdego detektora.
+- **Walidacja na prawdziwych topologiach**: Enron ~1970 kont w OBU reżimach — blast: temporal 0.82
+  (tasowanie → 0.73, hierarchia jak na grafie case study); stealth: kontekst ręczny 0.88 (czujność 0.28!),
+  temporal 0.86, 1-hop 0.60. Na SNAP reżim stealth daje przewagę sygnału odbiorczego nad volume
+  (+0.15/+0.23 AUC: ctx 0.86/0.83, temporal 0.78/0.83 vs volume 0.59–0.64), a blast wygrywa volume (0.83)
+  — jego przyczynowo-zdarzeniowe liczniki widzą burst, którego oknom strictly-past odbiorczych detektorów
+  brakuje na rzadkiej topologii.
 - **Granice operacyjne**: przy realnej częstości ataku (1:10⁴) na każdy wykryty atak przypada ~830 fałszywych
   alarmów → narzędzie triage dla analityków, nie autonomiczna obrona. Szum etykiet najszybciej degraduje
-  model nauczony (temporal 0.73→0.60 przy 20% szumu).
+  model nauczony (temporal 0.72→0.60 przy 20% szumu). W reżimie skrytym czujność to r≈0.03, czyli
+  ~3300 fałszywych alarmów na wykryty atak przy 1:10⁴.
 
 ### Artykuł B (IEEE) — multiplex grafu wiedzy i rhythm-leak pitfall
 
 - **Multiplex + rytm**: AUC 0.70→0.87 i likwidacja 100% fałszywych alarmów na legalnych nowych nadawcach.
   Uczciwa kontrola (tasowanie **tylko** warstw OSINT) pokazuje jednak, że zysk niosą kontakty+rytm, a OSINT
   dokłada tylko ~0.03 AUC — wartość metody leży po stronie fałszywych alarmów, nie wykrywania podszywek
-  (zimna impersonacja: czujność 0.04 przy FPR 1%).
+  (zimna impersonacja: czujność 0.04 przy FPR 1%). Nowy tc-split lokalizuje ten margines: na plasterku
+  "znany nadawca" multipleks nic nie zmienia (0.79=0.79), na plasterku "w rytmie" (atak mimicry)
+  0.58→0.64, na "nowym nadawcy" 0.81→0.90 — tasowanie OSINT cofa oba plasterki, więc to przyczynowy
+  wkład OSINT. Przy 100% fabrykacji OSINT multipleks spada do poziomu shuffle (0.86 vs 0.855) i fałszywe
+  alarmy na nowych nadawcach wracają (0.10) — pełny fałszywy slad jest nierozróżnialny od prawdziwego.
 - **Odkrycie metodyczne — rhythm-leak pitfall**: rytm nadawcy liczony na pełnej historii zawyża czujność
   detektora rytmu do 0.73 przy FPR 1%; uczciwy podział czasowy (rytm z wczesnych 60%) daje **0.00 nawet przy
   FPR 5%**, bo ponad 5% legalnej poczty wypada poza uczciwie policzonym rytmem. Pełny multiplex trzyma
-  czujność 0.51 (AUC 0.84). Ostrzeżenie dla całej klasy detektorów behawioralnych.
+  czujność **0.14 (AUC 0.82)** — warstwy strukturalne liczone z wczesnych 60%, jak rytm. Ostrzeżenie dla
+  całej klasy detektorów behawioralnych.
 - **Susceptibility (miara detektorowa, nie ludzka)**: ekspozycję ofiary napędza **kanał ataku, nie ranga** —
   zimna impersonacja zostawia strukturalną podłogę Susc≈0.96 na każdym stanowisku; w kanale lateral
   executive jest najbardziej narażony (0.924) — bogatsze osadzenie w grafie nie kupuje ochrony.
@@ -97,11 +111,12 @@ cd code
 # pojedynczy eksperyment (np. stealth, 20 seedów, ~2 h CPU):
 python experiments/exp_cascade_stealth.py
 
-# wszystkie eksperymenty po fixach (4 równoległe ścieżki):
-bash experiments/run_reruns.sh lane1   # exp_cascade + sweep + arch
-bash experiments/run_reruns.sh lane2   # stealth + baselines + labelnoise
-bash experiments/run_reruns.sh lane3   # OSINT-shuffle + Enron + fpr
-bash experiments/run_reruns.sh lane4   # kontrasty statystyczne
+# wszystkie eksperymenty po fixach (5 równoległych ścieżek, OMP=4):
+bash experiments/run_reruns2.sh lane1  # panel cb (COMPA/hopper/hopper-no-precursor/reczny/TGN)
+bash experiments/run_reruns2.sh lane2  # exp_cascade + org/scale + sweep + arch + tgn
+bash experiments/run_reruns2.sh lane3  # Enron (split + kaskady blast/stealthy) + stealth sweep
+bash experiments/run_reruns2.sh lane4  # headline-CI + mechanism + fpr + realgraphs + compromised
+bash experiments/run_reruns2.sh lane5  # NOWE: legal_cascade + tc_split + osint_shuffle + multiplex
 
 # figury z nowych CSV:
 python analysis/plot_cascade.py

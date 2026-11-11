@@ -109,19 +109,29 @@ def _past_counters(events: List) -> dict:
 
 
 def compa(events: List) -> np.ndarray:
-    """Cechy wolumenowe COMPA. Liczniki (para, nadawca-bucket, nadawca) liczone wylacznie
-    z kubelkow PRZESZLYCH (< b) — bez biezacego bucketa i bez przyszlosci (leak-aware)."""
-    past = _past_counters(events)
-    X = []
-    for s, v, b, _l in events:
-        p, sb, st = past.get(b, ({}, {}, {}))
-        X.append(
-            [
-                1.0 / (1.0 + p.get((s, v), 0)),
-                1.0 / (1.0 + sb.get((s, b), 0)),
-                float(st.get(s, 0)),
-            ]
-        )
+    """Cechy wolumenowe COMPA. PRZYCZYNOWOSC NA POZIOMIE ZDARZENIA (fix po recenzji
+    zewnetrznej): liczniki obejmuja wczesniejsze kubełki ORAZ wczesniejsze zdarzenia z
+    biezacego kubełka (kolejnosc wewnatrz kubełka = ustalona kolejnosc na liscie zdarzen,
+    czyli losowa ale stala — bezstronna). Podzial na poziomie kubełka ukrywal przed
+    detektorem caly burst i czynil go slomiana kuke; kontekst odbiorczy i pamiec TGN
+    pozostaja kubełkowo-przeszle [b-W, b-1]."""
+    X = [None] * len(events)
+    pair_c: dict = {}
+    sb_c: dict = {}
+    st_c: dict = {}
+    order = sorted(
+        range(len(events)), key=lambda i: events[i][2]
+    )  # stabilnie po kubełku
+    for i in order:
+        s, v, b, _l = events[i]
+        X[i] = [
+            1.0 / (1.0 + pair_c.get((s, v), 0)),
+            1.0 / (1.0 + sb_c.get((s, b), 0)),
+            float(st_c.get(s, 0)),
+        ]
+        pair_c[(s, v)] = pair_c.get((s, v), 0) + 1
+        sb_c[(s, b)] = sb_c.get((s, b), 0) + 1
+        st_c[s] = st_c.get(s, 0) + 1
     return np.asarray(X, np.float32)
 
 

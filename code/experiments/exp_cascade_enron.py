@@ -14,6 +14,7 @@ reczny kontekst, temporalny GNN (+ kontrola shuffle). Metryki: AUC, Recall@FPR1%
 Uruchom z katalogu code/:  ../../../venv/Scripts/python experiments/exp_cascade_enron.py
 Wyjscie: results/exp_cascade_enron.csv
 """
+
 from __future__ import annotations
 
 import csv
@@ -34,7 +35,10 @@ CODE = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(CODE))
 sys.path.insert(0, str(CODE / "experiments"))
 RESULTS = CODE / "results"
-ENRON = Path(__file__).resolve().parents[3] / "projects/personalized-phishing-defense/code/data/enron/maildir"
+ENRON = (
+    Path(__file__).resolve().parents[3]
+    / "projects/personalized-phishing-defense/code/data/enron/maildir"
+)
 
 from exp_cascade import TemporalGNN, _index_traffic, _node_features, _recall_at_fpr  # noqa: E402
 
@@ -43,16 +47,18 @@ MAX_MSGS = 300
 MIN_SENT = 20
 N_BUCKETS = 28
 ACTIVE_MIN = 2
-CORE_MIN_DEG = 2        # odetnij jednorazowych odbiorcow (stopien <2)
-CORE_CAP = 2000         # top-K kont po stopniu (aktywny rdzen, by GNN byl wykonalny na CPU)
+CORE_MIN_DEG = 2  # odetnij jednorazowych odbiorcow (stopien <2)
+CORE_CAP = 2000  # top-K kont po stopniu (aktywny rdzen, by GNN byl wykonalny na CPU)
 SEEDS = list(range(8))
 N_CASCADES = 25
 MAX_HOPS = 3
 P_INFECT = 0.6
-MAX_FANOUT = 10         # max kontaktow zaatakowanych na nosiciela (realistyczne + ogranicza eksplozje
-                        # na gestym realnym grafie; bez tego kaskada generuje dziesiatki tys. zdarzen)
+MAX_FANOUT = (
+    10  # max kontaktow zaatakowanych na nosiciela (realistyczne + ogranicza eksplozje
+)
+# na gestym realnym grafie; bez tego kaskada generuje dziesiatki tys. zdarzen)
 WINDOW = 2
-BENIGN_RATIO = 3        # benign : atak
+BENIGN_RATIO = 3  # benign : atak
 EPOCHS = 80
 
 
@@ -102,12 +108,13 @@ def parse_enron():
     nbr_full = defaultdict(set)
     for s, v in sent.items():
         for r, _b in v:
-            nbr_full[s].add(r); nbr_full[r].add(s)
+            nbr_full[s].add(r)
+            nbr_full[r].add(s)
     # AKTYWNY RDZEN: konta o stopniu >= CORE_MIN_DEG, cap top-K po stopniu (wykonalnosc GNN na CPU)
     deg = {a: len(ns) for a, ns in nbr_full.items() if len(ns) >= CORE_MIN_DEG}
     core = set(sorted(deg, key=deg.get, reverse=True)[:CORE_CAP])
     nbr = {a: (nbr_full[a] & core) for a in core}
-    nbr = {a: ns for a, ns in nbr.items() if ns}                 # usun izolowane po przycieciu
+    nbr = {a: ns for a, ns in nbr.items() if ns}  # usun izolowane po przycieciu
     core = set(nbr)
     # przytnij sent/active do rdzenia (nadawca i odbiorca w rdzeniu)
     sent = {s: [(r, b) for (r, b) in v if r in core] for s in sent if s in core}
@@ -116,7 +123,11 @@ def parse_enron():
     return nbr, sent, active
 
 
-def _events(nbr, sent, seed):
+def _events(nbr, sent, seed, stealth_k=None):
+    """Realne benign + wstrzykniete kaskady.
+
+    stealth_k=None -> naiwny blast (fanout<=MAX_FANOUT na hop). stealth_k=K ->
+    stealthy: <=K wyslan/nosiciela, PO JEDNYM na bucket (brak burstu nadawczego)."""
     """Realne benign + wstrzykniete kaskady. Zwraca lista (s, v, bucket, label)."""
     rng = np.random.default_rng(seed)
     senders = sorted(sent)
@@ -125,21 +136,46 @@ def _events(nbr, sent, seed):
     seeds0 = [senders[i] for i in rng.permutation(len(senders))[:N_CASCADES]]
     for s0 in seeds0:
         t0 = int(rng.integers(0, N_BUCKETS - MAX_HOPS))
-        infected = {s0}; frontier = [s0]
-        for hop in range(MAX_HOPS):
-            nxt = []; bucket = (t0 + hop) % N_BUCKETS
-            for u in frontier:
-                tg = sorted(nbr.get(u, ()))
-                rng.shuffle(tg)
-                for v in tg[:MAX_FANOUT]:                 # cap rozgalezienia
-                    if v in infected:
-                        continue
-                    casc.append((u, v, bucket, 1))
-                    if rng.random() < P_INFECT:
-                        infected.add(v); nxt.append(v)
-            frontier = nxt
-            if not frontier:
-                break
+        if stealth_k is None:  # BLAST
+            infected = {s0}
+            frontier = [s0]
+            for hop in range(MAX_HOPS):
+                nxt = []
+                bucket = (t0 + hop) % N_BUCKETS
+                for u in frontier:
+                    tg = sorted(nbr.get(u, ()))
+                    rng.shuffle(tg)
+                    for v in tg[:MAX_FANOUT]:  # cap rozgalezienia
+                        if v in infected:
+                            continue
+                        casc.append((u, v, bucket, 1))
+                        if rng.random() < P_INFECT:
+                            infected.add(v)
+                            nxt.append(v)
+                frontier = nxt
+                if not frontier:
+                    break
+        else:  # STEALTHY (1 wyslanie / bucket)
+            infected = {s0}
+            frontier = [(s0, t0)]
+            for _hop in range(MAX_HOPS):
+                nxt = []
+                for u, tu in frontier:
+                    tg = sorted(nbr.get(u, ()))
+                    rng.shuffle(tg)
+                    sent_n = 0
+                    for v in tg:
+                        if v in infected or sent_n >= stealth_k:
+                            continue
+                        bucket = (tu + 1 + sent_n) % N_BUCKETS
+                        casc.append((u, v, bucket, 1))
+                        sent_n += 1
+                        if rng.random() < P_INFECT:
+                            infected.add(v)
+                            nxt.append((v, bucket))
+                frontier = nxt
+                if not frontier:
+                    break
     # --- benign DOPASOWANY do ataku (usuwa konfundent stopnia/tozsamosci) ---
     # losowe krawedzie kontaktu (rozklad koncow i stopni jak przy traversal kaskady, bo obie
     # operuja na tym samym zbiorze krawedzi), czas ROZPROSZONY uniformnie. Benign vs atak rozni
@@ -170,10 +206,18 @@ def _features(events, nbr, active, recv_b, sent_b, seed):
         sender_recency = 0.0
         for bb in range(max(0, b - WINDOW), b):
             if s in recv_b.get(bb, set()):
-                sender_recency = 1.0; break
-        prop = len((cs - {s}) & {x for bb in range(max(0, b - WINDOW), b + 1)
-                                 for x in sent_b.get(bb, set())}) / max(1, deg_v)
-        Xc.append(f1 + [burst, sender_recency, prop]); X1.append(f1)
+                sender_recency = 1.0
+                break
+        prop = len(
+            (cs - {s})
+            & {
+                x
+                for bb in range(max(0, b - WINDOW), b + 1)
+                for x in sent_b.get(bb, set())
+            }
+        ) / max(1, deg_v)
+        Xc.append(f1 + [burst, sender_recency, prop])
+        X1.append(f1)
     return np.array(X1, np.float32), np.array(Xc, np.float32)
 
 
@@ -182,7 +226,9 @@ def _per_bucket(events, idx):
     for b in range(N_BUCKETS):
         gidx = [i for i, e in enumerate(events) if e[2] == b]
         if not gidx:
-            pb.append((torch.empty(0, dtype=torch.long), torch.empty(0, dtype=torch.long), []))
+            pb.append(
+                (torch.empty(0, dtype=torch.long), torch.empty(0, dtype=torch.long), [])
+            )
             continue
         sb = torch.tensor([idx[events[i][0]] for i in gidx])
         vb = torch.tensor([idx[events[i][1]] for i in gidx])
@@ -196,32 +242,40 @@ def _train_temporal(Xn, pb, n, ef, s_idx, v_idx, yt, tr_t, te_t, y, te, seed):
     opt = torch.optim.Adam(m.parameters(), lr=0.01, weight_decay=5e-4)
     lossf = nn.BCEWithLogitsLoss()
     for _ in range(EPOCHS):
-        m.train(); opt.zero_grad()
+        m.train()
+        opt.zero_grad()
         loss = lossf(m(Xn, pb, n, ef, s_idx, v_idx)[tr_t], yt[tr_t])
-        loss.backward(); opt.step()
+        loss.backward()
+        opt.step()
     m.eval()
     with torch.no_grad():
         s = torch.sigmoid(m(Xn, pb, n, ef, s_idx, v_idx))[te_t].numpy()
     return roc_auc_score(y[te], s), _recall_at_fpr(y[te], s)
 
 
-def run(nbr, sent, active, seed):
-    events = _events(nbr, sent, seed)
+def run(nbr, sent, active, seed, stealth_k=None):
+    events = _events(nbr, sent, seed, stealth_k)
     nodes = sorted({e[0] for e in events} | {e[1] for e in events})
-    idx = {t: i for i, t in enumerate(nodes)}; n = len(nodes)
+    idx = {t: i for i, t in enumerate(nodes)}
+    n = len(nodes)
     recv_b, sent_b = _index_traffic(events)
     X1, Xc = _features(events, nbr, active, recv_b, sent_b, seed)
     y = np.array([e[3] for e in events], dtype=np.float32)
     # split po ofiarach
     vics = sorted({e[1] for e in events})
     rng = np.random.default_rng(seed)
-    te_v = set(np.array(vics)[rng.permutation(len(vics))[:max(1, len(vics) // 3)]])
-    te = np.array([e[1] in te_v for e in events]); tr = ~te
+    te_v = set(np.array(vics)[rng.permutation(len(vics))[: max(1, len(vics) // 3)]])
+    te = np.array([e[1] in te_v for e in events])
+    tr = ~te
     out = {}
-    c1 = LGBMClassifier(n_jobs=1, random_state=42, n_estimators=200, verbose=-1).fit(X1[tr], y[tr])
+    c1 = LGBMClassifier(n_jobs=1, random_state=42, n_estimators=200, verbose=-1).fit(
+        X1[tr], y[tr]
+    )
     s1 = c1.predict_proba(X1[te])[:, 1]
     out["tab_1hop"] = (roc_auc_score(y[te], s1), _recall_at_fpr(y[te], s1))
-    cc = LGBMClassifier(n_jobs=1, random_state=42, n_estimators=200, verbose=-1).fit(Xc[tr], y[tr])
+    cc = LGBMClassifier(n_jobs=1, random_state=42, n_estimators=200, verbose=-1).fit(
+        Xc[tr], y[tr]
+    )
     sc = cc.predict_proba(Xc[te])[:, 1]
     out["tab_ctx"] = (roc_auc_score(y[te], sc), _recall_at_fpr(y[te], sc))
     # temporalny GNN
@@ -229,42 +283,77 @@ def run(nbr, sent, active, seed):
     s_idx = torch.tensor([idx[e[0]] for e in events])
     v_idx = torch.tensor([idx[e[1]] for e in events])
     ef = torch.tensor(X1, dtype=torch.float32)
-    yt = torch.tensor(y); tr_t = torch.tensor(tr); te_t = torch.tensor(te)
+    yt = torch.tensor(y)
+    tr_t = torch.tensor(tr)
+    te_t = torch.tensor(te)
     pb = _per_bucket(events, idx)
-    out["gnn_temporal"] = _train_temporal(Xn, pb, n, ef, s_idx, v_idx, yt, tr_t, te_t, y, te, seed)
+    out["gnn_temporal"] = _train_temporal(
+        Xn, pb, n, ef, s_idx, v_idx, yt, tr_t, te_t, y, te, seed
+    )
     # kontrola: przetasowany czas
     shuf = rng.integers(0, N_BUCKETS, size=len(events))
-    ev_shuf = [(events[i][0], events[i][1], int(shuf[i]), events[i][3]) for i in range(len(events))]
+    ev_shuf = [
+        (events[i][0], events[i][1], int(shuf[i]), events[i][3])
+        for i in range(len(events))
+    ]
     pb_s = _per_bucket(ev_shuf, idx)
-    out["gnn_temporal_shuf"] = _train_temporal(Xn, pb_s, n, ef, s_idx, v_idx, yt, tr_t, te_t, y, te, seed)
+    out["gnn_temporal_shuf"] = _train_temporal(
+        Xn, pb_s, n, ef, s_idx, v_idx, yt, tr_t, te_t, y, te, seed
+    )
     return out, n, len(events), int(y.sum())
 
 
 def main():
     if not ENRON.exists():
-        print(f"[enron-casc] brak maildira {ENRON}"); return
+        print(f"[enron-casc] brak maildira {ENRON}")
+        return
     print("[enron-casc] parsowanie realnego Enrona...", flush=True)
     nbr, sent, active = parse_enron()
     print(f"[enron-casc] nadawcow={len(sent)}, wezlow-kontaktu={len(nbr)}", flush=True)
     agg = {}
+    perseed = []
     nn_ = ne = na = 0
-    for seed in SEEDS:
-        res, nn_, ne, na = run(nbr, sent, active, seed)
-        for k, (a, r) in res.items():
-            agg.setdefault(k, {"auc": [], "r1": []})
-            agg[k]["auc"].append(a); agg[k]["r1"].append(r)
-        line = " | ".join(f"{k} auc={v[0]:.3f} r1={v[1]:.3f}" for k, v in res.items())
-        print(f"  seed={seed} (wezly {nn_}, zdarz {ne}, ataki {na}): {line}", flush=True)
+    for regime, sk in (("blast", None), ("stealthy", 2)):
+        print(f"=== [enron-casc] rezym: {regime} ===", flush=True)
+        for seed in SEEDS:
+            res, nn_, ne, na = run(nbr, sent, active, seed, stealth_k=sk)
+            for k, (a, r) in res.items():
+                agg.setdefault((regime, k), {"auc": [], "r1": []})
+                agg[(regime, k)]["auc"].append(a)
+                agg[(regime, k)]["r1"].append(r)
+                perseed.append([regime, seed, k, round(a, 4), round(r, 4)])
+            line = " | ".join(
+                f"{k} auc={v[0]:.3f} r1={v[1]:.3f}" for k, v in res.items()
+            )
+            print(
+                f"  [{regime}] seed={seed} (wezly {nn_}, zdarz {ne}, ataki {na}): {line}",
+                flush=True,
+            )
     out = RESULTS / "exp_cascade_enron.csv"
     with out.open("w", newline="", encoding="utf-8") as f:
-        w = csv.writer(f); w.writerow(["model", "auc", "recall_fpr1", "n_seeds"])
-        for k, v in agg.items():
-            w.writerow([k, round(float(np.mean(v["auc"])), 4),
-                        round(float(np.mean(v["r1"])), 4), len(v["auc"])])
+        w = csv.writer(f)
+        w.writerow(["rezym", "model", "auc", "recall_fpr1", "n_seeds"])
+        for (regime, k), v in agg.items():
+            w.writerow(
+                [
+                    regime,
+                    k,
+                    round(float(np.mean(v["auc"])), 4),
+                    round(float(np.mean(v["r1"])), 4),
+                    len(v["auc"]),
+                ]
+            )
+    out_ps = RESULTS / "exp_cascade_enron_perseed.csv"
+    with out_ps.open("w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["rezym", "seed", "model", "auc", "recall_fpr1"])
+        w.writerows(perseed)
     print(f"\n[enron-casc] REALNY graf Enrona -> {out}")
-    for k in ["tab_1hop", "tab_ctx", "gnn_temporal", "gnn_temporal_shuf"]:
-        if k in agg:
-            print(f"  {k}: AUC={np.mean(agg[k]['auc']):.3f}  Recall@FPR1%={np.mean(agg[k]['r1']):.3f}")
+    for (regime, k), v in agg.items():
+        if k in ("tab_1hop", "tab_ctx", "gnn_temporal", "gnn_temporal_shuf"):
+            print(
+                f"  [{regime}] {k}: AUC={np.mean(v['auc']):.3f}  Recall@FPR1%={np.mean(v['r1']):.3f}"
+            )
 
 
 if __name__ == "__main__":

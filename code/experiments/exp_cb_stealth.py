@@ -27,6 +27,22 @@ RESULTS = CODE / "results"
 
 from cascadebench.attack import CascadeStrategy, build_scenario  # noqa: E402
 from cascadebench.detect import COMPA, Hopper, HandContext, TemporalGNN  # noqa: E402
+from cascadebench.features import hopper as hopper_feat  # noqa: E402
+
+
+class HopperNoPrecursor(Hopper):
+    """Ablacja po recenzji zewnetrznej: cecha precursor jest identyczna z freshness
+    kontekstu recznego, wiec wynik hoppera przy K=1 moze byc wnoszony przez nia.
+    Wersja bez precursor (i bez pochodnego hop_sig = precursor*unexplained)."""
+    name = "hopper-bez-precursor"
+
+    def _X(self, sc, seed):
+        import numpy as _np
+        X = _np.array(hopper_feat(sc.graph, sc.events, seed), dtype=_np.float32).copy()
+        X[:, 0] = 0.0
+        X[:, 4] = 0.0
+        return X
+
 from cascadebench.evaluate import evaluate, victim_split, recall_at_fpr  # noqa: E402
 from cascadebench.graph import load  # noqa: E402
 from sklearn.metrics import roc_auc_score  # noqa: E402
@@ -35,7 +51,7 @@ SEEDS = 20
 K_GRID = [1, 2, 3, 5]
 NOISE_GRID = [0.0, 0.05, 0.1, 0.2]
 OFF_HOURS = 0.15
-PANEL = [COMPA, Hopper, HandContext, TemporalGNN]
+PANEL = [COMPA, Hopper, HopperNoPrecursor, HandContext, TemporalGNN]
 NAMES = [d().name for d in PANEL]
 
 
@@ -46,6 +62,7 @@ def _strat(K):
 def stealth_sweep():
     g = load("synthetic:600")
     rows = []
+    perseed = []
     configs = [(f"K={K}", _strat(K)) for K in K_GRID]
     configs.append(
         ("blast", CascadeStrategy(fanout=8, spread=1))
@@ -60,6 +77,8 @@ def stealth_sweep():
             for n in NAMES:
                 acc[n]["auc"].append(ev[n]["auc"])
                 acc[n]["r1"].append(ev[n]["recall@0.01"])
+                perseed.append([level, s, n, round(ev[n]["auc"], 4),
+                                round(ev[n]["recall@0.01"], 4)])
         rows.append(
             [level, round(float(np.mean(infe)), 3)]
             + [round(float(np.mean(acc[n]["auc"])), 4) for n in NAMES]
@@ -80,6 +99,12 @@ def stealth_sweep():
         )
         w.writerows(rows)
     print(f"[cb-stealth] -> {out}")
+    out_ps = RESULTS / "cb_hopper_stealth_perseed.csv"
+    with out_ps.open("w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["poziom", "seed", "detektor", "auc", "r1"])
+        w.writerows(perseed)
+    print(f"[cb-stealth-perseed] -> {out_ps}")
 
 
 def label_noise():
@@ -87,6 +112,7 @@ def label_noise():
 
     g = load("synthetic:600")
     rows = []
+    perseed = []
     for q in NOISE_GRID:
         acc = {n: [] for n in NAMES}
         for s in range(SEEDS):
@@ -109,12 +135,10 @@ def label_noise():
             yte = y[te]
             for det in [d() for d in PANEL]:
                 sc_score = det.fit_score(sc, tr, te, s)
-                acc[det.name].append(
-                    (
-                        float(roc_auc_score(yte, sc_score)),
-                        recall_at_fpr(yte, sc_score, 0.01),
-                    )
-                )
+                a_ = float(roc_auc_score(yte, sc_score))
+                r_ = recall_at_fpr(yte, sc_score, 0.01)
+                acc[det.name].append((a_, r_))
+                perseed.append([q, s, det.name, round(a_, 4), round(r_, 4)])
         rows.append(
             [q] + [round(float(np.mean([a for a, _ in acc[n]])), 4) for n in NAMES]
         )
@@ -134,6 +158,12 @@ def label_noise():
         w.writerow(["szum"] + NAMES)
         w.writerows(rows)
     print(f"[cb-labelnoise] -> {out}")
+    out_ps = RESULTS / "cb_labelnoise_perseed.csv"
+    with out_ps.open("w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["szum", "seed", "detektor", "auc", "r1"])
+        w.writerows(perseed)
+    print(f"[cb-labelnoise-perseed] -> {out_ps}")
 
 
 def surgical_sweep():
@@ -141,6 +171,7 @@ def surgical_sweep():
     Generuje cb_surgical_fanout.csv (poprzedni cb_surgical.csv nie mial generatora w pakiecie)."""
     g = load("synthetic:600")
     rows = []
+    perseed = []
     for F in (1, 2, 3, 5):
         strat = CascadeStrategy(fanout=F, p_infect=0.0, spread=8)
         acc = {n: {"auc": []} for n in NAMES}
@@ -151,6 +182,7 @@ def surgical_sweep():
             ev = evaluate(sc, [d() for d in PANEL], s)
             for n in NAMES:
                 acc[n]["auc"].append(ev[n]["auc"])
+                perseed.append([F, s, n, round(ev[n]["auc"], 4)])
         rows.append(
             [F, round(float(np.mean(infe)), 3)]
             + [round(float(np.mean(acc[n]["auc"])), 4) for n in NAMES]
@@ -166,10 +198,16 @@ def surgical_sweep():
         w.writerow(["fanout", "zasieg"] + [f"auc_{n}" for n in NAMES])
         w.writerows(rows)
     print(f"[cb-surgical] -> {out}")
+    out_ps = RESULTS / "cb_surgical_fanout_perseed.csv"
+    with out_ps.open("w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["fanout", "seed", "detektor", "auc"])
+        w.writerows(perseed)
+    print(f"[cb-surgical-perseed] -> {out_ps}")
 
 
 if __name__ == "__main__":
-    torch.set_num_threads(8)
+    torch.set_num_threads(4)
     mode = sys.argv[1] if len(sys.argv) > 1 else "stealth"
     if mode == "labelnoise":
         label_noise()

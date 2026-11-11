@@ -49,32 +49,31 @@ def _compa_features(events):
     """COMPA-style: odchylenie od profilu per-konto. Cechy z OBSERWOWALNEGO strumienia:
     (i) nowosc odbiorcy dla nadawcy, (ii) nowosc czasu dla nadawcy, (iii) aktywnosc nadawcy.
 
-    LEAK-AWARE (fix po recenzji): liczniki (para, nadawca-bucket, nadawca) liczone wylacznie
-    z kubelkow PRZESZLYCH (< b) — bez biezacego bucketa i przyszlosci (zgodnosc z pamiecia TGN
-    czytajaca stan sprzed bucketa b)."""
-    counts = {}
-    for s, v, b, _l in events:
-        c = counts.setdefault(b, {"pair": Counter(), "sb": Counter(), "st": Counter()})
-        c["pair"][(s, v)] += 1
-        c["sb"][(s, b)] += 1
-        c["st"][s] += 1
-    cum_p, cum_sb, cum_st = Counter(), Counter(), Counter()
-    past = {}
-    for b in sorted(counts):
-        past[b] = (
-            cum_p.copy(),
-            cum_sb.copy(),
-            cum_st.copy(),
-        )  # snapshot przed kubelkiem b
-        cum_p.update(counts[b]["pair"])
-        cum_sb.update(counts[b]["sb"])
-        cum_st.update(counts[b]["st"])
-    X = []
-    for s, v, b, _l in events:
-        p, sb, st = past.get(b, (Counter(), Counter(), Counter()))
-        recip_nov = 1.0 / (1.0 + p[(s, v)])  # wysokie = nietypowy odbiorca
-        time_nov = 1.0 / (1.0 + sb[(s, b)])  # wysokie = nietypowy czas
-        X.append([recip_nov, time_nov, float(st[s])])
+    PRZYCZYNOWOSC NA POZIOMIE ZDARZENIA (fix po recenzji zewnetrznej): liczniki obejmuja
+    wszystkie wczesniejsze kubełki ORAZ wczesniejsze zdarzenia z TEGO SAMEGO kubełka.
+    Kolejnosc wewnatrz kubełka = kolejnosc na (tasowanej) liscie zdarzen, czyli losowa ale
+    ustalona — bezstronna: kazde zdarzenie widzi w przyblizeniu polowe swoich kubełkowych
+    sasiadow jako przeszlosc. Dzieki temu detektor wolumetryczny widzi rozwijajacy sie burst
+    (podzial na poziomie kubełka calkowicie go przed nim ukrywal i czynil z niego slomiana
+    kuke); kontekst odbiorczy i pamiec TGN pozostaja kubełkowo-przeszle [b-W, b-1]."""
+    X = [None] * len(events)
+    pair_c: dict = {}
+    sb_c: dict = {}
+    st_c: dict = {}
+    order = sorted(
+        range(len(events)), key=lambda i: events[i][2]
+    )  # stabilnie po kubełku
+    for i in order:
+        s, v, b, _l = events[i]
+        X[i] = [
+            1.0
+            / (1.0 + pair_c.get((s, v), 0)),  # nowosc odbiorcy (przeszlo zdarzeniowa)
+            1.0 / (1.0 + sb_c.get((s, b), 0)),  # nowosc czasu
+            float(st_c.get(s, 0)),  # aktywnosc nadawcy
+        ]
+        pair_c[(s, v)] = pair_c.get((s, v), 0) + 1
+        sb_c[(s, b)] = sb_c.get((s, b), 0) + 1
+        st_c[s] = st_c.get(s, 0) + 1
     return np.array(X, np.float32)
 
 

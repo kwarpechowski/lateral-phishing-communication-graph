@@ -155,9 +155,10 @@ def _eval(seed, K):
 
 
 def main():
-    torch.set_num_threads(8)
+    torch.set_num_threads(4)
     rows = []
     tc_rows = []
+    perseed = []
     for K in K_GRID:
         acc = {}
         na = nt = 0
@@ -166,6 +167,8 @@ def main():
             res, na, nt, oa, ob = _eval(seed, K)
             off_a.append(oa)
             off_b.append(ob)
+            for k, (a, r) in res.items():
+                perseed.append([K, seed, k, round(a, 4), round(r, 4)])
             for k, (a, r) in res.items():
                 acc.setdefault(k, {"a": [], "r": []})
                 acc[k]["a"].append(a)
@@ -206,6 +209,12 @@ def main():
         w.writerow(["K", "off_rhythm_attacks", "off_rhythm_benign"])
         w.writerows(tc_rows)
     print(f"\n[stealth] -> {out}\n[stealth-tc] -> {out_tc}")
+    out_ps = RESULTS / "exp_cascade_stealth_perseed.csv"
+    with out_ps.open("w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["K", "seed", "model", "auc", "recall_fpr1"])
+        w.writerows(perseed)
+    print(f"[stealth-perseed] -> {out_ps}")
 
 
 if __name__ == "__main__":

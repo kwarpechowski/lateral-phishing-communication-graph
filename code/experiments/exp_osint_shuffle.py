@@ -61,6 +61,16 @@ def _permute_osint(adj, osint_layers, twins, seed):
     return out
 
 
+def _boot_ci(vals, n_boot=5000, seed=0):
+    """Bootstrap 95% CI sredniej (per-seed resampling; median-of-pairs jak w stats)."""
+    rng = np.random.default_rng(seed)
+    v = np.asarray(vals, dtype=float)
+    if len(v) < 2:
+        return float(v.mean() if len(v) else 0.0), float(v.mean() if len(v) else 0.0)
+    bs = v[rng.integers(0, len(v), size=(n_boot, len(v)))].mean(axis=1)
+    return float(np.quantile(bs, 0.025)), float(np.quantile(bs, 0.975))
+
+
 def _score(adj, rows, twins, seed, layer_subset, use_temporal, shuffle_all=False):
     """Jak exp_extended._eval, ale shuffle_all=False => bez remapu; permutacja OSINT idzie
     przez adj (podmieniony przed wywolaniem)."""
@@ -95,17 +105,35 @@ def main():
     out = RESULTS / "exp_osint_shuffle.csv"
     with out.open("w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
-        w.writerow(["config", "auc", "recall_fpr1", "n_seeds"])
+        w.writerow(["config", "auc", "auc_ci_lo", "auc_ci_hi",
+                     "recall_fpr1", "r1_ci_lo", "r1_ci_hi", "n_seeds"])
         for tag in auc_acc:
+            a_lo, a_hi = _boot_ci(auc_acc[tag], seed=1)
+            r_lo, r_hi = _boot_ci(r1_acc[tag], seed=2)
             w.writerow(
                 [
                     tag,
                     round(float(np.mean(auc_acc[tag])), 4),
+                    round(a_lo, 4), round(a_hi, 4),
                     round(float(np.mean(r1_acc[tag])), 4),
+                    round(r_lo, 4), round(r_hi, 4),
                     len(auc_acc[tag]),
                 ]
             )
+    out_ps = RESULTS / "exp_osint_shuffle_perseed.csv"
+    with out_ps.open("w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["config", "seed", "auc", "recall_fpr1"])
+        for tag in auc_acc:
+            for i, (a, r) in enumerate(zip(auc_acc[tag], r1_acc[tag])):
+                w.writerow([tag, i, round(a, 4), round(r, 4)])
     print(f"\n[osint-shuffle] -> {out}")
+    for tag in auc_acc:
+        a_lo, a_hi = _boot_ci(auc_acc[tag], seed=1)
+        print(
+            f"  {tag:10s} auc={np.mean(auc_acc[tag]):.3f} [{a_lo:.3f}, {a_hi:.3f}]"
+            f"  r1={np.mean(r1_acc[tag]):.3f}"
+        )
     for tag in auc_acc:
         print(
             f"  {tag:10s} auc={np.mean(auc_acc[tag]):.3f} r1={np.mean(r1_acc[tag]):.3f}"
