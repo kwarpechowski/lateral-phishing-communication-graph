@@ -3,7 +3,7 @@
 # volume na Enronie (A5), kontrasty w protokole off-hours (A7), trudne negatywy (A4),
 # sonda iniekcji (A2). 6 lane'ow x OMP=4.
 cd "$(dirname "$0")/.."
-PY="C:/Users/kamilwa_admin/Desktop/doktorat/venv/Scripts/python"
+PY="${PYTHON:-python}"  # lokalnie: venv; CI: dowolny python z zaleznosciami
 export OMP_NUM_THREADS=4 MKL_NUM_THREADS=4
 mkdir -p logs
 run() { local name=$1; shift; echo "=== $name start $(date +%H:%M:%S)" >> logs/$name.log; "$PY" -u "$@" >> logs/$name.log 2>&1 && echo "=== $name OK $(date +%H:%M:%S)" >> logs/$name.log || echo "=== $name FAIL $(date +%H:%M:%S)" >> logs/$name.log; }

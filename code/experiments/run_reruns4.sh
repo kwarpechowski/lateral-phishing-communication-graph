@@ -3,7 +3,7 @@
 # 8 rownoleglych lane'ow, OMP=4 (TGN), LGBM n_jobs=1. Logi: logs/r4_*.log
 cd "$(dirname "$0")"
 mkdir -p logs
-PY="C:/Users/kamilwa_admin/Desktop/doktorat/venv/Scripts/python"
+PY="${PYTHON:-python}"  # lokalnie: venv; CI: dowolny python z zaleznosciami
 export OMP_NUM_THREADS=4 MKL_NUM_THREADS=4
 
 # L1 (A1, framework-1): stealth sweep det+emp, 20 seedow, KS+sonda

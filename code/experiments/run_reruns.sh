@@ -2,7 +2,7 @@
 # Re-run wszystkich eksperymentow po fixach leak-aware (momentum, node features, liczniki).
 # 4 rownolegle sciezki; OMP_NUM_THREADS=6 dla torch.
 cd "$(dirname "$0")/.."   # code/
-PY="C:/Users/kamilwa_admin/Desktop/doktorat/venv/Scripts/python"
+PY="${PYTHON:-python}"  # lokalnie: venv; CI: dowolny python z zaleznosciami
 export OMP_NUM_THREADS=6 MKL_NUM_THREADS=6
 mkdir -p logs
 run() { local name=$1; shift; echo "=== $name start $(date +%H:%M:%S)" >> logs/$name.log; "$PY" -u "$@" >> logs/$name.log 2>&1 && echo "=== $name OK $(date +%H:%M:%S)" >> logs/$name.log || echo "=== $name FAIL $(date +%H:%M:%S)" >> logs/$name.log; }
