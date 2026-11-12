@@ -36,10 +36,10 @@ class TemporalGNN(nn.Module):
         self.clf = nn.Sequential(nn.Linear(dim * 3 + edge_dim, 48), nn.ReLU(),
                                  nn.Dropout(0.2), nn.Linear(48, 1))
 
-    def forward(self, Xn, per_bucket, n, edge_feat, s_all, v_all):
+    def forward(self, Xn, batches, n, edge_feat, s_all, v_all):
         M = torch.relu(self.proj(Xn))
         logits = torch.zeros(len(s_all))
-        for sb, vb, gidx in per_bucket:
+        for _b, sb, vb, gidx in batches:
             if len(gidx) == 0:
                 continue
             e = torch.cat([M[s_all[gidx]], M[v_all[gidx]],
@@ -66,10 +66,10 @@ class TGATLite(nn.Module):
         self.clf = nn.Sequential(nn.Linear(dim * 3 + edge_dim, 48), nn.ReLU(),
                                  nn.Dropout(0.2), nn.Linear(48, 1))
 
-    def forward(self, Xn, per_bucket, n, edge_feat, s_all, v_all):
+    def forward(self, Xn, batches, n, edge_feat, s_all, v_all):
         M = torch.relu(self.proj(Xn))
         logits = torch.zeros(len(s_all))
-        for b, (sb, vb, gidx) in enumerate(per_bucket):
+        for _i, (b, sb, vb, gidx) in enumerate(batches):
             if len(gidx) == 0:
                 continue
             e = torch.cat([M[s_all[gidx]], M[v_all[gidx]],
@@ -94,6 +94,30 @@ def norm_adj(graph, n: int) -> torch.Tensor:
             if u in idx and w in idx:
                 A[idx[u], idx[w]] = 1.0
     return A / A.sum(1, keepdim=True).clamp(min=1.0)
+
+
+CHUNK = 64  # wielkosc mini-batchu zdarzen (regula remisow: batch jest wspolczesny)
+
+
+def event_batches(graph, events, chunk=CHUNK):
+    """Mini-batche zdarzen w porzadku calkowitym t(e) = (kubelek, pozycja na liscie).
+    Batch nie przekracza granicy kubełka; zdarzenia w jednym batchu sa WSPOLCZESNE
+    (regula remisow: nie widza sie nawzajem — rozbicie tasowanej listy na kawalki po
+    <= chunk). Batch i widzi stan pamieci wylacznie po batchach < i (przyczynowosc
+    zdarzeniowa zamiast kubełkowej). Zwraca liste (bucket, s_idx, v_idx, gidx)."""
+    idx = graph.index
+    by_b = {}
+    for i, e in enumerate(events):
+        by_b.setdefault(e[2], []).append(i)
+    out = []
+    for b in sorted(by_b):
+        g = by_b[b]
+        for c in range(0, len(g), chunk):
+            part = g[c:c + chunk]
+            sb = torch.tensor([idx[events[i][0]] for i in part])
+            vb = torch.tensor([idx[events[i][1]] for i in part])
+            out.append((b, sb, vb, part))
+    return out
 
 
 def per_bucket(graph, events):

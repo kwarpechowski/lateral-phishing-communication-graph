@@ -27,7 +27,7 @@ RESULTS = CODE / "results"
 
 from exp_cascade import (T_BUCKETS, _contact_graph, _features, _index_traffic,   # noqa: E402
                          _node_features, _recall_at_fpr, TemporalGNN)
-from exp_cascade_sweep import _per_bucket                             # noqa: E402
+from exp_cascade_sweep import _event_batches as _per_bucket                             # noqa: E402
 from graph.build_temporal_overlay import in_bucket                    # noqa: E402
 
 SEEDS = list(range(3))

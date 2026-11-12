@@ -52,10 +52,10 @@ class TGATLite(nn.Module):
         dt = torch.full((E, 1), float(b))
         return torch.cos(dt * self.freq.unsqueeze(0))               # [E, tdim]
 
-    def forward(self, Xn, per_bucket, n, edge_feat, s_all, v_all):
+    def forward(self, Xn, batches, n, edge_feat, s_all, v_all):
         M = torch.relu(self.proj(Xn))
         logits = torch.zeros(len(s_all))
-        for b, (sb, vb, gidx) in enumerate(per_bucket):
+        for _i, (b, sb, vb, gidx) in enumerate(batches):
             if len(gidx) == 0:
                 continue
             e = torch.cat([M[s_all[gidx]], M[v_all[gidx]],
@@ -75,16 +75,20 @@ class TGATLite(nn.Module):
         return logits
 
 
-def _per_bucket(events, idx):
+def _per_bucket(events, idx, chunk=64):
+    """Mini-batche zdarzen w porzadku (kubelek, pozycja) — przyczynowosc zdarzeniowa
+    (fix po recenzji wewnetrznej): batch nie przekracza kubełka, batch jest wspolczesny."""
+    by_b = {}
+    for i, e in enumerate(events):
+        by_b.setdefault(e[2], []).append(i)
     pb = []
-    for b in range(T_BUCKETS):
-        gidx = [i for i, e in enumerate(events) if e[2] == b]
-        if not gidx:
-            pb.append((torch.empty(0, dtype=torch.long), torch.empty(0, dtype=torch.long), []))
-            continue
-        sb = torch.tensor([idx[events[i][0]] for i in gidx])
-        vb = torch.tensor([idx[events[i][1]] for i in gidx])
-        pb.append((sb, vb, gidx))
+    for b in sorted(by_b):
+        g = by_b[b]
+        for c in range(0, len(g), chunk):
+            part = g[c:c + chunk]
+            sb = torch.tensor([idx[events[i][0]] for i in part])
+            vb = torch.tensor([idx[events[i][1]] for i in part])
+            pb.append((b, sb, vb, part))
     return pb
 
 

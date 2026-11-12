@@ -28,7 +28,7 @@ import exp_cascade as XC                                              # noqa: E4
 from exp_cascade import (_simulate, _features, _index_traffic,        # noqa: E402
                          _node_features, TemporalGNN)
 from exp_cascade_stealth import _simulate_stealth                     # noqa: E402
-from exp_cascade_sweep import _compa_features, _per_bucket            # noqa: E402
+from exp_cascade_sweep import _compa_features, _event_batches            # noqa: E402
 
 SEEDS = list(range(10))
 EPOCHS = 100
@@ -70,7 +70,7 @@ def _one(seed, regime):
     Xn = _node_features(events, nbr, idx, n, recv_b, sent_b, tr=tr)
     s_idx = torch.tensor([idx[e[0]] for e in events]); v_idx = torch.tensor([idx[e[1]] for e in events])
     ef = torch.tensor(X1, dtype=torch.float32); yt = torch.tensor(y); tr_t = torch.tensor(tr)
-    pb = _per_bucket(events, idx)
+    pb = _event_batches(events, idx)
     m = TemporalGNN(Xn.shape[1], X1.shape[1])
     opt = torch.optim.Adam(m.parameters(), lr=0.01, weight_decay=5e-4); lf = nn.BCEWithLogitsLoss()
     for _ in range(EPOCHS):

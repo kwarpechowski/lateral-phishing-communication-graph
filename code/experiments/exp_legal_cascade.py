@@ -54,7 +54,7 @@ from exp_cascade import (
     TemporalGNN,
     is_consistent,
 )
-from exp_cascade_sweep import _compa_features, _per_bucket  # noqa: E402
+from exp_cascade_sweep import _compa_features, _event_batches  # noqa: E402
 
 SEEDS = list(range(20))
 EPOCHS = 100
@@ -63,36 +63,65 @@ LEGAL_FANOUT = 2  # lagodniejszy fanout niz atak (10)
 LEGAL_P_INFECT = 0.35
 LEGAL_HOPS = 3
 LEGAL_STEP = 2  # hop co 2 buckety (wolniejszy rytm niz atak: co 1)
+# A4: fale TRUDNE (off-rhythm, duzy fan-out, wielohopowe przez granice firm)
+HARD_FRAC = 0.30  # ~30% liczby kaskad atakowych (jak fale latwe)
+HARD_FANOUT = 6  # duzy fan-out (przeciwienstwo latwych 2)
+HARD_P_INFECT = 0.5
+HARD_HOPS = 3  # wielohop: forwardy przez graf kontaktow (takze partnerstwa)
+STEALTH_K = 2  # rezym ataku stealth: <=2 wyslania nosiciela, po 1 na kubelek
 
 
-def _simulate(seed, with_legal):
+def _simulate(seed, with_legal, legal_hard=False, stealth=False):
     """Atak jak w exp_cascade + (opcjonalnie) legalne fale jako trudne negatywy."""
     twins, nbr = _contact_graph()
     rng = np.random.default_rng(seed)
     events = []
 
-    # --- atak (label=1): identyczny protokol jak exp_cascade._simulate ---
+    # --- atak (label=1): protokol jak exp_cascade._simulate; stealth=True -> A4:
+    #     <=STEALTH_K wyslan nosiciela, po JEDNYM na kubelek (brak burstu nadawczego)
     seeds0 = [twins[i] for i in rng.permutation(len(twins))[:N_CASCADES]]
     for s0 in seeds0:
         t0 = int(rng.integers(0, T_BUCKETS - MAX_HOPS))
-        infected = {s0}
-        frontier = [s0]
-        for hop in range(MAX_HOPS):
-            nxt = []
-            bucket = t0 + hop
-            for u in frontier:
-                targets = sorted(nbr.get(u, ()))
-                rng.shuffle(targets)
-                for v in targets:
-                    if v in infected:
-                        continue
-                    events.append((u, v, bucket, 1))
-                    if rng.random() < P_INFECT:
-                        infected.add(v)
-                        nxt.append(v)
-            frontier = nxt
-            if not frontier:
-                break
+        if stealth:
+            infected = {s0}
+            frontier = [(s0, t0)]
+            for _hop in range(MAX_HOPS):
+                nxt = []
+                for u, tu in frontier:
+                    targets = sorted(nbr.get(u, ()))
+                    rng.shuffle(targets)
+                    sent_n = 0
+                    for v in targets:
+                        if v in infected or sent_n >= STEALTH_K:
+                            continue
+                        bucket = (tu + 1 + sent_n) % T_BUCKETS
+                        events.append((u, v, bucket, 1))
+                        sent_n += 1
+                        if rng.random() < P_INFECT:
+                            infected.add(v)
+                            nxt.append((v, bucket))
+                frontier = nxt
+                if not frontier:
+                    break
+        else:
+            infected = {s0}
+            frontier = [s0]
+            for hop in range(MAX_HOPS):
+                nxt = []
+                bucket = t0 + hop
+                for u in frontier:
+                    targets = sorted(nbr.get(u, ()))
+                    rng.shuffle(targets)
+                    for v in targets:
+                        if v in infected:
+                            continue
+                        events.append((u, v, bucket, 1))
+                        if rng.random() < P_INFECT:
+                            infected.add(v)
+                            nxt.append(v)
+                frontier = nxt
+                if not frontier:
+                    break
 
     # --- legalne fale (label=0): strukturalnie fala, ale lagodna i w rytmie ---
     if with_legal:
@@ -124,6 +153,38 @@ def _simulate(seed, with_legal):
                 if not frontier:
                     break
 
+    # --- A4: fale TRUDNE (label=0): off-rhythm, fan-out duzy, wielohopowe forwardy
+    #     przez graf kontaktow (w tym krawedzie partnerstw miedzyfirmowych) ---
+    if legal_hard:
+        n_hard = max(2, int(round(HARD_FRAC * N_CASCADES)))
+        hseeds = [twins[i] for i in rng.permutation(len(twins))[:n_hard]]
+        for s0 in hseeds:
+            t0 = int(rng.integers(0, T_BUCKETS - HARD_HOPS))
+            seen = {s0}
+            frontier = [s0]
+            for hop in range(HARD_HOPS):
+                nxt = []
+                for u in frontier:
+                    # kubełek OFF-RHYTHM nosiciela: taki, w ktorym nadawca NIE jest zgodny
+                    u_off = [
+                        b for b in range(T_BUCKETS) if not is_consistent(u, b, seed)
+                    ]
+                    if not u_off:
+                        continue
+                    ub = u_off[hop % len(u_off)]
+                    targets = sorted(nbr.get(u, ()))
+                    rng.shuffle(targets)
+                    for v in targets[:HARD_FANOUT]:
+                        if v in seen:
+                            continue
+                        events.append((u, v, ub, 0))
+                        if rng.random() < HARD_P_INFECT:
+                            seen.add(v)
+                            nxt.append(v)
+                frontier = nxt
+                if not frontier:
+                    break
+
     # --- benign punktowy (label=0): znany kontakt, w rytmie ---
     for bucket in range(T_BUCKETS):
         for _ in range(BENIGN_PER_BUCKET):
@@ -137,9 +198,9 @@ def _simulate(seed, with_legal):
     return twins, nbr, events
 
 
-def run_seed(seed, with_legal):
+def run_seed(seed, with_legal, legal_hard=False, stealth=False):
     torch.manual_seed(seed)
-    twins, nbr, events = _simulate(seed, with_legal)
+    twins, nbr, events = _simulate(seed, with_legal, legal_hard, stealth)
     recv_b, sent_b = _index_traffic(events)
     X1, Xc, y = _features(events, nbr, recv_b, sent_b, seed)
     Xco = _compa_features(events)
@@ -173,7 +234,7 @@ def run_seed(seed, with_legal):
     m = TemporalGNN(Xn.shape[1], X1.shape[1])
     opt = torch.optim.Adam(m.parameters(), lr=0.01, weight_decay=5e-4)
     lf = nn.BCEWithLogitsLoss()
-    pb = _per_bucket(events, idx)
+    pb = _event_batches(events, idx)
     for _ in range(EPOCHS):
         m.train()
         opt.zero_grad()
@@ -190,11 +251,18 @@ def run_seed(seed, with_legal):
 def main():
     torch.set_num_threads(4)
     rows, perseed = [], []
-    for cond, with_legal in (("baseline", False), ("legal-waves", True)):
+    conds = [
+        ("baseline", dict(with_legal=False)),
+        ("legal-easy", dict(with_legal=True)),
+        ("legal-hard", dict(with_legal=True, legal_hard=True)),
+        ("stealth", dict(with_legal=False, stealth=True)),
+        ("stealth+legal-hard", dict(with_legal=True, legal_hard=True, stealth=True)),
+    ]
+    for cond, kw in conds:
         acc = {}
         print(f"=== [legal-cascade] warunek: {cond} ===", flush=True)
         for seed in SEEDS:
-            res = run_seed(seed, with_legal)
+            res = run_seed(seed, **kw)
             for k, (a, r) in res.items():
                 acc.setdefault(k, {"a": [], "r": []})
                 acc[k]["a"].append(a)

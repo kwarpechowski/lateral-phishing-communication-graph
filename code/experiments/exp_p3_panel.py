@@ -12,6 +12,7 @@ NISKI-ZASIEG. Teza: ewazja lamie wolumen/statyczny; sygnal odbiorczy (reczny+tem
 
 Wyjscie: results/exp_p3_panel.csv
 """
+
 from __future__ import annotations
 
 import csv
@@ -29,9 +30,19 @@ sys.path.insert(0, str(CODE))
 sys.path.insert(0, str(CODE / "experiments"))
 RESULTS = CODE / "results"
 
-from exp_cascade import (T_BUCKETS, _contact_graph, _features, _index_traffic,   # noqa: E402
-                         _node_features, _recall_at_fpr, TemporalGNN, CascadeGNN, _norm_adj)
-from exp_cascade_sweep import _compa_features, _per_bucket            # noqa: E402
+from exp_cascade import (
+    T_BUCKETS,
+    _contact_graph,
+    _features,
+    _index_traffic,  # noqa: E402
+    _node_features,
+    _recall_at_fpr,
+    TemporalGNN,
+    CascadeGNN,
+    _norm_adj,
+)
+from exp_cascade_sweep import _compa_features  # noqa: E402
+from exp_cascade_sweep import _event_batches as _per_bucket  # noqa: E402
 
 SEEDS = list(range(3))
 EPOCHS = 100
@@ -45,21 +56,27 @@ STRATEGIES = [("naiwna", 8, 1), ("stealth-spread", 8, 8), ("niski-zasieg", 2, 1)
 def _simulate(seed, K, g):
     twins, nbr = _contact_graph()
     rng = np.random.default_rng(seed)
-    events = []; infected_all = set()
+    events = []
+    infected_all = set()
     seeds0 = [twins[i] for i in rng.permutation(len(twins))[:N_CASCADES]]
     for s0 in seeds0:
         t0 = int(rng.integers(0, T_BUCKETS))
-        infected = {s0}; frontier = [(s0, t0)]
+        infected = {s0}
+        frontier = [(s0, t0)]
         for _hop in range(MAX_HOPS):
             nxt = []
-            for (u, tu) in frontier:
-                tg = sorted(nbr.get(u, ())); rng.shuffle(tg); sent = 0
+            for u, tu in frontier:
+                tg = sorted(nbr.get(u, ()))
+                rng.shuffle(tg)
+                sent = 0
                 for v in tg:
                     if v in infected or sent >= K:
                         continue
-                    events.append((u, v, (tu + 1 + sent * g) % T_BUCKETS, 1)); sent += 1
+                    events.append((u, v, (tu + 1 + sent * g) % T_BUCKETS, 1))
+                    sent += 1
                     if rng.random() < P_INFECT:
-                        infected.add(v); nxt.append((v, (tu + 1 + sent * g) % T_BUCKETS))
+                        infected.add(v)
+                        nxt.append((v, (tu + 1 + sent * g) % T_BUCKETS))
             frontier = nxt
             if not frontier:
                 break
@@ -77,40 +94,58 @@ def _panel(twins, nbr, events, seed):
     recv_b, sent_b = _index_traffic(events)
     X1, Xc, _y = _features(events, nbr, recv_b, sent_b, seed)
     Xco = _compa_features(events)
-    idx = {t: i for i, t in enumerate(twins)}; n = len(twins)
+    idx = {t: i for i, t in enumerate(twins)}
+    n = len(twins)
     y = np.array([e[3] for e in events], dtype=np.float32)
     vics = sorted({e[1] for e in events})
     rng = np.random.default_rng(seed)
-    te_v = set(np.array(vics)[rng.permutation(len(vics))[:max(1, len(vics) // 3)]])
-    te = np.array([e[1] in te_v for e in events]); tr = ~te
+    te_v = set(np.array(vics)[rng.permutation(len(vics))[: max(1, len(vics) // 3)]])
+    te = np.array([e[1] in te_v for e in events])
+    tr = ~te
     yte = y[te]
     out = {}
     for tag, X in (("1-hop", X1), ("COMPA", Xco), ("reczny-kontekst", Xc)):
-        c = LGBMClassifier(n_jobs=1, random_state=42, n_estimators=200, verbose=-1).fit(X[tr], y[tr])
+        c = LGBMClassifier(n_jobs=1, random_state=42, n_estimators=200, verbose=-1).fit(
+            X[tr], y[tr]
+        )
         out[tag] = roc_auc_score(yte, c.predict_proba(X[te])[:, 1])
     # GNN-y
     Xn = _node_features(events, nbr, idx, n, recv_b, sent_b, tr=tr)
-    s_idx = torch.tensor([idx[e[0]] for e in events]); v_idx = torch.tensor([idx[e[1]] for e in events])
-    ef = torch.tensor(X1, dtype=torch.float32); yt = torch.tensor(y); tr_t = torch.tensor(tr)
-    te_t = torch.tensor(te); lf = nn.BCEWithLogitsLoss()
+    s_idx = torch.tensor([idx[e[0]] for e in events])
+    v_idx = torch.tensor([idx[e[1]] for e in events])
+    ef = torch.tensor(X1, dtype=torch.float32)
+    yt = torch.tensor(y)
+    tr_t = torch.tensor(tr)
+    te_t = torch.tensor(te)
+    lf = nn.BCEWithLogitsLoss()
     # statyczny GNN
     A = _norm_adj(nbr, idx, n)
     gs = CascadeGNN(Xn.shape[1], X1.shape[1])
     o = torch.optim.Adam(gs.parameters(), lr=0.01, weight_decay=5e-4)
     for _ in range(EPOCHS):
-        gs.train(); o.zero_grad(); lf(gs(A, Xn, s_idx, v_idx, ef)[tr_t], yt[tr_t]).backward(); o.step()
+        gs.train()
+        o.zero_grad()
+        lf(gs(A, Xn, s_idx, v_idx, ef)[tr_t], yt[tr_t]).backward()
+        o.step()
     gs.eval()
     with torch.no_grad():
-        out["GCN-statyczny"] = roc_auc_score(yte, torch.sigmoid(gs(A, Xn, s_idx, v_idx, ef))[te_t].numpy())
+        out["GCN-statyczny"] = roc_auc_score(
+            yte, torch.sigmoid(gs(A, Xn, s_idx, v_idx, ef))[te_t].numpy()
+        )
     # temporalny GNN
     pb = _per_bucket(events, idx)
     gt = TemporalGNN(Xn.shape[1], X1.shape[1])
     o = torch.optim.Adam(gt.parameters(), lr=0.01, weight_decay=5e-4)
     for _ in range(EPOCHS):
-        gt.train(); o.zero_grad(); lf(gt(Xn, pb, n, ef, s_idx, v_idx)[tr_t], yt[tr_t]).backward(); o.step()
+        gt.train()
+        o.zero_grad()
+        lf(gt(Xn, pb, n, ef, s_idx, v_idx)[tr_t], yt[tr_t]).backward()
+        o.step()
     gt.eval()
     with torch.no_grad():
-        out["temporalny-GNN"] = roc_auc_score(yte, torch.sigmoid(gt(Xn, pb, n, ef, s_idx, v_idx))[te_t].numpy())
+        out["temporalny-GNN"] = roc_auc_score(
+            yte, torch.sigmoid(gt(Xn, pb, n, ef, s_idx, v_idx))[te_t].numpy()
+        )
     return out
 
 
@@ -132,9 +167,13 @@ def main():
         print(f"  [{name}] zasieg {reach[name]:.0%}: {line}", flush=True)
     out = RESULTS / "exp_p3_panel.csv"
     with out.open("w", newline="", encoding="utf-8") as f:
-        w = csv.writer(f); w.writerow(["strategia", "zasieg"] + order)
+        w = csv.writer(f)
+        w.writerow(["strategia", "zasieg"] + order)
         for name, _K, _g in STRATEGIES:
-            w.writerow([name, round(reach[name], 3)] + [round(float(np.mean(agg[name][k])), 4) for k in order])
+            w.writerow(
+                [name, round(reach[name], 3)]
+                + [round(float(np.mean(agg[name][k])), 4) for k in order]
+            )
     print(f"\n[p3-panel] -> {out}")
 
 

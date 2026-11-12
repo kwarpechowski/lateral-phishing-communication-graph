@@ -118,7 +118,7 @@ class TemporalGNN(_TorchDetector):
     def fit_score(self, sc, tr, te, seed):
         torch.manual_seed(seed)
         g, n, Xn, s_idx, v_idx, ef, y = self._tensors(sc, seed, tr)
-        pb = M.per_bucket(g, sc.events)
+        pb = M.event_batches(g, sc.events)
         model = self._make(Xn.shape[1], ef.shape[1])
         opt = torch.optim.Adam(model.parameters(), lr=0.01, weight_decay=5e-4)
         lf = nn.BCEWithLogitsLoss()

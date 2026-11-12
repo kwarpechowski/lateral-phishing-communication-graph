@@ -23,6 +23,7 @@ from __future__ import annotations
 import csv
 import hashlib
 import sys
+from collections import defaultdict
 from pathlib import Path
 
 import numpy as np
@@ -163,12 +164,23 @@ def _index_traffic(events):
 def _features(events, nbr, recv_by_bucket, sent_by_bucket, seed):
     """Zwraca X_1hop, X_ctx (1hop + kontekst kaskady), y.
 
-    LEAK-AWARE (fix po recenzji): okna cech strumieniowych (burst, prop) sa PRZESZLE
-    [b-WINDOW, b-1] — bez biezacego bucketa b (zgodnosc z pamiecia TGN czytajaca stan
-    sprzed bucketa; poprzednia wersja zawierala bucket b, co dawalo kontekstowi recznemu
-    przewage informacyjna nad TGN)."""
-    X1, Xc, y = [], [], []
-    for s, v, b, lab in events:
+    PRZYCZYNOWOSC ZDARZENIOWA (fix po recenzji wewnetrznej): zdarzenie e widzi wylacznie
+    zdarzenia o scisle wczesniejszym znaczniku czasu t(e) = (kubelek, pozycja na liscie
+    strumienia) — wczesniejsze kubełki okna [b-W, b-1] ORAZ wczesniejsze zdarzenia TEGO
+    samego kubełka (regula remisow: porzadek tasowanej listy, losowy ale ustalony).
+    Poprzedni podzial po kubełkach (<= b-1) ukrywal fale budujaca sie w biezacym kubełku
+    i faworyzowal liczniki wolumetryczne pod blastem (zrodel asymetrii na SNAP)."""
+    n = len(events)
+    X1 = [None] * n
+    Xc = [None] * n
+    y = [None] * n
+    recv_b: dict = defaultdict(
+        set
+    )  # kubelek -> odbiorcy (prefix, wypelniany przy przejsciu)
+    sent_b: dict = defaultdict(set)  # kubelek -> nadawcy (prefix)
+    order = sorted(range(n), key=lambda i: (events[i][2], i))
+    for i in order:
+        s, v, b, lab = events[i]
         cs = nbr.get(v, set())
         deg_v, deg_s = len(cs), len(nbr.get(s, set()))
         # --- cechy 1-hop (lokalnie atak wyglada normalnie) ---
@@ -176,30 +188,21 @@ def _features(events, nbr, recv_by_bucket, sent_by_bucket, seed):
         f_rhythm = 1.0 if is_consistent(s, b, seed) else 0.0
         f1 = [f_s_in_contacts, f_rhythm, float(deg_v), float(deg_s)]
         # --- kontekst kaskady (OBSERWOWALNY: burst sasiadow + swiezosc nadawcy) ---
-        # burst: ilu kontaktow B (poza A) bylo odbiorca w oknie PRZESZLYM [b-W, b-1]
-        recent_recv = set()
+        # okno PRZESZLE zdarzeniowe: kompletne kubełki [b-W, b-1] + prefix biezacego b
+        recent_recv = set(recv_b.get(b, ()))
+        recent_sent = set(sent_b.get(b, ()))
         for bb in range(max(0, b - WINDOW), b):
-            recent_recv |= recv_by_bucket.get(bb, set())
+            recent_recv |= recv_b.get(bb, set())
+            recent_sent |= sent_b.get(bb, set())
         burst = len((cs - {s}) & recent_recv) / max(1, deg_v)
-        # swiezosc nadawcy: czy A byl odbiorca w [b-WINDOW, b-1] (wlasnie go "dotknieto")
-        sender_recency = 0.0
-        for bb in range(max(0, b - WINDOW), b):
-            if s in recv_by_bucket.get(bb, set()):
-                sender_recency = 1.0
-                break
-        # gestosc fali: ilu kontaktow B bylo NADAWCA w oknie PRZESZLYM (propagacja dalej)
-        prop = len(
-            (cs - {s})
-            & {
-                x
-                for bb in range(max(0, b - WINDOW), b)
-                for x in sent_by_bucket.get(bb, set())
-            }
-        ) / max(1, deg_v)
-        Xc.append(f1 + [burst, sender_recency, prop])
-        X1.append(f1)
-        y.append(float(lab))
-    return np.array(X1, np.float32), np.array(Xc, np.float32), np.array(y, np.float32)
+        sender_recency = 1.0 if s in recent_recv else 0.0
+        prop = len((cs - {s}) & recent_sent) / max(1, deg_v)
+        Xc[i] = f1 + [burst, sender_recency, prop]
+        X1[i] = f1
+        y[i] = float(lab)
+        recv_b[b].add(v)
+        sent_b[b].add(s)
+    return (np.array(X1, np.float32), np.array(Xc, np.float32), np.array(y, np.float32))
 
 
 # --- featuralny GNN po grafie kontaktow (uczy sie agregowac kontekst) ---
@@ -241,10 +244,10 @@ class TemporalGNN(nn.Module):
             nn.Linear(48, 1),
         )
 
-    def forward(self, Xn, per_bucket, n, edge_feat, s_all, v_all):
+    def forward(self, Xn, batches, n, edge_feat, s_all, v_all):
         M = torch.relu(self.proj(Xn))
         logits = torch.zeros(len(s_all))
-        for sb, vb, gidx in per_bucket:
+        for _b, sb, vb, gidx in batches:
             if len(gidx) == 0:
                 continue
             # klasyfikacja stanem sprzed aktualizacji bucketa
@@ -305,6 +308,24 @@ def _node_features(events, nbr, idx, n, recv_by_bucket, sent_by_bucket, tr=None)
     return (X - X.mean(0, keepdim=True)) / X.std(0, keepdim=True).clamp(min=1e-6)
 
 
+def _event_batches_local(events, idx, chunk=64):
+    """Mini-batche zdarzen w porzadku (kubelek, pozycja na liscie). Batch nie przekracza
+    granicy kubełka; zdarzenia w batchu sa wspolczesne (nie widza sie) — przyczynowosc
+    zdarzeniowa zamiast kubełkowej (fix po recenzji wewnetrznej; jak cascadebench.models)."""
+    by_b = {}
+    for i, e in enumerate(events):
+        by_b.setdefault(e[2], []).append(i)
+    out = []
+    for b in sorted(by_b):
+        g = by_b[b]
+        for c in range(0, len(g), chunk):
+            part = g[c : c + chunk]
+            sb = torch.tensor([idx[events[i][0]] for i in part])
+            vb = torch.tensor([idx[events[i][1]] for i in part])
+            out.append((b, sb, vb, part))
+    return out
+
+
 def run_seed(seed):
     twins, nbr, events = _simulate(seed)
     recv_b, sent_b = _index_traffic(events)
@@ -341,6 +362,15 @@ def run_seed(seed):
     )
     sc = cc.predict_proba(Xc[te])[:, 1]
     out["tab_ctx"] = (roc_auc_score(y[te], sc), _recall_at_fpr(y[te], sc))
+    # A3 (recenzja wewnetrzna r2): detektor wolumetryczny COMPA w tym samym
+    # przebiegu (przyczynowosc zdarzeniowa) — dla tabeli hierarchii detektorow
+    from exp_cascade_sweep import _compa_features as _cf
+    Xco = _cf(events)
+    cv = LGBMClassifier(n_jobs=1, random_state=42, n_estimators=200, verbose=-1).fit(
+        Xco[tr], y[tr]
+    )
+    sv = cv.predict_proba(Xco[te])[:, 1]
+    out["compa"] = (roc_auc_score(y[te], sv), _recall_at_fpr(y[te], sv))
     Xn = _node_features(events, nbr, idx, n, recv_b, sent_b, tr=tr)
     s_idx = torch.tensor([idx[e[0]] for e in events])
     v_idx = torch.tensor([idx[e[1]] for e in events])
@@ -367,30 +397,21 @@ def run_seed(seed):
             sg = torch.sigmoid(model(A, Xn, s_idx, v_idx, ef))[te_t].numpy()
         out["gnn_static"] = (roc_auc_score(y[te], sg), _recall_at_fpr(y[te], sg))
 
-    # --- Temporalny GNN: pamiec aktualizowana po kolejnych bucketach ---
-    per_bucket = []
-    for b in range(T_BUCKETS):
-        gidx = [i for i, e in enumerate(events) if e[2] == b]
-        if not gidx:
-            per_bucket.append(
-                (torch.empty(0, dtype=torch.long), torch.empty(0, dtype=torch.long), [])
-            )
-            continue
-        sb = torch.tensor([idx[events[i][0]] for i in gidx])
-        vb = torch.tensor([idx[events[i][1]] for i in gidx])
-        per_bucket.append((sb, vb, gidx))
+    # --- Temporalny GNN: pamiec aktualizowana per mini-batch zdarzen w porzadku
+    #     czasowym (kubelek, pozycja na liscie) — przyczynowosc zdarzeniowa ---
     tmodel = TemporalGNN(Xn.shape[1], X1.shape[1])
+    batches = _event_batches_local(events, idx)
     topt = torch.optim.Adam(tmodel.parameters(), lr=0.01, weight_decay=5e-4)
     for _ in range(80 if SCALE_N else 120):
         tmodel.train()
         topt.zero_grad()
-        logit = tmodel(Xn, per_bucket, n, ef, s_idx, v_idx)
+        logit = tmodel(Xn, batches, n, ef, s_idx, v_idx)
         loss = lossf(logit[tr_t], yt[tr_t])
         loss.backward()
         topt.step()
     tmodel.eval()
     with torch.no_grad():
-        st = torch.sigmoid(tmodel(Xn, per_bucket, n, ef, s_idx, v_idx))[te_t].numpy()
+        st = torch.sigmoid(tmodel(Xn, batches, n, ef, s_idx, v_idx))[te_t].numpy()
     out["gnn_temporal"] = (roc_auc_score(y[te], st), _recall_at_fpr(y[te], st))
 
     if (
@@ -404,17 +425,9 @@ def run_seed(seed):
     # bucketow) niszczy strukture kaskady -> przewaga temporalnego GNN musi zniknac ---
     rngs = np.random.default_rng(1000 + seed)
     shuf_b = rngs.integers(0, T_BUCKETS, size=len(events))
-    pb_shuf = []
-    for b in range(T_BUCKETS):
-        gidx = [i for i in range(len(events)) if shuf_b[i] == b]
-        if not gidx:
-            pb_shuf.append(
-                (torch.empty(0, dtype=torch.long), torch.empty(0, dtype=torch.long), [])
-            )
-            continue
-        sb = torch.tensor([idx[events[i][0]] for i in gidx])
-        vb = torch.tensor([idx[events[i][1]] for i in gidx])
-        pb_shuf.append((sb, vb, gidx))
+    ev_shuf = [(events[i][0], events[i][1], int(shuf_b[i]), events[i][3])
+               for i in range(len(events))]
+    pb_shuf = _event_batches_local(ev_shuf, idx)
     tmodel2 = TemporalGNN(Xn.shape[1], X1.shape[1])
     topt2 = torch.optim.Adam(tmodel2.parameters(), lr=0.01, weight_decay=5e-4)
     for _ in range(120):

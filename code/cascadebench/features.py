@@ -40,12 +40,29 @@ def onehop(graph: Graph, events: List, seed: int) -> np.ndarray:
     return np.asarray(X, np.float32)
 
 
+def _time_order(events: List) -> List[int]:
+    """Calkowity porzadek czasowy zdarzen (regula remisow): kubelek, potem pozycja na
+    liscie strumienia. Zdarzenia w tym samym kubełku sa wspolczesne, ale dostaja ustalona
+    kolejnosc tasowanej listy — losowa, deterministyczna dla danego przebiegu."""
+    return sorted(range(len(events)), key=lambda i: (events[i][2], i))
+
+
 def context(graph: Graph, events: List, seed: int) -> np.ndarray:
-    """Cechy kontekstu kaskady. ZASADA LEAK-AWARE: kazda cecha strumieniowa liczona wylacznie
-    z kubelkow PRZESZLYCH (<= b-1), zgodnie z pamiecia TGN (stan sprzed bucketa b)."""
-    recv, sent = index_traffic(events)
-    X = []
-    for s, v, b, _l in events:
+    """Cechy kontekstu kaskady. PRZYCZYNOWOSC ZDARZENIOWA (fix po recenzji wewnetrznej):
+    zdarzenie e widzi wylacznie zdarzenia o scisle wczesniejszym znaczniku czasu t(e) =
+    (kubelek, pozycja na liscie) — czyli wczesniejsze kubełki ORAZ wczesniejsze zdarzenia
+    TEGO samego kubełka (w porzadku strumienia). Poprzednia wersja dzielila po kubełkach
+    (<= b-1), przez co detektor odbiorczy nie widzial fali budujacej sie w biezacym
+    kubełku — asymetria faworyzowala liczniki wolumetryczne pod blastem."""
+    W = WINDOW
+    n = len(events)
+    X = [None] * n
+    recv_b: dict = defaultdict(
+        set
+    )  # kubelek -> zbior odbiorcow (wypelniany przy przejsciu)
+    sent_b: dict = defaultdict(set)  # kubelek -> zbior nadawcow
+    for i in _time_order(events):
+        s, v, b, _l = events[i]
         cs = graph.neighbors(v)
         deg_v = max(1, len(cs))
         f1 = [
@@ -54,27 +71,17 @@ def context(graph: Graph, events: List, seed: int) -> np.ndarray:
             float(len(cs)),
             float(len(graph.neighbors(s))),
         ]
-        recent = set()
-        for bb in range(max(0, b - WINDOW), b):
-            recent |= recv.get(bb, set())
-        burst = len((cs - {s}) & recent) / deg_v
-        recency = 0.0
-        for bb in range(max(0, b - WINDOW), b):
-            if s in recv.get(bb, set()):
-                recency = 1.0
-                break
-        prop = (
-            len(
-                (cs - {s})
-                & {
-                    x
-                    for bb in range(max(0, b - WINDOW), b)
-                    for x in sent.get(bb, set())
-                }
-            )
-            / deg_v
-        )
-        X.append(f1 + [burst, recency, prop])
+        recent_recv = set(recv_b.get(b, ()))  # wczesniejsze zdarzenia TEGO kubełka
+        recent_sent = set(sent_b.get(b, ()))
+        for bb in range(max(0, b - W), b):  # kompletne wczesniejsze kubełki okna
+            recent_recv |= recv_b.get(bb, set())
+            recent_sent |= sent_b.get(bb, set())
+        burst = len((cs - {s}) & recent_recv) / deg_v
+        recency = 1.0 if s in recent_recv else 0.0
+        prop = len((cs - {s}) & recent_sent) / deg_v
+        X[i] = f1 + [burst, recency, prop]
+        recv_b[b].add(v)
+        sent_b[b].add(s)
     return np.asarray(X, np.float32)
 
 
@@ -142,40 +149,39 @@ def hopper(graph: Graph, events: List, seed: int) -> np.ndarray:
     bez tresci maila (URL/lure z~oryginalu sa niedostepne), wiec kodujemy strukturalno-czasowy rdzen
     sygnatury Hoppera.
 
-    LEAK-AWARE (fix po recenzji): rozmach ruchu (momentum) liczony z kubelkow PRZESZLYCH
-    [b-W, b-1] (poprzednia definicja [b, b+W] zawierala przyszle kubelki = look-ahead),
-    a popularnosc odbiorcy z ruchu PRZED kubelkiem b."""
-    recv, sent = index_traffic(events)
-    dest_past = {}  # b -> Counter popularnosci odbiorcow z kubelkow < b
-    cnt = {}
-    for _s, v, b, _l in events:
-        cnt.setdefault(b, Counter())[v] += 1
-    cum = Counter()
-    for b in sorted(cnt):
-        dest_past[b] = cum.copy()  # snapshot przed kubelkiem b
-        cum.update(cnt[b])
-    out_win = defaultdict(set)  # (s,b) -> zbior celow w oknie PRZESZLYM [b-W, b-1]
-    for s, v, b, _l in events:
-        for bb in range(
-            b + 1, b + WINDOW + 1
-        ):  # cel liczony do okna od kubelka bb-W do bb-1
-            out_win[(s, bb)].add(v)
-    X = []
-    for s, v, b, _l in events:
-        precursor = 0.0  # czy s otrzymal cos w [b-W, b-1] (osiagniety)
-        for bb in range(max(0, b - WINDOW), b):
-            if s in recv.get(bb, set()):
-                precursor = 1.0
-                break
-        fan = float(len(out_win.get((s, b), ())))  # rozmach ruchu w oknie PRZESZLYM
-        rare_dest = 1.0 / (
-            1.0 + dest_past.get(b, Counter())[v]
-        )  # rzadki odbiorca (ruch przeszly)
-        unexplained = (
-            0.0 if in_rhythm(graph, s, b, seed) else 1.0
-        )  # brak benign wyjasnienia (poza rytmem)
-        hop_sig = precursor * unexplained  # sygnatura: ruch w lancuchu bez wyjasnienia
-        X.append([precursor, fan, rare_dest, unexplained, hop_sig])
+    PRZYCZYNOWOSC ZDARZENIOWA (fix po recenzji wewnetrznej): precursor, rozmach (momentum) i
+    popularnosc odbiorcy liczone ze zdarzen o scisle wczesniejszym t(e) = (kubelek, pozycja)
+    — wczesniejsze kubełki okna [b-W, b-1] plus wczesniejsze zdarzenia TEGO kubełka.
+    Poprzednio podzial po kubełkach (< b) ukrywal fale budujaca sie w biezacym kubełku."""
+    W = WINDOW
+    n = len(events)
+    X = [None] * n
+    recv_b: dict = defaultdict(set)  # kubelek -> odbiorcy (prefix)
+    out_b: dict = defaultdict(set)  # (kubelek, nadawca) -> jego cele (prefix)
+    dest_cnt: dict = defaultdict(
+        int
+    )  # popularnosc odbiorcy wsrod STRICTLY wczesniejszych
+    for i in _time_order(events):
+        s, v, b, _l = events[i]
+        precursor = 0.0
+        if s in recv_b.get(b, ()):
+            precursor = 1.0
+        else:
+            for bb in range(max(0, b - W), b):
+                if s in recv_b.get(bb, ()):
+                    precursor = 1.0
+                    break
+        fan_set = set(out_b.get((b, s), ()))
+        for bb in range(max(0, b - W), b):
+            fan_set |= out_b.get((bb, s), set())
+        fan = float(len(fan_set))
+        rare_dest = 1.0 / (1.0 + dest_cnt[v])
+        unexplained = 0.0 if in_rhythm(graph, s, b, seed) else 1.0
+        hop_sig = precursor * unexplained
+        X[i] = [precursor, fan, rare_dest, unexplained, hop_sig]
+        recv_b[b].add(v)
+        out_b[(b, s)].add(v)
+        dest_cnt[v] += 1
     return np.asarray(X, np.float32)
 
 

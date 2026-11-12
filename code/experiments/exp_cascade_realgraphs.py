@@ -35,7 +35,7 @@ from exp_cascade import (
     _recall_at_fpr,
     TemporalGNN,
 )
-from exp_cascade_sweep import _compa_features, _per_bucket  # noqa: E402
+from exp_cascade_sweep import _compa_features, _event_batches  # noqa: E402
 
 SEEDS = list(range(3))
 EPOCHS = 90
@@ -169,13 +169,13 @@ def run(nbr, seed, stealth_k):
             s = torch.sigmoid(m(Xn, pb, n, ef, s_idx, v_idx))[te_t].numpy()
         return roc_auc_score(y[te], s), _recall_at_fpr(y[te], s)
 
-    out["gnn_temporal"] = train_temporal(_per_bucket(events, idx))
+    out["gnn_temporal"] = train_temporal(_event_batches(events, idx))
     shuf = rng.integers(0, T_BUCKETS, size=len(events))
     ev_s = [
         (events[i][0], events[i][1], int(shuf[i]), events[i][3])
         for i in range(len(events))
     ]
-    out["gnn_temporal_shuf"] = train_temporal(_per_bucket(ev_s, idx))
+    out["gnn_temporal_shuf"] = train_temporal(_event_batches(ev_s, idx))
     return out, n, len(events), int(y.sum())
 
 

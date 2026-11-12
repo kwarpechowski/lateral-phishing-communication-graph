@@ -1,5 +1,0 @@
-config,auc,recall_fpr1,n_seeds
-full,0.8574,0.0638,20
-osint_shuf,0.8232,0.0507,20
-all_shuf,0.5027,0.0123,20
-no_osint,0.8256,0.0,20

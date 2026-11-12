@@ -77,6 +77,26 @@ def _compa_features(events):
     return np.array(X, np.float32)
 
 
+CHUNK = 64  # jak w cascadebench.models.event_batches
+
+
+def _event_batches(events, idx, chunk=CHUNK):
+    """Mini-batche zdarzen w porzadku (kubelek, pozycja na liscie) — przyczynowosc
+    zdarzeniowa pamieci TGN (batch nie przekracza kubełka; batch jest wspolczesny)."""
+    by_b = {}
+    for i, e in enumerate(events):
+        by_b.setdefault(e[2], []).append(i)
+    out = []
+    for b in sorted(by_b):
+        g = by_b[b]
+        for c in range(0, len(g), chunk):
+            part = g[c:c + chunk]
+            sb = torch.tensor([idx[events[i][0]] for i in part])
+            vb = torch.tensor([idx[events[i][1]] for i in part])
+            out.append((b, sb, vb, part))
+    return out
+
+
 def _per_bucket(events, idx):
     pb = []
     for b in range(T_BUCKETS):
@@ -123,7 +143,7 @@ def _eval_point(seed):
     yt = torch.tensor(y)
     tr_t = torch.tensor(tr)
     te_t = torch.tensor(te)
-    pb = _per_bucket(events, idx)
+    pb = _event_batches(events, idx)
     m = TemporalGNN(Xn.shape[1], X1.shape[1])
     opt = torch.optim.Adam(m.parameters(), lr=0.01, weight_decay=5e-4)
     lossf = nn.BCEWithLogitsLoss()

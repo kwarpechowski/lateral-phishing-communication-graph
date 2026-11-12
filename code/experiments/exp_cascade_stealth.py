@@ -36,7 +36,7 @@ from exp_cascade import (
     _recall_at_fpr,
     TemporalGNN,
 )
-from exp_cascade_sweep import _compa_features, _per_bucket  # noqa: E402
+from exp_cascade_sweep import _compa_features, _event_batches  # noqa: E402
 
 SEEDS = list(range(20))  # 20 ziaren (recenzja r1 pkt 13: stealth/baselines = 20 seedow)
 EPOCHS = 100
@@ -136,7 +136,7 @@ def _eval(seed, K):
     yt = torch.tensor(y)
     tr_t = torch.tensor(tr)
     te_t = torch.tensor(te)
-    pb = _per_bucket(events, idx)
+    pb = _event_batches(events, idx)
     m = TemporalGNN(Xn.shape[1], X1.shape[1])
     opt = torch.optim.Adam(m.parameters(), lr=0.01, weight_decay=5e-4)
     lossf = nn.BCEWithLogitsLoss()

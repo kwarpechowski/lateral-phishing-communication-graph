@@ -191,23 +191,9 @@ def run_seed(seed):
     # nasza TGN-lite
     torch.manual_seed(seed)
     Xn = _node_features(events, nbr, idx, n, recv_b, sent_b, tr=trm)
-    pb = []
-    for b in range(XC.T_BUCKETS):
-        gi = [i for i, e in enumerate(events) if e[2] == b]
-        if not gi:
-            pb.append(
-                (torch.empty(0, dtype=torch.long), torch.empty(0, dtype=torch.long), [])
-            )
-            continue
-        pb.append(
-            (
-                torch.tensor([idx[events[i][0]] for i in gi]),
-                torch.tensor([idx[events[i][1]] for i in gi]),
-                gi,
-            )
-        )
     ef = torch.tensor(X1, dtype=torch.float32)
     m = TemporalGNN(Xn.shape[1], X1.shape[1])
+    pb = XC._event_batches_local(events, idx)  # przyczynowosc zdarzeniowa (fix A1)
     opt = torch.optim.Adam(m.parameters(), lr=0.01, weight_decay=5e-4)
     lf = torch.nn.BCEWithLogitsLoss()
     trt = torch.tensor(trm)
