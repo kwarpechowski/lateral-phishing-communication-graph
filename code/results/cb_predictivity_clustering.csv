@@ -1,0 +1,9 @@
+detektor,pearson_r,p
+1-hop,0.677,0.016
+COMPA,0.793,0.002
+hopper,0.664,0.019
+anomaly-forest,0.812,0.001
+GCN-statyczny,0.497,0.1
+reczny-kontekst,0.756,0.004
+temporalny-GNN,0.373,0.232
+temporalny-GNN-uwaga,0.31,0.327

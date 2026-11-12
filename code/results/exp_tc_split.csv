@@ -1,0 +1,13 @@
+config,slice,auc,auc_ci_lo,auc_ci_hi,recall_fpr1,r1_ci_lo,r1_ci_hi,n_seeds
+contact+rytm,all,0.8256,0.8218,0.8298,0.07,0.0598,0.0811,20
+contact+rytm,known-sender,0.7949,0.7867,0.8029,0.0668,0.0443,0.092,20
+contact+rytm,in-rhythm,0.5808,0.5724,0.5893,0.0187,0.0145,0.023,20
+contact+rytm,new-sender,0.8076,0.8027,0.8127,0.0651,0.0512,0.08,20
+multiplex+rytm,all,0.8574,0.8521,0.863,0.0711,0.0593,0.0829,20
+multiplex+rytm,known-sender,0.7877,0.7783,0.7972,0.0513,0.0356,0.0686,20
+multiplex+rytm,in-rhythm,0.6448,0.6343,0.6551,0.0166,0.0109,0.023,20
+multiplex+rytm,new-sender,0.9034,0.899,0.9078,0.1093,0.0824,0.1406,20
+multiplex+rytm (osint-shuf),all,0.8227,0.8182,0.8268,0.0723,0.0558,0.0905,20
+multiplex+rytm (osint-shuf),known-sender,0.7949,0.7865,0.8028,0.0632,0.0474,0.0799,20
+multiplex+rytm (osint-shuf),in-rhythm,0.5709,0.5597,0.5818,0.0167,0.0115,0.0222,20
+multiplex+rytm (osint-shuf),new-sender,0.8106,0.8044,0.8172,0.068,0.0533,0.0832,20

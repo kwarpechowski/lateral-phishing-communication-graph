@@ -1,0 +1,4 @@
+model,auc,recall_fpr1,n_seeds
+tab_ctx,0.8026,0.0193,3
+tgn_lite,0.8458,0.0775,3
+tgn_pyg,0.7892,0.1116,3

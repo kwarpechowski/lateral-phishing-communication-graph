@@ -1,0 +1,11 @@
+config,auc,recall_fpr1
+kontakty,0.5718,0.0
++konferencje,0.5743,0.0
++certyfikaty,0.5816,0.0
++umiejetnosci,0.6194,0.0117
++rutyna,0.6188,0.017
++wydarzenia,0.6266,0.014
++pretexty,0.6227,0.0167
++platformy,0.6573,0.0082
++zainteresowania,0.6565,0.0122
++czasowa (pelny),0.8628,0.0708

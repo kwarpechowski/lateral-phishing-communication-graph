@@ -1,0 +1,241 @@
+config,slice,seed,auc,recall_fpr1
+contact+rytm,all,0,0.8182,0.0556
+contact+rytm,known-sender,0,0.7883,0.006
+contact+rytm,in-rhythm,0,0.5835,0.0192
+contact+rytm,new-sender,0,0.7935,0.07
+multiplex+rytm,all,0,0.8548,0.0506
+multiplex+rytm,known-sender,0,0.7873,0.0268
+multiplex+rytm,in-rhythm,0,0.6613,0.0192
+multiplex+rytm,new-sender,0,0.8983,0.0856
+multiplex+rytm (osint-shuf),all,0,0.8193,0.0489
+multiplex+rytm (osint-shuf),known-sender,0,0.7855,0.0268
+multiplex+rytm (osint-shuf),in-rhythm,0,0.5901,0.0192
+multiplex+rytm (osint-shuf),new-sender,0,0.8055,0.0856
+contact+rytm,all,1,0.8255,0.0964
+contact+rytm,known-sender,1,0.8192,0.1777
+contact+rytm,in-rhythm,1,0.5406,0.0
+contact+rytm,new-sender,1,0.7988,0.05
+multiplex+rytm,all,1,0.8519,0.1029
+multiplex+rytm,known-sender,1,0.8032,0.0904
+multiplex+rytm,in-rhythm,1,0.6157,0.0187
+multiplex+rytm,new-sender,1,0.8932,0.05
+multiplex+rytm (osint-shuf),all,1,0.8243,0.0752
+multiplex+rytm (osint-shuf),known-sender,1,0.8256,0.0482
+multiplex+rytm (osint-shuf),in-rhythm,1,0.5438,0.025
+multiplex+rytm (osint-shuf),new-sender,1,0.7991,0.05
+contact+rytm,all,2,0.8157,0.0305
+contact+rytm,known-sender,2,0.7722,0.0137
+contact+rytm,in-rhythm,2,0.5863,0.0071
+contact+rytm,new-sender,2,0.8137,0.0263
+multiplex+rytm,all,2,0.8532,0.0305
+multiplex+rytm,known-sender,2,0.7799,0.0447
+multiplex+rytm,in-rhythm,2,0.6643,0.0071
+multiplex+rytm,new-sender,2,0.8981,0.0526
+multiplex+rytm (osint-shuf),all,2,0.8117,0.0162
+multiplex+rytm (osint-shuf),known-sender,2,0.7715,0.0137
+multiplex+rytm (osint-shuf),in-rhythm,2,0.5769,0.0143
+multiplex+rytm (osint-shuf),new-sender,2,0.8117,0.0263
+contact+rytm,all,3,0.8221,0.0571
+contact+rytm,known-sender,3,0.7967,0.0909
+contact+rytm,in-rhythm,3,0.566,0.0253
+contact+rytm,new-sender,3,0.8028,0.0996
+multiplex+rytm,all,3,0.8634,0.1077
+multiplex+rytm,known-sender,3,0.8042,0.125
+multiplex+rytm,in-rhythm,3,0.6446,0.038
+multiplex+rytm,new-sender,3,0.9018,0.1341
+multiplex+rytm (osint-shuf),all,3,0.818,0.0571
+multiplex+rytm (osint-shuf),known-sender,3,0.7976,0.0483
+multiplex+rytm (osint-shuf),in-rhythm,3,0.5561,0.038
+multiplex+rytm (osint-shuf),new-sender,3,0.7908,0.0728
+contact+rytm,all,4,0.8488,0.0509
+contact+rytm,known-sender,4,0.8211,0.1149
+contact+rytm,in-rhythm,4,0.5834,0.0155
+contact+rytm,new-sender,4,0.8326,0.0488
+multiplex+rytm,all,4,0.8906,0.092
+multiplex+rytm,known-sender,4,0.8355,0.0652
+multiplex+rytm,in-rhythm,4,0.6867,0.0155
+multiplex+rytm,new-sender,4,0.9228,0.0976
+multiplex+rytm (osint-shuf),all,4,0.8382,0.0427
+multiplex+rytm (osint-shuf),known-sender,4,0.8187,0.0807
+multiplex+rytm (osint-shuf),in-rhythm,4,0.5701,0.0465
+multiplex+rytm (osint-shuf),new-sender,4,0.8395,0.0139
+contact+rytm,all,5,0.834,0.0863
+contact+rytm,known-sender,5,0.8003,0.087
+contact+rytm,in-rhythm,5,0.5975,0.0265
+contact+rytm,new-sender,5,0.8103,0.0528
+multiplex+rytm,all,5,0.8595,0.0423
+multiplex+rytm,known-sender,5,0.8023,0.0377
+multiplex+rytm,in-rhythm,5,0.6489,0.0265
+multiplex+rytm,new-sender,5,0.906,0.0366
+multiplex+rytm (osint-shuf),all,5,0.8272,0.1455
+multiplex+rytm (osint-shuf),known-sender,5,0.8059,0.1101
+multiplex+rytm (osint-shuf),in-rhythm,5,0.5583,0.0
+multiplex+rytm (osint-shuf),new-sender,5,0.8111,0.0447
+contact+rytm,all,6,0.8287,0.0886
+contact+rytm,known-sender,6,0.8008,0.0281
+contact+rytm,in-rhythm,6,0.5786,0.0191
+contact+rytm,new-sender,6,0.8099,0.0836
+multiplex+rytm,all,6,0.8646,0.0933
+multiplex+rytm,known-sender,6,0.7944,0.118
+multiplex+rytm,in-rhythm,6,0.6756,0.0255
+multiplex+rytm,new-sender,6,0.9084,0.1289
+multiplex+rytm (osint-shuf),all,6,0.83,0.0918
+multiplex+rytm (osint-shuf),known-sender,6,0.8041,0.1067
+multiplex+rytm (osint-shuf),in-rhythm,6,0.5828,0.0191
+multiplex+rytm (osint-shuf),new-sender,6,0.81,0.0732
+contact+rytm,all,7,0.8141,0.0491
+contact+rytm,known-sender,7,0.7668,0.033
+contact+rytm,in-rhythm,7,0.6048,0.039
+contact+rytm,new-sender,7,0.801,0.0637
+multiplex+rytm,all,7,0.843,0.0842
+multiplex+rytm,known-sender,7,0.7853,0.033
+multiplex+rytm,in-rhythm,7,0.662,0.0584
+multiplex+rytm,new-sender,7,0.8884,0.0449
+multiplex+rytm (osint-shuf),all,7,0.8017,0.0421
+multiplex+rytm (osint-shuf),known-sender,7,0.7665,0.0363
+multiplex+rytm (osint-shuf),in-rhythm,7,0.5678,0.013
+multiplex+rytm (osint-shuf),new-sender,7,0.7955,0.0187
+contact+rytm,all,8,0.821,0.0779
+contact+rytm,known-sender,8,0.8124,0.027
+contact+rytm,in-rhythm,8,0.5469,0.0201
+contact+rytm,new-sender,8,0.7893,0.0593
+multiplex+rytm,all,8,0.8529,0.063
+multiplex+rytm,known-sender,8,0.7795,0.0901
+multiplex+rytm,in-rhythm,8,0.6418,0.0
+multiplex+rytm,new-sender,8,0.9013,0.1481
+multiplex+rytm (osint-shuf),all,8,0.8123,0.0431
+multiplex+rytm (osint-shuf),known-sender,8,0.7955,0.033
+multiplex+rytm (osint-shuf),in-rhythm,8,0.5102,0.0
+multiplex+rytm (osint-shuf),new-sender,8,0.7929,0.0852
+contact+rytm,all,9,0.8257,0.0949
+contact+rytm,known-sender,9,0.7948,0.1437
+contact+rytm,in-rhythm,9,0.5778,0.0234
+contact+rytm,new-sender,9,0.8074,0.0847
+multiplex+rytm,all,9,0.8645,0.0638
+multiplex+rytm,known-sender,9,0.793,0.0374
+multiplex+rytm,in-rhythm,9,0.6612,0.0058
+multiplex+rytm,new-sender,9,0.9077,0.0881
+multiplex+rytm (osint-shuf),all,9,0.8292,0.1602
+multiplex+rytm (osint-shuf),known-sender,9,0.805,0.1494
+multiplex+rytm (osint-shuf),in-rhythm,9,0.5726,0.0058
+multiplex+rytm (osint-shuf),new-sender,9,0.8206,0.1695
+contact+rytm,all,10,0.8241,0.054
+contact+rytm,known-sender,10,0.7896,0.0121
+contact+rytm,in-rhythm,10,0.5846,0.0201
+contact+rytm,new-sender,10,0.8062,0.1521
+multiplex+rytm,all,10,0.8443,0.0675
+multiplex+rytm,known-sender,10,0.764,0.0242
+multiplex+rytm,in-rhythm,10,0.6287,0.0067
+multiplex+rytm,new-sender,10,0.9019,0.0722
+multiplex+rytm (osint-shuf),all,10,0.8241,0.0691
+multiplex+rytm (osint-shuf),known-sender,10,0.7873,0.0667
+multiplex+rytm (osint-shuf),in-rhythm,10,0.5862,0.0336
+multiplex+rytm (osint-shuf),new-sender,10,0.8133,0.038
+contact+rytm,all,11,0.8274,0.0683
+contact+rytm,known-sender,11,0.8033,0.0872
+contact+rytm,in-rhythm,11,0.5785,0.0126
+contact+rytm,new-sender,11,0.7946,0.0295
+multiplex+rytm,all,11,0.8615,0.078
+multiplex+rytm,known-sender,11,0.8069,0.0756
+multiplex+rytm,in-rhythm,11,0.6558,0.0189
+multiplex+rytm,new-sender,11,0.895,0.0701
+multiplex+rytm (osint-shuf),all,11,0.8325,0.1398
+multiplex+rytm (osint-shuf),known-sender,11,0.8169,0.1279
+multiplex+rytm (osint-shuf),in-rhythm,11,0.5918,0.0189
+multiplex+rytm (osint-shuf),new-sender,11,0.8096,0.0886
+contact+rytm,all,12,0.832,0.069
+contact+rytm,known-sender,12,0.8081,0.0605
+contact+rytm,in-rhythm,12,0.5755,0.0219
+contact+rytm,new-sender,12,0.8077,0.0602
+multiplex+rytm,all,12,0.864,0.0483
+multiplex+rytm,known-sender,12,0.7897,0.035
+multiplex+rytm,in-rhythm,12,0.6211,0.0
+multiplex+rytm,new-sender,12,0.9088,0.0489
+multiplex+rytm (osint-shuf),all,12,0.8305,0.0448
+multiplex+rytm (osint-shuf),known-sender,12,0.8046,0.0287
+multiplex+rytm (osint-shuf),in-rhythm,12,0.5623,0.0146
+multiplex+rytm (osint-shuf),new-sender,12,0.8091,0.0677
+contact+rytm,all,13,0.842,0.0695
+contact+rytm,known-sender,13,0.8227,0.0311
+contact+rytm,in-rhythm,13,0.556,0.0
+contact+rytm,new-sender,13,0.8303,0.0303
+multiplex+rytm,all,13,0.8766,0.0953
+multiplex+rytm,known-sender,13,0.8062,0.0
+multiplex+rytm,in-rhythm,13,0.6263,0.0
+multiplex+rytm,new-sender,13,0.9207,0.1852
+multiplex+rytm (osint-shuf),all,13,0.833,0.0533
+multiplex+rytm (osint-shuf),known-sender,13,0.8048,0.0497
+multiplex+rytm (osint-shuf),in-rhythm,13,0.5203,0.0077
+multiplex+rytm (osint-shuf),new-sender,13,0.8323,0.0741
+contact+rytm,all,14,0.8301,0.1375
+contact+rytm,known-sender,14,0.8019,0.1875
+contact+rytm,in-rhythm,14,0.5751,0.0316
+contact+rytm,new-sender,14,0.8147,0.0503
+multiplex+rytm,all,14,0.8611,0.1117
+multiplex+rytm,known-sender,14,0.7903,0.1062
+multiplex+rytm,in-rhythm,14,0.6064,0.019
+multiplex+rytm,new-sender,14,0.9066,0.1879
+multiplex+rytm (osint-shuf),all,14,0.8302,0.0615
+multiplex+rytm (osint-shuf),known-sender,14,0.7985,0.0906
+multiplex+rytm (osint-shuf),in-rhythm,14,0.5789,0.019
+multiplex+rytm (osint-shuf),new-sender,14,0.8243,0.0906
+contact+rytm,all,15,0.8241,0.1026
+contact+rytm,known-sender,15,0.7613,0.0093
+contact+rytm,in-rhythm,15,0.6284,0.0333
+contact+rytm,new-sender,15,0.8242,0.1151
+multiplex+rytm,all,15,0.8515,0.0487
+multiplex+rytm,known-sender,15,0.7566,0.0433
+multiplex+rytm,in-rhythm,15,0.6806,0.0267
+multiplex+rytm,new-sender,15,0.9136,0.1865
+multiplex+rytm (osint-shuf),all,15,0.8252,0.1252
+multiplex+rytm (osint-shuf),known-sender,15,0.7618,0.0619
+multiplex+rytm (osint-shuf),in-rhythm,15,0.6268,0.0
+multiplex+rytm (osint-shuf),new-sender,15,0.8423,0.1111
+contact+rytm,all,16,0.819,0.0688
+contact+rytm,known-sender,16,0.7727,0.0552
+contact+rytm,in-rhythm,16,0.5987,0.021
+contact+rytm,new-sender,16,0.812,0.033
+multiplex+rytm,all,16,0.8549,0.0465
+multiplex+rytm,known-sender,16,0.7583,0.0292
+multiplex+rytm,in-rhythm,16,0.649,0.0
+multiplex+rytm,new-sender,16,0.9148,0.315
+multiplex+rytm (osint-shuf),all,16,0.8143,0.0499
+multiplex+rytm (osint-shuf),known-sender,16,0.7648,0.0292
+multiplex+rytm (osint-shuf),in-rhythm,16,0.5923,0.007
+multiplex+rytm (osint-shuf),new-sender,16,0.8125,0.0952
+contact+rytm,all,17,0.8086,0.0537
+contact+rytm,known-sender,17,0.7676,0.0683
+contact+rytm,in-rhythm,17,0.5921,0.0119
+contact+rytm,new-sender,17,0.7956,0.0196
+multiplex+rytm,all,17,0.8308,0.026
+multiplex+rytm,known-sender,17,0.7384,0.0093
+multiplex+rytm,in-rhythm,17,0.6025,0.0119
+multiplex+rytm,new-sender,17,0.9005,0.0824
+multiplex+rytm (osint-shuf),all,17,0.8028,0.0919
+multiplex+rytm (osint-shuf),known-sender,17,0.7761,0.087
+multiplex+rytm (osint-shuf),in-rhythm,17,0.564,0.0119
+multiplex+rytm (osint-shuf),new-sender,17,0.7895,0.0353
+contact+rytm,all,18,0.8245,0.0458
+contact+rytm,known-sender,18,0.8068,0.0162
+contact+rytm,in-rhythm,18,0.5711,0.0134
+contact+rytm,new-sender,18,0.7941,0.1099
+multiplex+rytm,all,18,0.8468,0.1102
+multiplex+rytm,known-sender,18,0.7931,0.0325
+multiplex+rytm,in-rhythm,18,0.6251,0.0134
+multiplex+rytm,new-sender,18,0.8798,0.1277
+multiplex+rytm (osint-shuf),all,18,0.8236,0.0373
+multiplex+rytm (osint-shuf),known-sender,18,0.8104,0.0357
+multiplex+rytm (osint-shuf),in-rhythm,18,0.5925,0.0134
+multiplex+rytm (osint-shuf),new-sender,18,0.7988,0.0638
+contact+rytm,all,19,0.8272,0.043
+contact+rytm,known-sender,19,0.7903,0.0871
+contact+rytm,in-rhythm,19,0.5896,0.0136
+contact+rytm,new-sender,19,0.8127,0.0627
+multiplex+rytm,all,19,0.8577,0.0596
+multiplex+rytm,known-sender,19,0.785,0.003
+multiplex+rytm,in-rhythm,19,0.6381,0.0204
+multiplex+rytm,new-sender,19,0.9013,0.0443
+multiplex+rytm (osint-shuf),all,19,0.8251,0.0513
+multiplex+rytm (osint-shuf),known-sender,19,0.7978,0.033
+multiplex+rytm (osint-shuf),in-rhythm,19,0.5737,0.0272
+multiplex+rytm (osint-shuf),new-sender,19,0.8031,0.0554

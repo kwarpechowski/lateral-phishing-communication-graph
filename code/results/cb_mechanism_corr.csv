@@ -1,0 +1,4 @@
+detektor,r_vs_Q_sbm,p_Q,r_vs_clust_all,p_clust
+COMPA,0.425,0.476,-0.341,0.37
+GCN-statyczny,-0.009,0.988,-0.684,0.042
+temporalny-GNN,0.397,0.508,0.305,0.424
