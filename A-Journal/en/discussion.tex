@@ -14,7 +14,14 @@ A volumetric detector in the spirit of COMPA \citep{stringhini2015thataint} assu
 % (spada do poziomu losowosci). Powod: po naprawie kodu detektor wolumetryczny daje ~0.50,
 % wiec nie moze byc mowy o spadku ponizej losowosci — to bylo zludzenie usterki kodu.
 as a surge; a path-based detector in the spirit of Hopper \citep{ho2021hopper} assumes an unusual route to a
-rare target. Both read what the attacker controls. % ZMIANA: po przepisaniu licznikow na przyczynowosc zdarzeniowa volume WIDZI rozwijajacy
+rare target. Both read what the attacker controls. % ZMIANA (r2): doprecyzowano, ze path-based NIE jest czysto nadawczy — jego cecha
+% precursor to ta sama informacja co freshness kontekstu recznego (nadawca niedawno
+% dotkniety), wiec baseline path-based czyta czesciowo strone odbiorcza. Powod: recenzent
+% slusznie zwrocil uwage, ze opis brzmial jakby oba baseline byly wylacznie nadawcze.
+Strictly speaking, the path-based baseline is not purely sender-side either: its precursor feature (``the
+sender was itself reached just before'') is the same information as the hand-crafted context's freshness
+bit, so part of the path signal is a receivership feature already---which the no-precursor ablation of
+Tab.~\ref{tab:baselines} quantifies. % ZMIANA: po przepisaniu licznikow na przyczynowosc zdarzeniowa volume WIDZI rozwijajacy
 % sie burst (wygrywa blast na SNAP, 0.83) — jego slabosc nie wynika z tego, ze nie widzi
 % nic w reżimie blast, tylko z tego, ze w reżimie skrytym nie ma czego widziec: jedno
 % wyslanie na kubełek zostawia puste kazde okno przyczynowe.
@@ -24,9 +31,9 @@ within a bucket, but one send per bucket leaves every causal window empty---and 
 degrades as the cascade reaches further. Cascade dynamics instead respond to the recipient side, the
 wave-like signature among the neighbors, which the sender cannot hide without giving up fan-out
 altogether---and a single recipient is exactly the surgical regime, which we mark as the blind spot. % ZMIANA jezykowa: 'much less than it weakens volume' bylo nieprawda w liczbach absolutnych
-% (temporal traci 0.29 AUC od blast do K=1, volume 0.13) — prawda jest 'utrzymuje przewage'.
+% (temporal traci 0.28 AUC od blast do K=1, volume 0.15) — prawda jest 'utrzymuje przewage'.
 Pacing
-the sends weakens this signal (AUC $0.86\!\to\!0.57$ from blast to $K{=}1$), but the volumetric
+the sends weakens this signal (AUC $0.85\!\to\!0.59$ from blast to $K{=}1$), but the volumetric
 detector never develops a usable signal here in the first place, so the receiving-side signal keeps
 its margin at every level. This
 agrees with Ho et al.\ \citep{ho2019detecting} that lateral phishing needs a signal beyond the content of a

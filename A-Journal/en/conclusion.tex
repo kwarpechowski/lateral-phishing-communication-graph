@@ -13,10 +13,12 @@ We answer the two research questions in turn.
 \begin{description}[noitemsep,topsep=2pt]
   \item[RQ1 (signal, T1):] A compromised account consistent with every static relation is detected from the
   receiving-side wave of its cascade. Unlike volume-based detection, the temporal detector
-  stays above the volumetric one at every stealth level, though both degrade ($0.57$ vs $0.50$ at $K{=}1$;
+  stays above the volumetric one at every stealth level, though both degrade ($0.59$ vs $0.48$ at $K{=}1$;
   Section~\ref{sec:res-stealth}); the
-  advantage vanishes under a time-shuffle control; the hierarchy replicates on Enron in both regimes and the
-  regime contrast on two SNAP graphs (Section~\ref{sec:res-realgraphs}).
+  advantage vanishes under a time-shuffle control; the regime contrast---volume wins the naive blast, the
+  receiving-side signal wins the stealthy regime---replicates on Enron and two SNAP graphs, and the
+  injected-timing control bounds the stealth margin to the learned temporal model
+  (Section~\ref{sec:res-realgraphs}).
   \item[RQ2 (limits, T2):] The signal needs fan-out: a single-recipient attack is invisible to every
   detector (Section~\ref{sec:res-baselines}). The advantage degrades gracefully with scale and shrinks under
   label noise, and at a realistic base rate the detectors act as triage instruments, with effectiveness defined
@@ -38,12 +40,17 @@ Section~\ref{sec:discussion} gives the details.
 % zwykla kaskada 0.88, atak rozlozony w czasie 0.57-0.76, detektor wolumetryczny 0.50-0.63
 % (blisko losowosci w reżimie skrytym; w blast widzi juz burst, ale to przypadek, ktorego
 % atakujacy moze trywialnie uniknac).
+% ZMIANA: liczby z fali 4 (po A1: jedna regula przyczynowosci) + A2 (kontrola iniekcji)
+% + A3 (volume na realnych grafach). Enron: jak na SNAP, blast wygrywa volume (0.87),
+% stealth wygrywa sygnal odbiorczy (0.84-0.89 vs 0.67); po usunieciu sygnatury iniekcji
+% margines trzyma tylko nauczony model (temporal 0.70-0.76 vs volume 0.57-0.67).
 The results turn lateral phishing into a quantity that can be tracked rather than merely flagged. Under the
-default cascade the receiving-side signal reaches AUC $0.88$; under a stealthy attacker it degrades to
-$0.57$--$0.76$ but stays above volume, which remains near chance in the stealthy regime ($0.50$--$0.64$) and
+default cascade the receiving-side signal reaches AUC $0.87$; under a stealthy attacker it degrades to
+$0.59$--$0.76$ but stays above volume, which remains near chance in the stealthy regime ($0.48$--$0.64$) and
 only recovers under the naive blast;
-and the same regime transition appears in direction on Enron (now in both regimes), \texttt{email-Eu-core}, and
-\texttt{CollegeMsg}. The defense this points toward
+and the same regime contrast appears on Enron, \texttt{email-Eu-core}, and
+\texttt{CollegeMsg}---where the injected-timing control narrows the honest claim: with attack times drawn
+from the background, only the learned temporal model keeps the receiving-side margin over volume. The defense this points toward
 asks not whether a message looks malicious, but whether the organization's communication graph is behaving
 the way it usually does. Turning that question into an operational filter in the SOC pipeline, at the
 precision real deployment demands, remains an open problem.

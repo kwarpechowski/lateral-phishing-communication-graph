@@ -18,8 +18,10 @@ inherit the content signal's blindness to clean-content, context-borne deception
 make personalization cheap \citep{bethany2024evaluating}.
 \citet{ho2019detecting} characterized lateral phishing from
 compromised accounts across $113$~million emails and fixed an operational low-FPR threshold of $<\!4$~FP/million;
-their group's earlier \emph{Squelch} system had already shown that enterprise credential spear phishing can be
-caught by sender and domain reputation alone, in deployment at a large enterprise \citep{ho2017detecting}.
+their group's earlier DAS detector \citep{ho2017detecting}---a non-parametric, label-free anomaly
+scorer over feature vectors of clicked URLs, developed with the security team at LBNL---showed that
+enterprise credential spear phishing can be ranked at a practically low alert volume without any
+labeled training data.
 \citet{cidon2019high} targeted payload-free BEC in production, and BEC surveys trace its evolution and cost
 \citep{atlam2023business}. What the effective methods share is a departure from content: per-sender behavioral
 profiles \citep{gascon2018reading,stringhini2015thataint}, header and stylometry models

@@ -136,8 +136,8 @@ study.
 and URLs---a caution we take seriously: OSINT helps as a \emph{relation constructor}, a shared list or
 affiliation, and treating it as a flat feature is a known pitfall. Language models drastically lower the cost
 of personalization: automated campaigns match human experts in human-subject studies \cite{bethany2024evaluating},
-and enterprise credential spear phishing is caught in deployment only by sender and domain reputation
-\cite{ho2017detecting}. Once content can be generated
+and enterprise credential spear phishing is ranked at a practical alert volume by the label-free,
+non-parametric DAS anomaly scorer over clicked-URL features \cite{ho2017detecting}. Once content can be generated
 perfectly, the defense must exploit relations rather than style.
 
 \textbf{Spear-phishing and BEC detection.} Targeted attacks differ from mass phishing in their
@@ -213,21 +213,32 @@ lacking real coverage in some of the layers (low structural consistency), possib
 % i spadek 0.87->0.74. Dopisano tez, ze w paczce sa DWA rozne testy fabrykacji (ten
 % drugi, ostrzejszy mix zdarzen, daje 0.86->0.82) — bez wskazania, ktory jest ktory,
 % wygladaly na sprzecznosc danych.
-Fabricating a footprint is cheap, and the fabrication sweep prices it: with $50\%$ of attack edges forged the
-multiplex AUC drops from $0.87$ to $0.74$ (the sweep of the Tab.~\ref{tab:inv1} event model;
-under the harsher ablation mix of Sec.~\ref{sec:mechanism}, where the OSINT margin is smaller, the same
-fabrication level costs less, $0.86\!\to\!0.82$), and given the event volume this corresponds to roughly $3$--$4$
-forged OSINT edges per targeted victim---cheap per victim, but visible in aggregate, because forged edges
-raise the score of a sender precisely where the legitimate new-sender mass also lives.
-% ZMIANA: dodano punkt fab100 (nowy po recenzji zewnetrznej). Powod: recenzent chcial
-% pelnej krzywej fabrykacji. Przy 100% ( kazda krawedz ataku ma falszywy slad) multipleks
-% spada do poziomu kontroli shuffle (0.86 vs 0.855) i falszywe alarmy na legalnych nowych
-% nadawcach wracaja (0.10) — pelny falszywy slad jest nierozroznialny od prawdziwego
-% pokrycia OSINT; to uczciwa granica metody, nie usterka.
-At full fabrication ($100\%$, every attack edge carries a forged trace) the multiplex falls to the shuffle
-level ($0.86$ vs $0.855$) and the rescued new-sender false alarms reappear ($0.10$): a complete fake
-footprint is indistinguishable from genuine OSINT coverage, which marks the honest boundary of the method.
-The signal that
+Fabricating a footprint is cheap, and the fabrication sweep prices it along the full curve
+($0/10/25/50/75/100\%$ of attack edges forged; AUC $0.88/0.85/0.82/0.74/0.79/0.86$, and the
+false-alarm rate on legitimate new senders $0/0/0/10/10/10\%$; the sweep of the Tab.~\ref{tab:inv1} event
+model; under the harsher ablation mix of Sec.~\ref{sec:mechanism}, where the OSINT margin is smaller, the
+$50\%$ fabrication level costs less, $0.86\!\to\!0.82$). Given the event volume this corresponds to roughly
+$3$--$4$ forged OSINT edges per targeted victim at the $50\%$ point---cheap per victim, but visible in
+aggregate, because forged edges raise the score of a sender precisely where the legitimate new-sender mass
+also lives.
+% ZMIANA: pelna krzywa fabrykacji 0-100% (B3, recenzja wewnetrzna r2) + wyjasnienie
+% liczby 0.855. Powod: skok 50->100% (0.74 -> 0.86) wygladal na blad bez calej krzywej.
+% Przy 50-75% sfalszowany slad KONFLIKTUJE z prawdziwym pokryciem OSINT nadawcy
+% (niespójnosc warstwowa) — dlatego dolek; przy 100% kazda krawedz ataku ma slad,
+% 'posiadanie sladu' staje sie stala per atak i rozdziela klasy samo w sobie. Liczba
+% 0.855 to poziom kontroli shuffle: kontrola tasuje przynaleznosc warstw OSINT, ale
+% sfalszowany slad jest sprawdzany niezaleznie od mapowania ofiary (or L == fab), wiec
+% przy 100% kontrola osiaga ten sam wynik — detektor tyka istnienia sladu, nie
+% spojnosci miedzywarstwowej. Pelny falszywy slad jest nierozroznialny od pokrycia.
+The curve is non-monotone, and the dip at $50$--$75\%$ is informative: a \emph{partial} fake footprint
+conflicts with the sender's genuine OSINT coverage (the cross-layer inconsistency the detector reads), so
+forging hurts; at $100\%$ every attack edge carries a trace, ``having a trace'' becomes a per-attack
+constant that separates the classes on its own, and the multiplex recovers to $0.86$---exactly the shuffle
+level ($0.855$): the shuffle control permutes OSINT memberships, but a fabricated trace is checked
+independently of the victim mapping, so at full fabrication both reach the same score. The detector at that
+point fires on the footprint's \emph{existence}, not on cross-layer consistency, and the rescued new-sender
+false alarms reappear ($10\%$): a complete fake footprint is indistinguishable from genuine OSINT coverage,
+which marks the honest boundary of the method. The signal that
 remains is the joint consistency across layers that a fabricated edge does not create; this is the signal.
 A compromised
 internal account is the complementary case: $C(s,v)$ is high yet $tc=0$; its propagation dynamics are the
@@ -391,6 +402,16 @@ the rhythm), it lifts AUC from $0.58$ to $0.64$; and on the new-sender slice it 
 (sensitivity@FPR$1\%$ $0.07\!\to\!0.11$). The OSINT shuffle reverts both gains to the contacts$+$rhythm level
 ($0.57$ and $0.81$), so the margin is a causal OSINT contribution, not feature capacity, and it works
 exactly where contacts and rhythm are structurally blind.
+% ZMIANA (B2, recenzja wewnetrzna r2): rozdzielenie pojedynczego bitu tc na JAWNE dwie
+% cechy known_sender (kontakty) i in_rhythm (rytm) + ablacja kazdej osobno i obu razem.
+% Powod: czytelnik nie mogl odroznic 'sender known' od bitu rytmu. Ablacja (20 ziaren,
+% bootstrap CI): known_sender alone 0.57, in_rhythm alone 0.80, obie razem 0.83 vs pelny
+% multipleks 0.86 — czyli rytm niesie wiecej niz kontakty, a ich kombinacja dogania pelny model.
+Splitting the temporal feature explicitly into \emph{known\_sender} (the sender is a contact) and
+\emph{in\_rhythm} (the bit $tc$) settles their individual shares (20~seeds, bootstrap $95\%$ CIs within
+$\pm0.01$): known\_sender alone reaches AUC $0.57$, in\_rhythm alone $0.80$, both together $0.83$, and the
+full multiplex $0.86$---the rhythm bit carries more than the contact layer in this event mix, and the pair
+nearly closes the gap to the full model.
 The most striking difference is in the false alarms: the contacts
 detector flags $100\%$ of legitimate new senders as attacks, the multiplex flags $0\%$; OSINT coverage rescues
 a legitimate sender who shares an observable fact with the victim. The signal is fragile, however: at $50\%$
@@ -522,14 +543,18 @@ construction, inflating the full-multiplex sensitivity to an apparent $0.51$. Th
 static (the address is an identity attribute, not a history). Attack events
 are never part of the layer or rhythm estimation (both are built from the sender's own legitimate
 history), so the control isolates temporal leakage, not label leakage.
-The off-hours audit (Fig.~\ref{fig:enronaudit}) shows that the
-operational sensitivity was inflated: a realistic figure is $\sim\!0.5$ rather than $0.88$, but the multiplex
+The off-hours audit (Fig.~\ref{fig:enronaudit}; with the structural layers, like the rhythm, estimated on
+the early window) shows that the operational sensitivity was inflated: already a $10\%$ fraction of
+off-hours legitimate mail drops the rhythm-only layer to zero sensitivity, while the multiplex keeps
+$0.28$ ($0.13$ at $20$--$30\%$), and the multiplex
 advantage over the temporal layer alone rises with the off-hours fraction. Table~\ref{tab:enronsplit} applies
 the sharpest control, and this is the methodological result of the paper: under a temporal split of the
 rhythm estimate (rhythm from the early $60\%$, evaluation on the later $40\%$) together with off-hours
 traffic, the temporal layer alone collapses operationally (sensitivity at FPR~$1\%$ $\to 0$) while the full
-multiplex stays clearly ahead of the rhythm-only detector (AUC $0.82$ vs $0.75$; sensitivity $0.14$ vs $0.00$
-at FPR~$1\%$) even with every time-derived layer---rhythm, contacts, and co-recipients---estimated on the
+multiplex keeps the operational signal at the harshest operating point (\emph{both} row of
+Tab.~\ref{tab:enronsplit}: AUC $0.77$, sensitivity $0.01$; under the temporal split alone, $0.82$ and $0.14$
+vs $0.75$ and $0.00$ for the rhythm-only detector) even with every time-derived layer---rhythm, contacts,
+and co-recipients---estimated on the
 early window alone, and its advantage over time rises once the leakage is removed. A rhythm-only detector evaluated without a temporal split therefore reports an operational number
 inflated by leakage. Two readings of the drop to $0.00$ need care. The temporal layer alone is a single binary
 feature, so its sensitivity at a fixed FPR is a step function: with the rhythm estimated on the full history,
@@ -571,8 +596,8 @@ legitimate evaluation-window mail falls off the honestly estimated rhythm, so no
 Rhythm (and structural layers) estimated from & AUC & sens.@1\% & AUC & sens.@1\% \\
 \midrule
 full history (\emph{with leakage}) & $0.86$ & $0.73$ & $0.94$ & $0.88$ \\
-early window (\emph{temporal split}) & $0.75$ & $0.00$ & $\mathbf{0.82}$ & $\mathbf{0.14}$ \\
-early window $+\,$off-hours (\emph{both}) & $0.68$ & $0.00$ & $0.77$ & $0.01$ \\
+early window (\emph{temporal split}) & $0.75$ & $0.00$ & $0.82$ & $0.14$ \\
+early window $+\,$off-hours (\emph{both}) & $0.68$ & $0.00$ & $\mathbf{0.77}$ & $\mathbf{0.01}$ \\
 \bottomrule
 \end{tabular}
 \end{table}
@@ -673,7 +698,8 @@ off-graph sender it must be combined with content and process controls, as the f
 detectors: a rhythm estimated on the evaluation period itself yields an apparent sensitivity of $0.73$ that is
 inflated by leakage (and, for a binary rhythm feature, by the step at the FPR threshold). Any evaluation of such detectors should estimate the rhythm on an earlier window and
 audit the fraction of legitimate off-hours mail; under that protocol only the multilayer context retains
-operational sensitivity.
+operational sensitivity ($0.28$ at a $10\%$ off-hours fraction, $0.13$ at $20$--$30\%$, against exactly $0$
+for the rhythm-only feature).
 
 \textbf{Limitations.} First, the maliciousness is synthetic, and the OSINT multiplex advantage remains purely
 synthetic even on the real graph; no public corpus links real OSINT facts with labeled compromises, so this is
