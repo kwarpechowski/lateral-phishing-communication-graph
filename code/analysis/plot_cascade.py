@@ -214,6 +214,8 @@ def fig_cascade_graph():
 
 def fig_stealth():
     df = pd.read_csv(RESULTS / "exp_cascade_stealth.csv")
+    if "timing" in df.columns:
+        df = df[df.timing == "det"]  # R4-A1: glowna figura = timing deterministyczny
     order = [1, 2, 3, 5, 999]
     xlab = ["K=1", "K=2", "K=3", "K=5", "blast"]
     xs = list(range(len(order)))
@@ -246,6 +248,8 @@ def fig_stealth():
 
 def fig_realgraphs():
     df = pd.read_csv(RESULTS / "exp_cascade_realgraphs.csv")
+    if "timing" in df.columns:
+        df = df[df.timing == "det"]  # R4-A2: glowna figura = timing deterministyczny
     dsets = ["email-Eu-core", "CollegeMsg"]
     fig, axes = plt.subplots(1, 2, figsize=(10, 3.8), sharey=True)
     for ax, ds in zip(axes, dsets):

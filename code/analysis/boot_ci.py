@@ -39,28 +39,29 @@ def process(path: Path) -> str | None:
     if not rows:
         return None
     cols = list(rows[0].keys())
-    metric = next((c for c in METRIC_CANDIDATES if c in cols), None)
-    if metric is None:
+    metrics = [c for c in METRIC_CANDIDATES if c in cols]
+    if not metrics:
         return f"  [skip] {path.name} (brak kolumny metryki z {METRIC_CANDIDATES})"
-    keys = [c for c in cols if c not in (metric, "seed")]
+    keys = [c for c in cols if c != "seed" and c not in METRIC_CANDIDATES]
     groups = {}
     for r in rows:
         k = tuple(r[c] for c in keys)
-        try:
-            val = float(r[metric])
-        except (TypeError, ValueError):
-            continue
-        groups.setdefault(k, []).append(val)
+        for m in metrics:
+            try:
+                val = float(r[m])
+            except (TypeError, ValueError):
+                continue
+            groups.setdefault((k, m), []).append(val)
     out = OUT / (path.stem.replace("_perseed", "") + "_ci.csv")
     with out.open("w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
-        w.writerow(keys + ["mean", "ci_lo", "ci_hi", "n_seeds"])
-        for k in sorted(groups):
-            v = groups[k]
+        w.writerow(keys + ["metric", "mean", "ci_lo", "ci_hi", "n_seeds"])
+        for k, m in sorted(groups):
+            v = groups[(k, m)]
             lo, hi = _boot_ci(v, seed=1)
             w.writerow(
                 list(k)
-                + [round(float(np.mean(v)), 4), round(lo, 4), round(hi, 4), len(v)]
+                + [m, round(float(np.mean(v)), 4), round(lo, 4), round(hi, 4), len(v)]
             )
     return f"  [ok] {out.name} ({len(groups)} grup)"
 

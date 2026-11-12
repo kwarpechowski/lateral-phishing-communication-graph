@@ -90,7 +90,7 @@ def _event_batches(events, idx, chunk=CHUNK):
     for b in sorted(by_b):
         g = by_b[b]
         for c in range(0, len(g), chunk):
-            part = g[c:c + chunk]
+            part = g[c : c + chunk]
             sb = torch.tensor([idx[events[i][0]] for i in part])
             vb = torch.tensor([idx[events[i][1]] for i in part])
             out.append((b, sb, vb, part))
@@ -160,7 +160,7 @@ def _eval_point(seed):
     return out
 
 
-def _sweep(var, values, set_fn, rows):
+def _sweep(var, values, set_fn, rows, perseed):
     p0, h0 = XC.P_INFECT, XC.MAX_HOPS
     for val in values:
         set_fn(val)
@@ -170,6 +170,8 @@ def _sweep(var, values, set_fn, rows):
                 acc.setdefault(k, {"a": [], "r": []})
                 acc[k]["a"].append(a)
                 acc[k]["r"].append(r)
+                # R4-A4: per-seed dump (bootstrap CI w tabeli S2)
+                perseed.append([var, val, seed, k, round(a, 4), round(r, 4)])
         for k, v in acc.items():
             rows.append(
                 [
@@ -187,18 +189,25 @@ def _sweep(var, values, set_fn, rows):
 
 def main():
     rows = []
+    perseed = []
     print("=== sweep P_INFECT (MAX_HOPS=4) ===", flush=True)
     XC.MAX_HOPS = 4
-    _sweep("p_infect", P_GRID, lambda v: setattr(XC, "P_INFECT", v), rows)
+    _sweep("p_infect", P_GRID, lambda v: setattr(XC, "P_INFECT", v), rows, perseed)
     print("=== sweep MAX_HOPS (P_INFECT=0.6) ===", flush=True)
     XC.P_INFECT = 0.6
-    _sweep("max_hops", H_GRID, lambda v: setattr(XC, "MAX_HOPS", v), rows)
+    _sweep("max_hops", H_GRID, lambda v: setattr(XC, "MAX_HOPS", v), rows, perseed)
     out = RESULTS / "exp_cascade_sweep.csv"
     with out.open("w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
         w.writerow(["sweep", "value", "model", "auc", "recall_fpr1"])
         w.writerows(rows)
     print(f"\n[sweep] -> {out}")
+    out_ps = RESULTS / "exp_cascade_sweep_perseed.csv"
+    with out_ps.open("w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["sweep", "value", "seed", "model", "auc", "recall_fpr1"])
+        w.writerows(perseed)
+    print(f"[sweep-perseed] -> {out_ps}")
 
 
 if __name__ == "__main__":
