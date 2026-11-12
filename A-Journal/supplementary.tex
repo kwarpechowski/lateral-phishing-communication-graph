@@ -67,7 +67,7 @@ table of the main text. The temporal GNN dominates; time shuffling (red) levels 
 \toprule
 $p_\mathrm{inf}$ & $0.05$ & $0.1$ & $0.2$ & $0.3$ & $0.5$ & $0.7$ & $0.9$ \\
 \midrule
-\input{tables/tab_sweep}
+\csname @@input\endcsname tables/tab_sweep 
 \bottomrule
 \end{tabular}
 % ZMIANA: liczby z fali 4 (po A1); wiersz volume zachowany — w domyslnej kaskadzie volume
@@ -101,7 +101,7 @@ $200$ & $0.73$ & $0.82$ & $\mathbf{0.85}$ & $0.055$ & $0.037$ \\
 % niewidziane firmy najlepiej — granica indukcyjna T1; temporal zachowuje przewage
 % nad kontekstem recznym (1.8-2.3x czulosc).
 \caption{Inductive validation on unseen organizations ($19$~organizations: $5$~seeds; $30$ and
-$200$~organizations: $3$~seeds), now with the volumetric baseline in the same pass (A3): volume is the best
+$200$~organizations: $3$~seeds), with the volumetric baseline in the same pass: volume is the best
 \emph{transfer} detector ($0.83$--$0.85$ AUC, sensitivity $0.24$--$0.33$ at FPR~$1\%$, omitted from the
 sensitivity columns for width), the temporal detector keeps a $1.8$--$2.3\times$ operational edge over the
 hand-crafted context, but neither receiving-side detector transfers across organizations as well as the
@@ -148,7 +148,7 @@ context / $0.84$ temporal GNN) while volume stays at $0.67$ and 1-hop drops to $
 \toprule
 Label noise & vol. & path & path (no precursor) & manual & temp. \\
 \midrule
-\input{tables/tab_labelnoise}
+\csname @@input\endcsname tables/tab_labelnoise 
 \bottomrule
 \end{tabular}
 % ZMIANA: liczby z fali 4 (po A1, wygenerowane z CSV przez analysis/gen_tables.py).
@@ -192,37 +192,36 @@ headline-contrast tables) implement identical feature definitions.
   \item \textbf{1-hop (tabular).} For event $s\!\to\!v$ in bucket $b$: $\mathbf{1}[s\in\mathcal{N}(v)]$,
   $\mathrm{rhythm}(s,b)$, $|\mathcal{N}(v)|$, $|\mathcal{N}(s)|$.
   \item \textbf{Hand-crafted cascade context.} The 1-hop features plus three receiving-side statistics,
-  all computed \emph{event-causally} (A1): an event $e$ at time $t(e)=(b,\text{position in stream})$ sees
+  all computed \emph{event-causally}: an event $e$ at time $t(e)=(b,\text{position in stream})$ sees
   only events with a strictly smaller $t(\cdot)$---the complete buckets $[b-W, b-1]$ of the window
   \emph{and} the earlier events of its own bucket (ties broken by the fixed, shuffled stream order):
   \emph{burst} $=|(\mathcal{N}(v)\setminus\{s\})\cap\mathrm{recv}(<t(e))|/|\mathcal{N}(v)|$
   (how many of the victim's other contacts were hit strictly earlier within the window); \emph{freshness}
   $=\mathbf{1}[s\in\mathrm{recv}(<t(e))]$ (the sender was itself hit just before);
   \emph{propagation} $=|(\mathcal{N}(v)\setminus\{s\})\cap\mathrm{sent}(<t(e))|/|\mathcal{N}(v)|$
-  (how many of the victim's other contacts are themselves sending). An anty-leak unit test asserts that
+  (how many of the victim's other contacts are themselves sending). An anti-leak unit test asserts that
   every feature of $e$ is unchanged after deleting all events with $t\ge t(e)$
   (\texttt{tests/test\_causality.py}).
   \item \textbf{Volumetric baseline (inspired by COMPA).} Three per-event deviations of the sender from its own
   profile, computed \emph{event-causally}: recipient novelty $1/(1+\#\{s\!\to\!v \text{ earlier}\})$, time novelty
   $1/(1+\#\{\text{events of } s \text{ earlier}\})$, and sender activity $\#\{\text{events of } s \text{ earlier}\}$,
   where ``earlier'' covers all earlier buckets \emph{and} the earlier events of the current bucket (in a fixed
-  stream order), so a burst building up within a bucket is visible to the detector. An earlier draft of the
-  package counted these statistics over the full stream (a look-ahead leak); after the fix the counters are
-  causal, and every experiment was re-run. COMPA
+  stream order), so a burst building up within a bucket is visible to the detector. A naive implementation that
+  counts these statistics over the full stream would leak future information into every feature; the
+  counters here are causal by construction. COMPA
   itself detects compromised accounts on social networks by comparing each new message with a behavioral
   profile of the account (time of day, source, language, links, topics); we transfer only its
   per-sender-deviation idea to email headers, restricted to volume and timing.
-  \item \textbf{Path-based baseline (inspired by Hopper).} All components are computed event-causally (A1),
+  \item \textbf{Path-based baseline (inspired by Hopper).} All components are computed event-causally,
   from events with strictly smaller $t(\cdot)$ within the window $[b-W,b]$:
   \emph{precursor} $=\mathbf{1}[s\in\mathrm{recv}(<t(e))]$
   (the sender was reached just before, i.e.\ is part of a chain); \emph{momentum} $=$ number of distinct
   targets of $s$ among strictly earlier events within the window; \emph{rare target}
   $=1/(1+\#\{s'\!\to\!v \text{ with } t<t(e)\})$;
   \emph{unexplained} $=1-\mathrm{rhythm}(s,b)$; and the conjunction $\text{precursor}\times\text{unexplained}$.
-  An earlier draft of the package
-  defined momentum over $[b,b+W]$ (future buckets) and several counters over the full stream; these
-  were look-ahead leaks, and every experiment was re-run after the fix---first to bucket-strict-past
-  windows, then (A1) to the fully event-causal rule with the tie rule above, unifying all detectors.
+  Defining momentum over $[b,b+W]$ (future buckets), or counting over the full stream,
+  would be a look-ahead leak; the components here are computed directly under the fully event-causal rule
+  with the tie rule above, unifying all detectors.
   Hopper itself detects lateral movement in enterprise networks from authentication logs, by reconstructing
   login paths between machines and flagging paths with no benign explanation; it does not process email. We
   transfer its causal-path idea (a precursor that explains the hop, and a rare target) to the email
@@ -233,11 +232,11 @@ headline-contrast tables) implement identical feature definitions.
   units and dropout $0.2$ over $[Z_s, Z_v, Z_s\!\odot\!Z_v, x_{sv}]$, where $x_{sv}$ is the 1-hop feature vector
   of the event.
   \item \textbf{Temporal GNN (TGN-lite).} Same node features and $x_{sv}$; a memory of dimension $24$ per node,
-  updated \emph{per mini-batch of events in total time order} (A1): the stream is split, within each bucket,
+  updated \emph{per mini-batch of events in total time order}: the stream is split, within each bucket,
   into consecutive chunks of up to $64$~events in the fixed (shuffled) stream order; each chunk is
   \emph{simultaneous}---its events are scored from the memory state before it and cannot see one
   another---and then the memory of the chunk's recipients is updated with a GRU cell from the mean of the
-  messages $\sigma(W_m m_u)$ of the chunk's senders (Eq.~(3)). An anty-leak unit test asserts that the
+  messages $\sigma(W_m m_u)$ of the chunk's senders (Eq.~(3)). An anti-leak unit test asserts that the
   logits of every chunk are unchanged after deleting all later chunks (\texttt{tests/test\_causality.py}).
   TGAT-lite replaces the mean pooling by attention
   with an $8$-dimensional time encoding, in the spirit of TGAT (Xu et al., 2020). Training: Adam ($\mathrm{lr}{=}0.01$, weight decay $5\cdot10^{-4}$),
