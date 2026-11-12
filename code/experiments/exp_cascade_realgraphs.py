@@ -37,7 +37,7 @@ from exp_cascade import (
 )
 from exp_cascade_sweep import _compa_features, _event_batches  # noqa: E402
 
-SEEDS = list(range(3))
+SEEDS = list(range(10))  # R4-A2: >=10 ziaren na graf
 EPOCHS = 90
 CORE_CAP = 2000
 MIN_DEG = 2
@@ -64,7 +64,24 @@ def load_graph(fname):
     return {a: s for a, s in nbr2.items() if s}
 
 
-def _events(nbr, seed, stealth_k=None):
+def _benign_gap_pool(nbr, seed):
+    """R4-A2: empiryczny rozklad odstepow tla realnego grafu — odstepy miedzy
+    kolejnymi wysylaniami tego samego nadawcy w matched benign (kubelki jednostajne)."""
+    rng = np.random.default_rng(seed + 555)
+    edges = [(u, w) for u in nbr for w in nbr[u]]
+    by_sender = {}
+    for _ in range(3000):
+        u, w = edges[int(rng.integers(len(edges)))]
+        b = int(rng.integers(T_BUCKETS))
+        by_sender.setdefault(u, []).append(b)
+    pool = []
+    for bs in by_sender.values():
+        bs.sort()
+        pool.extend(b2 - b1 for b1, b2 in zip(bs, bs[1:]) if b2 > b1)
+    return pool or [1]
+
+
+def _events(nbr, seed, stealth_k=None, timing="det"):
     """stealth_k=None -> naiwny blast (fanout w jednym buckecie). stealth_k=K -> stealthy:
     <=K wyslan/nosiciela, PO JEDNYM na bucket (brak burstu nadawczego)."""
     rng = np.random.default_rng(seed)
@@ -93,7 +110,8 @@ def _events(nbr, seed, stealth_k=None):
                 frontier = nxt
                 if not frontier:
                     break
-        else:  # STEALTHY (1 wyslanie / bucket)
+        else:  # STEALTHY (1 wyslanie / bucket; emp: odstepy z rozkladu tla)
+            gap_pool = _benign_gap_pool(nbr, seed) if timing == "emp" else None
             infected = {s0}
             frontier = [(s0, t0)]
             for _hop in range(MAX_HOPS):
@@ -101,11 +119,20 @@ def _events(nbr, seed, stealth_k=None):
                 for u, tu in frontier:
                     tg = sorted(nbr.get(u, ()))
                     rng.shuffle(tg)
+                    if timing == "emp" and gap_pool:
+                        gaps = [0] + [
+                            gap_pool[int(rng.integers(len(gap_pool)))]
+                            for _ in range(stealth_k)
+                        ]
+                        cum = np.cumsum(gaps)
                     sent = 0
                     for v in tg:
                         if v in infected or sent >= stealth_k:
                             continue
-                        bucket = (tu + 1 + sent) % T_BUCKETS
+                        if timing == "emp" and gap_pool:
+                            bucket = (tu + int(cum[sent])) % T_BUCKETS
+                        else:
+                            bucket = (tu + 1 + sent) % T_BUCKETS
                         casc.append((u, v, bucket, 1))
                         sent += 1
                         if rng.random() < P_INFECT:
@@ -124,9 +151,26 @@ def _events(nbr, seed, stealth_k=None):
     return ev
 
 
-def run(nbr, seed, stealth_k):
+def _timing_stats(events):
+    """R4-A2: KS odstepow atak vs tlo + sonda czysto czasowa (per seed, in-run)."""
+    from scipy.stats import ks_2samp
+
+    from exp_injection_probe import _gaps, _probe_auc
+
+    a_g, _ = _gaps(events, 1)
+    b_g, _ = _gaps(events, 0)
+    if len(a_g) >= 5 and len(b_g) >= 5:
+        ks, p = ks_2samp(a_g, b_g)
+        ks = float(ks)
+    else:
+        ks, p = float("nan"), float("nan")
+    probe = _probe_auc(events, T_BUCKETS, 123)
+    return ks, float(p), probe
+
+
+def run(nbr, seed, stealth_k, timing="det"):
     torch.manual_seed(seed)
-    events = _events(nbr, seed, stealth_k)
+    events = _events(nbr, seed, stealth_k, timing)
     recv_b, sent_b = _index_traffic(events)
     X1, Xc, _y = _features(events, nbr, recv_b, sent_b, seed)
     Xco = _compa_features(events)
@@ -176,30 +220,52 @@ def run(nbr, seed, stealth_k):
         for i in range(len(events))
     ]
     out["gnn_temporal_shuf"] = train_temporal(_event_batches(ev_s, idx))
-    return out, n, len(events), int(y.sum())
+    ks, kp, probe = _timing_stats(events)
+    return out, n, len(events), int(y.sum()), ks, probe
 
 
 def main():
+    # R4: opcjonalny filtr datasetu (rownoleglosc: python exp_cascade_realgraphs.py --only email-Eu-core)
+    only = None
+    if "--only" in sys.argv:
+        only = sys.argv[sys.argv.index("--only") + 1]
     rows = []
     perseed = []
+    trows = []
     for name, fname in DATASETS:
+        if only and name != only:
+            continue
         nbr = load_graph(fname)
-        for regime, sk in (("blast", None), ("stealthy", 2)):
-            print(f"=== {name} [{regime}]: {len(nbr)} wezlow rdzenia ===", flush=True)
+        # R4-A2: blast tylko det; stealthy w OBU wariantach czasowania (det/emp)
+        for regime, sk, timing in (
+            ("blast", None, "det"),
+            ("stealthy", 2, "det"),
+            ("stealthy", 2, "emp"),
+        ):
+            print(
+                f"=== {name} [{regime}/{timing}]: {len(nbr)} wezlow rdzenia ===",
+                flush=True,
+            )
             acc = {}
             n = ne = na = 0
+            ks_l, pr_l = [], []
             for seed in SEEDS:
-                res, n, ne, na = run(nbr, seed, sk)
+                res, n, ne, na, ks, probe = run(nbr, seed, sk, timing)
+                ks_l.append(ks)
+                pr_l.append(probe)
                 for k, (a, r) in res.items():
                     acc.setdefault(k, {"a": [], "r": []})
                     acc[k]["a"].append(a)
                     acc[k]["r"].append(r)
-                    perseed.append([name, regime, seed, k, round(a, 4), round(r, 4)])
+                    perseed.append(
+                        [name, regime, timing, seed, k, round(a, 4), round(r, 4)]
+                    )
                 print(
                     f"  seed={seed} (wezly {n}, zdarz {ne}, ataki {na}): "
                     + " | ".join(
                         f"{k} auc={v[0]:.3f} r1={v[1]:.3f}" for k, v in res.items()
-                    ),
+                    )
+                    + f" | KS={ks:.2f} probe={probe:.2f}",
                     flush=True,
                 )
             for k, v in acc.items():
@@ -207,21 +273,39 @@ def main():
                     [
                         name,
                         regime,
+                        timing,
                         k,
                         round(float(np.mean(v["a"])), 4),
                         round(float(np.mean(v["r"])), 4),
                     ]
                 )
-    out = RESULTS / "exp_cascade_realgraphs.csv"
+            trows.append(
+                [
+                    name,
+                    regime,
+                    timing,
+                    round(float(np.nanmean(ks_l)), 4),
+                    round(float(np.mean(pr_l)), 4),
+                ]
+            )
+    suffix = ("_" + only) if only else ""
+    out = RESULTS / f"exp_cascade_realgraphs{suffix}.csv"
     with out.open("w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
-        w.writerow(["dataset", "regime", "model", "auc", "recall_fpr1"])
+        w.writerow(["dataset", "regime", "timing", "model", "auc", "recall_fpr1"])
         w.writerows(rows)
-    print(f"\n[realgraphs] -> {out}")
-    out_ps = RESULTS / "exp_cascade_realgraphs_perseed.csv"
+    out_t = RESULTS / f"exp_cascade_realgraphs_timing{suffix}.csv"
+    with out_t.open("w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["dataset", "regime", "timing", "ks_mean", "probe_auc"])
+        w.writerows(trows)
+    print(f"\n[realgraphs] -> {out}\n[realgraphs-timing] -> {out_t}")
+    out_ps = RESULTS / f"exp_cascade_realgraphs{suffix}_perseed.csv"
     with out_ps.open("w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
-        w.writerow(["dataset", "regime", "seed", "model", "auc", "recall_fpr1"])
+        w.writerow(
+            ["dataset", "regime", "timing", "seed", "model", "auc", "recall_fpr1"]
+        )
         w.writerows(perseed)
     print(f"[realgraphs-perseed] -> {out_ps}")
 

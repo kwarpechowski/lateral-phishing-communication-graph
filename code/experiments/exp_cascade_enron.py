@@ -124,7 +124,23 @@ def parse_enron():
     return nbr, sent, active
 
 
-def _events(nbr, sent, seed, stealth_k=None):
+def _benign_gap_pool(edges, seed):
+    """R4-A2: empiryczny rozklad odstepow tla Enrona — odstepy miedzy kolejnymi
+    wysylaniami tego samego nadawcy w matched benign (kubelki jednostajne)."""
+    rng = np.random.default_rng(seed + 555)
+    by_sender = {}
+    for _ in range(3000):
+        u, w = edges[int(rng.integers(len(edges)))]
+        b = int(rng.integers(N_BUCKETS))
+        by_sender.setdefault(u, []).append(b)
+    pool = []
+    for bs in by_sender.values():
+        bs.sort()
+        pool.extend(b2 - b1 for b1, b2 in zip(bs, bs[1:]) if b2 > b1)
+    return pool or [1]
+
+
+def _events(nbr, sent, seed, stealth_k=None, timing="det"):
     """Realne benign + wstrzykniete kaskady.
 
     stealth_k=None -> naiwny blast (fanout<=MAX_FANOUT na hop). stealth_k=K ->
@@ -132,6 +148,7 @@ def _events(nbr, sent, seed, stealth_k=None):
     """Realne benign + wstrzykniete kaskady. Zwraca lista (s, v, bucket, label)."""
     rng = np.random.default_rng(seed)
     senders = sorted(sent)
+    edges_all = [(u, w) for u in nbr for w in nbr[u]]
     # --- kaskady na realnym grafie ---
     casc = []
     seeds0 = [senders[i] for i in rng.permutation(len(senders))[:N_CASCADES]]
@@ -156,7 +173,8 @@ def _events(nbr, sent, seed, stealth_k=None):
                 frontier = nxt
                 if not frontier:
                     break
-        else:  # STEALTHY (1 wyslanie / bucket)
+        else:  # STEALTHY (1 wyslanie / bucket; emp: odstepy z rozkladu tla)
+            gap_pool = _benign_gap_pool(edges_all, seed) if timing == "emp" else None
             infected = {s0}
             frontier = [(s0, t0)]
             for _hop in range(MAX_HOPS):
@@ -164,11 +182,20 @@ def _events(nbr, sent, seed, stealth_k=None):
                 for u, tu in frontier:
                     tg = sorted(nbr.get(u, ()))
                     rng.shuffle(tg)
+                    if timing == "emp" and gap_pool:
+                        gaps = [0] + [
+                            gap_pool[int(rng.integers(len(gap_pool)))]
+                            for _ in range(stealth_k)
+                        ]
+                        cum = np.cumsum(gaps)
                     sent_n = 0
                     for v in tg:
                         if v in infected or sent_n >= stealth_k:
                             continue
-                        bucket = (tu + 1 + sent_n) % N_BUCKETS
+                        if timing == "emp" and gap_pool:
+                            bucket = (tu + int(cum[sent_n])) % N_BUCKETS
+                        else:
+                            bucket = (tu + 1 + sent_n) % N_BUCKETS
                         casc.append((u, v, bucket, 1))
                         sent_n += 1
                         if rng.random() < P_INFECT:
@@ -181,10 +208,9 @@ def _events(nbr, sent, seed, stealth_k=None):
     # losowe krawedzie kontaktu (rozklad koncow i stopni jak przy traversal kaskady, bo obie
     # operuja na tym samym zbiorze krawedzi), czas ROZPROSZONY uniformnie. Benign vs atak rozni
     # TYLKO czasowy wzorzec: rozproszenie vs zsynchronizowany burst propagacji. Graf = REALNY Enron.
-    edges = [(u, w) for u in nbr for w in nbr[u]]
     benign = []
     for _ in range(BENIGN_RATIO * len(casc)):
-        u, w = edges[int(rng.integers(len(edges)))]
+        u, w = edges_all[int(rng.integers(len(edges_all)))]
         benign.append((u, w, int(rng.integers(N_BUCKETS)), 0))
     events = casc + benign
     rng.shuffle(events)
@@ -192,34 +218,40 @@ def _events(nbr, sent, seed, stealth_k=None):
 
 
 def _features(events, nbr, active, recv_b, sent_b, seed):
-    """X_1hop, X_ctx (1hop + kontekst kaskady). Rytm = REALNE aktywne przedzialy nadawcy."""
-    X1, Xc = [], []
-    for s, v, b, _lab in events:
+    """X_1hop, X_ctx (1hop + kontekst kaskady). Rytm = REALNE aktywne przedzialy nadawcy.
+
+    PRZYCZYNOWOSC ZDARZENIOWA (jak framework-1): zdarzenie e widzi wylacznie zdarzenia
+    o scisle wczesniejszym t(e) = (kubelek, pozycja na tasowanej liscie) — kompletne
+    kubełki [b-W, b-1] ORAZ prefix biezacego kubełka (regula remisow: porzadek listy)."""
+    n = len(events)
+    X1 = [None] * n
+    Xc = [None] * n
+    r_pref: dict = defaultdict(set)  # kubelek -> odbiorcy (prefix biezacego kubełka)
+    s_pref: dict = defaultdict(set)  # kubelek -> nadawcy (prefix)
+    order = sorted(range(n), key=lambda i: (events[i][2], i))
+    for i in order:
+        s, v, b, _lab = events[i]
         cs = nbr.get(v, set())
         deg_v, deg_s = len(cs), len(nbr.get(s, set()))
         # UWAGA: bez bitu rytmu (b in active[s]) -- to wyciek: realny benign jest ZAWSZE w rytmie,
         # a syntetyczna kaskada nie, wiec rytm trywialnie rozdziela. Sygnal kaskady = kontekst propagacji.
         f1 = [1.0 if s in cs else 0.0, float(deg_v), float(deg_s)]
-        recent_recv = set()
-        for bb in range(max(0, b - WINDOW), b + 1):
-            recent_recv |= recv_b.get(bb, set())
-        burst = len((cs - {s}) & recent_recv) / max(1, deg_v)
-        sender_recency = 0.0
+        recent_recv = set(r_pref.get(b, ()))
+        recent_sent = set(s_pref.get(b, ()))
         for bb in range(max(0, b - WINDOW), b):
-            if s in recv_b.get(bb, set()):
-                sender_recency = 1.0
-                break
-        prop = len(
-            (cs - {s})
-            & {
-                x
-                for bb in range(max(0, b - WINDOW), b + 1)
-                for x in sent_b.get(bb, set())
-            }
-        ) / max(1, deg_v)
-        Xc.append(f1 + [burst, sender_recency, prop])
-        X1.append(f1)
-    return np.array(X1, np.float32), np.array(Xc, np.float32)
+            recent_recv |= recv_b.get(bb, set())
+            recent_sent |= sent_b.get(bb, set())
+        burst = len((cs - {s}) & recent_recv) / max(1, deg_v)
+        sender_recency = 1.0 if s in recent_recv else 0.0
+        prop = len((cs - {s}) & recent_sent) / max(1, deg_v)
+        Xc[i] = f1 + [burst, sender_recency, prop]
+        X1[i] = f1
+        r_pref[b].add(v)
+        s_pref[b].add(s)
+    return (
+        np.array(X1, np.float32),
+        np.array(Xc, np.float32),
+    )
 
 
 def _per_bucket(events, idx, chunk=64):
@@ -256,8 +288,25 @@ def _train_temporal(Xn, pb, n, ef, s_idx, v_idx, yt, tr_t, te_t, y, te, seed):
     return roc_auc_score(y[te], s), _recall_at_fpr(y[te], s)
 
 
-def run(nbr, sent, active, seed, stealth_k=None):
-    events = _events(nbr, sent, seed, stealth_k)
+def _timing_stats(events):
+    """R4-A2: KS odstepow atak vs tlo + sonda czysto czasowa (per seed, in-run)."""
+    from scipy.stats import ks_2samp
+
+    from exp_injection_probe import _gaps, _probe_auc
+
+    a_g, _ = _gaps(events, 1)
+    b_g, _ = _gaps(events, 0)
+    if len(a_g) >= 5 and len(b_g) >= 5:
+        ks, p = ks_2samp(a_g, b_g)
+        ks = float(ks)
+    else:
+        ks, p = float("nan"), float("nan")
+    probe = _probe_auc(events, N_BUCKETS, 123)
+    return ks, float(p), probe
+
+
+def run(nbr, sent, active, seed, stealth_k=None, timing="det"):
+    events = _events(nbr, sent, seed, stealth_k, timing)
     nodes = sorted({e[0] for e in events} | {e[1] for e in events})
     idx = {t: i for i, t in enumerate(nodes)}
     n = len(nodes)
@@ -310,7 +359,8 @@ def run(nbr, sent, active, seed, stealth_k=None):
     out["gnn_temporal_shuf"] = _train_temporal(
         Xn, pb_s, n, ef, s_idx, v_idx, yt, tr_t, te_t, y, te, seed
     )
-    return out, n, len(events), int(y.sum())
+    ks, kp, probe = _timing_stats(events)
+    return out, n, len(events), int(y.sum()), ks, probe
 
 
 def main():
@@ -322,41 +372,77 @@ def main():
     print(f"[enron-casc] nadawcow={len(sent)}, wezlow-kontaktu={len(nbr)}", flush=True)
     agg = {}
     perseed = []
+    trows = []
     nn_ = ne = na = 0
-    for regime, sk in (("blast", None), ("stealthy", 2)):
-        print(f"=== [enron-casc] rezym: {regime} ===", flush=True)
+    # R4-A2: blast det; stealthy w obu wariantach (det/emp)
+    # R4: opcjonalny filtr rezymu (rownoleglosc: --rezym blast / stealthy)
+    only = None
+    if "--rezym" in sys.argv:
+        only = sys.argv[sys.argv.index("--rezym") + 1]
+    variants = [
+        ("blast", None, "det"),
+        ("stealthy", 2, "det"),
+        ("stealthy", 2, "emp"),
+    ]
+    for regime, sk, timing in variants:
+        if only and regime != only:
+            continue
+        print(f"=== [enron-casc] rezym: {regime}/{timing} ===", flush=True)
+        ks_l, pr_l = [], []
         for seed in SEEDS:
-            res, nn_, ne, na = run(nbr, sent, active, seed, stealth_k=sk)
+            res, nn_, ne, na, ks, probe = run(
+                nbr, sent, active, seed, stealth_k=sk, timing=timing
+            )
+            ks_l.append(ks)
+            pr_l.append(probe)
             for k, (a, r) in res.items():
-                agg.setdefault((regime, k), {"auc": [], "r1": []})
-                agg[(regime, k)]["auc"].append(a)
-                agg[(regime, k)]["r1"].append(r)
-                perseed.append([regime, seed, k, round(a, 4), round(r, 4)])
+                agg.setdefault((regime, timing, k), {"auc": [], "r1": []})
+                agg[(regime, timing, k)]["auc"].append(a)
+                agg[(regime, timing, k)]["r1"].append(r)
+                perseed.append([regime, timing, seed, k, round(a, 4), round(r, 4)])
             line = " | ".join(
                 f"{k} auc={v[0]:.3f} r1={v[1]:.3f}" for k, v in res.items()
             )
             print(
-                f"  [{regime}] seed={seed} (wezly {nn_}, zdarz {ne}, ataki {na}): {line}",
+                f"  [{regime}/{timing}] seed={seed} (wezly {nn_}, zdarz {ne}, ataki {na}):"
+                f" {line} | KS={ks:.2f} probe={probe:.2f}",
                 flush=True,
             )
-    out = RESULTS / "exp_cascade_enron.csv"
+        trows.append(
+            [
+                regime,
+                timing,
+                round(float(np.nanmean(ks_l)), 4),
+                round(float(np.mean(pr_l)), 4),
+            ]
+        )
+    suffix = f"_{only}" if only else ""
+    out = RESULTS / f"exp_cascade_enron{suffix}.csv"
     with out.open("w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
-        w.writerow(["rezym", "model", "auc", "recall_fpr1", "n_seeds"])
-        for (regime, k), v in agg.items():
+        w.writerow(["rezym", "timing", "model", "auc", "recall_fpr1", "n_seeds"])
+        for (regime, timing, k), v in agg.items():
             w.writerow(
                 [
                     regime,
+                    timing,
                     k,
                     round(float(np.mean(v["auc"])), 4),
                     round(float(np.mean(v["r1"])), 4),
                     len(v["auc"]),
                 ]
             )
-    out_ps = RESULTS / "exp_cascade_enron_perseed.csv"
+    suffix = f"_{only}" if only else ""
+    out_t = RESULTS / f"exp_cascade_enron_timing{suffix}.csv"
+    with out_t.open("w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["rezym", "timing", "ks_mean", "probe_auc"])
+        w.writerows(trows)
+    print(f"[enron-timing] -> {out_t}")
+    out_ps = RESULTS / f"exp_cascade_enron{suffix}_perseed.csv"
     with out_ps.open("w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
-        w.writerow(["rezym", "seed", "model", "auc", "recall_fpr1"])
+        w.writerow(["rezym", "timing", "seed", "model", "auc", "recall_fpr1"])
         w.writerows(perseed)
     print(f"\n[enron-casc] REALNY graf Enrona -> {out}")
     for (regime, k), v in agg.items():
