@@ -1,0 +1,4 @@
+kontrast,dAUC,wilcoxon_p,cliffs_d,efekt
+temporalny-GNN vs reczny-kontekst,0.021,0.1893,0.255,maly
+temporalny-GNN vs COMPA,0.115,0.0,0.975,duzy
+reczny-kontekst vs COMPA,0.095,0.0,0.91,duzy
