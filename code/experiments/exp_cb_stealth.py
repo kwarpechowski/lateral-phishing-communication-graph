@@ -34,14 +34,17 @@ class HopperNoPrecursor(Hopper):
     """Ablacja po recenzji zewnetrznej: cecha precursor jest identyczna z freshness
     kontekstu recznego, wiec wynik hoppera przy K=1 moze byc wnoszony przez nia.
     Wersja bez precursor (i bez pochodnego hop_sig = precursor*unexplained)."""
+
     name = "hopper-bez-precursor"
 
     def _X(self, sc, seed):
         import numpy as _np
+
         X = _np.array(hopper_feat(sc.graph, sc.events, seed), dtype=_np.float32).copy()
         X[:, 0] = 0.0
         X[:, 4] = 0.0
         return X
+
 
 from cascadebench.evaluate import evaluate, victim_split, recall_at_fpr  # noqa: E402
 from cascadebench.graph import load  # noqa: E402
@@ -55,54 +58,100 @@ PANEL = [COMPA, Hopper, HopperNoPrecursor, HandContext, TemporalGNN]
 NAMES = [d().name for d in PANEL]
 
 
-def _strat(K):
-    return CascadeStrategy(fanout=K, spread=8, mimicry=0.3)
+def _strat(K, timing="det"):
+    return CascadeStrategy(fanout=K, spread=8, mimicry=0.3, timing=timing)
+
+
+def _timing_stats(events, t_buckets):
+    """R4-A1: KS odstepow atak vs tlo + sonda czysto czasowa (per seed)."""
+    from scipy.stats import ks_2samp
+
+    from exp_injection_probe import _gaps, _probe_auc
+
+    a_g, _ = _gaps(events, 1)
+    b_g, _ = _gaps(events, 0)
+    if len(a_g) >= 5 and len(b_g) >= 5:
+        ks, p = ks_2samp(a_g, b_g)
+        ks = float(ks)
+    else:
+        ks, p = float("nan"), float("nan")
+    probe = _probe_auc(list(events), t_buckets, 123)
+    return ks, float(p), probe
 
 
 def stealth_sweep():
     g = load("synthetic:600")
     rows = []
     perseed = []
-    configs = [(f"K={K}", _strat(K)) for K in K_GRID]
-    configs.append(
-        ("blast", CascadeStrategy(fanout=8, spread=1))
-    )  # sanity ceiling dla bloku (a)
-    for level, strat in configs:
-        acc = {n: {"auc": [], "r1": []} for n in NAMES}
-        infe = []
-        for s in range(SEEDS):
-            sc = build_scenario(g, strat, s, off_hours=OFF_HOURS)
-            infe.append(sc.infected_frac)
-            ev = evaluate(sc, [d() for d in PANEL], s)
-            for n in NAMES:
-                acc[n]["auc"].append(ev[n]["auc"])
-                acc[n]["r1"].append(ev[n]["recall@0.01"])
-                perseed.append([level, s, n, round(ev[n]["auc"], 4),
-                                round(ev[n]["recall@0.01"], 4)])
-        rows.append(
-            [level, round(float(np.mean(infe)), 3)]
-            + [round(float(np.mean(acc[n]["auc"])), 4) for n in NAMES]
-            + [round(float(np.mean(acc[n]["r1"])), 4) for n in NAMES]
-        )
-        print(
-            f"  {level} (zasieg {np.mean(infe):.2f}): "
-            + " ".join(f"{n}={np.mean(acc[n]['auc']):.3f}" for n in NAMES),
-            flush=True,
-        )
+    timing_rows = []
+    for timing in ("det", "emp"):  # R4-A1: kontrola sygnatury iniekcji
+        configs = [(f"K={K}", _strat(K, timing)) for K in K_GRID]
+        configs.append(
+            ("blast", CascadeStrategy(fanout=8, spread=1, timing=timing))
+        )  # sanity ceiling dla bloku (a)
+        for level, strat in configs:
+            acc = {n: {"auc": [], "r1": []} for n in NAMES}
+            infe = []
+            ks_l, pr_l = [], []
+            for s in range(SEEDS):
+                sc = build_scenario(g, strat, s, off_hours=OFF_HOURS)
+                infe.append(sc.infected_frac)
+                ev = evaluate(sc, [d() for d in PANEL], s)
+                for n in NAMES:
+                    acc[n]["auc"].append(ev[n]["auc"])
+                    acc[n]["r1"].append(ev[n]["recall@0.01"])
+                    perseed.append(
+                        [
+                            timing,
+                            level,
+                            s,
+                            n,
+                            round(ev[n]["auc"], 4),
+                            round(ev[n]["recall@0.01"], 4),
+                        ]
+                    )
+                ks, _kp, probe = _timing_stats(sc.events, g.n_buckets)
+                ks_l.append(ks)
+                pr_l.append(probe)
+            rows.append(
+                [timing, level, round(float(np.mean(infe)), 3)]
+                + [round(float(np.mean(acc[n]["auc"])), 4) for n in NAMES]
+                + [round(float(np.mean(acc[n]["r1"])), 4) for n in NAMES]
+            )
+            timing_rows.append(
+                [
+                    timing,
+                    level,
+                    round(float(np.nanmean(ks_l)), 4),
+                    round(float(np.mean(pr_l)), 4),
+                ]
+            )
+            print(
+                f"  [{timing}] {level} (zasieg {np.mean(infe):.2f}): "
+                + " ".join(f"{n}={np.mean(acc[n]['auc']):.3f}" for n in NAMES)
+                + f" | KS={np.nanmean(ks_l):.2f} probe={np.mean(pr_l):.2f}",
+                flush=True,
+            )
     out = RESULTS / "cb_hopper_stealth.csv"
     with out.open("w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
         w.writerow(
-            ["poziom", "zasieg"]
+            ["timing", "poziom", "zasieg"]
             + [f"auc_{n}" for n in NAMES]
             + [f"r1_{n}" for n in NAMES]
         )
         w.writerows(rows)
     print(f"[cb-stealth] -> {out}")
+    out_t = RESULTS / "cb_hopper_stealth_timing.csv"
+    with out_t.open("w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["timing", "poziom", "ks_mean", "probe_auc"])
+        w.writerows(timing_rows)
+    print(f"[cb-stealth-timing] -> {out_t}")
     out_ps = RESULTS / "cb_hopper_stealth_perseed.csv"
     with out_ps.open("w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
-        w.writerow(["poziom", "seed", "detektor", "auc", "r1"])
+        w.writerow(["timing", "poziom", "seed", "detektor", "auc", "r1"])
         w.writerows(perseed)
     print(f"[cb-stealth-perseed] -> {out_ps}")
 

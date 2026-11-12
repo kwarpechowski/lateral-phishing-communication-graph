@@ -46,10 +46,33 @@ MAX_HOPS = 4
 P_INFECT = 0.6
 
 
-def _simulate_stealth(seed, K):
-    """Kaskada stealthy: <=K wyslan na nosiciela, po jednym na bucket (brak burstu)."""
+def _benign_gap_pool(seed):
+    """R4-A1: empiryczny rozklad odstepow tla tego harnessu — odstepy miedzy
+    kolejnymi wysylaniami tego samego nadawcy w benign (matched edges, kubelki
+    jednostajne, protokol jak w _simulate_stealth)."""
+    twins, nbr = _contact_graph()
+    rng = np.random.default_rng(seed + 555)
+    edges = [(u, w) for u in nbr for w in nbr[u]]
+    by_sender = {}
+    for _ in range(3000):
+        u, w = edges[int(rng.integers(len(edges)))]
+        b = int(rng.integers(T_BUCKETS))
+        by_sender.setdefault(u, []).append(b)
+    pool = []
+    for bs in by_sender.values():
+        bs.sort()
+        pool.extend(b2 - b1 for b1, b2 in zip(bs, bs[1:]) if b2 > b1)
+    return pool or [1]
+
+
+def _simulate_stealth(seed, K, timing="det"):
+    """Kaskada stealthy: <=K wyslan na nosiciela, po jednym na bucket (brak burstu).
+
+    R4-A1: timing="emp" — odstepy kolejnych wyslan nosiciela losowane z
+    empirycznego rozkladu odstepow tla (pilot benign, ten sam protokol)."""
     twins, nbr = _contact_graph()
     rng = np.random.default_rng(seed)
+    gap_pool = _benign_gap_pool(seed) if timing == "emp" else None
     events = []
     seeds0 = [twins[i] for i in rng.permutation(len(twins))[:N_CASCADES]]
     for s0 in seeds0:
@@ -61,13 +84,23 @@ def _simulate_stealth(seed, K):
             for u, tu in frontier:
                 tg = sorted(nbr.get(u, ()))
                 rng.shuffle(tg)
+                # R4-A1: harmonogram odstepow nosiciela z puli tla (kumulatywnie,
+                # wylosowany raz na nosiciela — spojny dla wszystkich jego celow)
+                if timing == "emp" and gap_pool:
+                    gaps = [0] + [
+                        gap_pool[int(rng.integers(len(gap_pool)))] for _ in range(K)
+                    ]
+                    cum = np.cumsum(gaps)
                 sent = 0
                 for v in tg:
                     if v in infected or sent >= K:
                         continue
-                    bucket = (
-                        tu + 1 + sent
-                    ) % T_BUCKETS  # rozproszenie: 1 wyslanie / bucket
+                    if timing == "emp" and gap_pool:
+                        bucket = (tu + int(cum[sent])) % T_BUCKETS
+                    else:
+                        bucket = (
+                            tu + 1 + sent
+                        ) % T_BUCKETS  # rozproszenie: 1 wyslanie / bucket
                     events.append((u, v, bucket, 1))
                     sent += 1
                     if rng.random() < P_INFECT:
@@ -97,9 +130,26 @@ def _tc_stats(events, seed):
     return off(att), off(ben)
 
 
-def _eval(seed, K):
+def _timing_stats(events):
+    """R4-A1: KS odstepow atak vs tlo + AUC czysto czasowej sondy (per seed)."""
+    from scipy.stats import ks_2samp
+
+    from exp_injection_probe import _gaps, _probe_auc
+
+    a_g, _ = _gaps(events, 1)
+    b_g, _ = _gaps(events, 0)
+    if len(a_g) >= 5 and len(b_g) >= 5:
+        ks, p = ks_2samp(a_g, b_g)
+        ks = float(ks)
+    else:
+        ks, p = float("nan"), float("nan")
+    probe = _probe_auc(events, T_BUCKETS, 123)
+    return ks, float(p), probe
+
+
+def _eval(seed, K, timing="det"):
     torch.manual_seed(seed)
-    twins, nbr, events = _simulate_stealth(seed, K)
+    twins, nbr, events = _simulate_stealth(seed, K, timing)
     recv_b, sent_b = _index_traffic(events)
     X1, Xc, _y = _features(events, nbr, recv_b, sent_b, seed)
     Xco = _compa_features(events)
@@ -151,7 +201,8 @@ def _eval(seed, K):
         sg = torch.sigmoid(m(Xn, pb, n, ef, s_idx, v_idx))[te_t].numpy()
     out["gnn_temporal"] = (roc_auc_score(y[te], sg), _recall_at_fpr(y[te], sg))
     off_att, off_ben = _tc_stats(events, seed)
-    return out, int(y.sum()), len(y), off_att, off_ben
+    ks, kp, probe = _timing_stats(events)
+    return out, int(y.sum()), len(y), off_att, off_ben, ks, kp, probe
 
 
 def main():
@@ -159,60 +210,88 @@ def main():
     rows = []
     tc_rows = []
     perseed = []
-    for K in K_GRID:
-        acc = {}
-        na = nt = 0
-        off_a, off_b = [], []
-        for seed in SEEDS:
-            res, na, nt, oa, ob = _eval(seed, K)
-            off_a.append(oa)
-            off_b.append(ob)
-            for k, (a, r) in res.items():
-                perseed.append([K, seed, k, round(a, 4), round(r, 4)])
-            for k, (a, r) in res.items():
-                acc.setdefault(k, {"a": [], "r": []})
-                acc[k]["a"].append(a)
-                acc[k]["r"].append(r)
-        for k, v in acc.items():
-            rows.append(
+    timing_rows = []
+    for timing in ("det", "emp"):  # R4-A1: kontrola sygnatury iniekcji w harnessie
+        for K in K_GRID:
+            acc = {}
+            na = nt = 0
+            off_a, off_b = [], []
+            ks_l, pr_l = [], []
+            for seed in SEEDS:
+                res, na, nt, oa, ob, ks, kp, probe = _eval(seed, K, timing)
+                off_a.append(oa)
+                off_b.append(ob)
+                ks_l.append(ks)
+                pr_l.append(probe)
+                for k, (a, r) in res.items():
+                    perseed.append([timing, K, seed, k, round(a, 4), round(r, 4)])
+                for k, (a, r) in res.items():
+                    acc.setdefault(k, {"a": [], "r": []})
+                    acc[k]["a"].append(a)
+                    acc[k]["r"].append(r)
+            for k, v in acc.items():
+                rows.append(
+                    [
+                        timing,
+                        K,
+                        k,
+                        round(float(np.mean(v["a"])), 4),
+                        round(float(np.mean(v["r"])), 4),
+                    ]
+                )
+            timing_rows.append(
                 [
+                    timing,
                     K,
-                    k,
-                    round(float(np.mean(v["a"])), 4),
-                    round(float(np.mean(v["r"])), 4),
+                    round(float(np.nanmean(ks_l)), 4),
+                    float(
+                        np.nanmean([p for p in ks_l if p == p])
+                        if ks_l
+                        else float("nan")
+                    ),
+                    round(float(np.mean(pr_l)), 4),
                 ]
             )
-        tc_rows.append(
-            [K, round(float(np.mean(off_a)), 4), round(float(np.mean(off_b)), 4)]
-        )
-        lab = "blast" if K == 999 else f"K={K}"
-        print(
-            f"  {lab} (ataki~{na}/{nt}): "
-            + " | ".join(
-                f"{k} auc={np.mean(v['a']):.3f} r1={np.mean(v['r']):.3f}"
-                for k, v in acc.items()
-            ),
-            flush=True,
-        )
-        print(
-            f"     off-rhythm: ataki {np.mean(off_a):.2f} vs benign {np.mean(off_b):.2f}",
-            flush=True,
-        )
+            tc_rows.append(
+                [
+                    timing,
+                    K,
+                    round(float(np.mean(off_a)), 4),
+                    round(float(np.mean(off_b)), 4),
+                ]
+            )
+            lab = "blast" if K == 999 else f"K={K}"
+            print(
+                f"  [{timing}] {lab} (ataki~{na}/{nt}): "
+                + " | ".join(
+                    f"{k} auc={np.mean(v['a']):.3f} r1={np.mean(v['r']):.3f}"
+                    for k, v in acc.items()
+                )
+                + f" | KS={np.nanmean(ks_l):.2f} probe={np.mean(pr_l):.2f}",
+                flush=True,
+            )
     out = RESULTS / "exp_cascade_stealth.csv"
     with out.open("w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
-        w.writerow(["K", "model", "auc", "recall_fpr1"])
+        w.writerow(["timing", "K", "model", "auc", "recall_fpr1"])
         w.writerows(rows)
     out_tc = RESULTS / "exp_cascade_stealth_tc.csv"
     with out_tc.open("w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
-        w.writerow(["K", "off_rhythm_attacks", "off_rhythm_benign"])
+        w.writerow(["timing", "K", "off_rhythm_attacks", "off_rhythm_benign"])
         w.writerows(tc_rows)
-    print(f"\n[stealth] -> {out}\n[stealth-tc] -> {out_tc}")
+    out_t = RESULTS / "exp_cascade_stealth_timing.csv"
+    with out_t.open("w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        w.writerow(["timing", "K", "ks_mean", "ks_p_mean", "probe_auc"])
+        w.writerows(timing_rows)
+    print(
+        f"\n[stealth] -> {out}\n[stealth-tc] -> {out_tc}\n[stealth-timing] -> {out_t}"
+    )
     out_ps = RESULTS / "exp_cascade_stealth_perseed.csv"
     with out_ps.open("w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
-        w.writerow(["K", "seed", "model", "auc", "recall_fpr1"])
+        w.writerow(["timing", "K", "seed", "model", "auc", "recall_fpr1"])
         w.writerows(perseed)
     print(f"[stealth-perseed] -> {out_ps}")
 
