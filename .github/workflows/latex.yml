@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Install TeX
-        run: sudo apt-get update && sudo apt-get install -y texlive-latex-extra texlive-publishers latexmk
+        run: sudo apt-get update && sudo apt-get install -y texlive-latex-extra texlive-publishers texlive-science texlive-fonts-recommended texlive-bibtex-extra latexmk
       - name: Build A
         working-directory: A-Journal
         run: latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
