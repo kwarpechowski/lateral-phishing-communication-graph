@@ -1,0 +1,50 @@
+name: LaTeX build (A-Journal + B-Conference)
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install TeX Live (latexmk + pakiety)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y texlive-latex-extra texlive-fonts-recommended \
+            texlive-bibtex-extra texlive-science latexmk \
+            texlive-publishers
+
+      - name: Build A-Journal main.tex
+        working-directory: A-Journal
+        run: latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
+
+      - name: Build A-Journal supplementary.tex
+        working-directory: A-Journal
+        run: latexmk -pdf -interaction=nonstopmode -halt-on-error supplementary.tex
+
+      - name: Build B-Conference main.tex
+        working-directory: B-Conference
+        run: latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
+
+      - name: Zero niezdefiniowanych odwolan/cytowan
+        run: |
+          fail=0
+          for f in A-Journal/main.log A-Journal/supplementary.log B-Conference/main.log; do
+            if grep -nE "Reference .* undefined|Citation .* undefined" "$f"; then
+              echo "UNDEFINED w $f"; fail=1
+            fi
+          done
+          exit $fail
+
+      - name: Upload PDF-ow (artefakt)
+        uses: actions/upload-artifact@v4
+        with:
+          name: papers
+        path: |
+          A-Journal/main.pdf
+          A-Journal/supplementary.pdf
+          B-Conference/main.pdf
