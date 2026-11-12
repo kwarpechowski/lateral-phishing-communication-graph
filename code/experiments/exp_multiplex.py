@@ -39,14 +39,14 @@ CODE = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(CODE))
 RESULTS = CODE / "results"
 
-from graph.build_layers import build_layers                     # noqa: E402
-from graph.build_osint_overlay import build_overlay             # noqa: E402
+from graph.build_layers import build_layers  # noqa: E402
+from graph.build_osint_overlay import build_overlay  # noqa: E402
 
-SEEDS = list(range(20))   # >=20 ziaren dla istotnosci
+SEEDS = list(range(20))  # >=20 ziaren dla istotnosci
 # Realistic two-sided noise (avoid the synthetic perfect-separability artifact):
 #   benign senders: known / new-on-OSINT (multiplex can rescue) / new-COLD (no tie -> FP for both)
 #   BEC senders:    off-graph spoof / fabricated-OSINT spoof (planted fake footprint, H9d)
-P_KNOWN, P_NEW_OSINT, P_NEW_COLD = 0.40, 0.35, 0.25     # benign mix
+P_KNOWN, P_NEW_OSINT, P_NEW_COLD = 0.40, 0.35, 0.25  # benign mix
 EVENTS_PER_VICTIM = 14
 
 
@@ -55,7 +55,8 @@ def _h(*p: str) -> int:
 
 
 def _recall_at_fpr(y, s, fpr_target=0.01) -> float:
-    y = np.asarray(y); s = np.asarray(s)
+    y = np.asarray(y)
+    s = np.asarray(s)
     if y.sum() == 0 or (y == 0).sum() == 0:
         return 0.0
     fpr, tpr, _ = roc_curve(y, s)
@@ -76,47 +77,70 @@ def _adj(layers: dict) -> dict:
     return out
 
 
-def _events(twins, contact_nbr, osint_union, osint_layers, seed, fabrication_rate):
+def _events(
+    twins, contact_nbr, osint_union, osint_layers, seed, fabrication_rate, fab_pool=None
+):
     """Yield (sender, victim, label, stype, fab_layer) with realistic two-sided noise.
 
     stype: known / new_osint / new_cold (benign) ; bec_off / bec_fab (attack).
-    fab_layer: for bec_fab, the OSINT layer the attacker FAKED an edge in (else None)."""
+    fab_layer: for bec_fab, the OSINT footprint the attacker planted (tuple of layers,
+    sampled from the empirical distribution of genuine traces of legit new-OSINT
+    senders — R4-B2: ta sama mieszanka warstw i liczba krawedzi; None w trybie legacy
+    = pojedyncza warstwa)."""
     rows = []
     tw = list(twins)
     for v in tw:
         c = sorted(contact_nbr.get(v, set()))
         o_only = sorted(osint_union.get(v, set()) - contact_nbr.get(v, set()) - {v})
-        off = [t for t in tw if t != v and t not in contact_nbr.get(v, set())
-               and t not in osint_union.get(v, set())]
+        off = [
+            t
+            for t in tw
+            if t != v
+            and t not in contact_nbr.get(v, set())
+            and t not in osint_union.get(v, set())
+        ]
         for k in range(EVENTS_PER_VICTIM):
             h = _h(str(seed), v, str(k))
-            if h % 2 == 0:                                    # benign
+            if h % 2 == 0:  # benign
                 r = (h // 3) % 100
                 if r < P_KNOWN * 100 and c:
                     rows.append((c[h % len(c)], v, 0, "known", None))
                 elif r < (P_KNOWN + P_NEW_OSINT) * 100 and o_only:
                     rows.append((o_only[h % len(o_only)], v, 0, "new_osint", None))
                 elif off:
-                    rows.append((off[h % len(off)], v, 0, "new_cold", None))    # legit but no tie -> FP risk for ALL
-            else:                                              # BEC attack
+                    rows.append(
+                        (off[h % len(off)], v, 0, "new_cold", None)
+                    )  # legit but no tie -> FP risk for ALL
+            else:  # BEC attack
                 if not off:
                     continue
                 s = off[h % len(off)]
                 if (h // 5) % 100 < int(fabrication_rate * 100) and osint_layers:
-                    rows.append((s, v, 1, "bec_fab", osint_layers[h % len(osint_layers)]))  # planted fake footprint
+                    if fab_pool:
+                        # R4-B2: slad z rozkladu sladow PRAWDZIWYCH legalnych nowych
+                        # nadawcow (mieszanka warstw + liczba krawedzi jak u legalnych)
+                        rows.append((s, v, 1, "bec_fab", fab_pool[h % len(fab_pool)]))
+                    else:
+                        rows.append(
+                            (s, v, 1, "bec_fab", (osint_layers[h % len(osint_layers)],))
+                        )
                 else:
                     rows.append((s, v, 1, "bec_off", None))
     return rows
 
 
 def _features(rows, adj, layer_names, victim_map):
-    """contact-only X, multiplex X. Honour per-event fabricated OSINT edge (bec_fab)."""
+    """contact-only X, multiplex X. Honour per-event fabricated OSINT footprint
+    (bec_fab, R4-B2: krotka warstw ze sladu)."""
     Xc, Xm = [], []
     for s, v, _y, _st, fab in rows:
         vv = victim_map(v)
+        fab_set = set(fab) if fab else set()
         per = []
         for L in layer_names:
-            on = (s in adj[L].get(vv, set())) or (L == fab)   # fabricated edge fools the feature
+            on = (s in adj[L].get(vv, set())) or (
+                L in fab_set
+            )  # fabricated footprint fools the feature
             per.append(1.0 if on else 0.0)
         cov = sum(per[1:])
         Xc.append([per[0]])
@@ -127,21 +151,45 @@ def _features(rows, adj, layer_names, victim_map):
 # Warstwy OSINT z REALNYCH pol blizniaka (c3-c8) — glowny wynik RQ2.
 # Syntetyczny overlay (build_overlay) uzywany TYLKO do sweepow adwersaryjnych (p_cross/fabrykacja),
 # bo realne warstwy maja stale, naturalne pokrycie cross-org (brak pokretla p_cross).
-REAL_OSINT = ["osint_conference", "osint_certification", "osint_skill", "osint_routine",
-              "osint_event", "osint_pretext", "osint_platform", "interest_sim"]
+REAL_OSINT = [
+    "osint_conference",
+    "osint_certification",
+    "osint_skill",
+    "osint_routine",
+    "osint_event",
+    "osint_pretext",
+    "osint_platform",
+    "interest_sim",
+]
 
 
 def run(p_cross, fabrication_rate, real=False, perseed_out=None):
     base = build_layers()
     contact = {"contact": base["contact"]}
-    accum = {k: [] for k in ["contact_auc", "mux_auc", "shuf_auc",
-                             "contact_r1", "mux_r1", "shuf_r1",
-                             "fp_newsender_contact", "fp_newsender_mux"]}
+    accum = {
+        k: []
+        for k in [
+            "contact_auc",
+            "mux_auc",
+            "shuf_auc",
+            "contact_r1",
+            "mux_r1",
+            "shuf_r1",
+            "fp_newsender_contact",
+            "fp_newsender_mux",
+        ]
+    }
     for seed in SEEDS:
         if real:
             layers = {**contact, **{L: base[L] for L in REAL_OSINT}}
         else:
-            ov, _ = build_overlay(seed=seed, p_cross=p_cross, fabrication_rate=fabrication_rate)
+            ov, _ = build_overlay(
+                # R4-B2: tlo OSINT zawsze uczciwe (fabrykacja 0) — sweep dotyczy
+                # wylacznie behawioru atakujacego, nie dodatkowej fabrykacji overlaya
+                seed=seed,
+                p_cross=p_cross,
+                fabrication_rate=0.0,
+            )
             layers = {**contact, **ov}
         names = list(layers)
         adj = _adj(layers)
@@ -151,23 +199,65 @@ def run(p_cross, fabrication_rate, real=False, perseed_out=None):
         for L in osint_layers:
             for t, nb in adj[L].items():
                 osint_union.setdefault(t, set()).update(nb)
-        twins = sorted({t for t in adj["contact"]} | set(osint_union) |
-                       {r["twin_id"] for r in _self_rows()})
-        rows = _events(twins, contact_nbr, osint_union, osint_layers, seed, fabrication_rate)
+        twins = sorted(
+            {t for t in adj["contact"]}
+            | set(osint_union)
+            | {r["twin_id"] for r in _self_rows()}
+        )
+        # R4-B2: realistyczny falszerz — pula sladow = PRAWDZIWY slady legalnych
+        # nowych nadawcow OSINT (mieszanka warstw + liczba krawedzi), zmierzone na
+        # uczciwym tle w tym samym seedzie
+        benign_probe = _events(twins, contact_nbr, osint_union, osint_layers, seed, 0.0)
+        fab_pool = []
+        for s, v, lab, st, _f in benign_probe:
+            if lab == 0 and st == "new_osint":
+                tr = tuple(L for L in osint_layers if s in adj[L].get(v, set()))
+                if tr:
+                    fab_pool.append(tr)
+        rows = _events(
+            twins,
+            contact_nbr,
+            osint_union,
+            osint_layers,
+            seed,
+            fabrication_rate,
+            fab_pool=fab_pool or None,
+        )
         if not rows:
             continue
-        y = np.array([r[2] for r in rows]); stype = np.array([r[3] for r in rows])
+        # R4-B2: sfabrykowane krawedzi jako REALNE krawedzie grafu (kopija adj) —
+        # kontrola shuffle (zly victim) ich NIE widzi, wiec shuffle nie rosnie
+        # wraz z fabrykacja (kryterium akceptacji R4-B2)
+        if fabrication_rate > 0:
+            adj = {L: {t: set(nb) for t, nb in a.items()} for L, a in adj.items()}
+            for s, v, _lab, _st, fab in rows:
+                if fab:
+                    for L in fab:
+                        adj[L].setdefault(v, set()).add(s)
+        rows_feat = [(s, v, y_, st_, None) for s, v, y_, st_, _f in rows]
+        rows = rows_feat
+        y = np.array([r[2] for r in rows])
+        stype = np.array([r[3] for r in rows])
         vic = [r[1] for r in rows]
         order = sorted(set(vic))
         wrong = {order[i]: order[(i + 7) % len(order)] for i in range(len(order))}
-        te_v = set(np.array(order)[np.random.default_rng(seed).permutation(len(order))[:max(1, len(order)//3)]])
-        te = np.array([v in te_v for v in vic]); tr = ~te
+        te_v = set(
+            np.array(order)[
+                np.random.default_rng(seed).permutation(len(order))[
+                    : max(1, len(order) // 3)
+                ]
+            ]
+        )
+        te = np.array([v in te_v for v in vic])
+        tr = ~te
 
         Xc, Xm = _features(rows, adj, names, lambda v: v)
         _, Xs = _features(rows, adj, names, lambda v: wrong[v])
 
         def fit(X):
-            clf = LGBMClassifier(n_jobs=1, random_state=42, n_estimators=200, verbose=-1).fit(X[tr], y[tr])
+            clf = LGBMClassifier(
+                n_jobs=1, random_state=42, n_estimators=200, verbose=-1
+            ).fit(X[tr], y[tr])
             return clf.predict_proba(X[te])[:, 1]
 
         sc, sm, ss = fit(Xc), fit(Xm), fit(Xs)
@@ -182,15 +272,23 @@ def run(p_cross, fabrication_rate, real=False, perseed_out=None):
         # push into the top-1% (i.e. falsely treats as attack)? Lower is better; multiplex
         # should rescue them (they carry OSINT coverage) where contact-only cannot.
         st_te = stype[te]
-        thr_c = np.quantile(sc, 0.99); thr_m = np.quantile(sm, 0.99)
+        thr_c = np.quantile(sc, 0.99)
+        thr_m = np.quantile(sm, 0.99)
         newm = (yte == 0) & (st_te == "new_osint")
-        accum["fp_newsender_contact"].append(float((sc[newm] >= thr_c).mean()) if newm.any() else 0.0)
-        accum["fp_newsender_mux"].append(float((sm[newm] >= thr_m).mean()) if newm.any() else 0.0)
+        accum["fp_newsender_contact"].append(
+            float((sc[newm] >= thr_c).mean()) if newm.any() else 0.0
+        )
+        accum["fp_newsender_mux"].append(
+            float((sm[newm] >= thr_m).mean()) if newm.any() else 0.0
+        )
         if perseed_out is not None:
             for k, v in accum.items():
                 perseed_out.append([seed, k, round(float(v[-1]), 4)])
     means = {k: (float(np.mean(v)) if v else 0.0) for k, v in accum.items()}
-    sds = {k + "_sd": (float(np.std(v, ddof=1)) if len(v) > 1 else 0.0) for k, v in accum.items()}
+    sds = {
+        k + "_sd": (float(np.std(v, ddof=1)) if len(v) > 1 else 0.0)
+        for k, v in accum.items()
+    }
     return {**means, **sds}
 
 
@@ -201,13 +299,22 @@ def _self_rows():
 
 def main():
     out = RESULTS / "exp_multiplex.csv"
-    grid = [("default", 0.5, 0.0), ("low_cross", 0.2, 0.0), ("high_cross", 0.8, 0.0),
-            ("fab10", 0.5, 0.1), ("fab20", 0.5, 0.2), ("fab50", 0.5, 0.5),
-            ("fab75", 0.5, 0.75), ("fab100", 0.5, 1.0)]
+    grid = [
+        ("default", 0.5, 0.0),
+        ("low_cross", 0.2, 0.0),
+        ("high_cross", 0.8, 0.0),
+        ("fab10", 0.5, 0.1),
+        ("fab25", 0.5, 0.25),
+        ("fab50", 0.5, 0.5),
+        ("fab75", 0.5, 0.75),
+        ("fab100", 0.5, 1.0),
+    ]
     rowsout = []
     perseed = []
-    print(f"{'config':11s} | {'AUC contact/mux/shuf':>22s} | {'R@1% contact/mux/shuf':>22s} "
-          f"| {'newsndr-FP c/m':>14s}")
+    print(
+        f"{'config':11s} | {'AUC contact/mux/shuf':>22s} | {'R@1% contact/mux/shuf':>22s} "
+        f"| {'newsndr-FP c/m':>14s}"
+    )
     for name, pc, fab in grid:
         # glowny wynik RQ2 ("default") na REALNYCH warstwach; sweepy p_cross/fabrykacji
         # na syntetycznym kontrolowanym wariancie (realne warstwy nie maja tych pokretel).
@@ -215,12 +322,23 @@ def main():
         r = run(pc, fab, real=(name == "default"), perseed_out=_ps)
         for row in _ps:
             perseed.append([name, pc, fab] + row)
-        rowsout.append({"config": name, "p_cross": pc, "fabrication": fab, **{k: round(v, 3) for k, v in r.items()}})
-        print(f"{name:11s} | {r['contact_auc']:6.3f} {r['mux_auc']:6.3f} {r['shuf_auc']:6.3f}     | "
-              f"{r['contact_r1']:6.3f} {r['mux_r1']:6.3f} {r['shuf_r1']:6.3f}     | "
-              f"{r['fp_newsender_contact']:6.3f} {r['fp_newsender_mux']:6.3f}")
+        rowsout.append(
+            {
+                "config": name,
+                "p_cross": pc,
+                "fabrication": fab,
+                **{k: round(v, 3) for k, v in r.items()},
+            }
+        )
+        print(
+            f"{name:11s} | {r['contact_auc']:6.3f} {r['mux_auc']:6.3f} {r['shuf_auc']:6.3f}     | "
+            f"{r['contact_r1']:6.3f} {r['mux_r1']:6.3f} {r['shuf_r1']:6.3f}     | "
+            f"{r['fp_newsender_contact']:6.3f} {r['fp_newsender_mux']:6.3f}"
+        )
     with out.open("w", newline="", encoding="utf-8") as f:
-        w = csv.DictWriter(f, fieldnames=list(rowsout[0])); w.writeheader(); w.writerows(rowsout)
+        w = csv.DictWriter(f, fieldnames=list(rowsout[0]))
+        w.writeheader()
+        w.writerows(rowsout)
     print(f"\n[exp-multiplex] wrote {out}")
     out_ps = RESULTS / "exp_multiplex_perseed.csv"
     with out_ps.open("w", newline="", encoding="utf-8") as f:
