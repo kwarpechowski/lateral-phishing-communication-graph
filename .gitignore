@@ -1,3 +1,21 @@
 
 # Kod na branchu reproducibility-package
 code/
+
+# Artefakty kompilacji LaTeX
+*.aux
+*.log
+*.bbl
+*.blg
+*.out
+*.abs
+*.xdv
+*.synctex.gz
+*.bcf
+*.run.xml
+*.spl
+*.tlb
+
+# OS
+.DS_Store
+Thumbs.db
