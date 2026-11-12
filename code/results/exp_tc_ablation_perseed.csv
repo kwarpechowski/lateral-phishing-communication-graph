@@ -1,0 +1,101 @@
+config,seed,auc,recall_fpr1
+known_sender (kontakty),0,0.5807,0.0
+in_rhythm (tc),0,0.791,0.0
+known_sender + in_rhythm,0,0.8182,0.0
+multiplex bez tc,0,0.6377,0.0135
+multiplex + tc (pelny),0,0.8548,0.0506
+known_sender (kontakty),1,0.568,0.0
+in_rhythm (tc),1,0.8115,0.0
+known_sender + in_rhythm,1,0.8255,0.0
+multiplex bez tc,1,0.6537,0.0065
+multiplex + tc (pelny),1,0.8519,0.0915
+known_sender (kontakty),2,0.5622,0.0
+in_rhythm (tc),2,0.795,0.0
+known_sender + in_rhythm,2,0.8157,0.0
+multiplex bez tc,2,0.6451,0.0036
+multiplex + tc (pelny),2,0.8532,0.0287
+known_sender (kontakty),3,0.5793,0.0
+in_rhythm (tc),3,0.8038,0.0
+known_sender + in_rhythm,3,0.8221,0.0
+multiplex bez tc,3,0.6642,0.031
+multiplex + tc (pelny),3,0.8634,0.0946
+known_sender (kontakty),4,0.5689,0.0
+in_rhythm (tc),4,0.8264,0.0
+known_sender + in_rhythm,4,0.8488,0.0
+multiplex bez tc,4,0.6817,0.0066
+multiplex + tc (pelny),4,0.8906,0.0887
+known_sender (kontakty),5,0.5833,0.0
+in_rhythm (tc),5,0.8033,0.0
+known_sender + in_rhythm,5,0.834,0.0
+multiplex bez tc,5,0.6342,0.0068
+multiplex + tc (pelny),5,0.8595,0.0372
+known_sender (kontakty),6,0.5713,0.0
+in_rhythm (tc),6,0.8052,0.0
+known_sender + in_rhythm,6,0.8287,0.0
+multiplex bez tc,6,0.6601,0.0187
+multiplex + tc (pelny),6,0.8646,0.0918
+known_sender (kontakty),7,0.5745,0.0
+in_rhythm (tc),7,0.7832,0.0
+known_sender + in_rhythm,7,0.8141,0.0
+multiplex bez tc,7,0.6563,0.0316
+multiplex + tc (pelny),7,0.843,0.0667
+known_sender (kontakty),8,0.5734,0.0
+in_rhythm (tc),8,0.8027,0.0
+known_sender + in_rhythm,8,0.821,0.0
+multiplex bez tc,8,0.6386,0.0116
+multiplex + tc (pelny),8,0.8529,0.0498
+known_sender (kontakty),9,0.5776,0.0
+in_rhythm (tc),9,0.8033,0.0
+known_sender + in_rhythm,9,0.8257,0.0
+multiplex bez tc,9,0.6639,0.0124
+multiplex + tc (pelny),9,0.8645,0.0482
+known_sender (kontakty),10,0.5822,0.0
+in_rhythm (tc),10,0.8002,0.0
+known_sender + in_rhythm,10,0.8241,0.0
+multiplex bez tc,10,0.6355,0.0034
+multiplex + tc (pelny),10,0.8443,0.0641
+known_sender (kontakty),11,0.5942,0.0
+in_rhythm (tc),11,0.8015,0.0
+known_sender + in_rhythm,11,0.8274,0.0
+multiplex bez tc,11,0.6413,0.0163
+multiplex + tc (pelny),11,0.8615,0.052
+known_sender (kontakty),12,0.5788,0.0
+in_rhythm (tc),12,0.8085,0.0
+known_sender + in_rhythm,12,0.832,0.0
+multiplex bez tc,12,0.6447,0.0103
+multiplex + tc (pelny),12,0.864,0.0483
+known_sender (kontakty),13,0.5587,0.0
+in_rhythm (tc),13,0.8279,0.0
+known_sender + in_rhythm,13,0.842,0.0
+multiplex bez tc,13,0.6448,0.0178
+multiplex + tc (pelny),13,0.8766,0.0953
+known_sender (kontakty),14,0.5553,0.0
+in_rhythm (tc),14,0.8069,0.0
+known_sender + in_rhythm,14,0.8301,0.0
+multiplex bez tc,14,0.6227,0.0162
+multiplex + tc (pelny),14,0.8611,0.0906
+known_sender (kontakty),15,0.5785,0.0
+in_rhythm (tc),15,0.7912,0.0
+known_sender + in_rhythm,15,0.8241,0.0
+multiplex bez tc,15,0.6671,0.0226
+multiplex + tc (pelny),15,0.8515,0.0365
+known_sender (kontakty),16,0.572,0.0
+in_rhythm (tc),16,0.7937,0.0
+known_sender + in_rhythm,16,0.819,0.0
+multiplex bez tc,16,0.6724,0.0086
+multiplex + tc (pelny),16,0.8549,0.0465
+known_sender (kontakty),17,0.5639,0.0
+in_rhythm (tc),17,0.779,0.0
+known_sender + in_rhythm,17,0.8086,0.0
+multiplex bez tc,17,0.6216,0.0156
+multiplex + tc (pelny),17,0.8308,0.0243
+known_sender (kontakty),18,0.5717,0.0
+in_rhythm (tc),18,0.7983,0.0
+known_sender + in_rhythm,18,0.8245,0.0
+multiplex bez tc,18,0.6383,0.0102
+multiplex + tc (pelny),18,0.8468,0.1102
+known_sender (kontakty),19,0.5785,0.0
+in_rhythm (tc),19,0.8028,0.0
+known_sender + in_rhythm,19,0.8272,0.0
+multiplex bez tc,19,0.6655,0.048
+multiplex + tc (pelny),19,0.8577,0.0596

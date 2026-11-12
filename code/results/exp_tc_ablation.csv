@@ -1,0 +1,6 @@
+config,auc,auc_ci_lo,auc_ci_hi,recall_fpr1,r1_ci_lo,r1_ci_hi,n_seeds
+known_sender (kontakty),0.5736,0.5698,0.5776,0.0,0.0,0.0,20
+in_rhythm (tc),0.8018,0.7968,0.807,0.0,0.0,0.0,20
+known_sender + in_rhythm,0.8256,0.8218,0.8298,0.0,0.0,0.0,20
+multiplex bez tc,0.6495,0.6425,0.6567,0.0156,0.0113,0.0206,20
+multiplex + tc (pelny),0.8574,0.8521,0.863,0.0638,0.0529,0.0747,20
