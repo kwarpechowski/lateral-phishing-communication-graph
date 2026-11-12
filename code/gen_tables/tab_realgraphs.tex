@@ -1,0 +1,26 @@
+\multicolumn{4}{@{}l}{\emph{\quad naive blast}} \\
+ & 1-hop (tabular) & $0.66$ & $0.02$ \\
+ & Hand-crafted context (tab.) & $0.77$ & $0.04$ \\
+ & Volumetric (COMPA) & \textbf{$0.87$} & $0.22$ \\
+ & Temporal GNN & $0.81$ & $0.07$ \\
+ & Temporal (time shuffled) & $0.75$ & $0.05$ \\
+\multicolumn{4}{@{}l}{\emph{\quad stealthy attacker}} \\
+ & 1-hop (tabular) & $0.59$ & $0.03$ \\
+ & Hand-crafted context (tab.) & \textbf{$0.89$} & $0.27$ \\
+ & Volumetric (COMPA) & $0.67$ & $0.00$ \\
+ & Temporal GNN & $0.84$ & $0.16$ \\
+ & Temporal (time shuffled) & $0.75$ & $0.15$ \\
+\midrule
+\multicolumn{4}{@{}l}{\emph{(b) SNAP graphs, naive blast vs stealthy attacker, $3$~seeds}} \\
+\multirow{3}{*}{\texttt{email-Eu-core} (blast)} & volumetric & \textbf{$0.83$} & $0.10$ \\
+ & hand-crafted context & $0.62$ & $0.02$ \\
+ & temporal GNN & $0.61$ & $0.02$ \\
+\multirow{3}{*}{\texttt{email-Eu-core} (stealthy)} & volumetric & $0.62$ & $0.00$ \\
+ & hand-crafted context & \textbf{$0.84$} & $0.10$ \\
+ & temporal GNN & $0.79$ & $0.11$ \\
+\multirow{3}{*}{\texttt{CollegeMsg} (blast)} & volumetric & \textbf{$0.83$} & $0.12$ \\
+ & hand-crafted context & $0.62$ & $0.02$ \\
+ & temporal GNN & $0.65$ & $0.03$ \\
+\multirow{3}{*}{\texttt{CollegeMsg} (stealthy)} & volumetric & $0.63$ & $0.01$ \\
+ & hand-crafted context & $0.82$ & $0.08$ \\
+ & temporal GNN & \textbf{$0.83$} & $0.09$ \\
