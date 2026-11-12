@@ -609,6 +609,7 @@ def headline_ci(
     save: bool = True,
     off_hours: float = 0.0,
     tag: str = "",
+    timing: str = "det",
 ):
     """(C) RYGOR STAT. dla glownego twierdzenia P2: pod atakiem SKRYTYM sygnal odbiorczy
     (temporalny LUB reczny) bije wolumenowy (COMPA); temporalny >= reczny. Raportuje per-detektor
@@ -616,14 +617,15 @@ def headline_ci(
     kontrastow (temporalny vs reczny, sygnal-odbiorczy vs COMPA). >=20 ziaren => moc nie jest podloga.
 
     A7 (recenzja wewnetrzna r2): off_hours — frakcja benign POZA rytmem (protokol benign jak
-    w tabeli baselines: 0.15); domyslnie 0.0 (matched benign). tag — sufiks plikow wynikowych."""
+    w tabeli baselines: 0.15); domyslnie 0.0 (matched benign). tag — sufiks plikow wynikowych.
+    R4-A1: timing="emp" — odstepy ataku z empirycznego rozkladu tla (kontrola sygnatury iniekcji)."""
     from .stats import mean_ci, paired_wilcoxon, cliffs_delta, min_two_sided_wilcoxon_p
 
     g = load(graph)
     names = [d.name for d in get_panel()]
     regimes = {
-        "skryty": CascadeStrategy(fanout=2, spread=8, mimicry=0.3),
-        "naiwny": CascadeStrategy(fanout=8, spread=1),
+        "skryty": CascadeStrategy(fanout=2, spread=8, mimicry=0.3, timing=timing),
+        "naiwny": CascadeStrategy(fanout=8, spread=1, timing=timing),
     }
     perdet, rows = {}, []
     print(
@@ -633,7 +635,9 @@ def headline_ci(
     for rname, strat in regimes.items():
         sm = {n: [] for n in names}
         for s in range(seeds):
-            ev = evaluate(build_scenario(g, strat, s), get_panel(), s)
+            ev = evaluate(
+                build_scenario(g, strat, s, off_hours=off_hours), get_panel(), s
+            )
             for n in names:
                 sm[n].append(float(ev[n]["auc"]))
         perdet[rname] = sm
