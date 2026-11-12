@@ -83,7 +83,9 @@ def _tc_only(rows, active):
     )
 
 
-def _run(sent, active, contact, corecip, domain, seed, off_rate):
+def _run(sent, active, contact, corecip, domain, seed, off_rate, act_eff):
+    """act_eff — zbior rytmu uzywany do BITU tc (full-history = krzywa z wyciekiem,
+    early-window = krzywa bez wycieku; R4-B1). Warstwy strukturalne zawsze z wczesnych 60%."""
     rows = _events_audit(sent, active, contact, seed, off_rate)
     y = np.array([r[2] for r in rows])
     snd = [r[0] for r in rows]
@@ -100,8 +102,8 @@ def _run(sent, active, contact, corecip, domain, seed, off_rate):
     out = {}
     # tc-only (izoluje wyciek), full multipleks
     feats = {
-        "tc_only": _tc_only(rows, active),
-        "full": _feat(rows, contact, corecip, domain, active, seed, True),
+        "tc_only": _tc_only(rows, act_eff),
+        "full": _feat(rows, contact, corecip, domain, act_eff, seed, True),
     }
     for tag, X in feats.items():
         clf = LGBMClassifier(
@@ -132,32 +134,37 @@ def main():
     sent = {s: [(r, b) for r, b, _ep in lst] for s, lst in sent3.items()}
     print(f"[audit] nadawcow={len(sent)}", flush=True)
     rows = []
-    for off in OFF_RATES:
-        acc = {}
-        for seed in SEEDS:
-            r = _run(sent, active, contact, corecip, domain, seed, off)
-            for k, (a, rr) in r.items():
-                acc.setdefault(k, {"a": [], "r": []})
-                acc[k]["a"].append(a)
-                acc[k]["r"].append(rr)
-        line = " | ".join(
-            f"{k} auc={np.mean(v['a']):.3f} r@1%={np.mean(v['r']):.3f}"
-            for k, v in acc.items()
-        )
-        print(f"  benign off-hours={off:.0%}: {line}", flush=True)
-        for k, v in acc.items():
-            rows.append(
-                [
-                    off,
-                    k,
-                    round(float(np.mean(v["a"])), 4),
-                    round(float(np.mean(v["r"])), 4),
-                ]
+    # R4-B1: obie krzywe — rytm z pelnej historii (z wyciekiem) i z wczesnych 60% (uczciwy)
+    for rhythm_src, act_eff in (("full", active), ("early", _active_early)):
+        for off in OFF_RATES:
+            acc = {}
+            for seed in SEEDS:
+                r = _run(sent, active, contact, corecip, domain, seed, off, act_eff)
+                for k, (a, rr) in r.items():
+                    acc.setdefault(k, {"a": [], "r": []})
+                    acc[k]["a"].append(a)
+                    acc[k]["r"].append(rr)
+            line = " | ".join(
+                f"{k} auc={np.mean(v['a']):.3f} r@1%={np.mean(v['r']):.3f}"
+                for k, v in acc.items()
             )
+            print(
+                f"  [rytm:{rhythm_src}] benign off-hours={off:.0%}: {line}", flush=True
+            )
+            for k, v in acc.items():
+                rows.append(
+                    [
+                        rhythm_src,
+                        off,
+                        k,
+                        round(float(np.mean(v["a"])), 4),
+                        round(float(np.mean(v["r"])), 4),
+                    ]
+                )
     out = RESULTS / "exp_enron_leak_audit.csv"
     with out.open("w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
-        w.writerow(["off_hours_rate", "model", "auc", "recall_fpr1"])
+        w.writerow(["rhythm", "off_hours_rate", "model", "auc", "recall_fpr1"])
         w.writerows(rows)
     print(f"\n[audit] -> {out}")
 
