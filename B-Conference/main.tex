@@ -536,10 +536,10 @@ has passed a minimum-history filter ($\ge25$~messages and a non-empty rhythm), s
 Sec.~\ref{sec:model} does not arise here, and an off-graph event inherits the time bucket of the real message that
 motivated it. Roughly a quarter of the events are takeovers, a quarter off-graph attacks, and half benign.
 In the leak control below, the rhythm \emph{and} the temporal layers (contacts, co-recipients) are
-re-estimated on the early $60\%$ window of each sender's history---an earlier version of this control
-split only the rhythm, while the structural layers were corpus-wide aggregates; since legitimate
-evaluation events are the real late-window messages themselves, corpus-wide contacts contained them by
-construction, inflating the full-multiplex sensitivity to an apparent $0.51$. The domain layer stays
+re-estimated on the early $60\%$ window of each sender's history. Splitting only the rhythm while
+keeping the structural layers corpus-wide would leave the control incomplete: legitimate
+evaluation events are the real late-window messages themselves, so corpus-wide contacts contain them by
+construction and inflate the full-multiplex sensitivity to an apparent $0.51$. The domain layer stays
 static (the address is an identity attribute, not a history). Attack events
 are never part of the layer or rhythm estimation (both are built from the sender's own legitimate
 history), so the control isolates temporal leakage, not label leakage.
