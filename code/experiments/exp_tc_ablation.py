@@ -54,7 +54,13 @@ def _recall_at_fpr(y, s, t=FPR):
 
 
 def _score(adj, rows, twins, seed, layer_subset, use_temporal):
-    """Jak exp_extended._eval (split po ofiarach, LGBM)."""
+    """Jak exp_extended._eval (split po ofiarach, LGBM).
+
+    R4-B3: in_rhythm = NaN (brakujaca) dla nadawcow BEZ HISTORII w danych
+    organizacji (nadawcy, ktorzy nie wystepuja jako nadawcy zadnego zdarzenia
+    benign — organizacja nie ma z czego estymowac rytmu). LGBM obsluguje NaN
+    natywnie; wczesniej tacy nadawcy dostawali hard-coded 0 (ataki byly z
+    definicji off-rhythm), co bylo artefaktem dostepnosci danych."""
     y = np.array([r[2] for r in rows])
     vic = [r[1] for r in rows]
     order = sorted(set(vic))
@@ -69,6 +75,8 @@ def _score(adj, rows, twins, seed, layer_subset, use_temporal):
     tr = ~te
     from graph.build_temporal_overlay import is_consistent
 
+    # R4-B3: nadawcy z historia = nadawcy zdarzen benign obserwowanych przez organizacje
+    seen_senders = {r[0] for r in rows if r[2] == 0}
     X = []
     for s, v, _l, _a, b, fab in rows:
         per = [
@@ -77,7 +85,10 @@ def _score(adj, rows, twins, seed, layer_subset, use_temporal):
         ]
         feat = per + [sum(per)]
         if use_temporal:
-            feat.append(1.0 if is_consistent(s, b, seed) else 0.0)
+            if s in seen_senders:
+                feat.append(1.0 if is_consistent(s, b, seed) else 0.0)
+            else:
+                feat.append(float("nan"))  # brak historii -> cecha brakujaca
         X.append(feat)
     X = np.array(X, np.float32)
     clf = LGBMClassifier(n_jobs=1, random_state=42, n_estimators=200, verbose=-1).fit(
