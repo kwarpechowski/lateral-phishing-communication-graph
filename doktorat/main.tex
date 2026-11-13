@@ -1,0 +1,91 @@
+% !TeX program = xelatex
+% =====================================================================
+% ROZPRAWA DOKTORSKA (język polski; publikacje po angielsku)
+% „Warunki przyczynowości i wycieki danych w strumieniowej ewaluacji
+%  detektorów na grafach komunikacji"
+%
+% Rozdziały:
+%   1. Wstęp
+%   2. Przegląd literatury
+%   3. Rozdział formalny (na bazie formal_chapter.tex)
+%   4. Lateral phishing jako naruszenie grafu komunikacji (art. A, JNCA)
+%   5. Spear phishing jako naruszenie grafu wiedzy domenowej (art. B, IEEE)
+%   6. Synteza
+%   7. Zakończenie
+%
+% Kompilacja: tectonic main.tex  (XeTeX + polyglossia + natbib/bibtex)
+% =====================================================================
+\documentclass[12pt,a4paper,oneside]{report}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{graphicx}
+\usepackage{polyglossia}
+\setmainlanguage{polish}
+\usepackage{fontspec}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage[colorlinks]{hyperref}
+
+\graphicspath{{figures/}}
+
+% ---- obiekty formalne (nagłówki zgodne z rozdziałem 3) --------------
+\newtheorem{theorem}{Twierdzenie}[chapter]
+\newtheorem{proposition}[theorem]{Stwierdzenie}
+\newtheorem{lemma}[theorem]{Lemat}
+\newtheorem{corollary}[theorem]{Wniosek}
+\newtheorem{definition}[theorem]{Definicja}
+\newtheorem{remark}[theorem]{Uwaga}
+\newtheorem{example}[theorem]{Przykład}
+
+% ---- makra (jak w formal_chapter.tex) -------------------------------
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\event}{\mathbf{e}}
+\newcommand{\strict}{\prec}
+
+\title{Warunki przyczynowości i wycieki danych\\
+w strumieniowej ewaluacji detektorów na grafach komunikacji}
+\author{Kamil Warpechowski}
+\date{listopad 2026}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+Rozprawa traktuje phishing ukierunkowany (lateral phishing z przejętego konta
+oraz impersonację zewnętrzną typu BEC) jako naruszenie grafów organizacji:
+grafu komunikacji i grafu wiedzy domenowej. Teza rozprawy jest dwojaka.
+Po pierwsze, sygnał detekcyjny dla ogona ukierunkowanego mieszka w dynamice
+czasowej i strukturalnej tych grafów, nie w treści pojedynczej wiadomości:
+odbiorcza fala kaskady (temporal GNN, AUC 0.90; degradacja łagodniejsza niż
+detekcji wolumetrycznej pod atakiem skrytym) oraz niespójność międzywarstwowa
+multipleksu (AUC 0.70$\to$0.87, likwidacja fałszywych alarmów na legalnych
+nowych nadawcach). Po drugie, empiryczny wynik detektora strumieniowego mówi
+cokolwiek o warunkach produkcyjnych tylko pod czterema warunkami
+przyczynowości: przyczynowości zdarzeniowej cech, rozłączności podziału po
+ofiarach, usunięciu brzegowej sygnatury czasu i realistycznej fabrykacji
+śladów; naruszenie każdego z nich powoduje zawyżenie raportowanych liczb, co rozprawa
+pokazuje formalnie (twierdzenia i konstrukcyjne kontrprzykłady) i empirycznie
+(pułapka wycieku rytmu: pozorna czułość 0.73 spada do 0.00 pod uczciwym
+podziałem czasowym). Wszystkie liczby pochodzą z paczki reprodukcyjnej
+(code/results/*.csv); wyniki walidowano na realnych grafach komunikacji
+(Enron, email-Eu-core, CollegeMsg).
+\end{abstract}
+
+\tableofcontents
+
+\input{rozdzial_1_wstep}
+\input{rozdzial_2_przeglad}
+\input{rozdzial_3_formalny}
+\input{rozdzial_4_kaskada}
+\input{rozdzial_5_multipleks}
+\input{rozdzial_6_synteza}
+\input{rozdzial_7_zakonczenie}
+
+\bibliographystyle{unsrtnat}
+\bibliography{bibliography}
+
+\end{document}

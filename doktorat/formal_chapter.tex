@@ -1,0 +1,454 @@
+% !TeX program = xelatex
+% =====================================================================
+% ROZDZIAŁ FORMALNY — doktorat (język polski; publikacje po angielsku)
+% „Warunki przyczynowości i wycieki danych w strumieniowej ewaluacji
+%  detektorów na grafach komunikacji"
+%
+% Powiązanie z artykułami:
+%   * artykuly_bogdan/A-Journal  (lateral phishing, detekcja kaskady)
+%   * artykuly_bogdan/B-Conference (multipleks OSINT, wyciek rytmu)
+% Każde twierdzenie mapuje się na eksperyment z paczki reprodukcyjnej
+% (patrz tabela \ref{tab:mapping}).
+% Kompilacja: tectonic formal_chapter.tex (XeTeX + polyglossia)
+% =====================================================================
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm,amscd}
+\usepackage{booktabs}
+\usepackage{polyglossia}
+\setmainlanguage{polish}
+\usepackage{fontspec}
+\usepackage[colorlinks]{hyperref}
+
+\newtheorem{theorem}{Twierdzenie}
+\newtheorem{proposition}[theorem]{Stwierdzenie}
+\newtheorem{lemma}[theorem]{Lemat}
+\newtheorem{corollary}[theorem]{Wniosek}
+\newtheorem{definition}[theorem]{Definicja}
+\newtheorem{remark}[theorem]{Uwaga}
+\newtheorem{example}[theorem]{Przykład}
+
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\Prob}{\mathbb{P}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\event}{\mathbf{e}}
+\newcommand{\strict}{\prec}
+
+\title{Warunki przyczynowości i wycieki danych\\
+w strumieniowej ewaluacji detektorów na grafach komunikacji}
+\author{Rozdział formalny (robocza wersja rozprawy)}
+\date{listopad 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Rozdział aksjomatyzuje warunki ewaluacji, pod jakimi empiryczny AUC
+detektora strumieniowego mówi cokolwiek o działaniu w warunkach
+produkcyjnych, oraz stawia twierdzenia o tym, co się dzieje po ich
+naruszeniu. Obiektem centralnym są: (i)~totalny porządek zdarzeń i klasa
+\emph{zdarzeniowo-przyczynowych} cech i detektorów; (ii)~cztery
+mechanizmy wycieku---look-ahead, cechy definujące etykietę, sygnatura
+iniekcji i ślepota wewnątrzkubełkowa---każdy wyrażony jako twierdzenie
+lub stwierdzenie z konstrukcyjnym kontrprzykładem;
+(iii)~dekompozycja wyniku detektora na składową czysto czasową i
+składową sprzęgającą czas z grafem, operacjonalizowana przez sondę
+czysto czasową i kontrolę tasowania czasu; (iv)~wynik o
+nierozróżnialności śladów przy realistycznej fabrykacji. Każdy obiekt
+formalny jest instancjonowany zmierzonymi wielkościami rozdziałów
+empirycznych.
+\end{abstract}
+
+\tableofcontents
+
+% =====================================================================
+\section{Ramka: strumienie zdarzeń i detektory}
+\label{sec:setting}
+
+\begin{definition}[Strumień zdarzeń]
+\label{def:stream}
+\emph{Strumień zdarzeń} to skończona sekwencja
+$S=(\event_1,\dots,\event_N)$ zdarzeń
+$\event=(s,v,b,\rho)$, gdzie $s$ to nadawca, $v$---odbiorca,
+$b\in\{0,\dots,B-1\}$---\emph{kubełek czasowy}, a
+$\rho\in\{1,\dots,N\}$---pozycja zdarzenia w ustalonym (zamrożonym)
+porządku strumienia. Para
+\[
+t(\event) \;=\; (b,\rho)
+\]
+wyznacza \emph{porządek totalny} na zdarzeniach: $t(\event)\strict
+t(\event')$ wtedy i tylko wtedy, gdy $b<b'$ lub $b=b'$ oraz
+$\rho<\rho'$. Każde zdarzenie niesie etykietę $y(\event)\in\{0,1\}$
+(legalne / atak).
+\end{definition}
+
+Pozycja $\rho$ to \emph{reguła remisów}: wewnątrz kubełka zdarzenia są
+uporządkowane przez zamrożony porządek strumienia. W realnym logu
+pocztowym porządek wewnątrz kubełka to porządek doręczeń; w strumieniu
+eksperymentalnym jest ustalany raz na przebieg. Zamrożenie $\rho$
+\emph{przed} liczeniem cech sprawia, że jednoczesność jest dobrze
+zdefiniowana (sekcja~\ref{sec:withinbucket}).
+
+\begin{definition}[Historia]
+Dla zdarzenia $\event$ jego \emph{historia właściwa} to
+\[
+H_{\strict \event} \;=\; \{\event'\in S:\; t(\event')\strict t(\event)\}.
+\]
+\end{definition}
+
+\begin{definition}[Cecha zdarzeniowo-przyczynowa]
+\label{def:causal-feature}
+Cecha $\varphi\colon S\times \{\event\}\to\R$ jest
+\emph{zdarzeniowo-przyczynowa}, jeśli $\varphi(S,\event)$ jest mierzalną
+funkcją $H_{\strict \event}$ i samego $\event$ oraz jest
+\emph{niezmiennicza wobec usunięcia przyszłości}: dla każdego strumienia
+$S'$ zgadzającego się z $S$ na $H_{\strict\event}\cup\{\event\}$ zachodzi
+\[
+\varphi(S,\event) \;=\; \varphi(S',\event).
+\]
+\end{definition}
+
+Niezmienniczość wobec usunięcia przyszłości to operacyjny test z paczki
+reprodukcyjnej (\texttt{tests/test\_causality.py}): cecha jest
+przyczynowa wtedy i tylko wtedy, gdy usunięcie wszystkich zdarzeń o
+$t\ge t(\event)$ nie zmienia jej wartości na $\event$.
+
+\begin{definition}[Detektor przyczynowy]
+\label{def:causal-detector}
+\emph{Detektor} to funkcja $D\colon S\to\R^N$ przypisująca każdemu
+zdarzeniu $\event_i$ wynik $D_i$. Detektor jest \emph{zdarzeniowo
+przyczynowy}, jeśli jest mierzalną funkcją cech
+zdarzeniowo-przyczynowych, a zbiór treningowy nie zawiera zdarzeń
+późniejszych niż zdarzenia ewaluacyjne, na które może wpływać
+(podział po ofiarach; sekcja~\ref{sec:split}).
+\end{definition}
+
+Empiryczną wielkością interesującą nas jest AUC detektora $D$ na
+rozłącznym po ofiarach podzbiorze ewaluacyjnym $E\subseteq S$:
+\[
+\mathrm{AUC}(D,E) \;=\;
+\Prob\big(D(\event) > D(\event') \mid \event\in E_1,\ \event'\in E_0\big)
+\;+\;\tfrac12\,\Prob\big(D(\event)=D(\event')\big),
+\]
+gdzie $E_1,E_0$ to zdarzenia ataku i legalne z $E$.
+
+% =====================================================================
+\section{Co estymuje empiryczny AUC}
+\label{sec:what-estimates}
+
+\begin{definition}[Rozkład deplomentowy]
+Rozkład generujący strumień $\mathcal{D}$ jest \emph{przyczynowy}, jeśli
+samo generowanie danych respektuje porządek $t$: żadne zdarzenie nie
+powstaje z użyciem informacji o zdarzeniach o większym $t$.
+\end{definition}
+
+\begin{theorem}[Obciążenie look-ahead]
+\label{thm:lookahead}
+Niech $\mathcal{D}$ będzie dowolnym przyczynowym rozkładem strumienia,
+a $\varphi$ cechą \emph{niespełniającą} definicji
+\ref{def:causal-feature}, tj.\ istnieje para strumieni $S,S'$
+zgadzających się na $H_{\strict\event}\cup\{\event\}$, dla której
+$\varphi(S,\event)\ne\varphi(S',\event)$. Wtedy dla każdego
+$\varepsilon>0$ istnieją przyczynowe $\mathcal{D}$ i nieprzyczynowa
+cecha $\varphi$ takie, że:
+\begin{enumerate}
+\item[(a)] każdy detektor zdarzeniowo-przyczynowy ma
+      $\mathrm{AUC}\le \tfrac12+\varepsilon$ na $\mathcal{D}$
+      (brak sygnału nadającego się do deplomentu), podczas gdy
+\item[(b)] sam próg na $\varphi$ osiąga $\mathrm{AUC}\ge 1-\varepsilon$.
+\end{enumerate}
+Przy tym luka jest \emph{nieograniczona}: nie istnieje funkcja
+$f\colon[0,1]\to[0,1]$ ograniczająca AUC „przeciekającej" cechy dane AUC
+przyczynowej.
+\end{theorem}
+
+\begin{proof}[Dowód (konstrukcyjny; „bit rytmu")]
+Niech strumień składa się ze zdarzeń legalnych, których kubełki są
+losowane z \emph{pełnohistorycznego} zbioru aktywności ich nadawcy,
+oraz ze zdarzeń ataku, których kubełki pochodzą z jego dopełnienia; obie
+klasy mają te same rozkłady nadawców, odbiorców i brzegowe kubełków.
+Zdefiniujmy $\varphi(\event)=\mathbf{1}[b \in A_s]$, gdzie $A_s$ to
+\emph{pełnohistoryczny} zbiór aktywności nadawcy $s$, liczony z
+całego $S$ wraz z okresem ewaluacji.
+(a) Każdy detektor zdarzeniowo-przyczynowy widzi z konstrukcji dwie
+wymienne podklasy kubełków: wewnątrz $H_{\strict\event}$ procesy
+generowania klasy legalnej i ataku zbiegają, więc jego rozkład jest
+niezmienniczy wobec przestawień etykiet niewidzianych zdarzeń; jego AUC
+zbiega w oczekiwaniu do $\tfrac12$ (moc $tfrac12+\varepsilon$ osiągamy
+biorąc dostatecznie dużo ziaren).
+(b) Bit $\varphi$ jest z konstrukcji równy etykiecie, więc próg na nim
+rozdziela klasy idealnie z dokładnością do błędu próbkowania
+kontrolowanego przez $\varepsilon$.
+Nieograniczoność: przeskalujmy konstrukcję prewalencją ataku
+$\pi\to0$; przyczynowy AUC pozostaje $\tfrac12$, a przeciekający $1$.
+\end{proof}
+
+\begin{remark}
+Twierdzenie~\ref{thm:lookahead} jest obiektem formalnym stojącym za
+\emph{pułapką wycieku rytmu} z drugiego artykułu: estymacja rytmu
+nadawcy na okresie ewaluacji daje pozorną czułość $0{,}73$, która
+spada do zera podziałem czasowym (zmierzone: Tab.~IV artykułu B;
+czułość pełnego multipleksu $0{,}51\to0{,}14\to0{,}01$ w miarę
+zacieśniania kontroli).
+\end{remark}
+
+% =====================================================================
+\section{Cechy definujące etykietę i warunek podziału}
+\label{sec:split}
+
+\begin{proposition}[Podział po ofiarach]
+\label{prop:split}
+Niech $D$ będzie trenowany na podzbiorze $S^{\mathrm{tr}}$ i
+ewaluowany na $S^{\mathrm{te}}$. Jeśli jakaś ofiara należy do obu, to
+dowolna cecha agregująca po zdarzeniach z otoczenia tej ofiary może
+wykorzystać zdarzenia ataku z okresu ewaluacji w treningu
+(\emph{samo-wyciek}), i twierdzenie~\ref{thm:lookahead} stosuje się
+ponownie. Zatem podział ewaluacyjny musi być rozłączny po ofiarach.
+\end{proposition}
+
+\begin{corollary}[Wariant indukcyjny]
+Jeśli dodatkowo \emph{organizacja} (spójna składowa grafu kontaktów)
+jest rozłączna między treningiem a ewaluacją, estymujemy \emph{ryzyko
+transferu} detektora, a nie jego dokładność w rozkładzie. Zmierzona
+różnica między tymi protokołami jest sama w sobie wynikiem (cechy
+wolumetryczne transferują się najlepiej; sygnał odbiorczy degraduje).
+\end{corollary}
+
+% =====================================================================
+\section{Ślepota wewnątrzkubełkowa}
+\label{sec:withinbucket}
+
+Przyczynowość kubełkowa (okna ograniczone do kubełków $\le b-1$) to
+warunek \emph{słabszy} niż przyczynowość zdarzeniowa: ujmuje detektorowi
+prefiks kubełka $b$.
+
+\begin{proposition}[Widoczna część burstu]
+\label{prop:withinbucket}
+Niech burst ataku umieszcza $m\ge2$ zdarzeń ataku w tym samym kubełku
+$b$, dotykających wspólnego otoczenia ofiary. Detektor zdarzeniowo
+przyczynowy z oknem $W$ kubełków widzi, dla $j$-tego zdarzenia burstu
+($j=2,\dots,m$), dokładnie $j-1$ wcześniejszych zdarzeń ataku tego
+burstu; detektor kubełkowy nie widzi żadnego. W konsekwencji oczekiwana
+widoczna przeszła część burstu dla detektora kubełkowego jest zerowa
+wewnątrz kubełka, a cały sygnał ko-występowania jest dla niego
+niewidoczny, podczas gdy liczniki wolumetryczne---przyczynowe w sensie
+definicji~\ref{def:causal-feature}---widzą burst narastający.
+\end{proposition}
+
+\begin{remark}
+Zmierzone w reżimach blast na realnych grafach: odsetek zdarzeń ataku,
+których fala otoczenia przypada \emph{ściśle w przeszłych kubełkach},
+wynosi $0{,}21$--$0{,}25$ (Enron; \texttt{exp\_blast\_inversion.csv}),
+podczas gdy $0{,}58$--$0{,}64$ ofiar ataku jest trafionych wielokrotnie
+\emph{w tym samym kubełku}. Przy przyczynowości zdarzeniowej ta
+asymetria jest mechanizmem inwersji blast: detektory odbiorcze przegrywają
+($\mathrm{AUC}\approx0{,}62$) dokładnie tam, gdzie wewnątrzkubełkowe
+liczniki wolumetryczne wygrywają ($\mathrm{AUC}\approx0{,}83$). Żadne
+odwołanie do szczegółu implementacyjne nie jest potrzebne, gdy reguła
+remisów $\rho$ jest jawna.
+\end{remark}
+
+% =====================================================================
+\section{Sygnatura iniekcji i sonda czasowa}
+\label{sec:injection}
+
+Ataki wstrzykiwane niosą nie tylko wzorzec grafowy, ale też
+\emph{brzegowy rozkład czasu}: rozkład $Q$ odstępów między wysyłkami
+atakującego.
+
+\begin{lemma}[Wykrywalność brzegowa]
+\label{lem:probe}
+Niech odstępy legalne (per nadawca) będą i.i.d.\ z $P$, a odstępy ataku
+z $Q$. Wtedy dwuprobowy test KS $D_{KS}(P,Q)$ ogranicza z góry AUC
+optymalnego czysto czasowego detektora \emph{brzegowego}, a detektor ten
+osiąga
+\[
+\mathrm{AUC}_{\mathrm{probe}} \;=\; \tfrac12 + \Theta\big(D_{KS}(P,Q)\big).
+\]
+\end{lemma}
+
+\begin{proof}[Zarys dowodu]
+Optymalny test na pojedynczy próg wartości odstępu ma przewagę
+ograniczoną przez odległość total variation rozkładów odstępów,
+która z góry jest ograniczona przez $2D_{KS}$ (standardowa relacja
+dwuprobowo-ksowa); $D_{KS}$ ogranicza ją z dołu przez próg w punkcie KS.
+\end{proof}
+
+\begin{theorem}[Usunięcie sygnatury]
+\label{thm:injection}
+Zastąpienie rozkładu odstępów ataku $Q$ przez empiryczny rozkład tła
+$\widehat P$ (odstępy próbkowane z legalnych nadawców tego samego
+harnessu) sprowadza składową brzegową do podłogi próbkowania:
+\[
+\E\big[\mathrm{AUC}_{\mathrm{probe}}\big] \;\le\; \tfrac12 +
+O\big(D_{KS}(\widehat P, P)\big),
+\qquad D_{KS}(\widehat P,P)\to 0 \text{ gdy } n\to\infty.
+\]
+W konsekwencji każda marża detektora, która \emph{przeżywa} zastąpienie,
+jest przypisywalna cechom sprzęgającym czas ze strukturą grafu
+(członom interakcyjnym), a nie samemu brzegowi czasowemu.
+\end{theorem}
+
+\begin{remark}
+Przed zastąpieniem: $D_{KS}=0{,}46$--$0{,}79$,
+$\mathrm{AUC}_{\mathrm{probe}}=0{,}70$--$0{,}76$ na trzech realnych
+grafach. Po zastąpieniu: $D_{KS}=0{,}04$--$0{,}23$, sonda spada do
+$0{,}54$--$0{,}63$; temporalny GNN utrzymuje marżę $+0{,}10$ nad
+baseline wolumetrycznym (Enron $0{,}77$ vs $0{,}67$; CollegeMsg
+$0{,}69$ vs $0{,}59$), podczas gdy ręczne cechy odbiorcze spadają do
+poziomu wolumetrycznego ($0{,}61$--$0{,}71$ wobec $0{,}57$--$0{,}67$).
+Zgodnie z twierdzeniem~\ref{thm:injection} przeżywająca marża jest
+sygnałem interakcyjnym czytanym przez model nauczony; marża ręcznych
+cech była z pierwszego rzędu sygnaturą iniekcji.
+% TODO(checkpoint): potwierdzić marżę Enron w CI; anomalii tasowania
+% (0,80 vs 0,77) nie wyjaśnia lemat 5 — rozstrzygnięcie po boot_ci.
+\end{remark}
+
+\begin{remark}[Zastrzeżenie: przesunięcie gęstości]
+Empiryczne zastąpienie odstępów zmienia \emph{gęstość} czasową ataku,
+gdy rozkład tła jest gęstszy niż deterministyczny spread, który
+zastępuje (zmierzone: AUC temporalnego GNN \emph{wzrósł} z $0{,}70$ do
+$0{,}81$ w harnessu syntetycznym). Zastąpienie jest więc kontrolą na
+\emph{sygnaturę}, a nie monotonicznym pokrętłem „skrytszego ataku";
+główna teza harnessu musi być sformułowana jako niezmienniczość
+kontrastu w obu reżimach czasowania, nie jako pogorszenie.
+\end{remark}
+
+% =====================================================================
+\section{Zależność od porządku: kontrola tasowania}
+\label{sec:shuffle}
+
+\begin{proposition}[Kontrola tasowania ogranicza zależność od porządku]
+\label{prop:shuffle}
+Niech $\sigma$ będzie losowym przestawieniem przypisań kubełków, a
+$D^\sigma = D\circ\sigma$ detektorem przetrenowanym na tasowanym
+strumieniu. Wtedy
+\[
+\Delta_{\mathrm{porz}} \;=\; \mathrm{AUC}(D) - \mathrm{AUC}(D^\sigma)
+\]
+jest \emph{ograniczeniem z góry} wkładu samego porządku czasowego:
+tasowanie niszczy też ko-występowanie wewnątrz kubełków, więc
+$\Delta_{\mathrm{porz}}$ nie identyfikuje czystej składowej porządku.
+Detektor z $\Delta_{\mathrm{porz}}\approx0$ może być nadal czasowy, jeśli
+jego sygnał mieszka w ko-występowaniu; detektor z
+$\Delta_{\mathrm{porz}}>0$ jest wrażliwy na porządek.
+\end{proposition}
+
+\begin{remark}
+Zmierzone: $\Delta_{\mathrm{porz}}\approx0{,}10$--$0{,}13$ dla
+temporalnego GNN w harnessach syntetycznych (wrażliwowość na porządek
+zgodnie z tezą). Na Enronie w reżimie odstępów empirycznych wariant
+tasowany osiąga wynik \emph{wyższy} niż uporządkowany ($0{,}80$ vs
+$0{,}77$): ostrzeżenie, że część marży na realnym grafie to
+ko-występowanie lub brzeg stopnia, a nie porządek---uczciwa teza brzmi
+„przeżywa kontrolę sygnatury", nie „wymaga porządku".
+% TODO(checkpoint): CI z per-seed dla $\Delta_{\mathrm{porz}}$ na Enron/emp.
+\end{remark}
+
+% =====================================================================
+\section{Realistyczna fabrykacja śladów}
+\label{sec:fabrication}
+
+Atakujący z drugiego artykułu może sfabrykować ślad OSINT. Niech $F$
+będzie rozkładem \emph{prawdziwych} śladów (zbiorów warstw) legalnych
+nowych nadawców.
+
+\begin{proposition}[Cechy istnienia pokonane przez realistyczną fabrykację]
+\label{prop:fab}
+Jeśli atakujący próbuje każdy sfabrykowany ślad i.i.d.\ z $F$ (ta sama
+mieszanka warstw, ta sama liczba krawędzi co u śladów prawdziwych) i
+wsadza go jako realną krawędź multipleksu, wtedy:
+(i) dowolna cecha zależna tylko od \emph{istnienia} lub \emph{liczby}
+śladów ma ten sam rozkład na zdarzeniach sfabrykowanych i prawdziwych
+(nierozróżnialność cech istnienia), więc jej moc rozdzielająca na
+sfałszowanych atakach zbiega do jej mocy na legalnych nowych
+nadawcach---czyli do zera;
+(ii) kontrola permutacji ofiar (shuffle) jest niezależna od tempa
+fabrykacji, bo wsadzone krawędzie są związane z prawdziwą ofiarą i
+niewidoczne po permutacji;
+(iii) tylko cechy \emph{spójności}---sprzężenia między warstwami i z
+prawdziwym pokryciem nadawcy---mogą zachować moc, a ich marża jest
+ograniczona przez ułamek warstw ataku \emph{konfliktujących} z prawdziwym
+pokryciem nadawcy.
+\end{proposition}
+
+\begin{proof}[Zarys dowodu]
+(i) to równość rozkładów cechy z konstrukcji próbkowania.
+(ii) zachodzi, bo permutacja usuwa wsadzoną krawędź z lookupu
+(nadawca, permutowana ofiara). (iii) wynika z dekompozycji indykatora
+warstwy na część prawdziwą i wsadzoną; wsadzona warstwa wnosi do
+rozdzielania wyłącznie przez interakcję z indykatorami prawdziwego
+pokrycia.
+\end{proof}
+
+\begin{remark}
+Przy fabrykatorze legacy (dowolna warstwa, honorowana per zdarzenie)
+kontrola tasowania rosła z tempem fabrykacji ($0{,}51\to0{,}86$ przy
+$100\%$)---artefakt naruszenia (ii). Przy realistycznym fabrykatorze ze
+stwierdzenia~\ref{prop:fab} kontrola tasowania jest płaska na
+$0{,}50\pm0{,}01$ w całym zakresie $0$--$100\%$, a AUC multipleksu spada
+do poziomu samych kontaktów przy $50\%$ ($0{,}70$) z częściowym
+odbiciem przy $100\%$ ($0{,}81$), zgodnie z (i)+(iii): przy pełnej
+fabrykacji każdy atak niesie ślad wyglądający na prawdziwy i tylko
+rezydualne sprzężenia rozdzielają.
+\end{remark}
+
+% =====================================================================
+\section{Baza i ograniczenie triażu}
+\label{sec:baserate}
+
+\begin{proposition}[Arytmetyka bazy]
+Dla detektora o czułości $r$ i odsetku fałszywych alarmów $\alpha$ przy
+prewalencji $\pi$ (udziale ataków w strumieniu) precyzja wynosi
+\[
+\mathrm{prec}(\pi) \;=\;
+\frac{r\pi}{r\pi+\alpha(1-\pi)},
+\qquad
+\mathrm{FP\ na\ wykrycie} \;=\; \frac{\alpha(1-\pi)}{r\pi},
+\]
+obie monotoniczne w $\pi$. Przy realistycznej prewalencji
+$\pi\sim10^{-4}$ i punkcie pracy $(r,\alpha)=(0{,}10;0{,}01)$ każde
+wykrycie niesie $\sim10^3$ fałszywych alarmów; klasa detektorów jest
+narzędziem \emph{rankingowym}.
+\end{proposition}
+
+Wniosek używany w całej rozprawie: twierdzenia formułujemy w kategoriach
+AUC / czułości z jawnym $\alpha$, nigdy jako „wykrywanie" bez bazy.
+
+% =====================================================================
+\section{Podsumowanie obiektów formalnych i ich instancji}
+\label{sec:mapping}
+
+\begin{table}[h]\centering\small
+\begin{tabular}{llll}
+\toprule
+Obiekt formalny & Mechanizm & Eksperyment & Zmierzony efekt \\
+\midrule
+Tw.~\ref{thm:lookahead} & look-ahead & podział rytmu (B) & $0{,}73\to0$ czułości \\
+Stw.~\ref{prop:split} & samo-wyciek & podział po ofiarach & --- (protokół) \\
+Stw.~\ref{prop:withinbucket} & ślepota kubełkowa & inwersja blast & $0{,}25$ trafień wcześniejszych \\
+Lem.~\ref{lem:probe} & brzeg czasowy & sonda KS & $0{,}70$--$0{,}76$ \\
+Tw.~\ref{thm:injection} & usunięcie sygnatury & odstępy empiryczne & sonda $\to0{,}54$--$0{,}63$ \\
+Stw.~\ref{prop:shuffle} & ograniczenie porządku & tasowanie czasu & $\Delta=0{,}10$--$0{,}13$ \\
+Stw.~\ref{prop:fab} & realistyczna fabrykacja & sweep fabrykacji & shuffle płaski $0{,}50$ \\
+Stw. (baza) & prewalencja & tab. bazy & $\sim10^3$ FP/wykrycie \\
+\bottomrule
+\end{tabular}
+\caption{Mapowanie obiektów formalnych na zmierzone wielkości
+(\texttt{code/results/*.csv} paczki reprodukcyjnej).}
+\label{tab:mapping}
+\end{table}
+
+\paragraph{Co rozdział wnosi do tezy rozprawy.}
+Twierdzenia przekształcają empiryczną dyscyplinę rozprawy w warunki
+sprawdzalne: ewaluacja detektorów strumieniowych jest \emph{poprawna}
+tylko wtedy, gdy (a) cechy przechodzą test usuwania
+(def.~\ref{def:causal-feature}), (b) podział jest rozłączny po ofiarach
+(stw.~\ref{prop:split}), (c) brzeg czasowy jest zmierzony i usunięty
+(tw.~\ref{thm:injection}), (d) fabrykacja jest losowana z rozkładu
+prawdziwych śladów (stw.~\ref{prop:fab}). Każdy z tych warunków był---i w
+literaturze, i we wcześniejszych wersjach naszych eksperymentów---domoślnie
+naruszany; każde naruszenie zawyżało raportowane liczby. Uczciwe
+twierdzenia detekcyjne rozprawy to dokładnie te, które zostają po
+(a)--(d).
+
+\end{document}
