@@ -53,14 +53,40 @@ signal is the cascade context, since within the wave's window many of $v$'s neig
 hit just before. Four detectors of increasing temporal awareness are compared: a 1-hop tabular model (a lower
 bound), a hand-crafted cascade context (1-hop plus burst, freshness, and wave density), a static GNN (topology,
 no time), and a temporal GNN with node memory.
+% ZMIANA: dodano opis treningu w eksperymencie stealth: kazdy poziom K to osobne zadanie,
+% detektor uczy sie i jest sprawdzany w jednym reżimie. Powod: bez tej informacji czytelnik
+% mogl podejrzewac, ze zly wynik detektora wolumetrycznego bierze sie z rozjazdu miedzy
+% daniem treningowym a testowym.
+In the stealth experiment each regime is a self-contained
+training task: for every stealth level $K$ the scenario (attack plus matched benign) is generated, the split is
+victim-disjoint, and every detector is trained and tested \emph{within that regime only}---no detector ever
+sees a mixture of regimes, so its collapse or survival is a property of the regime, not of a train--test
+regime shift.
 
 \smallskip The two equations below differ in one respect: whether the model may
 look forward in time. The static score summarizes a node by its neighbors in the whole aggregated graph, seeing
 who is connected to whom but not in what order. The temporal score keeps a running memory updated
-bucket by bucket and read one bucket before the event it scores, so its memory can only use the past.
-% TODO (author, review 2 pt 4): the node features X (log in-/out-degree "from the event stream") and the
-% volumetric counts ("computed on the observed stream") must also be computed past-only; state it, or fix
-% the code. Note also that "burst" in the hand-crafted context includes the current bucket b. That past-only
+in event order and read from the state before the event it scores, so its memory can only use the past.
+% ZMIANA (A1, recenzja wewnetrzna r2): zasada przeczynowosci przepisana z kubełkowej
+% (<= b-1) na ZDARZENIOWA — wszystkie detektory widza wylacznie zdarzenia o scisle
+% wczesniejszym t(e) = (kubelek, pozycja na liscie). Powod: podzial kubełkowy ukrywal
+% fale budujaca sie w biezacym kubełku (asymetria faworyzujaca volume pod blastem);
+% regula remisow: porzadek tasowanej listy zdarzen, ustalony per przebieg. TGN czyta
+% pamiec per mini-batch (<=64 zdarzen w kubełku) — batch jest wspolczesny. Test
+% anty-wyciek: tests/test_causality.py (cechy/logity niezmienne po usunieciu zdarzen
+% o czasie >= t(e)).
+This rule is enforced uniformly across the whole detector panel: every stream-derived
+feature---the volumetric counters, the burst/freshness/propagation windows of the hand-crafted context,
+and the precursor/momentum/rare-target components of the path-based baseline---is computed from events
+with a strictly smaller total timestamp $t(e)=(b,\text{position})$ only, where the position is the fixed
+(shuffled) stream order used as the tie rule within a bucket; the temporal GNN's memory is likewise
+updated per mini-batch of at most $64$ simultaneous events in that order, each scored from the state
+before it, and the GNNs' static node features (in-/out-degree) are computed from the
+\emph{training} split only. Two implementation pitfalls make this rule non-trivial: a naive
+implementation that counts over the full stream leaks future information (an event's features would see
+later events), and a bucket-boundary split hides the wave that builds up within a bucket, which makes the
+detectors asymmetric; both are avoided only by counting strictly in total event order with the tie rule
+above. That past-only
 reading is what lets the receiving-side wave become a signal, and it is what a time-shuffle destroys.
 
 \smallskip The static GNN builds embeddings from the aggregated graph with a normalized
@@ -71,15 +97,16 @@ Z = \hat{A}\,\sigma\!\big(\hat{A}\,X\,W_1\big)\,W_2,
 \mathrm{score}_{\mathrm{stat}}(s,v) = g\!\big([\,Z_s,\,Z_v,\,Z_s\!\odot\!Z_v,\,x_{sv}\,]\big),
 \label{eq:static}
 \end{equation}
-whereas the temporal GNN maintains a memory $m_v^{(b)}$ and scores an event of bucket $b$ using the state from
-before its update, which preserves causality and avoids leakage,
+whereas the temporal GNN maintains a memory $m_v$ and scores an event from the memory state
+immediately before it in event order, which preserves causality and avoids leakage,
 \begin{align}
-\mathrm{score}_{\mathrm{temp}}(s,v,b) &= g\!\big([\,m_s^{(b-1)},\,m_v^{(b-1)},\,m_s^{(b-1)}\!\odot\!m_v^{(b-1)},\,x_{sv}\,]\big),
+\mathrm{score}_{\mathrm{temp}}(s,v,e) &= g\!\big([\,m_s^{(<t(e))},\,m_v^{(<t(e))},\,m_s^{(<t(e))}\!\odot\!m_v^{(<t(e))},\,x_{sv}\,]\big),
 \label{eq:temp-score}\\
-m_v^{(b)} &= \mathrm{GRU}\!\Big(\tfrac{1}{d_v^{(b)}}\!\!\sum_{u:\,(u\to v)\in b}\!\!\sigma\!\big(W_m\,m_u^{(b-1)}\big),\; m_v^{(b-1)}\Big),
+m_v^{(k)} &= \mathrm{GRU}\!\Big(\tfrac{1}{d_v^{(k)}}\!\!\sum_{u:\,(u\to v)\in B_k}\!\!\sigma\!\big(W_m\,m_u\big),\; m_v^{(k-1)}\Big),
 \label{eq:temp-mem}
 \end{align}
-where $d_v^{(b)}$ is the in-degree of node $v$ within bucket $b$ (a normalizer for the mean-pooled message).
+where $B_k$ is the $k$-th mini-batch of events in total time order and $d_v^{(k)}$ the number of its
+messages received by $v$ (a normalizer for the mean-pooled message).
 
 The shuffle control is a temporal ablation. Since $\mathrm{score}_{\mathrm{stat}}$ is permutation-invariant in
 time while $\mathrm{score}_{\mathrm{temp}}$ is not, the drop in $\mathrm{AUC}_{\mathrm{temp}}$ after time

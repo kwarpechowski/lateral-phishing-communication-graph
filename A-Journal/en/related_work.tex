@@ -17,7 +17,11 @@ content and metadata \citep{bountakas2022helphed}, remain highly effective for t
 inherit the content signal's blindness to clean-content, context-borne deception, and language models now
 make personalization cheap \citep{bethany2024evaluating}.
 \citet{ho2019detecting} characterized lateral phishing from
-compromised accounts across $113$~million emails and fixed an operational low-FPR threshold of $<\!4$~FP/million.
+compromised accounts across $113$~million emails and fixed an operational low-FPR threshold of $<\!4$~FP/million;
+their group's earlier DAS detector \citep{ho2017detecting}---a non-parametric, label-free anomaly
+scorer over feature vectors of clicked URLs, developed with the security team at LBNL---showed that
+enterprise credential spear phishing can be ranked at a practically low alert volume without any
+labeled training data.
 \citet{cidon2019high} targeted payload-free BEC in production, and BEC surveys trace its evolution and cost
 \citep{atlam2023business}. What the effective methods share is a departure from content: per-sender behavioral
 profiles \citep{gascon2018reading,stringhini2015thataint}, header and stylometry models
@@ -73,7 +77,7 @@ literature \citep{ding2019deep,park2020unsupervised,liu2021anomaly,ma2021compreh
 communication graph. Graph-based phishing detection has so far
 targeted mainly \emph{web pages} and \emph{transactions}: graph-theoretic and visual approaches for web pages
 \citep{tan2020graph,lin2021phishpedia,abdelnabi2020visualphishnet}, attention over the email graph
-\citep{safran2025phishinggnn}, edge-feature GraphSAGE \citep{lo2021egraphsage}, and propagation over URL--IP graphs
+\citep{safran2025phishinggnn}, and propagation over URL--IP graphs
 \citep{guo2025efficient,li2022pdgnn}. To our knowledge, the receiving-side dynamics of a lateral cascade have
 not been operationalized as a detection signal for corporate email.
 

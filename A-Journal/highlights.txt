@@ -1,7 +1,7 @@
 Highlights
 
 - Lateral phishing leaves a receiving-side wave on the communication graph.
-- The cascade signal degrades less than volume detection under stealthy attacks.
+- The cascade signal stays above volume detection at every stealth level.
 - A time-shuffle control shows the advantage is temporal, not topological.
-- The regime-level contrast replicates on Enron and two SNAP graphs.
+- The regime contrast replicates on Enron and two SNAP graphs, bounded by a timing control.
 - Base-rate arithmetic makes the detectors triage instruments, not autonomous defenses.

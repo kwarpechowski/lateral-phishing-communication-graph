@@ -38,7 +38,7 @@ We make the thesis testable through two research questions, each paired with a m
   \item[RQ1 (signal).] Can a compromised account, consistent with every static relation, be detected from
   cascade dynamics, and does the signal survive a stealthy attacker who spreads the sends over time?
   Sub-thesis~T1: a temporal detector reading the receiving-side wave beats volume-based detection at low FPR
-  and degrades less than volume detection under a stealthy attacker; the advantage vanishes under a
+  and stays above it under a stealthy attacker; the advantage vanishes under a
   time-shuffle control and transfers in direction to real topologies.
   \item[RQ2 (limits).] What are the operational limits of the signal? Sub-thesis~T2: the signal needs
   fan-out (a single-recipient attack is invisible), degrades gracefully under label noise and scale, and at
@@ -47,7 +47,7 @@ We make the thesis testable through two research questions, each paired with a m
 \noindent The learning models used here---a temporal graph network with node memory and gradient
 boosting---are standard tools; the contribution is the framing of lateral phishing as a measurable violation of
 the communication graph and the evidence that the receiving-side signal depends on temporal order, transfers in direction to real
-graphs, and degrades less than volume detection under stealth. Graph-based detectors are easy to inflate: real-world anchors leak rhythm, degree, or community
+graphs, and stays above volume detection under stealth. Graph-based detectors are easy to inflate: real-world anchors leak rhythm, degree, or community
 alignment with labels, and synthetic generators can favor a model class. Following \citet{arp2022dos} and the
 TESSERACT protocol \citep{pendlebury2019tesseract}, every result below is produced under a leak-aware protocol
 with causal controls and explicit base-rate accounting, which also yields an operational definition of what it
@@ -58,12 +58,16 @@ Our contributions are as follows.
   \item A formalization of lateral phishing as a temporal violation of the organizational communication
   graph, with a cascade threat model that covers both the naive blast and the stealthy, time-spread attacker
   (Section~\ref{sec:model}).
+  % ZMIANA jezykowa: 'collapses below the random baseline' (ponizej losowosci) zamieniono na
+  % 'collapses to near chance' (do poziomu losowosci). Powod: po naprawie kodu detektor
+  % wolumetryczny daje 0.51 — wynik ponizej losowosci wychodzil tylko przez usterke kodu.
   \item The receiving-side cascade signal as a detection invariant: a hierarchy of detectors of increasing
   temporal awareness, a causal time-shuffle control, and the headline result that volume-based detection
-  collapses below the random baseline against a stealthy attacker while the receiving-side signal degrades
-  less and stays above chance (RQ1; T1).
+  never develops a usable signal under a stealthy attacker while the receiving-side signal stays
+  above it at every level (RQ1; T1).
   \item Replication of the mechanism on three real communication graphs (Enron, \texttt{email-Eu-core},
-  \texttt{CollegeMsg}), with the regime-level contrast reproduced in direction on each graph (RQ1; T1).
+  \texttt{CollegeMsg}): the hierarchy and shuffle effect on Enron, the regime contrast on the SNAP
+  graphs (RQ1; T1).
   \item A leak-aware evaluation methodology and an operational definition of detection effectiveness for the
   targeted tail, with the limits stated explicitly: blind spot, label noise, scale, and base rate (RQ2; T2).
 \end{enumerate}

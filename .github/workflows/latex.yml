@@ -1,0 +1,29 @@
+name: latex
+
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install TeX
+        run: sudo apt-get update && sudo apt-get install -y texlive-latex-extra texlive-publishers texlive-science texlive-fonts-recommended texlive-bibtex-extra latexmk
+      - name: Build A
+        working-directory: A-Journal
+        run: latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
+      - name: Build A supp
+        working-directory: A-Journal
+        run: latexmk -pdf -interaction=nonstopmode -halt-on-error supplementary.tex
+      - name: Build B
+        working-directory: B-Conference
+        run: latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
+      - name: Undefined check
+        run: |
+          fail=0
+          for f in A-Journal/main.log A-Journal/supplementary.log B-Conference/main.log; do
+            grep -nE "Reference .* undefined|Citation .* undefined" "${f}" && fail=1
+          done
+          exit "${fail}"
