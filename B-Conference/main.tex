@@ -61,7 +61,10 @@ false-alarm side: cold impersonation remains almost undetected (sensitivity $0.0
 ablation shows the temporal-consistency feature carries most of the signal. On the real Enron corpus
 we expose an evaluation pitfall: a rhythm estimated on the full history inflates a rhythm-only
 detector to an apparent sensitivity of $0.73$ at FPR~$1\%$, which falls to $0.00$ under a proper
-temporal split, whereas the multiplex keeps a sensitivity of $0.14$ (AUC $0.82$). A
+temporal split, whereas the multiplex keeps a sensitivity of $0.14$ (AUC $0.82$) under the temporal
+split and $0.01$ (AUC $0.77$) once a realistic fraction of legitimate mail is off-rhythm---the
+residual sensitivity of the multiplex at that harshest operating point is at the level of a random
+screen of the alert budget. A
 detector-relative susceptibility metric shows the attack channel, not the victim's rank, drives
 exposure ($\mathrm{Susc}\approx0.96$ for cold impersonation at every seniority level), and graph and
 content fail on different attacks, fusing to near the better of the two in each regime. The OSINT
@@ -213,37 +216,53 @@ lacking real coverage in some of the layers (low structural consistency), possib
 % i spadek 0.87->0.74. Dopisano tez, ze w paczce sa DWA rozne testy fabrykacji (ten
 % drugi, ostrzejszy mix zdarzen, daje 0.86->0.82) — bez wskazania, ktory jest ktory,
 % wygladaly na sprzecznosc danych.
-Fabricating a footprint is cheap, and the fabrication sweep prices it along the full curve
-($0/10/25/50/75/100\%$ of attack edges forged; AUC $0.88/0.85/0.82/0.74/0.79/0.86$, and the
-false-alarm rate on legitimate new senders $0/0/0/10/10/10\%$; the sweep of the Tab.~\ref{tab:inv1} event
-model; under the harsher ablation mix of Sec.~\ref{sec:mechanism}, where the OSINT margin is smaller, the
-$50\%$ fabrication level costs less, $0.86\!\to\!0.82$). Given the event volume this corresponds to roughly
-$3$--$4$ forged OSINT edges per targeted victim at the $50\%$ point---cheap per victim, but visible in
-aggregate, because forged edges raise the score of a sender precisely where the legitimate new-sender mass
-also lives.
-% ZMIANA: pelna krzywa fabrykacji 0-100% (B3, recenzja wewnetrzna r2) + wyjasnienie
-% liczby 0.855. Powod: skok 50->100% (0.74 -> 0.86) wygladal na blad bez calej krzywej.
-% Przy 50-75% sfalszowany slad KONFLIKTUJE z prawdziwym pokryciem OSINT nadawcy
-% (niespójnosc warstwowa) — dlatego dolek; przy 100% kazda krawedz ataku ma slad,
-% 'posiadanie sladu' staje sie stala per atak i rozdziela klasy samo w sobie. Liczba
-% 0.855 to poziom kontroli shuffle: kontrola tasuje przynaleznosc warstw OSINT, ale
-% sfalszowany slad jest sprawdzany niezaleznie od mapowania ofiary (or L == fab), wiec
-% przy 100% kontrola osiaga ten sam wynik — detektor tyka istnienia sladu, nie
-% spojnosci miedzywarstwowej. Pelny falszywy slad jest nierozroznialny od pokrycia.
-The curve is non-monotone, and the dip at $50$--$75\%$ is informative: a \emph{partial} fake footprint
-conflicts with the sender's genuine OSINT coverage (the cross-layer inconsistency the detector reads), so
-forging hurts; at $100\%$ every attack edge carries a trace, ``having a trace'' becomes a per-attack
-constant that separates the classes on its own, and the multiplex recovers to $0.86$---exactly the shuffle
-level ($0.855$): the shuffle control permutes OSINT memberships, but a fabricated trace is checked
-independently of the victim mapping, so at full fabrication both reach the same score. The detector at that
-point fires on the footprint's \emph{existence}, not on cross-layer consistency, and the rescued new-sender
-false alarms reappear ($10\%$): a complete fake footprint is indistinguishable from genuine OSINT coverage,
-which marks the honest boundary of the method. The signal that
-remains is the joint consistency across layers that a fabricated edge does not create; this is the signal.
-A compromised
+% ZMIANA (R4-B2): fabrykator przepisany na REALISTYCZNEGO — slady losowane z
+% rozkladu sladow PRAWDZIWYCH legalnych nowych nadawcow (mieszanka warstw + liczba
+% krawedzi), wsadzone jako realne krawedzie grafu. Kontrola shuffle teraz ich nie
+% widzi (sa zwiazane z prawdziwa ofiara) — i jest PŁASKA na calym zakresie 0.50±0.01
+% (kryterium akceptacji R4-B2; w r3 rosla 0.51->0.855 = artefakt generatora).
+% Nowa krzywa: 0.88/0.84/0.79/0.70/0.73/0.81; FP nowych nadawcow 0/1/2.4/3.5/3.1/2.1%.
+% Uczciwa granica: przy 50% multipleks spada do poziomu samych kontaktow; przy 100%
+% czesciowo wraca (0.81) — AUC mowi ze NIE pelna nierozroznialnosc, wiec slowo
+% 'indistinguishable' usuniete; granica jest ilosciowa, nie binarna.
+Fabricating a footprint is cheap, and the fabrication sweep prices it under a \emph{realistic} fabricator:
+each forged trace is drawn from the empirical distribution of \emph{genuine} traces of legitimate new
+senders (the same layer mixture and the same edge count), and it is planted as a real edge of the
+multiplex, tied to the true victim. Tab.~\ref{tab:fabrication} reports the curve
+($0/10/25/50/75/100\%$ of attack edges forged): the multiplex AUC falls
+$0.88\!\to\!0.84\!\to\!0.79\!\to\!0.70$ by the $50\%$ point---exactly the contacts-only level---while
+the victim-permutation control stays flat at $0.50{\pm}0.01$ across the whole range (the planted edges
+are invisible to it, so the control is now an honest floor), and the rescued new-sender false alarms
+reappear gradually ($0/1.0/2.4/3.5/3.1/2.1\%$). The mechanism is the split between existence and
+consistency: forged traces sampled from the genuine distribution are \emph{individually} indistinguishable
+from real ones, so every feature that reads only ``has this sender a trace?'' loses its power at full
+fabrication; what still separates at $75$--$100\%$ ($0.73$/$0.81$) are the couplings between the
+planted trace and the sender's genuine coverage---conflicts that a random sample from the genuine
+distribution cannot avoid. The honest boundary of the method is therefore quantitative: by the
+$50\%$ fabrication point the multiplex buys nothing over contacts, and beyond it only the
+consistency residual remains. A compromised
 internal account is the complementary case: $C(s,v)$ is high yet $tc=0$; its propagation dynamics are the
 subject of the separate study, and here it appears only as the second attack channel of the susceptibility
 measurement. Out of scope is an adaptive adversary with full knowledge of the graph.
+
+\begin{table}[t]\centering\small
+\caption{Realistic fabrication curve ($20$~seeds): forged traces are drawn from the empirical
+distribution of genuine traces of legitimate new senders and planted as real edges. The
+victim-permutation control stays flat ($0.50{\pm}0.01$)---the planted edges are invisible to
+it---and the multiplex falls to the contacts-only level ($0.70$) by the $50\%$ point.}
+\label{tab:fabrication}
+\begin{tabular}{lccccc}
+\toprule
+Forged & \multicolumn{3}{c}{AUC} & \multicolumn{2}{c}{new-sender FP [\%]} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-6}
+edges & multiplex & shuffled & contacts & contacts-only & multiplex \\
+\midrule
+\csname @@input\endcsname tables/tab_fabrication
+\bottomrule
+\end{tabular}
+\end{table}
+% ZMIANA (R4-B5): tabela generowana z CSV (gen_tables/tab_fabrication.tex) — ta sama
+% siatka punktow co tekst.
 
 \textbf{Invariant: cross-layer inconsistency.} A legitimate new sender sits outside the contacts layer but on
 an OSINT layer, and that consistency justifies them; an impersonator sits outside every layer, or on one layer
@@ -408,14 +427,20 @@ exactly where contacts and rhythm are structurally blind.
 % bootstrap CI): known_sender alone 0.57, in_rhythm alone 0.80, obie razem 0.83 vs pelny
 % multipleks 0.86 — czyli rytm niesie wiecej niz kontakty, a ich kombinacja dogania pelny model.
 Splitting the temporal feature explicitly into \emph{known\_sender} (the sender is a contact) and
-\emph{in\_rhythm} (the bit $tc$) settles their individual shares (20~seeds, bootstrap $95\%$ CIs within
-$\pm0.01$): known\_sender alone reaches AUC $0.57$, in\_rhythm alone $0.80$, both together $0.83$, and the
-full multiplex $0.86$---the rhythm bit carries more than the contact layer in this event mix, and the pair
-nearly closes the gap to the full model.
+\emph{in\_rhythm} (the bit $tc$) settles their individual shares ($20$~seeds, bootstrap $95\%$ CIs):
+known\_sender alone reaches AUC $0.57$ [$0.57$--$0.58$], in\_rhythm alone $0.80$ [$0.80$--$0.81$], both
+together $0.83$, and the
+full multiplex $0.86$ [$0.85$--$0.86$]---the rhythm bit carries more than the contact layer in this event
+mix, and the pair nearly closes the gap to the full model. This split is computed under an
+availability-honest convention: \emph{in\_rhythm} is a missing value (not a hard zero) for senders with no
+observable history, so the rhythm feature cannot masquerade as a label for exactly the cold senders whose
+rhythm the defender cannot know; the ranking above is therefore a property of the feature, not of data
+availability.
 The most striking difference is in the false alarms: the contacts
 detector flags $100\%$ of legitimate new senders as attacks, the multiplex flags $0\%$; OSINT coverage rescues
-a legitimate sender who shares an observable fact with the victim. The signal is fragile, however: at $50\%$
-OSINT edge fabrication the advantage degrades toward the control ($0.87\!\to\!0.74$) as false traces erode it.
+a legitimate sender who shares an observable fact with the victim. The signal is fragile, however: under
+the realistic fabricator of Tab.~\ref{tab:fabrication} the advantage degrades toward the contacts level
+($0.88\!\to\!0.70$ at $50\%$ fabrication) as forged traces erode it.
 
 We state one circularity plainly. In the event model a legitimate new sender is \emph{defined} as an account
 that sits on some OSINT layer of the victim, so part of the false-alarm removal is true by construction; a
@@ -436,9 +461,7 @@ chance.}
 \toprule
 Model & AUC & new-sender FP \\
 \midrule
-Contacts only & $0.70 \pm 0.01$ & $1.00$ \\
-Multiplex $+$ rhythm & $\mathbf{0.87} \pm 0.01$ & $\mathbf{0.00}$ \\
-Multiplex (shuffled) & $0.51 \pm 0.01$ & --- \\
+\csname @@input\endcsname tables/tab_inv1
 \bottomrule
 \end{tabular}
 \end{table}
@@ -464,7 +487,8 @@ fabricating BEC attackers, $14$~events per victim); $0.98$ at $\rho{=}0$ in Tab.
 three structural layers only, with attacks touching none of them. The lesson is that the contacts-only floor
 is a property of the benign new-sender mix, which is why every table states its configuration.
 Forward selection and leave-one-out
-analysis confirm it: temporal consistency alone reaches $0.826$ of the full model's $0.862$ (leave-one-out
+analysis confirm it: the rhythm bit alone reaches $0.80$ [$0.80$--$0.81$] of the full model's $0.86$
+[$0.85$--$0.86$] (leave-one-out
 drop $0.21$), while the hierarchy, domain, and co-activity layers are essentially redundant ($\le0.002$).
 Together with the per-threat analysis below, this means that much of the AUC gain comes from the
 compromised-account channel, where the rhythm is decisive; for external impersonation the gain of the
@@ -504,10 +528,7 @@ structural layers and raises their independent contribution.}
 \toprule
 Decorrelation $\rho$ & Jaccard & indep.\ contrib. & contact AUC \\
 \midrule
-$0.0$ (dense) & $0.93$ & $0.02$ & $0.98$ \\
-$0.2$ & $0.74$ & $0.22$ & $0.78$ \\
-$0.4$ & $0.59$ & $0.25$ & $0.75$ \\
-$0.8$ (decorrel.) & $\mathbf{0.39}$ & $\mathbf{0.25}$ & $0.75$ \\
+\csname @@input\endcsname tables/tab_topo
 \bottomrule
 \end{tabular}
 \end{table}
@@ -625,7 +646,11 @@ richly embedded victim has many legitimate off-rhythm and cross-layer contacts, 
 an attack looks consistent. The reason we do not claim it is construction: the generator ties layer richness
 to seniority, so the direction of the ordering follows partly from that coupling, and it should be
 stress-tested under alternative assignments before any generalization. What is robust, and what we do claim,
-is that the channel dominates rank, and that seniority does not buy protection.
+is that the channel dominates rank, and that seniority does not buy protection. The operating point used
+throughout is a \emph{single global threshold} on the fused score (the top-$1\%$ quantile over all
+evaluation events); a per-group threshold, calibrated on each channel--seniority group separately, changes
+the sensitivities by at most $0.03$ and no ordering (exp\_susc per-group rows), so the ranking claims do
+not depend on the calibration choice.
 
 \begin{table}[t]\centering\scriptsize\setlength{\tabcolsep}{3pt}
 \caption{Detector-relative susceptibility measured by the fusion detector ($20$~seeds, FPR$=1\%$; 95\% bootstrap
@@ -656,17 +681,27 @@ Dimension & Group & sens.@1\% [95\% CI] & $\mathrm{Susc}$ \\
 
 \subsection{The graph--content boundary}
 \label{sec:content}
-% TODO (autor): korpusy tresci (results/benign_corpus.csv — 600 szablonow maili
-% biznesowych renderowanych per-persona; results/generated_corpus.csv — 600 szablonow
-% phishingowych na 4 poziomach personalizacji P0/P25/P50/P100) sa dostarczone W PACZCE
-% jako dane, ale skrypt je generujacy nie zostal wlaczony — dolaczyc generator do
-% paczki przed submisja albo opisac w data-availability.
+% TODO (R4-B4): pochodzenie korpusow tresci USTALONE: benign_corpus.csv (7163 wiersze,
+% profile_id=twin-XXX, poziom NA) i generated_corpus.csv (6254 wiersze, poziomy
+% personalizacji P0/P25/P50/P100) istnieja na dysku od 2026-06-13 — to materialy
+% badawcze autora (persona = twins z generatora B), obecne tez w research_local/;
+% pierwszy commit w gicie to paczka reprodukcyjna, BEZ skryptu generatora. Czytaja je
+% wylacznie exp_content_fusion.py i exp_provenance_*.py. Do zrobienia przed submisja:
+% autor dopisuje provenance statement / dolacza generator.
 Because the invariant is blind to cold off-graph impersonation, that case is the domain of content. Combining
 the graph signal with content (TF-IDF) in two regimes (Tab.~\ref{tab:content}), content separates the
 tell-tale regime almost perfectly ($0.997$) and the multiplex is redundant; in the mimicry regime (BEC) content
-is blind ($0.502$) and the signal is carried by the multiplex ($0.862$); fusion stays close to the better
-modality in each regime ($0.998$ and $0.848$, the latter slightly below the multiplex alone), confirming that
-content and graph address different failure modes and that fusing them costs little. As a sanity check, on
+is blind ($0.496$) and the signal is carried by the multiplex ($0.859$); fusion stays close to the better
+modality in each regime ($0.998$ and $0.851$, the latter slightly below the multiplex alone), confirming that
+content and graph address different failure modes and that fusing them costs little. The two corpora are
+the authors' own research materials: business-mail templates rendered per twin persona (benign) and
+phishing templates at four personalization levels (attack), keyed to the same \texttt{twin} personas as the
+case-study graph; the template files ship with the reproducibility package.
+% TODO (R4-B4): skrypt GENERUJACY korpusy (benign_corpus.csv / generated_corpus.csv) nie
+% jest czescia paczki — dolaczyc generator albo dopisac pelny provenance statement
+% przed submisja. Ustalone: pliki istnieja od 2026-06-13, persona = twins, czytaja je
+% wylacznie exp_content_fusion.py i exp_provenance_*.py.
+As a sanity check, on
 this small graph a single untuned multiplex GNN does not surpass the explicit hand-crafted features (AUC
 $0.78$ vs $0.86$ for LightGBM); at this scale the explicit membership features already capture the signal.
 
@@ -677,8 +712,7 @@ $0.78$ vs $0.86$ for LightGBM); at this scale the explicit membership features a
 \toprule
 Regime & Content only & Multiplex only & Fusion \\
 \midrule
-Tell-tale (content trace) & $0.997$ & $0.862$ & $\mathbf{0.998}$ \\
-Mimicry (BEC) & $0.502$ & $\mathbf{0.862}$ & $0.848$ \\
+\csname @@input\endcsname tables/tab_content
 \bottomrule
 \end{tabular}
 \end{table}

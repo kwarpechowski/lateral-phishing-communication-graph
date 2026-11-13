@@ -79,14 +79,16 @@ receiving-side wave signature that no single message reveals.
 % oba reżimy (blast i stealth), wiec hierarchia replikuje sie tam w obu.
 The main result is that this signal stays above the volumetric detector under a stealthy attacker. Against an attacker who spreads the
 sends over time, volume-based detection---the class of methods deployed in practice---never develops a
-usable signal (AUC $0.48$ at $K{=}1$; it does catch the naive blast, but that is the case the attacker can
-trivially avoid), while a temporal graph
-network reading the receiving side stays above it at every level (AUC $0.59$ vs $0.48$ at $K{=}1$); the
-advantage vanishes under a time-shuffle control, and the regime contrast---volume wins the naive blast,
-the receiving-side signal wins the stealthy regime---replicates on Enron and on two SNAP graphs
-(\texttt{email-Eu-core}, \texttt{CollegeMsg}), with an injected-timing control showing that once the
-attack paces like the background, the surviving margin belongs to the learned temporal model alone. We also mark the boundary: a single-recipient attack without propagation is invisible to
-every detector.
+usable signal (sensitivity $0$ at FPR~$1\%$), while a temporal graph
+network reading the receiving side stays above it at every stealth level; the paired contrast holds under
+deterministic and background-drawn attack schedules alike ($+0.11$--$0.13$ AUC, Cliff's
+$\delta\ge0.98$), and the regime contrast---volume wins the naive blast, the receiving-side signal wins
+the stealthy regime---replicates on Enron and on two SNAP graphs
+(\texttt{email-Eu-core}, \texttt{CollegeMsg}) with disjoint bootstrap intervals: once the attack paces
+like the background, the surviving margin belongs to the learned temporal model alone. The boundaries are
+stated symmetrically: in the visible default cascade the volumetric features have the better raw
+sensitivity ($0.23$ vs $0.10$ at FPR~$1\%$), they transfer best to unseen organizations, and a
+single-recipient attack without propagation is invisible to every detector.
 
 The methodological contribution is a leak-aware evaluation protocol---matched design, causal time-shuffle
 control, inductive organization split, label-noise audit---with explicit base-rate accounting: at a

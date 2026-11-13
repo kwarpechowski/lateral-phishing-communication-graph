@@ -120,8 +120,9 @@ Fig.~\ref{fig:casestudy} and shows a clear hierarchy among detectors (bar chart 
 local 1-hop features are essentially useless (AUC $0.70$, sensitivity@FPR$1\%\!\approx\!0$), while a
 hand-crafted multi-hop context reaches $0.81$. A static GNN captures the topology but misses the timing
 ($0.76$), and the volumetric baseline---evaluated in the same pass---ranks the naive cascade at $0.83$
-but converts it into a worse operating point than the temporal model ($0.23$ vs $0.10$ sensitivity at
-FPR~$1\%$), leaving the temporal GNN in the lead (AUC $0.87$, sensitivity@FPR$1\%$ $0.099$). This lead is
+but with a different trade-off: it reaches the higher raw sensitivity at FPR~$1\%$ ($0.23$ vs $0.10$),
+so under the default, visible cascade the volumetric features are the better operational detector; the
+temporal GNN leads on ranking quality (AUC $0.87{\pm}0.02$ vs $0.83{\pm}0.01$). This lead is
 specific to the default cascade: under the stealthy regime of the second harness the temporal GNN and the
 hand-crafted context are statistically indistinguishable (Sec.~\ref{sec:res-rigor}). This advantage is
 temporal in the ablation sense. A simple time permutation drops the temporal GNN back to the static level
@@ -142,11 +143,13 @@ Detector & AUC & sensitivity@FPR$1\%$ \\
 % ZMIANA: tabele generowane teraz bezposrednio z CSV (analysis/gen_tables.py) — nikt
 % nie przepisuje liczb recznie. Dodano wiersz volumetric (COMPA) w tym samym przebiegu
 % (A3) i wszystkie detektory dostaly jedna regule przyczynowosci zdarzeniowej (A1).
-\caption{Cascade detectors on the case-study graph (victim split, $5$~seeds; library TGN row: $3$~seeds):
-only the temporal models with node memory reach operational sensitivity ($0.099$ and $0.112$ at FPR~$1\%$),
-the volumetric baseline ranks the naive cascade well ($0.83$) but converts it to a worse operating point
-than the temporal GNN ($0.23$ vs $0.10$ at a much noisier threshold), and
-shuffling the time order removes the temporal advantage ($\to\!0.73$), so the signal depends on temporal order.}
+\caption{Cascade detectors on the case-study graph (victim split, $5$~seeds; library TGN row: $3$~seeds;
+AUC reported as mean $\pm$~half-width of the bootstrap $95\%$ CI): the temporal GNN leads on AUC
+($0.87{\pm}0.02$), but on the operating point the picture splits---the volumetric baseline, which ranks
+the naive cascade at $0.83{\pm}0.01$, has the better raw sensitivity at FPR~$1\%$ ($0.23$ vs $0.10$) at a
+noisier threshold, so its advantage in the default cascade is operational volume, not ranking quality;
+shuffling the time order removes the temporal AUC advantage ($\to\!0.73$), so the ranking signal depends
+on temporal order.}
 \label{tab:detectors}
 \end{table}
 
@@ -163,15 +166,15 @@ shuffling the time order removes the temporal advantage ($\to\!0.73$), so the si
 % Dodano wiersz 'rhythm-only' i udzialy poczty poza rytmem: ataki 75-79%,
 % legalna 78-79% — sam bit rytmu nie odróżnia tu niczego. Liczby 15%/25% naleza do
 % generatora artykulu B, nie tu.
-Table~\ref{tab:stealth} is the headline test of T1: the stealthy attacker breaks volume, but not dynamics.
+Table~\ref{tab:stealth} is the headline test of T1: the stealthy attacker removes the burst, but not the wave.
 Against an attacker who evades detection by spreading its sends over time ($K$~carriers, one per interval),
 the volume detector never develops a usable signal (AUC $0.50$--$0.63$ across all levels---its event-causal
 counters now see the burst that builds up within a bucket, but one send per bucket leaves every causal
 window empty), while the temporal GNN stays above it
-at every level (AUC $0.59$, sensitivity@FPR$1\%$ $0.026$ vs $0.000$ for volume at $K{=}1$) because it
+at every level (AUC $0.59{\pm}0.04$, sensitivity@FPR$1\%$ $0.049$ vs $0.000$ for volume at $K{=}1$) because it
 picks up the receiving side of the cascade.
 % ZMIANA jezykowa: 'the volume detector breaks down ... while the temporal GNN degrades less' przepisano —
-% powod: w liczbach absolutnych temporal traca WIECEJ niz volume (0.86->0.59 vs 0.63->0.50 od blast
+% powod: w liczbach absolutnych temporal traca WIECEJ niz volume (0.86->0.59 vs 0.63->0.52 od blast
 % do K=1); prawdziwe twierdzenie brzmi 'temporal jest powyzej volume na kazdym poziomie K'.
 Each detector is trained and tested within a single $K$~regime on a victim-disjoint split (Sec.~\ref{sec:m-detectors}),
 so the volumetric weakness is not a train--test regime shift. We also report a rhythm-only control: in this
@@ -180,11 +183,14 @@ harness the off-rhythm share is nearly identical for attacks ($75$--$79\%$) and 
 rhythm bit alone stays at chance ($0.50$--$0.54$) and none of the signal can be attributed to it; the
 $15\%/25\%$ rhythm parameters quoted in Sec.~\ref{sec:cs-setup} belong to the companion study's persona
 generator, not to this harness. At $K{=}1$ the temporal signal is weak in absolute terms, and the hand-crafted context is
-the strongest single detector ($0.73$, sensitivity $0.11$); the claim is the relative one---the receiving-side signal does not
-collapse---which Table~\ref{tab:baselines} then qualifies. The temporal sensitivity
-column is not monotone in $K$ ($0.026 \to 0.051 \to 0.042 \to 0.044$ from $K{=}1$ to $K{=}5$) while the corresponding AUC rises monotonically from
-$K{=}2$ on ($0.74 \to 0.74 \to 0.76$); we attribute the non-monotonicity to seed-level variability of the low-FPR operating point,
-which depends on a tail quantile of the score distribution, rather than to a change in mechanism.
+the strongest single detector ($0.73{\pm}0.02$, sensitivity $0.068$); the claim is the relative one---the receiving-side signal does not
+collapse---which Table~\ref{tab:baselines} then qualifies. The temporal AUC climbs with reach
+($0.59 \to 0.72 \to 0.74 \to 0.76 \to 0.85$ from $K{=}1$ to blast), while the sensitivity column wobbles
+($0.049 \to 0.037 \to 0.049 \to 0.044 \to 0.071$); we attribute the wobble to seed-level variability of the low-FPR operating point,
+which depends on a tail quantile of the score distribution, rather than to a change in mechanism. The same
+sweep repeated with attack gaps drawn from the background's own gap distribution keeps the contrast intact
+at every level (temporal $0.54$--$0.78$ vs volume $0.54$--$0.59$; at $K{=}1$ the two are equal), so the
+contrast is a property of the stealthy attack model, not of the deterministic schedule.
 
 \begin{table}[pos=tbp]\centering
 % ZMIANA: dodano kolumne kontekstu recznego — powod: przy K=1 to on jest najlepszym detektorem
@@ -204,9 +210,9 @@ rhythm-only bit (all levels) & \multicolumn{3}{c}{$0.50$--$0.54$} & \multicolumn
 % — pod atakiem skrytym (jedno wyslanie na kubelek) okna zdarzeniowe sa i tak puste,
 % wiec kierunek bez zmian; kontekst reczny umocnil sie przy K=1 (czulosc 0.11).
 \caption{Stealthy attacker on the case-study graph ($K$~carriers spread over time; $20$~seeds): the
-volumetric detector is near chance at every level ($0.48$--$0.63$), the temporal GNN stays above it at
+volumetric detector is near chance at every level ($0.52$--$0.63$), the temporal GNN stays above it at
 every level, and the hand-crafted context is the strongest detector at $K{=}1$ ($0.73$, sensitivity
-$0.11$)---the headline result behind T1 is the receiving-side signal, read equally well by the learned
+$0.068$)---the headline result behind T1 is the receiving-side signal, read equally well by the learned
 model and by the hand-crafted features, not the superiority of either. The
 rhythm-only control stays at chance at every level, so the signal is the receiving-side wave, not the
 rhythm bit.}
@@ -364,37 +370,35 @@ injections under a matched design, so legitimate traffic and attack are edges wi
 endpoints and degrees, distinguished only by their temporal pattern.
 
 Table~\ref{tab:realgraphs} reports both replications, with the volumetric detector evaluated on all
-three real graphs. On the real Enron contacts graph (${\approx}1970$~accounts,
-$8$~seeds, leak-free; block~a) the regime contrast is the same as on the SNAP graphs: under the naive
-blast the volumetric detector wins ($0.87$, sensitivity $0.22$)---its event-causal counters see the
-synchronized burst building up within a bucket---with the receiving-side hierarchy behind it (hand-crafted
-context $0.77$, temporal GNN $0.81$; bar chart in Supplementary Fig.~S4) and the time shuffle leveling the
-temporal detector toward the hand-crafted result ($0.75$). Under the stealthy attacker the picture flips:
-the hand-crafted context reaches $0.89$ (sensitivity $0.27$) and the temporal GNN $0.84$ ($0.16$), while
-volume stays at $0.67$ and the 1-hop baseline at $0.59$; the shuffle control costs the temporal detector
-$0.10$~AUC, so the advantage depends on temporal order here as well. On \texttt{email-Eu-core}
+three real graphs and the stealthy regime reported under the \emph{empirical-timing} control: the attack's
+send gaps are drawn from the background's own gap distribution, which removes the deterministic
+injection signature that a purely temporal probe otherwise reads (AUC $0.70$--$0.85$, KS
+$0.44$--$0.76$ before removal; probe $0.54$--$0.63$, KS $0.04$--$0.23$ after; the deterministic rows
+are kept in the injection control of Sec.~\ref{sec:res-rigor}). On the real Enron contacts graph
+($1990$~contact-graph accounts, $410$~senders, $8$~seeds, leak-free; block~a) the regime contrast is:
+under the naive blast the volumetric detector wins ($0.87{\pm}0.01$, sensitivity $0.19$)---its
+event-causal counters see the synchronized burst building up within a bucket---with the receiving-side
+hierarchy behind it (hand-crafted context $0.74{\pm}0.01$, temporal GNN $0.80{\pm}0.01$; bar chart in
+Supplementary Fig.~S4). Under the stealthy attacker, with attack times drawn from the background, the
+temporal GNN keeps the only clear margin over volume ($0.77{\pm}0.04$ vs $0.67{\pm}0.03$,
+sensitivity $0.11$ vs $0.00$), the hand-crafted context falls back to the volumetric level
+($0.71{\pm}0.02$), and---honestly---the time-shuffled control is statistically indistinguishable from
+the ordered model ($0.80{\pm}0.02$): on the real graphs the surviving margin is temporal
+\emph{co-occurrence}, not event order. On \texttt{email-Eu-core}
 \citep{paranjape2017motifs} and \texttt{CollegeMsg} \citep{panzarasa2009patterns} (\citep{leskovec2014snap};
-block~b, bar chart in Supplementary Fig.~S3) the same contrast replicates: under the stealthy attacker the
-hand-crafted context reaches $0.84$/$0.82$ and the temporal GNN $0.79$/$0.83$, while the volumetric detector
-stays at $0.62$--$0.63$ (the better receiving-side detector is $+0.16$/$+0.20$ AUC ahead); under the naive
-blast the volumetric detector wins on both graphs ($0.83$) while the receiving-side detectors drop to
-$0.61$--$0.65$. The blast inversion has a structural explanation that the two methods share: in the real-graph
-blast all sends of a carrier share one bucket, so the past windows of hop-1 events are empty and the
-receiving-side wave leaves no readable trace there, whereas on the dense case-study cliques the same burst
-stays visible through the contacts feature; under the stealthy cascade the staggered buckets feed the memory.
-The predictivity probe is therefore positive in the regime-level sense of
-Sec.~\ref{sec:eval}: on each of the three real graphs the stealthy regime puts the receiving-side detectors
-ahead of volume exactly where the attacker hides, and the blast is volume's best case everywhere. With
-$3$--$8$ seeds per graph a per-graph Wilcoxon test cannot reach conventional significance (the minimum
-two-sided $p$ is $0.25$ for $n{=}3$), so we report the real-graph replications as directional confirmations,
-not as significance tests. One caveat we quantify in Sec.~\ref{sec:res-rigor}: part of the receiving-side
-margin in the stealthy regime rides on the \emph{injected-attack timing signature}---the deterministic
-send gaps of the injected events differ from the background's timing---so we repeat the stealthy regime
-with attack times drawn from the background's empirical gap distribution; the receiving-side signal
-survives in the learned temporal model, but not in the hand-crafted features. The practical takeaway of
-the real-graph block is therefore not ``volume never works'' but ``volume fails exactly in the stealthy
-regime, which is the threat model this paper is about---and even there, only the learned memory reads the
-wave once the injection signature is removed.''
+block~b, $10$~seeds, bar chart in Supplementary Fig.~S3) the same contrast replicates with disjoint
+bootstrap intervals: under the stealthy attacker with empirical timing the temporal GNN reaches
+$0.69{\pm}0.03$/$0.69{\pm}0.02$ against $0.60{\pm}0.02$/$0.59{\pm}0.01$ for volume, while the hand-crafted
+context stays at the volumetric level ($0.63{\pm}0.03$/$0.62{\pm}0.02$); under the naive blast the
+volumetric detector wins on both graphs ($0.83{\pm}0.00$) while the receiving-side detectors drop to
+$0.62$--$0.64$. The predictivity probe is therefore positive in the regime-level sense of
+Sec.~\ref{sec:eval}: on each of the three real graphs the stealthy regime, evaluated without the
+injection signature, puts the learned receiving-side detector ahead of volume with disjoint confidence
+intervals exactly where the attacker hides, and the blast is volume's best case everywhere. The
+practical takeaway of the real-graph block is therefore not ``volume never works'' but ``volume fails
+exactly in the stealthy regime, which is the threat model this paper is about---and even there, only
+the learned memory reads the wave once the injection signature is removed; what it reads is the
+co-occurrence structure of the wave rather than its ordering.''
 
 \begin{table}[pos=tbp]\centering
 \begin{tabular}{llcc}
@@ -439,23 +443,24 @@ marked, so the headline numbers read as a lower bound rather than a deployment c
 contrasts are averaged over $20$ seeds on synthetic data; the detector hierarchy (Tab.~\ref{tab:detectors})
 uses $5$, the cascade sweep (Supplementary Tab.~S2) $8$, the inductive validation (Supplementary Tab.~S3)
 $5$ or $3$, the sensitivity--FPR curve (Supplementary Fig.~S5) $10$, and the real-graph replications
-(Tab.~\ref{tab:realgraphs}) $8$ (Enron) and $3$ (SNAP); aggregate values for every table are
-available in the reproducibility package (\texttt{code/results/*.csv}), and per-seed values are dumped
-as \texttt{*\_perseed.csv} files by every headline script (bootstrap $95\%$~CIs in
-\texttt{code/results/ci/}). Strengthening the main contrast on
-$20$~seeds at the stealthy point of the second harness ($K{=}2$, spread~$8$, mimicry~$0.3$;
-Sec.~\ref{sec:res-baselines}) with a paired Wilcoxon test and Cliff's~$\delta$, the receiving-side signal
-beats the volume detector significantly and with a large effect (temporal GNN $+0.115$ AUC over COMPA,
-$p<0.001$, $\delta{=}0.98$), the hand-crafted context beats it as well ($+0.095$, $p<0.001$,
-$\delta{=}0.91$), while the temporal GNN and the hand-crafted context are statistically indistinguishable
-at this point ($+0.021$, $p{=}0.19$, $\delta{=}0.26$). We also repeated the contrast under the benign
-protocol of Tab.~\ref{tab:baselines} ($15\%$ off-rhythm traffic): the margins are stable there
-($+0.109$ over COMPA, $p<0.001$; temporal vs manual $+0.027$, $p{=}0.04$), so under off-rhythm benign
-traffic the learned model gains a small but nominally significant edge over the hand-crafted
-features---the honest reading is that the two receivership detectors are near-equivalent, with the balance
-tipped slightly toward the learned model when the background is noisier. Under a stealthy attack, then, it is the
-receiving-side signal---read equally well by the learned temporal model and by the hand-crafted
-features---that surpasses volume detection. For the whole curve, instead of a single threshold we report the
+(Tab.~\ref{tab:realgraphs}) $8$ (Enron) and $10$ (SNAP); aggregate values for every table are
+available in the reproducibility package (\texttt{code/results/*.csv}), per-seed values are dumped
+as \texttt{*\_perseed.csv} files by every headline script, and the bootstrap $95\%$~CIs in
+\texttt{code/results/ci/} are printed in the tables ($\pm$~half-width in the main text, full
+intervals in the supplement). The main contrast is tested at the stealthy point of the second harness
+($K{=}2$, spread~$8$, mimicry~$0.3$; Sec.~\ref{sec:res-baselines}) with a paired Wilcoxon test and
+Cliff's~$\delta$, under three timing/benign protocols: the deterministic schedule ($+0.115$ AUC over
+COMPA, $p<0.001$, $\delta{=}0.98$), the off-rhythm benign of Tab.~\ref{tab:baselines} ($+0.125$,
+$p<0.001$, $\delta{=}1.00$), and the empirical-gap attack schedule ($+0.113$, $p<0.001$,
+$\delta{=}0.99$). The receiving-side signal thus beats the volume detector significantly and with a
+large effect under every protocol; the hand-crafted context beats it as well under the first two
+($+0.095$/$+0.102$, $p<0.001$). The temporal GNN and the hand-crafted context, in turn, are
+statistically indistinguishable at this point in all three protocols ($+0.021$, $p{=}0.19$;
+$+0.023$, $p{=}0.06$; $+0.002$, $p{=}0.93$): the honest reading is that the two receivership
+detectors are near-equivalent readers of the same signal on the synthetic harness, and that their
+difference on the real graphs (Sec.~\ref{sec:res-realgraphs}) comes from robustness to the injected
+background, not from the learned model reading a richer signal. Under a stealthy attack, then, it is the
+receiving-side signal that surpasses volume detection. For the whole curve, instead of a single threshold we report the
 sensitivity--FPR curve (Supplementary Fig.~S5): at a realistically low FPR ($0.1\%$) the sensitivities fall to
 $0.005$--$0.040$ in the blast regime and $0.001$--$0.023$ in the stealthy regime.
 
@@ -468,6 +473,24 @@ graphs, Tab.~\ref{tab:realgraphs}). Its weakness under the stealthy attacker is 
 attack model---one send per bucket per carrier leaves every causal window without a surge to
 see---rather than of a baseline configuration.
 
+\smallskip\noindent\textbf{Why the blast inverts on real graphs, measured.}
+% ZMIANA (R4-A3): spekulacyjne wyjasnienie inwersji blast zastapione POMIAREM
+% (exp_blast_inversion.csv): odsetek zdarzen ataku z fala w strict-past (0.21-0.25),
+% multi-hit w tym samym kubełku (0.58-0.64), klasteryzacja Enrona 0.369, oraz
+% rozklady cech (freshness 0.98 vs 0.66). Mechanizm: w blast realnych grafow
+% fala przychodzi wewnatrz JEDNEGO kubełka — widza ja tylko liczniki event-causal
+% volume; okna strict-past detektorow odbiorczych sa niemal puste.
+The blast inversion is not a hand-wave but a measured imbalance: on the Enron blast, only
+$0.21$--$0.25$ of attack events have neighbors hit in \emph{strictly past} buckets, while
+$0.58$--$0.64$ of attack victims are hit multiple times \emph{within the same bucket}
+(\texttt{exp\_blast\_inversion.csv}). The receiving-side windows are therefore almost empty exactly
+where the volumetric counters fill up: the freshness feature separates perfectly in the ranking sense
+($0.98$ vs $0.66$ mean for attack vs benign) but at event-causal granularity the wave arrives inside a
+single bucket, where only the volumetric prefix counters---and, on the dense synthetic cliques, the
+within-bucket contacts feature---can read it. Under the stealthy schedule the sends are staggered
+across buckets and the memory fills; on the sparse real graphs (clustering coefficient $0.369$ for
+Enron) the blast compresses the wave into the tie window.
+
 \smallskip\noindent\textbf{The injected-attack timing signature, and what survives its removal.}
 % ZMIANA (A2, recenzja wewnetrzna r2): nowa kontrola sygnatury iniekcji. Powod: na
 % realnych grafach reżim stealth wygladal LATWIEJSZY niz blast (kontekst reczny 0.89 na
@@ -478,39 +501,51 @@ see---rather than of a baseline configuration.
 % POTWIERDZONO (KS 0.46-0.79); po jej usunieciu sygnal odbiorczy trzyma TYLKO nauczony
 % model (temporal 0.69-0.76 > volume 0.57-0.67), a cechy reczne spadaja do poziomu volume
 % (0.60-0.64). To zaweza twierdzenie T1 na realnych grafach do modelu nauczonego.
-The stealthy regimes of Tab.~\ref{tab:realgraphs} use injected attack events, and injected times can carry
-an artifact: the sends of a stealthy carrier arrive at deterministic, evenly spaced gaps that the
-background traffic never produces. A two-sample KS test confirms the signature on all three real graphs
-(statistics $0.46$--$0.79$, $p\!<\!10^{-43}$), and a purely temporal probe---a LightGBM over nothing but
+The stealthy regimes of Tab.~\ref{tab:realgraphs} are evaluated under the empirical-timing control, and
+Tab.~\ref{tab:injection} shows why that control is necessary: injected times can carry an artifact, because
+the sends of a stealthy carrier arrive at deterministic, evenly spaced gaps that the background traffic
+never produces. A two-sample KS test confirms the signature on all three real graphs (statistics
+$0.70$--$0.76$ on the deterministic variant), and a purely temporal probe---a LightGBM over nothing but
 inter-send gaps, their regularity, and sender activity, with no graph feature at all---reaches AUC
-$0.71$--$0.76$ under the stealthy regime: much of the apparent margin rides on \emph{when} the injections
-happen, not on the receiving-side wave. Tab.~\ref{tab:injection} therefore repeats the stealthy regime with
-the attack send times drawn from the background's empirical gap distribution (\emph{empirical} rows): the
-KS distance collapses to $0.04$ ($p\approx0.5$), the probe to $0.54$--$0.63$, and the hierarchy changes---
-the learned temporal GNN keeps a margin over volume on all three graphs ($0.69$--$0.76$ vs
-$0.57$--$0.67$), while the hand-crafted features fall back to the volumetric level
-($0.60$--$0.64$). The honest claim of T1 on real graphs is thus narrower than the raw table suggests: the
+$0.70$--$0.75$ there: much of the apparent margin rides on \emph{when} the injections
+happen, not on the receiving-side wave. With the attack send times drawn from the background's empirical
+gap distribution (the \emph{empirical} rows, and the stealthy block of Tab.~\ref{tab:realgraphs}) the
+KS distance collapses to $0.13$--$0.24$ and the probe to $0.56$--$0.62$, and the hierarchy changes---
+the learned temporal GNN keeps a margin over volume on all three graphs ($0.69$--$0.77$ vs
+$0.59$--$0.67$, with disjoint bootstrap intervals), while the hand-crafted features fall back to the
+volumetric level ($0.62$--$0.71$). Two synthetic-harness controls extend this: the same replacement in
+both harnesses of Tabs.~\ref{tab:stealth}--\ref{tab:baselines} leaves the temporal-vs-volume contrast
+intact at every stealth level (paired Wilcoxon on the headline point: $+0.113$ AUC, $\delta{=}0.99$),
+confirming that the contrast is a property of the attack model and not of the injection schedule. The
+honest claim of T1 on real graphs is thus narrower than the raw table suggests: the
 receiving-side signal survives an attack that paces like the background, but only the learned memory
-reads it; the hand-crafted context was reading the injection.
+reads it; the hand-crafted context was reading the injection. A residual timing-marginal persists on
+Enron (probe $0.62$; single-feature analysis attributes it to the sender's inter-send gap
+statistics, single-feature AUC up to $0.72$), and adding the probe's features to the temporal GNN's
+input changes its AUC by less than $0.01$---the model already reads what the probe reads.
 
 \begin{table}[pos=tbp]\centering\small
 \begin{tabular}{llccccc}
 \toprule
 Graph & Timing & KS & probe & vol. & manual & temp. \\
 \midrule
-\multirow{2}{*}{Enron} & injected & $0.79$ & $0.76$ & $0.69$ & $\mathbf{0.88}$ & $0.86$ \\
- & empirical & $0.04$ & $0.63$ & $0.67$ & $0.64$ & $\mathbf{0.76}$ \\
-\multirow{2}{*}{\texttt{email-Eu-core}} & injected & $0.77$ & $0.71$ & $0.64$ & $\mathbf{0.85}$ & $0.83$ \\
- & empirical & $0.08$ & $0.54$ & $0.60$ & $0.60$ & $\mathbf{0.70}$ \\
-\multirow{2}{*}{\texttt{CollegeMsg}} & injected & $0.69$ & $0.70$ & $0.62$ & $\mathbf{0.82}$ & $0.77$ \\
- & empirical & $0.04$ & $0.56$ & $0.57$ & $0.61$ & $\mathbf{0.69}$ \\
+\multirow{2}{*}{Enron} & injected & $0.76$ & $0.75$ & $0.69$ & $\mathbf{0.87}$ & $0.85$ \\
+ & empirical & $0.23$ & $0.62$ & $0.67$ & $0.71$ & $\mathbf{0.77}$ \\
+\multirow{2}{*}{\texttt{email-Eu-core}} & injected & $0.76$ & $0.70$ & $0.66$ & $\mathbf{0.86}$ & $0.81$ \\
+ & empirical & $0.24$ & $0.60$ & $0.60$ & $0.63$ & $\mathbf{0.69}$ \\
+\multirow{2}{*}{\texttt{CollegeMsg}} & injected & $0.70$ & $0.71$ & $0.63$ & $\mathbf{0.83}$ & $0.82$ \\
+ & empirical & $0.13$ & $0.56$ & $0.59$ & $0.62$ & $\mathbf{0.69}$ \\
 \bottomrule
 \end{tabular}
-\caption{Injection-signature control (stealthy regime, $3$~seeds; \texttt{exp\_injection\_probe.csv}). KS:
-two-sample statistic of inter-send gap distributions, attack vs background. Probe: AUC of a purely
-temporal detector (no graph features). ``Empirical'' rows re-run the regime with attack times drawn from
-the background's empirical gap distribution. The receiving-side margin over volume survives the
-signature's removal only in the learned temporal GNN (bold), not in the hand-crafted features.}
+% ZMIANA (R4-A2): liczby z TEGO SAMEGO przebiegu co Tab. 6 (8/10/10 seedow, zamiast
+% 3-seedowego probe z r3); stealthy-emp jest teraz glownym wierszem Tab. 6, a tu
+% trafia kontrola z KS/sonda. Shuffle na Enron/emp pokrywa sie z temporal (0.80)
+% — sygnal realny, ale ko-wystepieniowy, nie porzadkowy.
+\caption{Injection-signature control (stealthy regime; Enron $8$~seeds, SNAP $10$~seeds; the
+\texttt{emp} rows are the stealthy block of Tab.~\ref{tab:realgraphs}, reproduced here next to its
+deterministic counterpart). KS: two-sample statistic of inter-send gap distributions, attack vs
+background. Probe: AUC of a purely temporal detector (no graph features). The receiving-side margin
+over volume survives the signature's removal only in the learned temporal GNN (bold).}
 \label{tab:injection}
 \end{table}
 
@@ -524,7 +559,7 @@ precision drops when the attack is rare. From Bayes' theorem
 $\mathrm{prec}(\pi)=r\pi/(r\pi+\alpha(1-\pi))$
 (\ref{eq:baserate}): at the operating point of sensitivity $r{=}0.10$ at FPR $\alpha{=}1\%$ and a real prevalence of
 $1{:}10^4$, each detected attack comes with $\sim\!1{,}010$ false alarms (Tab.~\ref{tab:baserate}; in the
-stealthy regime the operating point is weaker still, $r\!\approx\!0.05$, i.e.\ roughly $2{,}000$ false
+stealthy regime the operating point is weaker still, $r\!\approx\!0.04$, i.e.\ roughly $2{,}500$ false
 alarms per detected attack at the same prevalence); in terms of
 false-positive rate, our operating point ($10^{-2}$) is about three orders of magnitude ($\sim\!2500\times$)
 above the threshold of \citet{ho2019detecting} ($<\!4$/million, i.e.\ $4\cdot10^{-6}$). The consequence is that at a real

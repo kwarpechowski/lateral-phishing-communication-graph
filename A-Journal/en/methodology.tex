@@ -75,18 +75,18 @@ in event order and read from the state before the event it scores, so its memory
 % pamiec per mini-batch (<=64 zdarzen w kubełku) — batch jest wspolczesny. Test
 % anty-wyciek: tests/test_causality.py (cechy/logity niezmienne po usunieciu zdarzen
 % o czasie >= t(e)).
-This rule is enforced uniformly across the whole detector panel (A1): every stream-derived
+This rule is enforced uniformly across the whole detector panel: every stream-derived
 feature---the volumetric counters, the burst/freshness/propagation windows of the hand-crafted context,
 and the precursor/momentum/rare-target components of the path-based baseline---is computed from events
 with a strictly smaller total timestamp $t(e)=(b,\text{position})$ only, where the position is the fixed
 (shuffled) stream order used as the tie rule within a bucket; the temporal GNN's memory is likewise
 updated per mini-batch of at most $64$ simultaneous events in that order, each scored from the state
 before it, and the GNNs' static node features (in-/out-degree) are computed from the
-\emph{training} split only. Earlier drafts of the package computed some of these features on the full
-event stream, and a later draft split causality at bucket boundaries; both hid parts of the signal and
-the latter made the baselines asymmetric, so all experiments were
-re-run under the uniform event-causal rule and the numbers in this manuscript come from the fixed package.
-That past-only
+\emph{training} split only. Two implementation pitfalls make this rule non-trivial: a naive
+implementation that counts over the full stream leaks future information (an event's features would see
+later events), and a bucket-boundary split hides the wave that builds up within a bucket, which makes the
+detectors asymmetric; both are avoided only by counting strictly in total event order with the tie rule
+above. That past-only
 reading is what lets the receiving-side wave become a signal, and it is what a time-shuffle destroys.
 
 \smallskip The static GNN builds embeddings from the aggregated graph with a normalized

@@ -123,7 +123,8 @@ hand-crafted context at every scale; the volumetric baseline (not plotted) trans
 \begin{figure}[h]\centering
 \includegraphics[width=\linewidth]{fig_cascade_realgraphs.pdf}
 \caption{Two real topologies (\texttt{email-Eu-core}, \texttt{CollegeMsg}). The volumetric detector wins the
-naive blast (its event-causal counters see the burst) and collapses under the stealthy attack, where the
+naive blast (its event-causal counters see the burst) and collapses under the stealthy attack---shown
+with attack gaps drawn from the background, as in the main table---where the
 temporal GNN (blue) stays ahead. Values as in block~(b) of the real-graph table of the main text.}
 \label{sfig:realgraphs}
 \end{figure}
@@ -133,8 +134,9 @@ temporal GNN (blue) stays ahead. Values as in block~(b) of the real-graph table 
 \caption{The cascade invariant on Enron, in both regimes, with the volumetric detector included (values
 as in block~(a) of the real-graph table
 of the main text): under the naive blast the volumetric detector wins ($0.87$) with the receiving-side
-hierarchy behind it; under the stealthy attacker the receiving-side signal wins ($0.89$ hand-crafted
-context / $0.84$ temporal GNN) while volume stays at $0.67$ and 1-hop drops to $0.59$.}
+hierarchy behind it; under the stealthy attacker, with attack gaps drawn from the background, the
+receiving-side signal wins ($0.77$ temporal GNN) while volume stays at $0.67$ and the hand-crafted
+context falls back to the volumetric level ($0.71$).}
 \label{sfig:enroncasc}
 \end{figure}
 
