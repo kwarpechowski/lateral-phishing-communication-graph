@@ -18,6 +18,9 @@
 \usepackage[hidelinks]{hyperref}
 
 \newtheorem{definition}{Definition}
+\newtheorem{proposition}{Proposition}
+\providecommand{\proofname}{Proof}
+\newenvironment{proof}{\noindent\emph{\proofname.}\ \ignorespaces}{\hfill$\square$\par\medskip}
 
 \begin{document}
 
@@ -48,8 +51,8 @@ multiplex of OSINT layers) and on the public FB15k-237 corpus. Three results.
 (1)~\emph{Edge-level undetectability}: when the attacker fabricates i.i.d.\
 from the \emph{joint} distribution of genuine traces, edge-level detection is
 close to chance (AUC 0.56--0.65, permutation control 0.50, existence features
-0.50) --- an empirical confirmation of the fabrication proposition of the
-companion formal treatment; the residual signal is an artefact of the
+0.50) --- an empirical confirmation of the fabrication proposition below
+(Prop.~ef{prop:fab-joint}); the residual signal is an artefact of the
 genuineness definition, which we expose rather than hide. (2)~\emph{Retrieval
 poisoning and its price}: a PoisonedRAG-style query-optimized note corrupts
 100\% of victim retrievals in a GraphRAG-lite over the same corpus; a
@@ -89,16 +92,16 @@ han2025graphrag}. Knowledge graphs are the standard substrate for
 representing and retrieving knowledge \cite{hogan2021knowledge,ji2022survey},
 and increasingly the memory layer of LLM-based systems \cite{pan2024roadmap}.
 
-This paper is about what happens when that substrate is attacked. The
-observation is symmetrical to our companion papers. Paper~B
-modeled the organization's domain knowledge as a multiplex and detected
-\emph{external impersonation} as cross-layer inconsistency; the knowledge that
-made the attack possible is exactly what the knowledge graph stores. Once
+This paper is about what happens when that substrate is attacked. An
+organization's domain knowledge is naturally modeled as a multiplex of
+relations over one set of accounts (contacts, hierarchy, competencies,
+public footprint, rhythm) --- and the knowledge that makes an attack
+possible is exactly what the knowledge graph stores. Once
 such a graph exists --- for defense, for notes, or for retrieval --- two
 attack directions open. First, the graph is the \emph{attacker's map}:
 everything an OSINT harvest finds \cite{edwards2017panning} is a query away,
 and language models industrialize the production of plausible traces
-\cite{bethany2024evaluating,brown2025web}. Second, the graph is a
+\cite{heiding2024evaluating,brown2025web}. Second, the graph is a
 \emph{target}: if retrieval or detection trusts its edges, whoever can add
 edges steers the decision --- the knowledge-corruption insight of PoisonedRAG
 \cite{zou2024poisonedrag,zhong2023poisoning}, the poisoning attacks on KG
@@ -107,7 +110,7 @@ more broadly \cite{sun2019adversarial,zugner2018adversarial}. The injection
 layer (Cypher/SPARQL) adds a second, older surface \cite{ron2015nosql}.
 
 We ask three questions and answer them under the leak-aware protocol shared
-with the companion papers: matched designs, permutation controls, sensitivity
+under a leak-aware protocol: matched designs, permutation controls, sensitivity
 at low FPR, and honest negative results.
 
 \begin{description}
@@ -125,8 +128,8 @@ controlled?
 \noindent\textbf{Contributions.}
 \begin{enumerate}
 \item A two-track evaluation of knowledge-graph attacks and defenses: a
-controlled synthetic organization (the 150-persona multiplex of paper~B,
-with fabrication flags built into the generator) and the public FB15k-237
+controlled synthetic organization (a 150-persona multiplex with
+fabrication flags built into the generator) and the public FB15k-237
 corpus \cite{toutanova2015fb15k}, with realistic fabricators that preserve
 marginals (and, in the stronger variant, head--relation context).
 \item An honest negative result at the edge level (RQ1): under joint-distribution
@@ -137,16 +140,17 @@ that inflates the apparent signal and show the permutation control holds at
 query-optimized poisoning from 100\% to 0\% corruption, forces the attacker
 to plant $\ge$2 independent fabricated public traces per victim (a cost
 escalation from the single optimized text of \cite{zou2024poisonedrag}), and
-costs 92.5\% flagging of genuine cross-org single-fact ties --- the retrieval
-counterpart of the false-alarm lesson of paper~B.
+costs 92.5\% flagging of genuine cross-org single-fact ties --- the
+retrieval-level counterpart of the false-alarm cost that any corroboration
+requirement imposes.
 \item A public-data validation (RQ3): relational consistency ranks fabricated
 triples far above chance (AUC 0.72 vs 0.52 for existence features) but has
 zero sensitivity at FPR 1\% --- the mass of genuinely isolated true triples
 sets the operational floor. Consistency is a ranking instrument for triage,
 which we state as the deployment lesson.
 \end{enumerate}
-Scope is stated up front: the synthetic tracks inherit the honest-circularity
-caveats of paper~B, the GraphRAG-lite retriever is a lower bound on production
+Scope is stated up front: the synthetic tracks are graph-first and
+partly circular by construction, the GraphRAG-lite retriever is a lower bound on production
 retrieval stacks, and FB15k-237 is a static KG without provenance. This is a
 mechanism and evaluation paper, not a production claim.
 
@@ -164,8 +168,8 @@ cheng2024ctinexus}. Note tools (Obsidian, Logseq) popularize the same
 structure at the personal scale. To our knowledge, the security of these
 graphs as \emph{operational} instruments --- what an attacker does to a graph
 that people retrieve over --- is not treated in the phishing-detection
-literature; paper~B formalized the graph as a detection object, and this
-paper treats it as an attack object.
+literature; this paper treats the operational knowledge graph as an
+attack object.
 
 \textbf{Attacks on retrieval and embeddings.} PoisonedRAG
 \cite{zou2024poisonedrag} injects a handful of optimized texts into a
@@ -173,16 +177,19 @@ million-document corpus and reaches $\sim$90\% attack success;
 \cite{zhong2023poisoning} poisons retrieval corpora with adversarial
 passages. The attack class has since reached the graph itself: knowledge
 poisoning distorts GraphRAG's graph construction with a few words
-\cite{wen2025fewwords}, KEPo evolves poisoned knowledge through the graph's
-dynamic \cite{kepo2026}, and retrieval-stage defenses (attention
-sparsification, part-masking) remain partial against it
+\cite{wen2025fewwords}, and KEPo (WWW~2026) \cite{kepo2026} reports that
+conventional-RAG poisoning is largely ineffective against GraphRAG ---
+the KG abstraction reorganizes injected text before retrieval --- and
+proposes instead an attack that evolves poisoned knowledge through the
+graph's dynamics; retrieval-stage defenses (attention
+spar\-sification, part-masking) remain partial against it
 \cite{cheng2025securerag,pathmanathan2025ragpart}. For KG embeddings,
 deleting and injecting facts misroutes link prediction
 \cite{zhang2019poisoning}, and MaSS makes the poison semantic and
 stealthy \cite{you2023mass}. Graph-level attacks on GNNs
 \cite{sun2019adversarial,zugner2018adversarial,zugner2019adversarial}
 show that a few added edges flip node classifications, with certified
-robustness bounds quantifying the price \cite{zugner2021certified}.
+robustness bounds quantifying the price \cite{wang2021certified}.
 Once a poisoned edge is \emph{retrieved}, indirect prompt injection
 turns it into an instruction for the LLM \cite{greshake2023not} --- the
 GraphRAG attack chain our RQ2 isolates at its retrieval stage. We
@@ -202,14 +209,17 @@ which is why our RQ3 measures controlled insertions on FB15k-237 and
 names rollback corpora \cite{schmelzeisen2022wikidated} as the natural
 next step.
 
-\textbf{Defenses and the injection layer.} VeriCypher \cite{gusarov2025veritycypher}
-verifies GraphRAG answers via text-to-Cypher --- the nearest published
-defense; our consistency gate differs in that it requires \emph{independent
-multi-layer corroboration}, not a re-derivation from the (possibly poisoned)
-graph itself. Injection into graph databases is the classical surface
+\textbf{Defenses and the injection layer.} VeriCypher
+\cite{gusarov2025veritycypher} verifies named entities in GraphRAG answers
+via text-to-Cypher queries over a labeled property graph --- a verification
+pipeline, but not a poisoning defense: it re-derives answers from the
+(possibly poisoned) graph itself. Our gate differs in requiring
+\emph{independent multi-layer corroboration} for a claim before it is
+trusted. Injection into graph databases is the classical surface
 \cite{ron2015nosql}. On the evaluation side we inherit the leak-aware
-discipline \cite{arp2022dos,pendlebury2019tesseract} and the companion
-papers' formal treatment: fabrication sampled from the true trace
+discipline \cite{arp2022dos,pendlebury2019tesseract}; and we state the
+fabrication proposition ourselves
+(Prop.~ef{prop:fab-joint}): fabrication sampled from the true trace
 distribution defeats existence and count features by construction, and only
 coherence with layers the attacker cannot forge can retain power.
 
@@ -217,7 +227,9 @@ coherence with layers the attacker cannot forge can retain power.
 \section{Model and Threat Model}
 \label{sec:model}
 
-We reuse the multiplex of paper~B: $\mathcal{G}=(V,\{E_L\},\{w_L\},\tau)$,
+We use a synthetic organizational multiplex
+$\mathcal{G}=(V,\{E_L\},\{w_L\},\tau)$ (defined standalone; generalized to
+arbitrary sources by the corroboration gate of Sec.~\ref{sec:model-gate}):
 layers $L$ over the same accounts $V$ --- contacts, hierarchy, shared domain,
 temporal co-activity (the \emph{internal} layers), and OSINT categories
 (mailing lists, OSS projects, affiliations, vendors, certifications, events,
@@ -225,6 +237,25 @@ social) --- the \emph{public} layers, generated over 150 synthetic personas
 with tunable fabrication flags: a membership is fabricated with probability
 $\rho_f$ (i.i.d.\ from the same community pools), and an OSINT edge is
 genuine iff at least one shared community is genuine on both sides.
+
+\begin{proposition}[Fabrication from the joint distribution]
+\label{prop:fab-joint}
+Let $\mu$ be the joint distribution of the observable features $\phi(x)$
+of a genuine item $x$ (edge, trace, or triple), and let the attacker
+fabricate i.i.d.\ from $\mu$. Then for every scoring function $s$ of the
+observable features, the score distributions on fabricated and genuine
+items coincide, and any detector achieves $\mathrm{AUC}=1/2$ in
+expectation (up to tie mass).
+\end{proposition}
+\begin{proof}
+Fabricating i.i.d.\ from $\mu$ makes $\phi$ identically distributed on
+both classes, so $s\circ\phi$ pushes the same distribution to identical
+score distributions; by exchangeability
+$\Pr[s(x_f)>s(x_g)]=\Pr[s(x_g)>s(x_f)]$ for a fabricated $x_f$ and a
+genuine $x_g$, hence AUC $=1/2$. Detection power can exist only in
+features (or corroboration across properties) whose distribution the
+attacker does not copy.
+\end{proof}
 
 \textbf{Threat model.} The attacker cannot forge internal layers (they are
 derived from private mail graphs and behaviour) but can plant public facts.
@@ -357,14 +388,13 @@ similarity; corruption at $k{=}0$ is 0.000 in both, five seeds) --- the
 demote variant is the ranking-prior form for analyst triage: nothing is
 hidden, flagged notes simply sink. Published retrieval-stage defenses --- attention
 sparsification \cite{cheng2025securerag}, part-masking
-\cite{pathmanathan2025ragpart}, text-to-Cypher re-derivation
-\cite{gusarov2025veritycypher} --- act on the retriever or on the graph
+\cite{pathmanathan2025ragpart} --- act on the retriever or on the graph
 itself; our gate differs in requiring corroboration from layers the
 attacker cannot write to, which is why its cost concentrates on exactly
 the legitimate ties no internal layer can confirm. The gate's price is
 real and we report it: on
 the clean corpus, 92.5\% of victims lose a genuine cross-organisation
-single-fact tie (the legitimate new-sender of paper~B) from their top-5 ---
+single-fact tie (the legitimate new sender) from their top-5 ---
 the defense buys integrity by taxing exactly the ties the organization
 cannot internally corroborate.
 
@@ -419,8 +449,9 @@ another relation or by shared neighbours. The operational point, however,
 is out of reach: sensitivity at FPR 1\% is $\approx$0, and for a structural
 reason --- a large mass of \emph{true} triples is consistency-free (pairs
 with no common neighbours, no co-relation), so any threshold that keeps
-false flags at 1\% flags almost nothing. The deployment lesson is the same
-one the companion papers draw for detectors: consistency is a
+false flags at 1\% flags almost nothing. The deployment lesson is the
+standard one in the evaluation literature
+\cite{arp2022dos,pendlebury2019tesseract}: consistency is a
 \emph{ranking} instrument for analyst triage over the most suspicious
 triples, not an automatic filter.
 
@@ -452,18 +483,17 @@ true joint distribution cannot be caught at the edge level (RQ1); what
 remains is corroboration at decision time --- the gate --- and relational
 structure on real graphs (RQ3). The gate converts attacker effort into
 plantable public traces (RQ2), and every layer of defense has a measured
-price on the legitimate traffic it cannot corroborate. Together with
-paper~B this is the full lifecycle of the organizational knowledge graph:
-as a detection surface (inconsistency), as an attack map (OSINT
-harvesting), and as an attack target (fabrication and poisoning) ---
-defended by the same invariant, cross-layer consistency, evaluated under
+price on the legitimate traffic it cannot corroborate. This is the full
+lifecycle of the operational knowledge graph: an attack map (OSINT
+harvesting) and an attack target (fabrication and poisoning) ---
+defended by cross-layer consistency, evaluated under
 the same discipline.
 
 \textbf{Limitations.} The GraphRAG-lite retriever is a TF-IDF lower bound
 on production retrieval stacks; embedding-based retrievers may be harder
 to game with minimal texts (or easier, per \cite{zou2024poisonedrag} ---
-our optimized attack is exactly that recipe). The synthetic tracks inherit
-the graph-first circularity caveats of paper~B: the fabricators draw from
+our optimized attack is exactly that recipe). The synthetic tracks are
+graph-first and partly circular by construction: the fabricators draw from
 generators we control, which is what makes the artefact of RQ1 explainable
 but also bounds external validity; FB15k-237 is static, provenance-free,
 and its ``fabricated'' triples are synthetic insertions, not real
@@ -480,8 +510,9 @@ verbatim in the reproducibility package.
 \label{sec:conclusion}
 Knowledge graphs that organizations now use for notes, CTI, and
 GraphRAG-style retrieval are simultaneously the attacker's map and the
-attack's target. We measured both directions with the leak-aware protocol
-of the companion papers. Edge-level detection fails against fabrication
+attack's target. We measured both directions under a leak-aware protocol
+(matched design, permutation control, low-FPR sensitivity). Edge-level
+detection fails against fabrication
 that copies the joint trace distribution (AUC $\approx$ chance; artefact
 exposed; permutation control clean). A consistency gate over layers the
 attacker cannot forge removes the PoisonedRAG-style optimized poisoning
