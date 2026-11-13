@@ -1,0 +1,13 @@
+dataset,regime,timing,model,auc,recall_fpr1
+email-Eu-core,blast,det,tab_ctx,0.6292,0.0246
+email-Eu-core,blast,det,compa,0.8276,0.1208
+email-Eu-core,blast,det,gnn_temporal,0.631,0.021
+email-Eu-core,blast,det,gnn_temporal_shuf,0.5739,0.0154
+email-Eu-core,stealthy,det,tab_ctx,0.8558,0.1068
+email-Eu-core,stealthy,det,compa,0.6617,0.0024
+email-Eu-core,stealthy,det,gnn_temporal,0.8133,0.0751
+email-Eu-core,stealthy,det,gnn_temporal_shuf,0.7074,0.073
+email-Eu-core,stealthy,emp,tab_ctx,0.6283,0.0709
+email-Eu-core,stealthy,emp,compa,0.6003,0.0
+email-Eu-core,stealthy,emp,gnn_temporal,0.6924,0.0549
+email-Eu-core,stealthy,emp,gnn_temporal_shuf,0.6864,0.0413

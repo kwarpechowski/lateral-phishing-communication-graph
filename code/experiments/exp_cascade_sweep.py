@@ -205,7 +205,7 @@ def main():
     out_ps = RESULTS / "exp_cascade_sweep_perseed.csv"
     with out_ps.open("w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
-        w.writerow(["sweep", "value", "seed", "model", "auc", "recall_fpr1"])
+        w.writerow(["sweep", "param", "seed", "model", "auc", "recall_fpr1"])
         w.writerows(perseed)
     print(f"[sweep-perseed] -> {out_ps}")
 

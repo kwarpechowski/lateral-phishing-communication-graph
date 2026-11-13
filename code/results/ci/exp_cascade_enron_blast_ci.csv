@@ -1,0 +1,11 @@
+rezym,timing,model,metric,mean,ci_lo,ci_hi,n_seeds
+blast,det,compa,auc,0.8658,0.8596,0.872,8
+blast,det,compa,recall_fpr1,0.1918,0.1662,0.218,8
+blast,det,gnn_temporal,auc,0.7952,0.7821,0.8057,8
+blast,det,gnn_temporal,recall_fpr1,0.0544,0.0425,0.0683,8
+blast,det,gnn_temporal_shuf,auc,0.7418,0.7347,0.7488,8
+blast,det,gnn_temporal_shuf,recall_fpr1,0.0476,0.0393,0.0561,8
+blast,det,tab_1hop,auc,0.6511,0.6414,0.6594,8
+blast,det,tab_1hop,recall_fpr1,0.0191,0.0165,0.0221,8
+blast,det,tab_ctx,auc,0.7397,0.7298,0.751,8
+blast,det,tab_ctx,recall_fpr1,0.0308,0.026,0.0356,8

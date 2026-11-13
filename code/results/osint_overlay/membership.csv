@@ -1,0 +1,1991 @@
+twin_id,category,community,genuine
+twin-0001,osint_mailing_list,osint_mailing_list:G2,1
+twin-0001,osint_mailing_list,osint_mailing_list:Northwind Capital Partners:L0,1
+twin-0001,osint_oss_project,osint_oss_project:Northwind Capital Partners:L0,1
+twin-0001,osint_affiliation,osint_affiliation:Northwind Capital Partners:L0,1
+twin-0001,osint_affiliation,osint_affiliation:G13,1
+twin-0001,osint_vendor,osint_vendor:G14,1
+twin-0001,osint_vendor,osint_vendor:G8,1
+twin-0001,osint_certification,osint_certification:G14,1
+twin-0001,osint_certification,osint_certification:G11,1
+twin-0001,osint_event,osint_event:Northwind Capital Partners:L1,1
+twin-0001,osint_event,osint_event:G14,1
+twin-0001,osint_social,osint_social:Northwind Capital Partners:L0,1
+twin-0001,osint_social,osint_social:G20,1
+twin-0002,osint_mailing_list,osint_mailing_list:Northwind Capital Partners:L2,1
+twin-0002,osint_mailing_list,osint_mailing_list:Northwind Capital Partners:L0,1
+twin-0002,osint_oss_project,osint_oss_project:Northwind Capital Partners:L0,1
+twin-0002,osint_oss_project,osint_oss_project:Northwind Capital Partners:L1,1
+twin-0002,osint_affiliation,osint_affiliation:G11,1
+twin-0002,osint_affiliation,osint_affiliation:G4,1
+twin-0002,osint_vendor,osint_vendor:G0,1
+twin-0002,osint_vendor,osint_vendor:G7,1
+twin-0002,osint_certification,osint_certification:G2,1
+twin-0002,osint_certification,osint_certification:G18,1
+twin-0002,osint_event,osint_event:Northwind Capital Partners:L1,1
+twin-0002,osint_social,osint_social:G18,1
+twin-0002,osint_social,osint_social:G22,1
+twin-0002,osint_social,osint_social:Northwind Capital Partners:L0,1
+twin-0003,osint_mailing_list,osint_mailing_list:G6,1
+twin-0003,osint_mailing_list,osint_mailing_list:G17,1
+twin-0003,osint_oss_project,osint_oss_project:Northwind Capital Partners:L0,1
+twin-0003,osint_oss_project,osint_oss_project:G2,1
+twin-0003,osint_affiliation,osint_affiliation:G12,1
+twin-0003,osint_affiliation,osint_affiliation:Northwind Capital Partners:L1,1
+twin-0003,osint_vendor,osint_vendor:G16,1
+twin-0003,osint_vendor,osint_vendor:G12,1
+twin-0003,osint_certification,osint_certification:Northwind Capital Partners:L0,1
+twin-0003,osint_event,osint_event:G3,1
+twin-0003,osint_event,osint_event:Northwind Capital Partners:L1,1
+twin-0003,osint_social,osint_social:G21,1
+twin-0003,osint_social,osint_social:Northwind Capital Partners:L0,1
+twin-0003,osint_social,osint_social:G14,1
+twin-0004,osint_mailing_list,osint_mailing_list:G16,1
+twin-0004,osint_oss_project,osint_oss_project:G15,1
+twin-0004,osint_oss_project,osint_oss_project:Northwind Capital Partners:L0,1
+twin-0004,osint_affiliation,osint_affiliation:Northwind Capital Partners:L1,1
+twin-0004,osint_vendor,osint_vendor:G0,1
+twin-0004,osint_vendor,osint_vendor:Northwind Capital Partners:L1,1
+twin-0004,osint_certification,osint_certification:Northwind Capital Partners:L0,1
+twin-0004,osint_certification,osint_certification:G17,1
+twin-0004,osint_event,osint_event:G3,1
+twin-0004,osint_event,osint_event:Northwind Capital Partners:L0,1
+twin-0004,osint_social,osint_social:Northwind Capital Partners:L0,1
+twin-0004,osint_social,osint_social:G0,1
+twin-0005,osint_mailing_list,osint_mailing_list:G15,1
+twin-0005,osint_mailing_list,osint_mailing_list:Northwind Capital Partners:L1,1
+twin-0005,osint_oss_project,osint_oss_project:Northwind Capital Partners:L1,1
+twin-0005,osint_oss_project,osint_oss_project:G15,1
+twin-0005,osint_affiliation,osint_affiliation:Northwind Capital Partners:L1,1
+twin-0005,osint_affiliation,osint_affiliation:G12,1
+twin-0005,osint_vendor,osint_vendor:Northwind Capital Partners:L0,1
+twin-0005,osint_vendor,osint_vendor:G10,1
+twin-0005,osint_certification,osint_certification:Northwind Capital Partners:L0,1
+twin-0005,osint_certification,osint_certification:G19,1
+twin-0005,osint_event,osint_event:Northwind Capital Partners:L0,1
+twin-0005,osint_event,osint_event:G10,1
+twin-0005,osint_social,osint_social:G8,1
+twin-0005,osint_social,osint_social:G3,1
+twin-0005,osint_social,osint_social:G7,1
+twin-0006,osint_mailing_list,osint_mailing_list:G3,1
+twin-0006,osint_mailing_list,osint_mailing_list:G14,1
+twin-0006,osint_oss_project,osint_oss_project:G20,1
+twin-0006,osint_oss_project,osint_oss_project:Northwind Capital Partners:L1,1
+twin-0006,osint_affiliation,osint_affiliation:G11,1
+twin-0006,osint_affiliation,osint_affiliation:G8,1
+twin-0006,osint_vendor,osint_vendor:Northwind Capital Partners:L1,1
+twin-0006,osint_certification,osint_certification:G19,1
+twin-0006,osint_certification,osint_certification:G12,1
+twin-0006,osint_event,osint_event:G12,1
+twin-0006,osint_event,osint_event:G5,1
+twin-0006,osint_social,osint_social:G10,1
+twin-0006,osint_social,osint_social:G26,1
+twin-0006,osint_social,osint_social:G5,1
+twin-0007,osint_mailing_list,osint_mailing_list:G16,1
+twin-0007,osint_mailing_list,osint_mailing_list:G15,1
+twin-0007,osint_oss_project,osint_oss_project:G5,1
+twin-0007,osint_oss_project,osint_oss_project:Northwind Capital Partners:L1,1
+twin-0007,osint_affiliation,osint_affiliation:G12,1
+twin-0007,osint_affiliation,osint_affiliation:G2,1
+twin-0007,osint_vendor,osint_vendor:Northwind Capital Partners:L0,1
+twin-0007,osint_vendor,osint_vendor:G11,1
+twin-0007,osint_certification,osint_certification:Northwind Capital Partners:L0,1
+twin-0007,osint_event,osint_event:G0,1
+twin-0007,osint_event,osint_event:G8,1
+twin-0007,osint_social,osint_social:Northwind Capital Partners:L0,1
+twin-0008,osint_mailing_list,osint_mailing_list:Northwind Capital Partners:L2,1
+twin-0008,osint_mailing_list,osint_mailing_list:Northwind Capital Partners:L1,1
+twin-0008,osint_oss_project,osint_oss_project:Northwind Capital Partners:L0,1
+twin-0008,osint_affiliation,osint_affiliation:G0,1
+twin-0008,osint_affiliation,osint_affiliation:Northwind Capital Partners:L0,1
+twin-0008,osint_vendor,osint_vendor:G4,1
+twin-0008,osint_vendor,osint_vendor:Northwind Capital Partners:L0,1
+twin-0008,osint_certification,osint_certification:G20,1
+twin-0008,osint_certification,osint_certification:G16,1
+twin-0008,osint_event,osint_event:G0,1
+twin-0008,osint_event,osint_event:G6,1
+twin-0008,osint_social,osint_social:G8,1
+twin-0008,osint_social,osint_social:Northwind Capital Partners:L0,1
+twin-0008,osint_social,osint_social:G22,1
+twin-0009,osint_mailing_list,osint_mailing_list:Meridian Health Group:L1,1
+twin-0009,osint_oss_project,osint_oss_project:Meridian Health Group:L1,1
+twin-0009,osint_oss_project,osint_oss_project:G8,1
+twin-0009,osint_affiliation,osint_affiliation:G13,1
+twin-0009,osint_affiliation,osint_affiliation:Meridian Health Group:L1,1
+twin-0009,osint_vendor,osint_vendor:Meridian Health Group:L0,1
+twin-0009,osint_certification,osint_certification:Meridian Health Group:L0,1
+twin-0009,osint_event,osint_event:Meridian Health Group:L1,1
+twin-0009,osint_social,osint_social:G26,1
+twin-0009,osint_social,osint_social:G27,1
+twin-0009,osint_social,osint_social:Meridian Health Group:L0,1
+twin-0010,osint_mailing_list,osint_mailing_list:Meridian Health Group:L0,1
+twin-0010,osint_oss_project,osint_oss_project:Meridian Health Group:L1,1
+twin-0010,osint_affiliation,osint_affiliation:G8,1
+twin-0010,osint_affiliation,osint_affiliation:Meridian Health Group:L1,1
+twin-0010,osint_vendor,osint_vendor:Meridian Health Group:L0,1
+twin-0010,osint_certification,osint_certification:G8,1
+twin-0010,osint_certification,osint_certification:G19,1
+twin-0010,osint_event,osint_event:Meridian Health Group:L0,1
+twin-0010,osint_event,osint_event:G15,1
+twin-0010,osint_social,osint_social:Meridian Health Group:L0,1
+twin-0011,osint_mailing_list,osint_mailing_list:Meridian Health Group:L2,1
+twin-0011,osint_mailing_list,osint_mailing_list:G7,1
+twin-0011,osint_oss_project,osint_oss_project:Meridian Health Group:L0,1
+twin-0011,osint_affiliation,osint_affiliation:Meridian Health Group:L0,1
+twin-0011,osint_affiliation,osint_affiliation:G10,1
+twin-0011,osint_vendor,osint_vendor:G2,1
+twin-0011,osint_vendor,osint_vendor:G13,1
+twin-0011,osint_certification,osint_certification:Meridian Health Group:L0,1
+twin-0011,osint_event,osint_event:Meridian Health Group:L0,1
+twin-0011,osint_social,osint_social:Meridian Health Group:L0,1
+twin-0011,osint_social,osint_social:G24,1
+twin-0012,osint_mailing_list,osint_mailing_list:Meridian Health Group:L2,1
+twin-0012,osint_mailing_list,osint_mailing_list:G16,1
+twin-0012,osint_oss_project,osint_oss_project:G2,1
+twin-0012,osint_oss_project,osint_oss_project:G24,1
+twin-0012,osint_affiliation,osint_affiliation:G8,1
+twin-0012,osint_affiliation,osint_affiliation:Meridian Health Group:L1,1
+twin-0012,osint_vendor,osint_vendor:G0,1
+twin-0012,osint_vendor,osint_vendor:G14,1
+twin-0012,osint_certification,osint_certification:G12,1
+twin-0012,osint_certification,osint_certification:Meridian Health Group:L0,1
+twin-0012,osint_event,osint_event:Meridian Health Group:L1,1
+twin-0012,osint_event,osint_event:Meridian Health Group:L0,1
+twin-0012,osint_social,osint_social:G10,1
+twin-0012,osint_social,osint_social:Meridian Health Group:L0,1
+twin-0012,osint_social,osint_social:G2,1
+twin-0013,osint_mailing_list,osint_mailing_list:G19,1
+twin-0013,osint_mailing_list,osint_mailing_list:G1,1
+twin-0013,osint_oss_project,osint_oss_project:G11,1
+twin-0013,osint_oss_project,osint_oss_project:Meridian Health Group:L1,1
+twin-0013,osint_affiliation,osint_affiliation:G1,1
+twin-0013,osint_affiliation,osint_affiliation:G3,1
+twin-0013,osint_vendor,osint_vendor:G5,1
+twin-0013,osint_vendor,osint_vendor:Meridian Health Group:L1,1
+twin-0013,osint_certification,osint_certification:G1,1
+twin-0013,osint_certification,osint_certification:Meridian Health Group:L0,1
+twin-0013,osint_event,osint_event:Meridian Health Group:L0,1
+twin-0013,osint_event,osint_event:G13,1
+twin-0013,osint_social,osint_social:Meridian Health Group:L0,1
+twin-0013,osint_social,osint_social:G10,1
+twin-0013,osint_social,osint_social:G22,1
+twin-0014,osint_mailing_list,osint_mailing_list:Meridian Health Group:L2,1
+twin-0014,osint_mailing_list,osint_mailing_list:Meridian Health Group:L0,1
+twin-0014,osint_oss_project,osint_oss_project:G3,1
+twin-0014,osint_oss_project,osint_oss_project:Meridian Health Group:L0,1
+twin-0014,osint_affiliation,osint_affiliation:G13,1
+twin-0014,osint_affiliation,osint_affiliation:G3,1
+twin-0014,osint_vendor,osint_vendor:G0,1
+twin-0014,osint_vendor,osint_vendor:G12,1
+twin-0014,osint_certification,osint_certification:G1,1
+twin-0014,osint_certification,osint_certification:Meridian Health Group:L0,1
+twin-0014,osint_event,osint_event:Meridian Health Group:L1,1
+twin-0014,osint_event,osint_event:G4,1
+twin-0014,osint_social,osint_social:G26,1
+twin-0014,osint_social,osint_social:Meridian Health Group:L0,1
+twin-0014,osint_social,osint_social:G24,1
+twin-0015,osint_mailing_list,osint_mailing_list:Meridian Health Group:L0,1
+twin-0015,osint_mailing_list,osint_mailing_list:G14,1
+twin-0015,osint_oss_project,osint_oss_project:Meridian Health Group:L1,1
+twin-0015,osint_oss_project,osint_oss_project:G12,1
+twin-0015,osint_affiliation,osint_affiliation:Meridian Health Group:L1,1
+twin-0015,osint_affiliation,osint_affiliation:G11,1
+twin-0015,osint_vendor,osint_vendor:Meridian Health Group:L0,1
+twin-0015,osint_vendor,osint_vendor:G13,1
+twin-0015,osint_certification,osint_certification:G21,1
+twin-0015,osint_certification,osint_certification:G13,1
+twin-0015,osint_event,osint_event:G2,1
+twin-0015,osint_event,osint_event:Meridian Health Group:L1,1
+twin-0015,osint_social,osint_social:G27,1
+twin-0015,osint_social,osint_social:Meridian Health Group:L0,1
+twin-0015,osint_social,osint_social:G24,1
+twin-0016,osint_mailing_list,osint_mailing_list:G14,1
+twin-0016,osint_mailing_list,osint_mailing_list:Meridian Health Group:L1,1
+twin-0016,osint_oss_project,osint_oss_project:Meridian Health Group:L1,1
+twin-0016,osint_affiliation,osint_affiliation:Meridian Health Group:L0,1
+twin-0016,osint_vendor,osint_vendor:G2,1
+twin-0016,osint_vendor,osint_vendor:G14,1
+twin-0016,osint_certification,osint_certification:Meridian Health Group:L0,1
+twin-0016,osint_event,osint_event:Meridian Health Group:L0,1
+twin-0016,osint_social,osint_social:Meridian Health Group:L0,1
+twin-0017,osint_mailing_list,osint_mailing_list:G11,1
+twin-0017,osint_mailing_list,osint_mailing_list:Cobalt Systems:L0,1
+twin-0017,osint_oss_project,osint_oss_project:Cobalt Systems:L1,1
+twin-0017,osint_oss_project,osint_oss_project:G17,1
+twin-0017,osint_affiliation,osint_affiliation:Cobalt Systems:L1,1
+twin-0017,osint_affiliation,osint_affiliation:Cobalt Systems:L0,1
+twin-0017,osint_vendor,osint_vendor:Cobalt Systems:L0,1
+twin-0017,osint_certification,osint_certification:Cobalt Systems:L0,1
+twin-0017,osint_certification,osint_certification:G21,1
+twin-0017,osint_event,osint_event:G15,1
+twin-0017,osint_event,osint_event:Cobalt Systems:L0,1
+twin-0017,osint_social,osint_social:G26,1
+twin-0017,osint_social,osint_social:G9,1
+twin-0017,osint_social,osint_social:G14,1
+twin-0018,osint_mailing_list,osint_mailing_list:Cobalt Systems:L0,1
+twin-0018,osint_mailing_list,osint_mailing_list:G10,1
+twin-0018,osint_oss_project,osint_oss_project:Cobalt Systems:L1,1
+twin-0018,osint_oss_project,osint_oss_project:G21,1
+twin-0018,osint_affiliation,osint_affiliation:G5,1
+twin-0018,osint_affiliation,osint_affiliation:Cobalt Systems:L0,1
+twin-0018,osint_vendor,osint_vendor:Cobalt Systems:L0,1
+twin-0018,osint_vendor,osint_vendor:G0,1
+twin-0018,osint_certification,osint_certification:Cobalt Systems:L0,1
+twin-0018,osint_certification,osint_certification:G8,1
+twin-0018,osint_event,osint_event:Cobalt Systems:L0,1
+twin-0018,osint_event,osint_event:G5,1
+twin-0018,osint_social,osint_social:Cobalt Systems:L0,1
+twin-0019,osint_mailing_list,osint_mailing_list:G7,1
+twin-0019,osint_mailing_list,osint_mailing_list:G12,1
+twin-0019,osint_oss_project,osint_oss_project:Cobalt Systems:L1,1
+twin-0019,osint_oss_project,osint_oss_project:G12,1
+twin-0019,osint_affiliation,osint_affiliation:G10,1
+twin-0019,osint_affiliation,osint_affiliation:G1,1
+twin-0019,osint_vendor,osint_vendor:G7,1
+twin-0019,osint_vendor,osint_vendor:G13,1
+twin-0019,osint_certification,osint_certification:G20,1
+twin-0019,osint_certification,osint_certification:G21,1
+twin-0019,osint_event,osint_event:Cobalt Systems:L1,1
+twin-0019,osint_event,osint_event:G7,1
+twin-0019,osint_social,osint_social:G4,1
+twin-0019,osint_social,osint_social:G14,1
+twin-0019,osint_social,osint_social:G17,1
+twin-0020,osint_mailing_list,osint_mailing_list:G19,1
+twin-0020,osint_mailing_list,osint_mailing_list:Cobalt Systems:L1,1
+twin-0020,osint_oss_project,osint_oss_project:Cobalt Systems:L1,1
+twin-0020,osint_oss_project,osint_oss_project:G15,1
+twin-0020,osint_affiliation,osint_affiliation:G12,1
+twin-0020,osint_affiliation,osint_affiliation:Cobalt Systems:L0,1
+twin-0020,osint_vendor,osint_vendor:Cobalt Systems:L0,1
+twin-0020,osint_vendor,osint_vendor:G8,1
+twin-0020,osint_certification,osint_certification:Cobalt Systems:L0,1
+twin-0020,osint_event,osint_event:G1,1
+twin-0020,osint_event,osint_event:Cobalt Systems:L1,1
+twin-0020,osint_social,osint_social:G15,1
+twin-0020,osint_social,osint_social:Cobalt Systems:L0,1
+twin-0020,osint_social,osint_social:G1,1
+twin-0021,osint_mailing_list,osint_mailing_list:Cobalt Systems:L1,1
+twin-0021,osint_mailing_list,osint_mailing_list:G18,1
+twin-0021,osint_oss_project,osint_oss_project:G2,1
+twin-0021,osint_oss_project,osint_oss_project:Cobalt Systems:L0,1
+twin-0021,osint_affiliation,osint_affiliation:Cobalt Systems:L0,1
+twin-0021,osint_affiliation,osint_affiliation:G12,1
+twin-0021,osint_vendor,osint_vendor:G9,1
+twin-0021,osint_vendor,osint_vendor:G6,1
+twin-0021,osint_certification,osint_certification:Cobalt Systems:L0,1
+twin-0021,osint_certification,osint_certification:G17,1
+twin-0021,osint_event,osint_event:G6,1
+twin-0021,osint_event,osint_event:Cobalt Systems:L0,1
+twin-0021,osint_social,osint_social:G11,1
+twin-0021,osint_social,osint_social:Cobalt Systems:L0,1
+twin-0022,osint_mailing_list,osint_mailing_list:Cobalt Systems:L2,1
+twin-0022,osint_mailing_list,osint_mailing_list:Cobalt Systems:L1,1
+twin-0022,osint_oss_project,osint_oss_project:Cobalt Systems:L0,1
+twin-0022,osint_oss_project,osint_oss_project:G19,1
+twin-0022,osint_affiliation,osint_affiliation:G3,1
+twin-0022,osint_affiliation,osint_affiliation:G14,1
+twin-0022,osint_vendor,osint_vendor:Cobalt Systems:L1,1
+twin-0022,osint_vendor,osint_vendor:Cobalt Systems:L0,1
+twin-0022,osint_certification,osint_certification:G12,1
+twin-0022,osint_certification,osint_certification:Cobalt Systems:L0,1
+twin-0022,osint_event,osint_event:Cobalt Systems:L1,1
+twin-0022,osint_event,osint_event:G13,1
+twin-0022,osint_social,osint_social:Cobalt Systems:L0,1
+twin-0023,osint_mailing_list,osint_mailing_list:Cobalt Systems:L0,1
+twin-0023,osint_mailing_list,osint_mailing_list:G0,1
+twin-0023,osint_oss_project,osint_oss_project:G15,1
+twin-0023,osint_oss_project,osint_oss_project:G9,1
+twin-0023,osint_affiliation,osint_affiliation:G13,1
+twin-0023,osint_affiliation,osint_affiliation:Cobalt Systems:L1,1
+twin-0023,osint_vendor,osint_vendor:G11,1
+twin-0023,osint_vendor,osint_vendor:Cobalt Systems:L1,1
+twin-0023,osint_certification,osint_certification:G9,1
+twin-0023,osint_event,osint_event:Cobalt Systems:L1,1
+twin-0023,osint_event,osint_event:G5,1
+twin-0023,osint_social,osint_social:G7,1
+twin-0023,osint_social,osint_social:G10,1
+twin-0023,osint_social,osint_social:Cobalt Systems:L0,1
+twin-0024,osint_mailing_list,osint_mailing_list:G8,1
+twin-0024,osint_mailing_list,osint_mailing_list:G6,1
+twin-0024,osint_oss_project,osint_oss_project:Cobalt Systems:L0,1
+twin-0024,osint_oss_project,osint_oss_project:G0,1
+twin-0024,osint_affiliation,osint_affiliation:G6,1
+twin-0024,osint_affiliation,osint_affiliation:Cobalt Systems:L0,1
+twin-0024,osint_vendor,osint_vendor:G14,1
+twin-0024,osint_vendor,osint_vendor:Cobalt Systems:L0,1
+twin-0024,osint_certification,osint_certification:G12,1
+twin-0024,osint_certification,osint_certification:G16,1
+twin-0024,osint_event,osint_event:Cobalt Systems:L0,1
+twin-0024,osint_social,osint_social:G27,1
+twin-0024,osint_social,osint_social:Cobalt Systems:L0,1
+twin-0025,osint_mailing_list,osint_mailing_list:Lex Harbor Legal:L1,1
+twin-0025,osint_mailing_list,osint_mailing_list:G12,1
+twin-0025,osint_oss_project,osint_oss_project:Lex Harbor Legal:L0,1
+twin-0025,osint_affiliation,osint_affiliation:Lex Harbor Legal:L1,1
+twin-0025,osint_affiliation,osint_affiliation:G6,1
+twin-0025,osint_vendor,osint_vendor:G0,1
+twin-0025,osint_vendor,osint_vendor:Lex Harbor Legal:L1,1
+twin-0025,osint_certification,osint_certification:G8,1
+twin-0025,osint_certification,osint_certification:Lex Harbor Legal:L0,1
+twin-0025,osint_event,osint_event:Lex Harbor Legal:L0,1
+twin-0025,osint_event,osint_event:G12,1
+twin-0025,osint_social,osint_social:Lex Harbor Legal:L0,1
+twin-0025,osint_social,osint_social:G20,1
+twin-0026,osint_mailing_list,osint_mailing_list:G7,1
+twin-0026,osint_mailing_list,osint_mailing_list:G19,1
+twin-0026,osint_oss_project,osint_oss_project:Lex Harbor Legal:L0,1
+twin-0026,osint_oss_project,osint_oss_project:G17,1
+twin-0026,osint_affiliation,osint_affiliation:G9,1
+twin-0026,osint_affiliation,osint_affiliation:G5,1
+twin-0026,osint_vendor,osint_vendor:G3,1
+twin-0026,osint_vendor,osint_vendor:Lex Harbor Legal:L0,1
+twin-0026,osint_certification,osint_certification:Lex Harbor Legal:L0,1
+twin-0026,osint_certification,osint_certification:G12,1
+twin-0026,osint_event,osint_event:G13,1
+twin-0026,osint_event,osint_event:G14,1
+twin-0026,osint_social,osint_social:Lex Harbor Legal:L0,1
+twin-0026,osint_social,osint_social:G19,1
+twin-0027,osint_mailing_list,osint_mailing_list:G10,1
+twin-0027,osint_mailing_list,osint_mailing_list:G12,1
+twin-0027,osint_oss_project,osint_oss_project:Lex Harbor Legal:L0,1
+twin-0027,osint_affiliation,osint_affiliation:G5,1
+twin-0027,osint_affiliation,osint_affiliation:G4,1
+twin-0027,osint_vendor,osint_vendor:G14,1
+twin-0027,osint_vendor,osint_vendor:G6,1
+twin-0027,osint_certification,osint_certification:G11,1
+twin-0027,osint_certification,osint_certification:G5,1
+twin-0027,osint_event,osint_event:Lex Harbor Legal:L1,1
+twin-0027,osint_event,osint_event:G6,1
+twin-0027,osint_social,osint_social:G16,1
+twin-0027,osint_social,osint_social:G20,1
+twin-0027,osint_social,osint_social:G9,1
+twin-0028,osint_mailing_list,osint_mailing_list:G0,1
+twin-0028,osint_mailing_list,osint_mailing_list:Lex Harbor Legal:L1,1
+twin-0028,osint_oss_project,osint_oss_project:Lex Harbor Legal:L1,1
+twin-0028,osint_affiliation,osint_affiliation:Lex Harbor Legal:L0,1
+twin-0028,osint_affiliation,osint_affiliation:G12,1
+twin-0028,osint_vendor,osint_vendor:Lex Harbor Legal:L0,1
+twin-0028,osint_certification,osint_certification:Lex Harbor Legal:L0,1
+twin-0028,osint_certification,osint_certification:G20,1
+twin-0028,osint_event,osint_event:G13,1
+twin-0028,osint_event,osint_event:Lex Harbor Legal:L1,1
+twin-0028,osint_social,osint_social:Lex Harbor Legal:L0,1
+twin-0028,osint_social,osint_social:G5,1
+twin-0029,osint_mailing_list,osint_mailing_list:G13,1
+twin-0029,osint_mailing_list,osint_mailing_list:Lex Harbor Legal:L2,1
+twin-0029,osint_oss_project,osint_oss_project:Lex Harbor Legal:L1,1
+twin-0029,osint_affiliation,osint_affiliation:Lex Harbor Legal:L1,1
+twin-0029,osint_affiliation,osint_affiliation:Lex Harbor Legal:L0,1
+twin-0029,osint_vendor,osint_vendor:G2,1
+twin-0029,osint_vendor,osint_vendor:Lex Harbor Legal:L1,1
+twin-0029,osint_certification,osint_certification:G14,1
+twin-0029,osint_event,osint_event:G12,1
+twin-0029,osint_event,osint_event:G13,1
+twin-0029,osint_social,osint_social:G25,1
+twin-0029,osint_social,osint_social:Lex Harbor Legal:L0,1
+twin-0029,osint_social,osint_social:G1,1
+twin-0030,osint_mailing_list,osint_mailing_list:G19,1
+twin-0030,osint_mailing_list,osint_mailing_list:Lex Harbor Legal:L2,1
+twin-0030,osint_oss_project,osint_oss_project:G16,1
+twin-0030,osint_oss_project,osint_oss_project:Lex Harbor Legal:L1,1
+twin-0030,osint_affiliation,osint_affiliation:G2,1
+twin-0030,osint_affiliation,osint_affiliation:G12,1
+twin-0030,osint_vendor,osint_vendor:G7,1
+twin-0030,osint_certification,osint_certification:G4,1
+twin-0030,osint_certification,osint_certification:G3,1
+twin-0030,osint_event,osint_event:Lex Harbor Legal:L1,1
+twin-0030,osint_event,osint_event:G2,1
+twin-0030,osint_social,osint_social:G22,1
+twin-0030,osint_social,osint_social:Lex Harbor Legal:L0,1
+twin-0031,osint_mailing_list,osint_mailing_list:G0,1
+twin-0031,osint_mailing_list,osint_mailing_list:G16,1
+twin-0031,osint_oss_project,osint_oss_project:Lex Harbor Legal:L1,1
+twin-0031,osint_affiliation,osint_affiliation:Lex Harbor Legal:L1,1
+twin-0031,osint_affiliation,osint_affiliation:G0,1
+twin-0031,osint_vendor,osint_vendor:G16,1
+twin-0031,osint_vendor,osint_vendor:Lex Harbor Legal:L1,1
+twin-0031,osint_certification,osint_certification:G0,1
+twin-0031,osint_certification,osint_certification:G2,1
+twin-0031,osint_event,osint_event:G3,1
+twin-0031,osint_event,osint_event:Lex Harbor Legal:L1,1
+twin-0031,osint_social,osint_social:Lex Harbor Legal:L0,1
+twin-0032,osint_mailing_list,osint_mailing_list:G12,1
+twin-0032,osint_mailing_list,osint_mailing_list:Lex Harbor Legal:L2,1
+twin-0032,osint_oss_project,osint_oss_project:Lex Harbor Legal:L1,1
+twin-0032,osint_affiliation,osint_affiliation:G13,1
+twin-0032,osint_affiliation,osint_affiliation:Lex Harbor Legal:L0,1
+twin-0032,osint_vendor,osint_vendor:Lex Harbor Legal:L1,1
+twin-0032,osint_vendor,osint_vendor:Lex Harbor Legal:L0,1
+twin-0032,osint_certification,osint_certification:Lex Harbor Legal:L0,1
+twin-0032,osint_event,osint_event:G2,1
+twin-0032,osint_event,osint_event:Lex Harbor Legal:L0,1
+twin-0032,osint_social,osint_social:Lex Harbor Legal:L0,1
+twin-0032,osint_social,osint_social:G28,1
+twin-0032,osint_social,osint_social:G25,1
+twin-0033,osint_mailing_list,osint_mailing_list:Greenfield Industries:L0,1
+twin-0033,osint_oss_project,osint_oss_project:Greenfield Industries:L0,1
+twin-0033,osint_oss_project,osint_oss_project:Greenfield Industries:L1,1
+twin-0033,osint_affiliation,osint_affiliation:G8,1
+twin-0033,osint_affiliation,osint_affiliation:Greenfield Industries:L1,1
+twin-0033,osint_vendor,osint_vendor:Greenfield Industries:L0,1
+twin-0033,osint_vendor,osint_vendor:Greenfield Industries:L1,1
+twin-0033,osint_certification,osint_certification:Greenfield Industries:L0,1
+twin-0033,osint_certification,osint_certification:G20,1
+twin-0033,osint_event,osint_event:Greenfield Industries:L1,1
+twin-0033,osint_event,osint_event:Greenfield Industries:L0,1
+twin-0033,osint_social,osint_social:Greenfield Industries:L0,1
+twin-0033,osint_social,osint_social:G26,1
+twin-0034,osint_mailing_list,osint_mailing_list:G9,1
+twin-0034,osint_mailing_list,osint_mailing_list:Greenfield Industries:L1,1
+twin-0034,osint_oss_project,osint_oss_project:G4,1
+twin-0034,osint_oss_project,osint_oss_project:Greenfield Industries:L0,1
+twin-0034,osint_affiliation,osint_affiliation:G7,1
+twin-0034,osint_affiliation,osint_affiliation:Greenfield Industries:L1,1
+twin-0034,osint_vendor,osint_vendor:Greenfield Industries:L1,1
+twin-0034,osint_vendor,osint_vendor:G10,1
+twin-0034,osint_certification,osint_certification:Greenfield Industries:L0,1
+twin-0034,osint_certification,osint_certification:G18,1
+twin-0034,osint_event,osint_event:Greenfield Industries:L0,1
+twin-0034,osint_event,osint_event:G9,1
+twin-0034,osint_social,osint_social:Greenfield Industries:L0,1
+twin-0034,osint_social,osint_social:G17,1
+twin-0034,osint_social,osint_social:G23,1
+twin-0035,osint_mailing_list,osint_mailing_list:Greenfield Industries:L1,1
+twin-0035,osint_oss_project,osint_oss_project:Greenfield Industries:L0,1
+twin-0035,osint_oss_project,osint_oss_project:G0,1
+twin-0035,osint_affiliation,osint_affiliation:G8,1
+twin-0035,osint_affiliation,osint_affiliation:Greenfield Industries:L0,1
+twin-0035,osint_vendor,osint_vendor:G11,1
+twin-0035,osint_vendor,osint_vendor:G17,1
+twin-0035,osint_certification,osint_certification:Greenfield Industries:L0,1
+twin-0035,osint_event,osint_event:G15,1
+twin-0035,osint_event,osint_event:Greenfield Industries:L1,1
+twin-0035,osint_social,osint_social:Greenfield Industries:L0,1
+twin-0035,osint_social,osint_social:G13,1
+twin-0036,osint_mailing_list,osint_mailing_list:G12,1
+twin-0036,osint_mailing_list,osint_mailing_list:Greenfield Industries:L0,1
+twin-0036,osint_oss_project,osint_oss_project:Greenfield Industries:L1,1
+twin-0036,osint_oss_project,osint_oss_project:G15,1
+twin-0036,osint_affiliation,osint_affiliation:G14,1
+twin-0036,osint_affiliation,osint_affiliation:Greenfield Industries:L0,1
+twin-0036,osint_vendor,osint_vendor:Greenfield Industries:L1,1
+twin-0036,osint_vendor,osint_vendor:G9,1
+twin-0036,osint_certification,osint_certification:Greenfield Industries:L0,1
+twin-0036,osint_certification,osint_certification:G14,1
+twin-0036,osint_event,osint_event:G1,1
+twin-0036,osint_event,osint_event:Greenfield Industries:L0,1
+twin-0036,osint_social,osint_social:G25,1
+twin-0036,osint_social,osint_social:Greenfield Industries:L0,1
+twin-0037,osint_mailing_list,osint_mailing_list:G18,1
+twin-0037,osint_mailing_list,osint_mailing_list:Greenfield Industries:L0,1
+twin-0037,osint_oss_project,osint_oss_project:Greenfield Industries:L0,1
+twin-0037,osint_oss_project,osint_oss_project:G14,1
+twin-0037,osint_affiliation,osint_affiliation:G1,1
+twin-0037,osint_affiliation,osint_affiliation:Greenfield Industries:L1,1
+twin-0037,osint_vendor,osint_vendor:Greenfield Industries:L1,1
+twin-0037,osint_certification,osint_certification:G13,1
+twin-0037,osint_certification,osint_certification:Greenfield Industries:L0,1
+twin-0037,osint_event,osint_event:G1,1
+twin-0037,osint_event,osint_event:G8,1
+twin-0037,osint_social,osint_social:Greenfield Industries:L0,1
+twin-0037,osint_social,osint_social:G8,1
+twin-0037,osint_social,osint_social:G19,1
+twin-0038,osint_mailing_list,osint_mailing_list:Greenfield Industries:L2,1
+twin-0038,osint_oss_project,osint_oss_project:Greenfield Industries:L1,1
+twin-0038,osint_oss_project,osint_oss_project:G12,1
+twin-0038,osint_affiliation,osint_affiliation:Greenfield Industries:L1,1
+twin-0038,osint_affiliation,osint_affiliation:G11,1
+twin-0038,osint_vendor,osint_vendor:Greenfield Industries:L1,1
+twin-0038,osint_certification,osint_certification:Greenfield Industries:L0,1
+twin-0038,osint_certification,osint_certification:G8,1
+twin-0038,osint_event,osint_event:G0,1
+twin-0038,osint_event,osint_event:G9,1
+twin-0038,osint_social,osint_social:G18,1
+twin-0038,osint_social,osint_social:Greenfield Industries:L0,1
+twin-0038,osint_social,osint_social:G15,1
+twin-0039,osint_mailing_list,osint_mailing_list:Greenfield Industries:L0,1
+twin-0039,osint_mailing_list,osint_mailing_list:G6,1
+twin-0039,osint_oss_project,osint_oss_project:G0,1
+twin-0039,osint_oss_project,osint_oss_project:G22,1
+twin-0039,osint_affiliation,osint_affiliation:G6,1
+twin-0039,osint_affiliation,osint_affiliation:G13,1
+twin-0039,osint_vendor,osint_vendor:G10,1
+twin-0039,osint_vendor,osint_vendor:G11,1
+twin-0039,osint_certification,osint_certification:G11,1
+twin-0039,osint_certification,osint_certification:G1,1
+twin-0039,osint_event,osint_event:Greenfield Industries:L1,1
+twin-0039,osint_social,osint_social:Greenfield Industries:L0,1
+twin-0040,osint_mailing_list,osint_mailing_list:Greenfield Industries:L1,1
+twin-0040,osint_mailing_list,osint_mailing_list:Greenfield Industries:L0,1
+twin-0040,osint_oss_project,osint_oss_project:G12,1
+twin-0040,osint_oss_project,osint_oss_project:Greenfield Industries:L0,1
+twin-0040,osint_affiliation,osint_affiliation:G12,1
+twin-0040,osint_affiliation,osint_affiliation:G1,1
+twin-0040,osint_vendor,osint_vendor:Greenfield Industries:L0,1
+twin-0040,osint_vendor,osint_vendor:G13,1
+twin-0040,osint_certification,osint_certification:G12,1
+twin-0040,osint_certification,osint_certification:G11,1
+twin-0040,osint_event,osint_event:Greenfield Industries:L0,1
+twin-0040,osint_event,osint_event:G3,1
+twin-0040,osint_social,osint_social:Greenfield Industries:L0,1
+twin-0040,osint_social,osint_social:G14,1
+twin-0041,osint_mailing_list,osint_mailing_list:Arcadia Logistics:L2,1
+twin-0041,osint_oss_project,osint_oss_project:G21,1
+twin-0041,osint_oss_project,osint_oss_project:Arcadia Logistics:L0,1
+twin-0041,osint_affiliation,osint_affiliation:G7,1
+twin-0041,osint_affiliation,osint_affiliation:G13,1
+twin-0041,osint_vendor,osint_vendor:Arcadia Logistics:L0,1
+twin-0041,osint_certification,osint_certification:G16,1
+twin-0041,osint_certification,osint_certification:Arcadia Logistics:L0,1
+twin-0041,osint_event,osint_event:G12,1
+twin-0041,osint_event,osint_event:Arcadia Logistics:L0,1
+twin-0041,osint_social,osint_social:Arcadia Logistics:L0,1
+twin-0041,osint_social,osint_social:G19,1
+twin-0042,osint_mailing_list,osint_mailing_list:Arcadia Logistics:L2,1
+twin-0042,osint_mailing_list,osint_mailing_list:G6,1
+twin-0042,osint_oss_project,osint_oss_project:Arcadia Logistics:L1,1
+twin-0042,osint_oss_project,osint_oss_project:G6,1
+twin-0042,osint_affiliation,osint_affiliation:Arcadia Logistics:L0,1
+twin-0042,osint_affiliation,osint_affiliation:G3,1
+twin-0042,osint_vendor,osint_vendor:G14,1
+twin-0042,osint_vendor,osint_vendor:Arcadia Logistics:L1,1
+twin-0042,osint_certification,osint_certification:Arcadia Logistics:L0,1
+twin-0042,osint_certification,osint_certification:G15,1
+twin-0042,osint_event,osint_event:G5,1
+twin-0042,osint_social,osint_social:Arcadia Logistics:L0,1
+twin-0043,osint_mailing_list,osint_mailing_list:G10,1
+twin-0043,osint_mailing_list,osint_mailing_list:G2,1
+twin-0043,osint_oss_project,osint_oss_project:Arcadia Logistics:L1,1
+twin-0043,osint_oss_project,osint_oss_project:Arcadia Logistics:L0,1
+twin-0043,osint_affiliation,osint_affiliation:G14,1
+twin-0043,osint_affiliation,osint_affiliation:Arcadia Logistics:L0,1
+twin-0043,osint_vendor,osint_vendor:Arcadia Logistics:L0,1
+twin-0043,osint_vendor,osint_vendor:G2,1
+twin-0043,osint_certification,osint_certification:G16,1
+twin-0043,osint_certification,osint_certification:Arcadia Logistics:L0,1
+twin-0043,osint_event,osint_event:G7,1
+twin-0043,osint_event,osint_event:G12,1
+twin-0043,osint_social,osint_social:G3,1
+twin-0043,osint_social,osint_social:Arcadia Logistics:L0,1
+twin-0043,osint_social,osint_social:G5,1
+twin-0044,osint_mailing_list,osint_mailing_list:G12,1
+twin-0044,osint_mailing_list,osint_mailing_list:G9,1
+twin-0044,osint_oss_project,osint_oss_project:G4,1
+twin-0044,osint_oss_project,osint_oss_project:Arcadia Logistics:L1,1
+twin-0044,osint_affiliation,osint_affiliation:Arcadia Logistics:L0,1
+twin-0044,osint_affiliation,osint_affiliation:Arcadia Logistics:L1,1
+twin-0044,osint_vendor,osint_vendor:Arcadia Logistics:L1,1
+twin-0044,osint_vendor,osint_vendor:Arcadia Logistics:L0,1
+twin-0044,osint_certification,osint_certification:Arcadia Logistics:L0,1
+twin-0044,osint_certification,osint_certification:G13,1
+twin-0044,osint_event,osint_event:Arcadia Logistics:L0,1
+twin-0044,osint_event,osint_event:G10,1
+twin-0044,osint_social,osint_social:G6,1
+twin-0044,osint_social,osint_social:Arcadia Logistics:L0,1
+twin-0044,osint_social,osint_social:G28,1
+twin-0045,osint_mailing_list,osint_mailing_list:G9,1
+twin-0045,osint_mailing_list,osint_mailing_list:Arcadia Logistics:L1,1
+twin-0045,osint_oss_project,osint_oss_project:G19,1
+twin-0045,osint_oss_project,osint_oss_project:G7,1
+twin-0045,osint_affiliation,osint_affiliation:G11,1
+twin-0045,osint_affiliation,osint_affiliation:G6,1
+twin-0045,osint_vendor,osint_vendor:Arcadia Logistics:L1,1
+twin-0045,osint_certification,osint_certification:G2,1
+twin-0045,osint_certification,osint_certification:G15,1
+twin-0045,osint_event,osint_event:Arcadia Logistics:L0,1
+twin-0045,osint_social,osint_social:G8,1
+twin-0045,osint_social,osint_social:G3,1
+twin-0045,osint_social,osint_social:G12,1
+twin-0046,osint_mailing_list,osint_mailing_list:Arcadia Logistics:L0,1
+twin-0046,osint_mailing_list,osint_mailing_list:G1,1
+twin-0046,osint_oss_project,osint_oss_project:G14,1
+twin-0046,osint_oss_project,osint_oss_project:G0,1
+twin-0046,osint_affiliation,osint_affiliation:Arcadia Logistics:L1,1
+twin-0046,osint_vendor,osint_vendor:G14,1
+twin-0046,osint_vendor,osint_vendor:Arcadia Logistics:L1,1
+twin-0046,osint_certification,osint_certification:Arcadia Logistics:L0,1
+twin-0046,osint_certification,osint_certification:G2,1
+twin-0046,osint_event,osint_event:G9,1
+twin-0046,osint_event,osint_event:G15,1
+twin-0046,osint_social,osint_social:G13,1
+twin-0046,osint_social,osint_social:Arcadia Logistics:L0,1
+twin-0047,osint_mailing_list,osint_mailing_list:Arcadia Logistics:L0,1
+twin-0047,osint_mailing_list,osint_mailing_list:G17,1
+twin-0047,osint_oss_project,osint_oss_project:Arcadia Logistics:L1,1
+twin-0047,osint_oss_project,osint_oss_project:G4,1
+twin-0047,osint_affiliation,osint_affiliation:Arcadia Logistics:L1,1
+twin-0047,osint_affiliation,osint_affiliation:G13,1
+twin-0047,osint_vendor,osint_vendor:Arcadia Logistics:L1,1
+twin-0047,osint_vendor,osint_vendor:Arcadia Logistics:L0,1
+twin-0047,osint_certification,osint_certification:G5,1
+twin-0047,osint_certification,osint_certification:Arcadia Logistics:L0,1
+twin-0047,osint_event,osint_event:G4,1
+twin-0047,osint_event,osint_event:Arcadia Logistics:L1,1
+twin-0047,osint_social,osint_social:G24,1
+twin-0047,osint_social,osint_social:G5,1
+twin-0047,osint_social,osint_social:G11,1
+twin-0048,osint_mailing_list,osint_mailing_list:G7,1
+twin-0048,osint_mailing_list,osint_mailing_list:G15,1
+twin-0048,osint_oss_project,osint_oss_project:G6,1
+twin-0048,osint_oss_project,osint_oss_project:G4,1
+twin-0048,osint_affiliation,osint_affiliation:Arcadia Logistics:L1,1
+twin-0048,osint_affiliation,osint_affiliation:G5,1
+twin-0048,osint_vendor,osint_vendor:Arcadia Logistics:L0,1
+twin-0048,osint_vendor,osint_vendor:G6,1
+twin-0048,osint_certification,osint_certification:G10,1
+twin-0048,osint_certification,osint_certification:G9,1
+twin-0048,osint_event,osint_event:G8,1
+twin-0048,osint_event,osint_event:G4,1
+twin-0048,osint_social,osint_social:Arcadia Logistics:L0,1
+twin-0048,osint_social,osint_social:G18,1
+twin-0049,osint_mailing_list,osint_mailing_list:G10,1
+twin-0049,osint_mailing_list,osint_mailing_list:Helvetia Insurance:L1,1
+twin-0049,osint_oss_project,osint_oss_project:G5,1
+twin-0049,osint_oss_project,osint_oss_project:Helvetia Insurance:L0,1
+twin-0049,osint_affiliation,osint_affiliation:G3,1
+twin-0049,osint_affiliation,osint_affiliation:G14,1
+twin-0049,osint_vendor,osint_vendor:Helvetia Insurance:L1,1
+twin-0049,osint_certification,osint_certification:G8,1
+twin-0049,osint_certification,osint_certification:G11,1
+twin-0049,osint_event,osint_event:G4,1
+twin-0049,osint_event,osint_event:G5,1
+twin-0049,osint_social,osint_social:Helvetia Insurance:L0,1
+twin-0049,osint_social,osint_social:G1,1
+twin-0050,osint_mailing_list,osint_mailing_list:G10,1
+twin-0050,osint_mailing_list,osint_mailing_list:G16,1
+twin-0050,osint_oss_project,osint_oss_project:Helvetia Insurance:L1,1
+twin-0050,osint_affiliation,osint_affiliation:Helvetia Insurance:L1,1
+twin-0050,osint_affiliation,osint_affiliation:G9,1
+twin-0050,osint_vendor,osint_vendor:Helvetia Insurance:L0,1
+twin-0050,osint_vendor,osint_vendor:G2,1
+twin-0050,osint_certification,osint_certification:Helvetia Insurance:L0,1
+twin-0050,osint_certification,osint_certification:G12,1
+twin-0050,osint_event,osint_event:G13,1
+twin-0050,osint_event,osint_event:Helvetia Insurance:L1,1
+twin-0050,osint_social,osint_social:Helvetia Insurance:L0,1
+twin-0050,osint_social,osint_social:G10,1
+twin-0051,osint_mailing_list,osint_mailing_list:G19,1
+twin-0051,osint_mailing_list,osint_mailing_list:G5,1
+twin-0051,osint_oss_project,osint_oss_project:G19,1
+twin-0051,osint_oss_project,osint_oss_project:G1,1
+twin-0051,osint_affiliation,osint_affiliation:G3,1
+twin-0051,osint_affiliation,osint_affiliation:Helvetia Insurance:L0,1
+twin-0051,osint_vendor,osint_vendor:Helvetia Insurance:L0,1
+twin-0051,osint_vendor,osint_vendor:Helvetia Insurance:L1,1
+twin-0051,osint_certification,osint_certification:G14,1
+twin-0051,osint_certification,osint_certification:Helvetia Insurance:L0,1
+twin-0051,osint_event,osint_event:Helvetia Insurance:L1,1
+twin-0051,osint_event,osint_event:Helvetia Insurance:L0,1
+twin-0051,osint_social,osint_social:Helvetia Insurance:L0,1
+twin-0051,osint_social,osint_social:G7,1
+twin-0052,osint_mailing_list,osint_mailing_list:Helvetia Insurance:L1,1
+twin-0052,osint_mailing_list,osint_mailing_list:Helvetia Insurance:L0,1
+twin-0052,osint_oss_project,osint_oss_project:G20,1
+twin-0052,osint_oss_project,osint_oss_project:G4,1
+twin-0052,osint_affiliation,osint_affiliation:Helvetia Insurance:L0,1
+twin-0052,osint_affiliation,osint_affiliation:Helvetia Insurance:L1,1
+twin-0052,osint_vendor,osint_vendor:Helvetia Insurance:L1,1
+twin-0052,osint_vendor,osint_vendor:G5,1
+twin-0052,osint_certification,osint_certification:G2,1
+twin-0052,osint_certification,osint_certification:Helvetia Insurance:L0,1
+twin-0052,osint_event,osint_event:G8,1
+twin-0052,osint_event,osint_event:G13,1
+twin-0052,osint_social,osint_social:Helvetia Insurance:L0,1
+twin-0052,osint_social,osint_social:G7,1
+twin-0052,osint_social,osint_social:G26,1
+twin-0053,osint_mailing_list,osint_mailing_list:G12,1
+twin-0053,osint_mailing_list,osint_mailing_list:G13,1
+twin-0053,osint_oss_project,osint_oss_project:G15,1
+twin-0053,osint_oss_project,osint_oss_project:Helvetia Insurance:L1,1
+twin-0053,osint_affiliation,osint_affiliation:G10,1
+twin-0053,osint_vendor,osint_vendor:Helvetia Insurance:L0,1
+twin-0053,osint_certification,osint_certification:Helvetia Insurance:L0,1
+twin-0053,osint_certification,osint_certification:G4,1
+twin-0053,osint_event,osint_event:Helvetia Insurance:L1,1
+twin-0053,osint_event,osint_event:G15,1
+twin-0053,osint_social,osint_social:G5,1
+twin-0053,osint_social,osint_social:Helvetia Insurance:L0,1
+twin-0053,osint_social,osint_social:G22,1
+twin-0054,osint_mailing_list,osint_mailing_list:Helvetia Insurance:L1,1
+twin-0054,osint_mailing_list,osint_mailing_list:G16,1
+twin-0054,osint_oss_project,osint_oss_project:G8,1
+twin-0054,osint_oss_project,osint_oss_project:G13,1
+twin-0054,osint_affiliation,osint_affiliation:G12,1
+twin-0054,osint_affiliation,osint_affiliation:G11,1
+twin-0054,osint_vendor,osint_vendor:G10,1
+twin-0054,osint_vendor,osint_vendor:Helvetia Insurance:L0,1
+twin-0054,osint_certification,osint_certification:G12,1
+twin-0054,osint_certification,osint_certification:G10,1
+twin-0054,osint_event,osint_event:G8,1
+twin-0054,osint_event,osint_event:Helvetia Insurance:L0,1
+twin-0054,osint_social,osint_social:G0,1
+twin-0054,osint_social,osint_social:Helvetia Insurance:L0,1
+twin-0055,osint_mailing_list,osint_mailing_list:Helvetia Insurance:L2,1
+twin-0055,osint_mailing_list,osint_mailing_list:G9,1
+twin-0055,osint_oss_project,osint_oss_project:Helvetia Insurance:L1,1
+twin-0055,osint_affiliation,osint_affiliation:G2,1
+twin-0055,osint_affiliation,osint_affiliation:Helvetia Insurance:L0,1
+twin-0055,osint_vendor,osint_vendor:Helvetia Insurance:L1,1
+twin-0055,osint_certification,osint_certification:Helvetia Insurance:L0,1
+twin-0055,osint_certification,osint_certification:G8,1
+twin-0055,osint_event,osint_event:Helvetia Insurance:L1,1
+twin-0055,osint_social,osint_social:G2,1
+twin-0055,osint_social,osint_social:G5,1
+twin-0055,osint_social,osint_social:G20,1
+twin-0056,osint_mailing_list,osint_mailing_list:G18,1
+twin-0056,osint_mailing_list,osint_mailing_list:Helvetia Insurance:L1,1
+twin-0056,osint_oss_project,osint_oss_project:Helvetia Insurance:L0,1
+twin-0056,osint_oss_project,osint_oss_project:G12,1
+twin-0056,osint_affiliation,osint_affiliation:G1,1
+twin-0056,osint_affiliation,osint_affiliation:G10,1
+twin-0056,osint_vendor,osint_vendor:G4,1
+twin-0056,osint_vendor,osint_vendor:Helvetia Insurance:L0,1
+twin-0056,osint_certification,osint_certification:Helvetia Insurance:L0,1
+twin-0056,osint_event,osint_event:G4,1
+twin-0056,osint_event,osint_event:Helvetia Insurance:L0,1
+twin-0056,osint_social,osint_social:G14,1
+twin-0056,osint_social,osint_social:G4,1
+twin-0056,osint_social,osint_social:Helvetia Insurance:L0,1
+twin-0057,osint_mailing_list,osint_mailing_list:G16,1
+twin-0057,osint_mailing_list,osint_mailing_list:Brightpath Education:L2,1
+twin-0057,osint_oss_project,osint_oss_project:Brightpath Education:L1,1
+twin-0057,osint_oss_project,osint_oss_project:Brightpath Education:L0,1
+twin-0057,osint_affiliation,osint_affiliation:G6,1
+twin-0057,osint_affiliation,osint_affiliation:G12,1
+twin-0057,osint_vendor,osint_vendor:G9,1
+twin-0057,osint_vendor,osint_vendor:G14,1
+twin-0057,osint_certification,osint_certification:G11,1
+twin-0057,osint_certification,osint_certification:G5,1
+twin-0057,osint_event,osint_event:Brightpath Education:L0,1
+twin-0057,osint_event,osint_event:Brightpath Education:L1,1
+twin-0057,osint_social,osint_social:Brightpath Education:L0,1
+twin-0058,osint_mailing_list,osint_mailing_list:G17,1
+twin-0058,osint_mailing_list,osint_mailing_list:Brightpath Education:L0,1
+twin-0058,osint_oss_project,osint_oss_project:G21,1
+twin-0058,osint_oss_project,osint_oss_project:Brightpath Education:L1,1
+twin-0058,osint_affiliation,osint_affiliation:G8,1
+twin-0058,osint_affiliation,osint_affiliation:G1,1
+twin-0058,osint_vendor,osint_vendor:Brightpath Education:L1,1
+twin-0058,osint_vendor,osint_vendor:G2,1
+twin-0058,osint_certification,osint_certification:Brightpath Education:L0,1
+twin-0058,osint_certification,osint_certification:G10,1
+twin-0058,osint_event,osint_event:Brightpath Education:L0,1
+twin-0058,osint_event,osint_event:Brightpath Education:L1,1
+twin-0058,osint_social,osint_social:G4,1
+twin-0058,osint_social,osint_social:Brightpath Education:L0,1
+twin-0059,osint_mailing_list,osint_mailing_list:G10,1
+twin-0059,osint_mailing_list,osint_mailing_list:Brightpath Education:L1,1
+twin-0059,osint_oss_project,osint_oss_project:Brightpath Education:L1,1
+twin-0059,osint_oss_project,osint_oss_project:G7,1
+twin-0059,osint_affiliation,osint_affiliation:G12,1
+twin-0059,osint_affiliation,osint_affiliation:G8,1
+twin-0059,osint_vendor,osint_vendor:Brightpath Education:L1,1
+twin-0059,osint_certification,osint_certification:G4,1
+twin-0059,osint_certification,osint_certification:G6,1
+twin-0059,osint_event,osint_event:Brightpath Education:L1,1
+twin-0059,osint_social,osint_social:G16,1
+twin-0059,osint_social,osint_social:G24,1
+twin-0059,osint_social,osint_social:Brightpath Education:L0,1
+twin-0060,osint_mailing_list,osint_mailing_list:Brightpath Education:L1,1
+twin-0060,osint_mailing_list,osint_mailing_list:G9,1
+twin-0060,osint_oss_project,osint_oss_project:Brightpath Education:L1,1
+twin-0060,osint_oss_project,osint_oss_project:G6,1
+twin-0060,osint_affiliation,osint_affiliation:Brightpath Education:L1,1
+twin-0060,osint_affiliation,osint_affiliation:Brightpath Education:L0,1
+twin-0060,osint_vendor,osint_vendor:G2,1
+twin-0060,osint_vendor,osint_vendor:Brightpath Education:L1,1
+twin-0060,osint_certification,osint_certification:Brightpath Education:L0,1
+twin-0060,osint_certification,osint_certification:G2,1
+twin-0060,osint_event,osint_event:G2,1
+twin-0060,osint_event,osint_event:G6,1
+twin-0060,osint_social,osint_social:G9,1
+twin-0060,osint_social,osint_social:Brightpath Education:L0,1
+twin-0061,osint_mailing_list,osint_mailing_list:Brightpath Education:L1,1
+twin-0061,osint_mailing_list,osint_mailing_list:Brightpath Education:L0,1
+twin-0061,osint_oss_project,osint_oss_project:Brightpath Education:L1,1
+twin-0061,osint_affiliation,osint_affiliation:Brightpath Education:L0,1
+twin-0061,osint_vendor,osint_vendor:Brightpath Education:L1,1
+twin-0061,osint_vendor,osint_vendor:G5,1
+twin-0061,osint_certification,osint_certification:Brightpath Education:L0,1
+twin-0061,osint_certification,osint_certification:G1,1
+twin-0061,osint_event,osint_event:Brightpath Education:L1,1
+twin-0061,osint_event,osint_event:G3,1
+twin-0061,osint_social,osint_social:Brightpath Education:L0,1
+twin-0061,osint_social,osint_social:G10,1
+twin-0062,osint_mailing_list,osint_mailing_list:G16,1
+twin-0062,osint_mailing_list,osint_mailing_list:G19,1
+twin-0062,osint_oss_project,osint_oss_project:Brightpath Education:L1,1
+twin-0062,osint_oss_project,osint_oss_project:G17,1
+twin-0062,osint_affiliation,osint_affiliation:Brightpath Education:L0,1
+twin-0062,osint_affiliation,osint_affiliation:G9,1
+twin-0062,osint_vendor,osint_vendor:Brightpath Education:L0,1
+twin-0062,osint_certification,osint_certification:G8,1
+twin-0062,osint_certification,osint_certification:Brightpath Education:L0,1
+twin-0062,osint_event,osint_event:G12,1
+twin-0062,osint_event,osint_event:Brightpath Education:L0,1
+twin-0062,osint_social,osint_social:Brightpath Education:L0,1
+twin-0063,osint_mailing_list,osint_mailing_list:Brightpath Education:L1,1
+twin-0063,osint_mailing_list,osint_mailing_list:Brightpath Education:L2,1
+twin-0063,osint_oss_project,osint_oss_project:G10,1
+twin-0063,osint_oss_project,osint_oss_project:Brightpath Education:L0,1
+twin-0063,osint_affiliation,osint_affiliation:Brightpath Education:L0,1
+twin-0063,osint_affiliation,osint_affiliation:Brightpath Education:L1,1
+twin-0063,osint_vendor,osint_vendor:Brightpath Education:L1,1
+twin-0063,osint_vendor,osint_vendor:G13,1
+twin-0063,osint_certification,osint_certification:Brightpath Education:L0,1
+twin-0063,osint_event,osint_event:Brightpath Education:L0,1
+twin-0063,osint_social,osint_social:G0,1
+twin-0063,osint_social,osint_social:Brightpath Education:L0,1
+twin-0064,osint_mailing_list,osint_mailing_list:G12,1
+twin-0064,osint_mailing_list,osint_mailing_list:Brightpath Education:L1,1
+twin-0064,osint_oss_project,osint_oss_project:Brightpath Education:L1,1
+twin-0064,osint_oss_project,osint_oss_project:G24,1
+twin-0064,osint_affiliation,osint_affiliation:G4,1
+twin-0064,osint_vendor,osint_vendor:Brightpath Education:L0,1
+twin-0064,osint_vendor,osint_vendor:G13,1
+twin-0064,osint_certification,osint_certification:Brightpath Education:L0,1
+twin-0064,osint_event,osint_event:G14,1
+twin-0064,osint_event,osint_event:G5,1
+twin-0064,osint_social,osint_social:G19,1
+twin-0064,osint_social,osint_social:Brightpath Education:L0,1
+twin-0064,osint_social,osint_social:G17,1
+twin-0065,osint_mailing_list,osint_mailing_list:G15,1
+twin-0065,osint_mailing_list,osint_mailing_list:Vantage Retail Group:L2,1
+twin-0065,osint_oss_project,osint_oss_project:Vantage Retail Group:L1,1
+twin-0065,osint_oss_project,osint_oss_project:G10,1
+twin-0065,osint_affiliation,osint_affiliation:Vantage Retail Group:L1,1
+twin-0065,osint_affiliation,osint_affiliation:G3,1
+twin-0065,osint_vendor,osint_vendor:Vantage Retail Group:L0,1
+twin-0065,osint_certification,osint_certification:Vantage Retail Group:L0,1
+twin-0065,osint_certification,osint_certification:G14,1
+twin-0065,osint_event,osint_event:Vantage Retail Group:L1,1
+twin-0065,osint_event,osint_event:G3,1
+twin-0065,osint_social,osint_social:Vantage Retail Group:L0,1
+twin-0065,osint_social,osint_social:G23,1
+twin-0066,osint_mailing_list,osint_mailing_list:Vantage Retail Group:L2,1
+twin-0066,osint_mailing_list,osint_mailing_list:G15,1
+twin-0066,osint_oss_project,osint_oss_project:Vantage Retail Group:L1,1
+twin-0066,osint_oss_project,osint_oss_project:G4,1
+twin-0066,osint_affiliation,osint_affiliation:Vantage Retail Group:L1,1
+twin-0066,osint_affiliation,osint_affiliation:G4,1
+twin-0066,osint_vendor,osint_vendor:G1,1
+twin-0066,osint_vendor,osint_vendor:G5,1
+twin-0066,osint_certification,osint_certification:G10,1
+twin-0066,osint_certification,osint_certification:Vantage Retail Group:L0,1
+twin-0066,osint_event,osint_event:Vantage Retail Group:L1,1
+twin-0066,osint_event,osint_event:Vantage Retail Group:L0,1
+twin-0066,osint_social,osint_social:Vantage Retail Group:L0,1
+twin-0066,osint_social,osint_social:G29,1
+twin-0067,osint_mailing_list,osint_mailing_list:G6,1
+twin-0067,osint_mailing_list,osint_mailing_list:Vantage Retail Group:L0,1
+twin-0067,osint_oss_project,osint_oss_project:Vantage Retail Group:L1,1
+twin-0067,osint_affiliation,osint_affiliation:G4,1
+twin-0067,osint_affiliation,osint_affiliation:G10,1
+twin-0067,osint_vendor,osint_vendor:Vantage Retail Group:L1,1
+twin-0067,osint_certification,osint_certification:G7,1
+twin-0067,osint_certification,osint_certification:Vantage Retail Group:L0,1
+twin-0067,osint_event,osint_event:Vantage Retail Group:L1,1
+twin-0067,osint_event,osint_event:G1,1
+twin-0067,osint_social,osint_social:G8,1
+twin-0067,osint_social,osint_social:Vantage Retail Group:L0,1
+twin-0067,osint_social,osint_social:G6,1
+twin-0068,osint_mailing_list,osint_mailing_list:Vantage Retail Group:L1,1
+twin-0068,osint_mailing_list,osint_mailing_list:Vantage Retail Group:L0,1
+twin-0068,osint_oss_project,osint_oss_project:Vantage Retail Group:L0,1
+twin-0068,osint_affiliation,osint_affiliation:Vantage Retail Group:L0,1
+twin-0068,osint_vendor,osint_vendor:Vantage Retail Group:L0,1
+twin-0068,osint_vendor,osint_vendor:G8,1
+twin-0068,osint_certification,osint_certification:G15,1
+twin-0068,osint_certification,osint_certification:Vantage Retail Group:L0,1
+twin-0068,osint_event,osint_event:G2,1
+twin-0068,osint_event,osint_event:G7,1
+twin-0068,osint_social,osint_social:G15,1
+twin-0068,osint_social,osint_social:Vantage Retail Group:L0,1
+twin-0069,osint_mailing_list,osint_mailing_list:G10,1
+twin-0069,osint_mailing_list,osint_mailing_list:G4,1
+twin-0069,osint_oss_project,osint_oss_project:Vantage Retail Group:L1,1
+twin-0069,osint_oss_project,osint_oss_project:Vantage Retail Group:L0,1
+twin-0069,osint_affiliation,osint_affiliation:G1,1
+twin-0069,osint_affiliation,osint_affiliation:Vantage Retail Group:L1,1
+twin-0069,osint_vendor,osint_vendor:Vantage Retail Group:L1,1
+twin-0069,osint_vendor,osint_vendor:Vantage Retail Group:L0,1
+twin-0069,osint_certification,osint_certification:Vantage Retail Group:L0,1
+twin-0069,osint_event,osint_event:G11,1
+twin-0069,osint_event,osint_event:Vantage Retail Group:L1,1
+twin-0069,osint_social,osint_social:Vantage Retail Group:L0,1
+twin-0069,osint_social,osint_social:G23,1
+twin-0069,osint_social,osint_social:G11,1
+twin-0070,osint_mailing_list,osint_mailing_list:G2,1
+twin-0070,osint_mailing_list,osint_mailing_list:Vantage Retail Group:L0,1
+twin-0070,osint_oss_project,osint_oss_project:Vantage Retail Group:L0,1
+twin-0070,osint_oss_project,osint_oss_project:G7,1
+twin-0070,osint_affiliation,osint_affiliation:Vantage Retail Group:L1,1
+twin-0070,osint_affiliation,osint_affiliation:Vantage Retail Group:L0,1
+twin-0070,osint_vendor,osint_vendor:Vantage Retail Group:L0,1
+twin-0070,osint_certification,osint_certification:G12,1
+twin-0070,osint_certification,osint_certification:G2,1
+twin-0070,osint_event,osint_event:Vantage Retail Group:L0,1
+twin-0070,osint_event,osint_event:Vantage Retail Group:L1,1
+twin-0070,osint_social,osint_social:G28,1
+twin-0070,osint_social,osint_social:Vantage Retail Group:L0,1
+twin-0070,osint_social,osint_social:G10,1
+twin-0071,osint_mailing_list,osint_mailing_list:Vantage Retail Group:L2,1
+twin-0071,osint_mailing_list,osint_mailing_list:G13,1
+twin-0071,osint_oss_project,osint_oss_project:G12,1
+twin-0071,osint_oss_project,osint_oss_project:Vantage Retail Group:L1,1
+twin-0071,osint_affiliation,osint_affiliation:G9,1
+twin-0071,osint_affiliation,osint_affiliation:Vantage Retail Group:L1,1
+twin-0071,osint_vendor,osint_vendor:G11,1
+twin-0071,osint_vendor,osint_vendor:G0,1
+twin-0071,osint_certification,osint_certification:Vantage Retail Group:L0,1
+twin-0071,osint_event,osint_event:G9,1
+twin-0071,osint_event,osint_event:Vantage Retail Group:L0,1
+twin-0071,osint_social,osint_social:G4,1
+twin-0071,osint_social,osint_social:G7,1
+twin-0071,osint_social,osint_social:G10,1
+twin-0072,osint_mailing_list,osint_mailing_list:G19,1
+twin-0072,osint_mailing_list,osint_mailing_list:G11,1
+twin-0072,osint_oss_project,osint_oss_project:Vantage Retail Group:L1,1
+twin-0072,osint_affiliation,osint_affiliation:G7,1
+twin-0072,osint_affiliation,osint_affiliation:G11,1
+twin-0072,osint_vendor,osint_vendor:G6,1
+twin-0072,osint_certification,osint_certification:G6,1
+twin-0072,osint_certification,osint_certification:Vantage Retail Group:L0,1
+twin-0072,osint_event,osint_event:Vantage Retail Group:L0,1
+twin-0072,osint_social,osint_social:G20,1
+twin-0072,osint_social,osint_social:G2,1
+twin-0072,osint_social,osint_social:Vantage Retail Group:L0,1
+twin-0073,osint_mailing_list,osint_mailing_list:G12,1
+twin-0073,osint_mailing_list,osint_mailing_list:Aurora Media:L1,1
+twin-0073,osint_oss_project,osint_oss_project:Aurora Media:L1,1
+twin-0073,osint_affiliation,osint_affiliation:Aurora Media:L0,1
+twin-0073,osint_affiliation,osint_affiliation:G13,1
+twin-0073,osint_vendor,osint_vendor:G4,1
+twin-0073,osint_vendor,osint_vendor:Aurora Media:L0,1
+twin-0073,osint_certification,osint_certification:G7,1
+twin-0073,osint_certification,osint_certification:G15,1
+twin-0073,osint_event,osint_event:Aurora Media:L0,1
+twin-0073,osint_event,osint_event:Aurora Media:L1,1
+twin-0073,osint_social,osint_social:G3,1
+twin-0073,osint_social,osint_social:G29,1
+twin-0073,osint_social,osint_social:G9,1
+twin-0074,osint_mailing_list,osint_mailing_list:Aurora Media:L2,1
+twin-0074,osint_mailing_list,osint_mailing_list:Aurora Media:L0,1
+twin-0074,osint_oss_project,osint_oss_project:Aurora Media:L1,1
+twin-0074,osint_oss_project,osint_oss_project:G22,1
+twin-0074,osint_affiliation,osint_affiliation:Aurora Media:L1,1
+twin-0074,osint_vendor,osint_vendor:Aurora Media:L1,1
+twin-0074,osint_certification,osint_certification:G15,1
+twin-0074,osint_certification,osint_certification:Aurora Media:L0,1
+twin-0074,osint_event,osint_event:G5,1
+twin-0074,osint_event,osint_event:G7,1
+twin-0074,osint_social,osint_social:Aurora Media:L0,1
+twin-0074,osint_social,osint_social:G13,1
+twin-0074,osint_social,osint_social:G26,1
+twin-0075,osint_mailing_list,osint_mailing_list:Aurora Media:L1,1
+twin-0075,osint_mailing_list,osint_mailing_list:G2,1
+twin-0075,osint_oss_project,osint_oss_project:Aurora Media:L0,1
+twin-0075,osint_affiliation,osint_affiliation:Aurora Media:L1,1
+twin-0075,osint_affiliation,osint_affiliation:G6,1
+twin-0075,osint_vendor,osint_vendor:G9,1
+twin-0075,osint_vendor,osint_vendor:G5,1
+twin-0075,osint_certification,osint_certification:Aurora Media:L0,1
+twin-0075,osint_event,osint_event:Aurora Media:L0,1
+twin-0075,osint_event,osint_event:G0,1
+twin-0075,osint_social,osint_social:Aurora Media:L0,1
+twin-0076,osint_mailing_list,osint_mailing_list:Aurora Media:L2,1
+twin-0076,osint_mailing_list,osint_mailing_list:G16,1
+twin-0076,osint_oss_project,osint_oss_project:Aurora Media:L1,1
+twin-0076,osint_oss_project,osint_oss_project:G21,1
+twin-0076,osint_affiliation,osint_affiliation:Aurora Media:L1,1
+twin-0076,osint_affiliation,osint_affiliation:G4,1
+twin-0076,osint_vendor,osint_vendor:G15,1
+twin-0076,osint_vendor,osint_vendor:G7,1
+twin-0076,osint_certification,osint_certification:G14,1
+twin-0076,osint_certification,osint_certification:G16,1
+twin-0076,osint_event,osint_event:Aurora Media:L1,1
+twin-0076,osint_social,osint_social:Aurora Media:L0,1
+twin-0076,osint_social,osint_social:G11,1
+twin-0077,osint_mailing_list,osint_mailing_list:Aurora Media:L1,1
+twin-0077,osint_mailing_list,osint_mailing_list:G0,1
+twin-0077,osint_oss_project,osint_oss_project:Aurora Media:L0,1
+twin-0077,osint_oss_project,osint_oss_project:G10,1
+twin-0077,osint_affiliation,osint_affiliation:Aurora Media:L1,1
+twin-0077,osint_vendor,osint_vendor:Aurora Media:L0,1
+twin-0077,osint_certification,osint_certification:G4,1
+twin-0077,osint_certification,osint_certification:G2,1
+twin-0077,osint_event,osint_event:G15,1
+twin-0077,osint_event,osint_event:Aurora Media:L0,1
+twin-0077,osint_social,osint_social:G4,1
+twin-0077,osint_social,osint_social:G5,1
+twin-0077,osint_social,osint_social:Aurora Media:L0,1
+twin-0078,osint_mailing_list,osint_mailing_list:Aurora Media:L2,1
+twin-0078,osint_mailing_list,osint_mailing_list:Aurora Media:L1,1
+twin-0078,osint_oss_project,osint_oss_project:Aurora Media:L1,1
+twin-0078,osint_oss_project,osint_oss_project:G11,1
+twin-0078,osint_affiliation,osint_affiliation:Aurora Media:L0,1
+twin-0078,osint_vendor,osint_vendor:G17,1
+twin-0078,osint_vendor,osint_vendor:G12,1
+twin-0078,osint_certification,osint_certification:G20,1
+twin-0078,osint_certification,osint_certification:Aurora Media:L0,1
+twin-0078,osint_event,osint_event:Aurora Media:L0,1
+twin-0078,osint_social,osint_social:G3,1
+twin-0078,osint_social,osint_social:Aurora Media:L0,1
+twin-0078,osint_social,osint_social:G18,1
+twin-0079,osint_mailing_list,osint_mailing_list:G10,1
+twin-0079,osint_mailing_list,osint_mailing_list:G13,1
+twin-0079,osint_oss_project,osint_oss_project:G20,1
+twin-0079,osint_oss_project,osint_oss_project:Aurora Media:L0,1
+twin-0079,osint_affiliation,osint_affiliation:Aurora Media:L1,1
+twin-0079,osint_affiliation,osint_affiliation:G13,1
+twin-0079,osint_vendor,osint_vendor:Aurora Media:L1,1
+twin-0079,osint_vendor,osint_vendor:Aurora Media:L0,1
+twin-0079,osint_certification,osint_certification:Aurora Media:L0,1
+twin-0079,osint_event,osint_event:Aurora Media:L0,1
+twin-0079,osint_event,osint_event:G3,1
+twin-0079,osint_social,osint_social:G17,1
+twin-0079,osint_social,osint_social:Aurora Media:L0,1
+twin-0079,osint_social,osint_social:G26,1
+twin-0080,osint_mailing_list,osint_mailing_list:G9,1
+twin-0080,osint_mailing_list,osint_mailing_list:Aurora Media:L0,1
+twin-0080,osint_oss_project,osint_oss_project:G24,1
+twin-0080,osint_oss_project,osint_oss_project:Aurora Media:L0,1
+twin-0080,osint_affiliation,osint_affiliation:G1,1
+twin-0080,osint_affiliation,osint_affiliation:Aurora Media:L0,1
+twin-0080,osint_vendor,osint_vendor:G3,1
+twin-0080,osint_vendor,osint_vendor:G2,1
+twin-0080,osint_certification,osint_certification:G2,1
+twin-0080,osint_certification,osint_certification:G21,1
+twin-0080,osint_event,osint_event:G14,1
+twin-0080,osint_event,osint_event:G0,1
+twin-0080,osint_social,osint_social:Aurora Media:L0,1
+twin-0081,osint_mailing_list,osint_mailing_list:G6,1
+twin-0081,osint_mailing_list,osint_mailing_list:Sterling Construction:L1,1
+twin-0081,osint_oss_project,osint_oss_project:G1,1
+twin-0081,osint_oss_project,osint_oss_project:Sterling Construction:L1,1
+twin-0081,osint_affiliation,osint_affiliation:Sterling Construction:L1,1
+twin-0081,osint_vendor,osint_vendor:Sterling Construction:L0,1
+twin-0081,osint_vendor,osint_vendor:Sterling Construction:L1,1
+twin-0081,osint_certification,osint_certification:G1,1
+twin-0081,osint_certification,osint_certification:G4,1
+twin-0081,osint_event,osint_event:Sterling Construction:L1,1
+twin-0081,osint_event,osint_event:G15,1
+twin-0081,osint_social,osint_social:G8,1
+twin-0081,osint_social,osint_social:G17,1
+twin-0081,osint_social,osint_social:Sterling Construction:L0,1
+twin-0082,osint_mailing_list,osint_mailing_list:Sterling Construction:L2,1
+twin-0082,osint_mailing_list,osint_mailing_list:G15,1
+twin-0082,osint_oss_project,osint_oss_project:G8,1
+twin-0082,osint_oss_project,osint_oss_project:Sterling Construction:L1,1
+twin-0082,osint_affiliation,osint_affiliation:G0,1
+twin-0082,osint_affiliation,osint_affiliation:G6,1
+twin-0082,osint_vendor,osint_vendor:G4,1
+twin-0082,osint_vendor,osint_vendor:G6,1
+twin-0082,osint_certification,osint_certification:Sterling Construction:L0,1
+twin-0082,osint_event,osint_event:G8,1
+twin-0082,osint_event,osint_event:Sterling Construction:L0,1
+twin-0082,osint_social,osint_social:G24,1
+twin-0082,osint_social,osint_social:G20,1
+twin-0082,osint_social,osint_social:Sterling Construction:L0,1
+twin-0083,osint_mailing_list,osint_mailing_list:G19,1
+twin-0083,osint_mailing_list,osint_mailing_list:Sterling Construction:L1,1
+twin-0083,osint_oss_project,osint_oss_project:G9,1
+twin-0083,osint_oss_project,osint_oss_project:Sterling Construction:L1,1
+twin-0083,osint_affiliation,osint_affiliation:G10,1
+twin-0083,osint_affiliation,osint_affiliation:Sterling Construction:L1,1
+twin-0083,osint_vendor,osint_vendor:G6,1
+twin-0083,osint_certification,osint_certification:Sterling Construction:L0,1
+twin-0083,osint_event,osint_event:Sterling Construction:L1,1
+twin-0083,osint_social,osint_social:Sterling Construction:L0,1
+twin-0083,osint_social,osint_social:G22,1
+twin-0084,osint_mailing_list,osint_mailing_list:Sterling Construction:L1,1
+twin-0084,osint_oss_project,osint_oss_project:Sterling Construction:L1,1
+twin-0084,osint_oss_project,osint_oss_project:G12,1
+twin-0084,osint_affiliation,osint_affiliation:Sterling Construction:L0,1
+twin-0084,osint_affiliation,osint_affiliation:G8,1
+twin-0084,osint_vendor,osint_vendor:Sterling Construction:L0,1
+twin-0084,osint_certification,osint_certification:G4,1
+twin-0084,osint_certification,osint_certification:G3,1
+twin-0084,osint_event,osint_event:G9,1
+twin-0084,osint_event,osint_event:Sterling Construction:L0,1
+twin-0084,osint_social,osint_social:G7,1
+twin-0084,osint_social,osint_social:Sterling Construction:L0,1
+twin-0084,osint_social,osint_social:G18,1
+twin-0085,osint_mailing_list,osint_mailing_list:G6,1
+twin-0085,osint_mailing_list,osint_mailing_list:G19,1
+twin-0085,osint_oss_project,osint_oss_project:Sterling Construction:L0,1
+twin-0085,osint_oss_project,osint_oss_project:Sterling Construction:L1,1
+twin-0085,osint_affiliation,osint_affiliation:G5,1
+twin-0085,osint_affiliation,osint_affiliation:Sterling Construction:L1,1
+twin-0085,osint_vendor,osint_vendor:Sterling Construction:L1,1
+twin-0085,osint_vendor,osint_vendor:G15,1
+twin-0085,osint_certification,osint_certification:Sterling Construction:L0,1
+twin-0085,osint_certification,osint_certification:G5,1
+twin-0085,osint_event,osint_event:G5,1
+twin-0085,osint_event,osint_event:G14,1
+twin-0085,osint_social,osint_social:Sterling Construction:L0,1
+twin-0085,osint_social,osint_social:G29,1
+twin-0086,osint_mailing_list,osint_mailing_list:G1,1
+twin-0086,osint_mailing_list,osint_mailing_list:Sterling Construction:L1,1
+twin-0086,osint_oss_project,osint_oss_project:Sterling Construction:L1,1
+twin-0086,osint_affiliation,osint_affiliation:G6,1
+twin-0086,osint_affiliation,osint_affiliation:Sterling Construction:L1,1
+twin-0086,osint_vendor,osint_vendor:Sterling Construction:L1,1
+twin-0086,osint_vendor,osint_vendor:G9,1
+twin-0086,osint_certification,osint_certification:G7,1
+twin-0086,osint_certification,osint_certification:Sterling Construction:L0,1
+twin-0086,osint_event,osint_event:Sterling Construction:L0,1
+twin-0086,osint_event,osint_event:G8,1
+twin-0086,osint_social,osint_social:G7,1
+twin-0086,osint_social,osint_social:G0,1
+twin-0086,osint_social,osint_social:G24,1
+twin-0087,osint_mailing_list,osint_mailing_list:Sterling Construction:L0,1
+twin-0087,osint_oss_project,osint_oss_project:Sterling Construction:L1,1
+twin-0087,osint_oss_project,osint_oss_project:G19,1
+twin-0087,osint_affiliation,osint_affiliation:G9,1
+twin-0087,osint_affiliation,osint_affiliation:Sterling Construction:L0,1
+twin-0087,osint_vendor,osint_vendor:Sterling Construction:L1,1
+twin-0087,osint_vendor,osint_vendor:G9,1
+twin-0087,osint_certification,osint_certification:Sterling Construction:L0,1
+twin-0087,osint_event,osint_event:G8,1
+twin-0087,osint_event,osint_event:Sterling Construction:L0,1
+twin-0087,osint_social,osint_social:G29,1
+twin-0087,osint_social,osint_social:G11,1
+twin-0087,osint_social,osint_social:Sterling Construction:L0,1
+twin-0088,osint_mailing_list,osint_mailing_list:Sterling Construction:L0,1
+twin-0088,osint_mailing_list,osint_mailing_list:Sterling Construction:L1,1
+twin-0088,osint_oss_project,osint_oss_project:G13,1
+twin-0088,osint_oss_project,osint_oss_project:Sterling Construction:L0,1
+twin-0088,osint_affiliation,osint_affiliation:Sterling Construction:L1,1
+twin-0088,osint_affiliation,osint_affiliation:G11,1
+twin-0088,osint_vendor,osint_vendor:G11,1
+twin-0088,osint_vendor,osint_vendor:Sterling Construction:L0,1
+twin-0088,osint_certification,osint_certification:Sterling Construction:L0,1
+twin-0088,osint_event,osint_event:G1,1
+twin-0088,osint_event,osint_event:G8,1
+twin-0088,osint_social,osint_social:Sterling Construction:L0,1
+twin-0088,osint_social,osint_social:G2,1
+twin-0089,osint_mailing_list,osint_mailing_list:Polaris Pharma:L1,1
+twin-0089,osint_oss_project,osint_oss_project:Polaris Pharma:L1,1
+twin-0089,osint_oss_project,osint_oss_project:Polaris Pharma:L0,1
+twin-0089,osint_affiliation,osint_affiliation:G12,1
+twin-0089,osint_affiliation,osint_affiliation:G3,1
+twin-0089,osint_vendor,osint_vendor:Polaris Pharma:L0,1
+twin-0089,osint_vendor,osint_vendor:Polaris Pharma:L1,1
+twin-0089,osint_certification,osint_certification:Polaris Pharma:L0,1
+twin-0089,osint_certification,osint_certification:G12,1
+twin-0089,osint_event,osint_event:Polaris Pharma:L1,1
+twin-0089,osint_event,osint_event:G13,1
+twin-0089,osint_social,osint_social:Polaris Pharma:L0,1
+twin-0089,osint_social,osint_social:G0,1
+twin-0090,osint_mailing_list,osint_mailing_list:Polaris Pharma:L2,1
+twin-0090,osint_mailing_list,osint_mailing_list:G17,1
+twin-0090,osint_oss_project,osint_oss_project:Polaris Pharma:L0,1
+twin-0090,osint_oss_project,osint_oss_project:G7,1
+twin-0090,osint_affiliation,osint_affiliation:Polaris Pharma:L1,1
+twin-0090,osint_vendor,osint_vendor:Polaris Pharma:L1,1
+twin-0090,osint_certification,osint_certification:Polaris Pharma:L0,1
+twin-0090,osint_event,osint_event:G6,1
+twin-0090,osint_event,osint_event:G11,1
+twin-0090,osint_social,osint_social:G18,1
+twin-0090,osint_social,osint_social:Polaris Pharma:L0,1
+twin-0091,osint_mailing_list,osint_mailing_list:Polaris Pharma:L2,1
+twin-0091,osint_mailing_list,osint_mailing_list:Polaris Pharma:L0,1
+twin-0091,osint_oss_project,osint_oss_project:Polaris Pharma:L0,1
+twin-0091,osint_oss_project,osint_oss_project:G0,1
+twin-0091,osint_affiliation,osint_affiliation:Polaris Pharma:L0,1
+twin-0091,osint_affiliation,osint_affiliation:G2,1
+twin-0091,osint_vendor,osint_vendor:Polaris Pharma:L0,1
+twin-0091,osint_certification,osint_certification:G7,1
+twin-0091,osint_event,osint_event:Polaris Pharma:L0,1
+twin-0091,osint_event,osint_event:Polaris Pharma:L1,1
+twin-0091,osint_social,osint_social:G17,1
+twin-0091,osint_social,osint_social:G16,1
+twin-0091,osint_social,osint_social:Polaris Pharma:L0,1
+twin-0092,osint_mailing_list,osint_mailing_list:G14,1
+twin-0092,osint_mailing_list,osint_mailing_list:Polaris Pharma:L1,1
+twin-0092,osint_oss_project,osint_oss_project:Polaris Pharma:L1,1
+twin-0092,osint_affiliation,osint_affiliation:Polaris Pharma:L0,1
+twin-0092,osint_affiliation,osint_affiliation:G10,1
+twin-0092,osint_vendor,osint_vendor:G16,1
+twin-0092,osint_vendor,osint_vendor:G8,1
+twin-0092,osint_certification,osint_certification:G13,1
+twin-0092,osint_certification,osint_certification:Polaris Pharma:L0,1
+twin-0092,osint_event,osint_event:G9,1
+twin-0092,osint_event,osint_event:G14,1
+twin-0092,osint_social,osint_social:Polaris Pharma:L0,1
+twin-0092,osint_social,osint_social:G0,1
+twin-0093,osint_mailing_list,osint_mailing_list:Polaris Pharma:L2,1
+twin-0093,osint_oss_project,osint_oss_project:Polaris Pharma:L0,1
+twin-0093,osint_oss_project,osint_oss_project:G11,1
+twin-0093,osint_affiliation,osint_affiliation:Polaris Pharma:L1,1
+twin-0093,osint_vendor,osint_vendor:G6,1
+twin-0093,osint_vendor,osint_vendor:Polaris Pharma:L1,1
+twin-0093,osint_certification,osint_certification:Polaris Pharma:L0,1
+twin-0093,osint_event,osint_event:G1,1
+twin-0093,osint_event,osint_event:G7,1
+twin-0093,osint_social,osint_social:G5,1
+twin-0093,osint_social,osint_social:Polaris Pharma:L0,1
+twin-0094,osint_mailing_list,osint_mailing_list:Polaris Pharma:L1,1
+twin-0094,osint_mailing_list,osint_mailing_list:G1,1
+twin-0094,osint_oss_project,osint_oss_project:Polaris Pharma:L1,1
+twin-0094,osint_oss_project,osint_oss_project:G0,1
+twin-0094,osint_affiliation,osint_affiliation:G1,1
+twin-0094,osint_affiliation,osint_affiliation:Polaris Pharma:L1,1
+twin-0094,osint_vendor,osint_vendor:Polaris Pharma:L0,1
+twin-0094,osint_vendor,osint_vendor:Polaris Pharma:L1,1
+twin-0094,osint_certification,osint_certification:G8,1
+twin-0094,osint_certification,osint_certification:G19,1
+twin-0094,osint_event,osint_event:Polaris Pharma:L1,1
+twin-0094,osint_event,osint_event:G2,1
+twin-0094,osint_social,osint_social:G28,1
+twin-0094,osint_social,osint_social:Polaris Pharma:L0,1
+twin-0095,osint_mailing_list,osint_mailing_list:Polaris Pharma:L1,1
+twin-0095,osint_mailing_list,osint_mailing_list:G2,1
+twin-0095,osint_oss_project,osint_oss_project:Polaris Pharma:L1,1
+twin-0095,osint_oss_project,osint_oss_project:G13,1
+twin-0095,osint_affiliation,osint_affiliation:Polaris Pharma:L0,1
+twin-0095,osint_affiliation,osint_affiliation:G14,1
+twin-0095,osint_vendor,osint_vendor:Polaris Pharma:L0,1
+twin-0095,osint_certification,osint_certification:Polaris Pharma:L0,1
+twin-0095,osint_certification,osint_certification:G4,1
+twin-0095,osint_event,osint_event:G1,1
+twin-0095,osint_event,osint_event:Polaris Pharma:L1,1
+twin-0095,osint_social,osint_social:Polaris Pharma:L0,1
+twin-0095,osint_social,osint_social:G6,1
+twin-0096,osint_mailing_list,osint_mailing_list:Polaris Pharma:L1,1
+twin-0096,osint_mailing_list,osint_mailing_list:Polaris Pharma:L2,1
+twin-0096,osint_oss_project,osint_oss_project:G7,1
+twin-0096,osint_oss_project,osint_oss_project:Polaris Pharma:L0,1
+twin-0096,osint_affiliation,osint_affiliation:G13,1
+twin-0096,osint_affiliation,osint_affiliation:Polaris Pharma:L1,1
+twin-0096,osint_vendor,osint_vendor:Polaris Pharma:L1,1
+twin-0096,osint_vendor,osint_vendor:Polaris Pharma:L0,1
+twin-0096,osint_certification,osint_certification:G19,1
+twin-0096,osint_certification,osint_certification:Polaris Pharma:L0,1
+twin-0096,osint_event,osint_event:Polaris Pharma:L1,1
+twin-0096,osint_event,osint_event:G6,1
+twin-0096,osint_social,osint_social:Polaris Pharma:L0,1
+twin-0096,osint_social,osint_social:G20,1
+twin-0097,osint_mailing_list,osint_mailing_list:G12,1
+twin-0097,osint_mailing_list,osint_mailing_list:G11,1
+twin-0097,osint_oss_project,osint_oss_project:Ironclad Security:L1,1
+twin-0097,osint_oss_project,osint_oss_project:G14,1
+twin-0097,osint_affiliation,osint_affiliation:Ironclad Security:L0,1
+twin-0097,osint_affiliation,osint_affiliation:G7,1
+twin-0097,osint_vendor,osint_vendor:G0,1
+twin-0097,osint_vendor,osint_vendor:G4,1
+twin-0097,osint_certification,osint_certification:Ironclad Security:L0,1
+twin-0097,osint_certification,osint_certification:G1,1
+twin-0097,osint_event,osint_event:G7,1
+twin-0097,osint_event,osint_event:Ironclad Security:L0,1
+twin-0097,osint_social,osint_social:G10,1
+twin-0097,osint_social,osint_social:G28,1
+twin-0098,osint_mailing_list,osint_mailing_list:G8,1
+twin-0098,osint_mailing_list,osint_mailing_list:Ironclad Security:L2,1
+twin-0098,osint_oss_project,osint_oss_project:Ironclad Security:L1,1
+twin-0098,osint_oss_project,osint_oss_project:Ironclad Security:L0,1
+twin-0098,osint_affiliation,osint_affiliation:Ironclad Security:L1,1
+twin-0098,osint_vendor,osint_vendor:G14,1
+twin-0098,osint_vendor,osint_vendor:G8,1
+twin-0098,osint_certification,osint_certification:G12,1
+twin-0098,osint_certification,osint_certification:G10,1
+twin-0098,osint_event,osint_event:Ironclad Security:L1,1
+twin-0098,osint_social,osint_social:G23,1
+twin-0098,osint_social,osint_social:G29,1
+twin-0098,osint_social,osint_social:Ironclad Security:L0,1
+twin-0099,osint_mailing_list,osint_mailing_list:Ironclad Security:L0,1
+twin-0099,osint_mailing_list,osint_mailing_list:Ironclad Security:L2,1
+twin-0099,osint_oss_project,osint_oss_project:Ironclad Security:L0,1
+twin-0099,osint_affiliation,osint_affiliation:Ironclad Security:L0,1
+twin-0099,osint_vendor,osint_vendor:G4,1
+twin-0099,osint_vendor,osint_vendor:Ironclad Security:L1,1
+twin-0099,osint_certification,osint_certification:G15,1
+twin-0099,osint_certification,osint_certification:Ironclad Security:L0,1
+twin-0099,osint_event,osint_event:G1,1
+twin-0099,osint_event,osint_event:G10,1
+twin-0099,osint_social,osint_social:G4,1
+twin-0099,osint_social,osint_social:Ironclad Security:L0,1
+twin-0099,osint_social,osint_social:G23,1
+twin-0100,osint_mailing_list,osint_mailing_list:G11,1
+twin-0100,osint_mailing_list,osint_mailing_list:G3,1
+twin-0100,osint_oss_project,osint_oss_project:G18,1
+twin-0100,osint_oss_project,osint_oss_project:Ironclad Security:L1,1
+twin-0100,osint_affiliation,osint_affiliation:G1,1
+twin-0100,osint_affiliation,osint_affiliation:Ironclad Security:L0,1
+twin-0100,osint_vendor,osint_vendor:G6,1
+twin-0100,osint_vendor,osint_vendor:Ironclad Security:L0,1
+twin-0100,osint_certification,osint_certification:Ironclad Security:L0,1
+twin-0100,osint_certification,osint_certification:G3,1
+twin-0100,osint_event,osint_event:G6,1
+twin-0100,osint_event,osint_event:Ironclad Security:L0,1
+twin-0100,osint_social,osint_social:Ironclad Security:L0,1
+twin-0101,osint_mailing_list,osint_mailing_list:Ironclad Security:L2,1
+twin-0101,osint_mailing_list,osint_mailing_list:G13,1
+twin-0101,osint_oss_project,osint_oss_project:Ironclad Security:L0,1
+twin-0101,osint_oss_project,osint_oss_project:G11,1
+twin-0101,osint_affiliation,osint_affiliation:Ironclad Security:L1,1
+twin-0101,osint_affiliation,osint_affiliation:G10,1
+twin-0101,osint_vendor,osint_vendor:Ironclad Security:L1,1
+twin-0101,osint_certification,osint_certification:G11,1
+twin-0101,osint_certification,osint_certification:G9,1
+twin-0101,osint_event,osint_event:G0,1
+twin-0101,osint_event,osint_event:G9,1
+twin-0101,osint_social,osint_social:G1,1
+twin-0101,osint_social,osint_social:Ironclad Security:L0,1
+twin-0101,osint_social,osint_social:G19,1
+twin-0102,osint_mailing_list,osint_mailing_list:G1,1
+twin-0102,osint_mailing_list,osint_mailing_list:Ironclad Security:L0,1
+twin-0102,osint_oss_project,osint_oss_project:Ironclad Security:L0,1
+twin-0102,osint_oss_project,osint_oss_project:G8,1
+twin-0102,osint_affiliation,osint_affiliation:Ironclad Security:L0,1
+twin-0102,osint_affiliation,osint_affiliation:G11,1
+twin-0102,osint_vendor,osint_vendor:Ironclad Security:L0,1
+twin-0102,osint_certification,osint_certification:Ironclad Security:L0,1
+twin-0102,osint_certification,osint_certification:G9,1
+twin-0102,osint_event,osint_event:Ironclad Security:L1,1
+twin-0102,osint_event,osint_event:G11,1
+twin-0102,osint_social,osint_social:G8,1
+twin-0102,osint_social,osint_social:G6,1
+twin-0102,osint_social,osint_social:G17,1
+twin-0103,osint_mailing_list,osint_mailing_list:Ironclad Security:L0,1
+twin-0103,osint_mailing_list,osint_mailing_list:G1,1
+twin-0103,osint_oss_project,osint_oss_project:Ironclad Security:L0,1
+twin-0103,osint_oss_project,osint_oss_project:G6,1
+twin-0103,osint_affiliation,osint_affiliation:Ironclad Security:L1,1
+twin-0103,osint_vendor,osint_vendor:G2,1
+twin-0103,osint_vendor,osint_vendor:G11,1
+twin-0103,osint_certification,osint_certification:Ironclad Security:L0,1
+twin-0103,osint_event,osint_event:G4,1
+twin-0103,osint_event,osint_event:Ironclad Security:L0,1
+twin-0103,osint_social,osint_social:G25,1
+twin-0103,osint_social,osint_social:G16,1
+twin-0103,osint_social,osint_social:Ironclad Security:L0,1
+twin-0104,osint_mailing_list,osint_mailing_list:G15,1
+twin-0104,osint_mailing_list,osint_mailing_list:Ironclad Security:L2,1
+twin-0104,osint_oss_project,osint_oss_project:G4,1
+twin-0104,osint_oss_project,osint_oss_project:G8,1
+twin-0104,osint_affiliation,osint_affiliation:Ironclad Security:L0,1
+twin-0104,osint_vendor,osint_vendor:G1,1
+twin-0104,osint_vendor,osint_vendor:Ironclad Security:L0,1
+twin-0104,osint_certification,osint_certification:G18,1
+twin-0104,osint_certification,osint_certification:Ironclad Security:L0,1
+twin-0104,osint_event,osint_event:G2,1
+twin-0104,osint_social,osint_social:Ironclad Security:L0,1
+twin-0104,osint_social,osint_social:G8,1
+twin-0104,osint_social,osint_social:G12,1
+twin-0105,osint_mailing_list,osint_mailing_list:G18,1
+twin-0105,osint_mailing_list,osint_mailing_list:Continental Foods:L2,1
+twin-0105,osint_oss_project,osint_oss_project:Continental Foods:L1,1
+twin-0105,osint_oss_project,osint_oss_project:G15,1
+twin-0105,osint_affiliation,osint_affiliation:Continental Foods:L1,1
+twin-0105,osint_affiliation,osint_affiliation:Continental Foods:L0,1
+twin-0105,osint_vendor,osint_vendor:Continental Foods:L1,1
+twin-0105,osint_vendor,osint_vendor:G5,1
+twin-0105,osint_certification,osint_certification:Continental Foods:L0,1
+twin-0105,osint_event,osint_event:G6,1
+twin-0105,osint_event,osint_event:Continental Foods:L1,1
+twin-0105,osint_social,osint_social:G26,1
+twin-0105,osint_social,osint_social:G0,1
+twin-0105,osint_social,osint_social:Continental Foods:L0,1
+twin-0106,osint_mailing_list,osint_mailing_list:G3,1
+twin-0106,osint_mailing_list,osint_mailing_list:Continental Foods:L1,1
+twin-0106,osint_oss_project,osint_oss_project:Continental Foods:L1,1
+twin-0106,osint_oss_project,osint_oss_project:G6,1
+twin-0106,osint_affiliation,osint_affiliation:G13,1
+twin-0106,osint_affiliation,osint_affiliation:G8,1
+twin-0106,osint_vendor,osint_vendor:Continental Foods:L1,1
+twin-0106,osint_certification,osint_certification:Continental Foods:L0,1
+twin-0106,osint_event,osint_event:Continental Foods:L1,1
+twin-0106,osint_event,osint_event:G12,1
+twin-0106,osint_social,osint_social:Continental Foods:L0,1
+twin-0106,osint_social,osint_social:G29,1
+twin-0106,osint_social,osint_social:G26,1
+twin-0107,osint_mailing_list,osint_mailing_list:Continental Foods:L2,1
+twin-0107,osint_oss_project,osint_oss_project:Continental Foods:L0,1
+twin-0107,osint_oss_project,osint_oss_project:G14,1
+twin-0107,osint_affiliation,osint_affiliation:G4,1
+twin-0107,osint_affiliation,osint_affiliation:G1,1
+twin-0107,osint_vendor,osint_vendor:Continental Foods:L0,1
+twin-0107,osint_vendor,osint_vendor:G0,1
+twin-0107,osint_certification,osint_certification:G19,1
+twin-0107,osint_certification,osint_certification:Continental Foods:L0,1
+twin-0107,osint_event,osint_event:Continental Foods:L1,1
+twin-0107,osint_event,osint_event:Continental Foods:L0,1
+twin-0107,osint_social,osint_social:Continental Foods:L0,1
+twin-0107,osint_social,osint_social:G27,1
+twin-0108,osint_mailing_list,osint_mailing_list:G10,1
+twin-0108,osint_mailing_list,osint_mailing_list:Continental Foods:L2,1
+twin-0108,osint_oss_project,osint_oss_project:G18,1
+twin-0108,osint_oss_project,osint_oss_project:G24,1
+twin-0108,osint_affiliation,osint_affiliation:G9,1
+twin-0108,osint_affiliation,osint_affiliation:Continental Foods:L1,1
+twin-0108,osint_vendor,osint_vendor:G8,1
+twin-0108,osint_vendor,osint_vendor:Continental Foods:L1,1
+twin-0108,osint_certification,osint_certification:Continental Foods:L0,1
+twin-0108,osint_event,osint_event:G15,1
+twin-0108,osint_event,osint_event:Continental Foods:L0,1
+twin-0108,osint_social,osint_social:G15,1
+twin-0108,osint_social,osint_social:Continental Foods:L0,1
+twin-0109,osint_mailing_list,osint_mailing_list:Continental Foods:L1,1
+twin-0109,osint_mailing_list,osint_mailing_list:G9,1
+twin-0109,osint_oss_project,osint_oss_project:G1,1
+twin-0109,osint_oss_project,osint_oss_project:G15,1
+twin-0109,osint_affiliation,osint_affiliation:G5,1
+twin-0109,osint_affiliation,osint_affiliation:G11,1
+twin-0109,osint_vendor,osint_vendor:G4,1
+twin-0109,osint_vendor,osint_vendor:Continental Foods:L0,1
+twin-0109,osint_certification,osint_certification:Continental Foods:L0,1
+twin-0109,osint_event,osint_event:Continental Foods:L1,1
+twin-0109,osint_social,osint_social:Continental Foods:L0,1
+twin-0110,osint_mailing_list,osint_mailing_list:Continental Foods:L1,1
+twin-0110,osint_mailing_list,osint_mailing_list:G10,1
+twin-0110,osint_oss_project,osint_oss_project:G17,1
+twin-0110,osint_oss_project,osint_oss_project:Continental Foods:L1,1
+twin-0110,osint_affiliation,osint_affiliation:Continental Foods:L1,1
+twin-0110,osint_affiliation,osint_affiliation:G10,1
+twin-0110,osint_vendor,osint_vendor:Continental Foods:L1,1
+twin-0110,osint_vendor,osint_vendor:G9,1
+twin-0110,osint_certification,osint_certification:Continental Foods:L0,1
+twin-0110,osint_event,osint_event:G5,1
+twin-0110,osint_event,osint_event:Continental Foods:L1,1
+twin-0110,osint_social,osint_social:Continental Foods:L0,1
+twin-0110,osint_social,osint_social:G6,1
+twin-0111,osint_mailing_list,osint_mailing_list:G11,1
+twin-0111,osint_mailing_list,osint_mailing_list:Continental Foods:L0,1
+twin-0111,osint_oss_project,osint_oss_project:Continental Foods:L0,1
+twin-0111,osint_oss_project,osint_oss_project:G1,1
+twin-0111,osint_affiliation,osint_affiliation:Continental Foods:L0,1
+twin-0111,osint_affiliation,osint_affiliation:G8,1
+twin-0111,osint_vendor,osint_vendor:Continental Foods:L0,1
+twin-0111,osint_vendor,osint_vendor:G3,1
+twin-0111,osint_certification,osint_certification:G3,1
+twin-0111,osint_certification,osint_certification:G17,1
+twin-0111,osint_event,osint_event:Continental Foods:L1,1
+twin-0111,osint_event,osint_event:Continental Foods:L0,1
+twin-0111,osint_social,osint_social:G23,1
+twin-0111,osint_social,osint_social:G8,1
+twin-0111,osint_social,osint_social:Continental Foods:L0,1
+twin-0112,osint_mailing_list,osint_mailing_list:Continental Foods:L1,1
+twin-0112,osint_mailing_list,osint_mailing_list:G9,1
+twin-0112,osint_oss_project,osint_oss_project:G3,1
+twin-0112,osint_oss_project,osint_oss_project:G21,1
+twin-0112,osint_affiliation,osint_affiliation:Continental Foods:L1,1
+twin-0112,osint_affiliation,osint_affiliation:G5,1
+twin-0112,osint_vendor,osint_vendor:G17,1
+twin-0112,osint_vendor,osint_vendor:G0,1
+twin-0112,osint_certification,osint_certification:G12,1
+twin-0112,osint_certification,osint_certification:G17,1
+twin-0112,osint_event,osint_event:Continental Foods:L1,1
+twin-0112,osint_social,osint_social:Continental Foods:L0,1
+twin-0113,osint_mailing_list,osint_mailing_list:Zephyr Airlines Services:L1,1
+twin-0113,osint_mailing_list,osint_mailing_list:G7,1
+twin-0113,osint_oss_project,osint_oss_project:G6,1
+twin-0113,osint_oss_project,osint_oss_project:G7,1
+twin-0113,osint_affiliation,osint_affiliation:Zephyr Airlines Services:L1,1
+twin-0113,osint_affiliation,osint_affiliation:Zephyr Airlines Services:L0,1
+twin-0113,osint_vendor,osint_vendor:G9,1
+twin-0113,osint_vendor,osint_vendor:G6,1
+twin-0113,osint_certification,osint_certification:Zephyr Airlines Services:L0,1
+twin-0113,osint_event,osint_event:Zephyr Airlines Services:L1,1
+twin-0113,osint_event,osint_event:G3,1
+twin-0113,osint_social,osint_social:G20,1
+twin-0113,osint_social,osint_social:Zephyr Airlines Services:L0,1
+twin-0114,osint_mailing_list,osint_mailing_list:Zephyr Airlines Services:L0,1
+twin-0114,osint_mailing_list,osint_mailing_list:Zephyr Airlines Services:L2,1
+twin-0114,osint_oss_project,osint_oss_project:Zephyr Airlines Services:L1,1
+twin-0114,osint_oss_project,osint_oss_project:Zephyr Airlines Services:L0,1
+twin-0114,osint_affiliation,osint_affiliation:Zephyr Airlines Services:L1,1
+twin-0114,osint_affiliation,osint_affiliation:G7,1
+twin-0114,osint_vendor,osint_vendor:G16,1
+twin-0114,osint_vendor,osint_vendor:G8,1
+twin-0114,osint_certification,osint_certification:Zephyr Airlines Services:L0,1
+twin-0114,osint_certification,osint_certification:G16,1
+twin-0114,osint_event,osint_event:G14,1
+twin-0114,osint_event,osint_event:Zephyr Airlines Services:L0,1
+twin-0114,osint_social,osint_social:Zephyr Airlines Services:L0,1
+twin-0114,osint_social,osint_social:G18,1
+twin-0115,osint_mailing_list,osint_mailing_list:G18,1
+twin-0115,osint_mailing_list,osint_mailing_list:Zephyr Airlines Services:L2,1
+twin-0115,osint_oss_project,osint_oss_project:G17,1
+twin-0115,osint_oss_project,osint_oss_project:G15,1
+twin-0115,osint_affiliation,osint_affiliation:Zephyr Airlines Services:L0,1
+twin-0115,osint_affiliation,osint_affiliation:G5,1
+twin-0115,osint_vendor,osint_vendor:G8,1
+twin-0115,osint_vendor,osint_vendor:Zephyr Airlines Services:L0,1
+twin-0115,osint_certification,osint_certification:Zephyr Airlines Services:L0,1
+twin-0115,osint_event,osint_event:G14,1
+twin-0115,osint_event,osint_event:Zephyr Airlines Services:L0,1
+twin-0115,osint_social,osint_social:G29,1
+twin-0115,osint_social,osint_social:Zephyr Airlines Services:L0,1
+twin-0115,osint_social,osint_social:G2,1
+twin-0116,osint_mailing_list,osint_mailing_list:Zephyr Airlines Services:L1,1
+twin-0116,osint_mailing_list,osint_mailing_list:G6,1
+twin-0116,osint_oss_project,osint_oss_project:G4,1
+twin-0116,osint_oss_project,osint_oss_project:G8,1
+twin-0116,osint_affiliation,osint_affiliation:Zephyr Airlines Services:L0,1
+twin-0116,osint_affiliation,osint_affiliation:G8,1
+twin-0116,osint_vendor,osint_vendor:G11,1
+twin-0116,osint_vendor,osint_vendor:G4,1
+twin-0116,osint_certification,osint_certification:Zephyr Airlines Services:L0,1
+twin-0116,osint_certification,osint_certification:G13,1
+twin-0116,osint_event,osint_event:G9,1
+twin-0116,osint_event,osint_event:Zephyr Airlines Services:L1,1
+twin-0116,osint_social,osint_social:G6,1
+twin-0116,osint_social,osint_social:G0,1
+twin-0116,osint_social,osint_social:Zephyr Airlines Services:L0,1
+twin-0117,osint_mailing_list,osint_mailing_list:Zephyr Airlines Services:L1,1
+twin-0117,osint_mailing_list,osint_mailing_list:Zephyr Airlines Services:L0,1
+twin-0117,osint_oss_project,osint_oss_project:G0,1
+twin-0117,osint_oss_project,osint_oss_project:Zephyr Airlines Services:L0,1
+twin-0117,osint_affiliation,osint_affiliation:Zephyr Airlines Services:L0,1
+twin-0117,osint_vendor,osint_vendor:G9,1
+twin-0117,osint_vendor,osint_vendor:G5,1
+twin-0117,osint_certification,osint_certification:Zephyr Airlines Services:L0,1
+twin-0117,osint_certification,osint_certification:G18,1
+twin-0117,osint_event,osint_event:G7,1
+twin-0117,osint_event,osint_event:G10,1
+twin-0117,osint_social,osint_social:G0,1
+twin-0117,osint_social,osint_social:G26,1
+twin-0117,osint_social,osint_social:Zephyr Airlines Services:L0,1
+twin-0118,osint_mailing_list,osint_mailing_list:G11,1
+twin-0118,osint_mailing_list,osint_mailing_list:Zephyr Airlines Services:L0,1
+twin-0118,osint_oss_project,osint_oss_project:Zephyr Airlines Services:L0,1
+twin-0118,osint_affiliation,osint_affiliation:Zephyr Airlines Services:L0,1
+twin-0118,osint_affiliation,osint_affiliation:G8,1
+twin-0118,osint_vendor,osint_vendor:Zephyr Airlines Services:L1,1
+twin-0118,osint_certification,osint_certification:Zephyr Airlines Services:L0,1
+twin-0118,osint_certification,osint_certification:G2,1
+twin-0118,osint_event,osint_event:Zephyr Airlines Services:L1,1
+twin-0118,osint_event,osint_event:G13,1
+twin-0118,osint_social,osint_social:G6,1
+twin-0118,osint_social,osint_social:Zephyr Airlines Services:L0,1
+twin-0118,osint_social,osint_social:G0,1
+twin-0119,osint_mailing_list,osint_mailing_list:G11,1
+twin-0119,osint_mailing_list,osint_mailing_list:Zephyr Airlines Services:L2,1
+twin-0119,osint_oss_project,osint_oss_project:G2,1
+twin-0119,osint_oss_project,osint_oss_project:G5,1
+twin-0119,osint_affiliation,osint_affiliation:Zephyr Airlines Services:L1,1
+twin-0119,osint_affiliation,osint_affiliation:G5,1
+twin-0119,osint_vendor,osint_vendor:Zephyr Airlines Services:L1,1
+twin-0119,osint_vendor,osint_vendor:G17,1
+twin-0119,osint_certification,osint_certification:Zephyr Airlines Services:L0,1
+twin-0119,osint_certification,osint_certification:G11,1
+twin-0119,osint_event,osint_event:G8,1
+twin-0119,osint_event,osint_event:G4,1
+twin-0119,osint_social,osint_social:Zephyr Airlines Services:L0,1
+twin-0120,osint_mailing_list,osint_mailing_list:Zephyr Airlines Services:L0,1
+twin-0120,osint_mailing_list,osint_mailing_list:G13,1
+twin-0120,osint_oss_project,osint_oss_project:G19,1
+twin-0120,osint_oss_project,osint_oss_project:G23,1
+twin-0120,osint_affiliation,osint_affiliation:Zephyr Airlines Services:L0,1
+twin-0120,osint_affiliation,osint_affiliation:Zephyr Airlines Services:L1,1
+twin-0120,osint_vendor,osint_vendor:Zephyr Airlines Services:L1,1
+twin-0120,osint_certification,osint_certification:Zephyr Airlines Services:L0,1
+twin-0120,osint_certification,osint_certification:G17,1
+twin-0120,osint_event,osint_event:G1,1
+twin-0120,osint_event,osint_event:Zephyr Airlines Services:L0,1
+twin-0120,osint_social,osint_social:G17,1
+twin-0120,osint_social,osint_social:G1,1
+twin-0120,osint_social,osint_social:Zephyr Airlines Services:L0,1
+twin-0121,osint_mailing_list,osint_mailing_list:Quantis Consulting:L1,1
+twin-0121,osint_oss_project,osint_oss_project:Quantis Consulting:L0,1
+twin-0121,osint_oss_project,osint_oss_project:G19,1
+twin-0121,osint_affiliation,osint_affiliation:Quantis Consulting:L1,1
+twin-0121,osint_affiliation,osint_affiliation:Quantis Consulting:L0,1
+twin-0121,osint_vendor,osint_vendor:Quantis Consulting:L1,1
+twin-0121,osint_vendor,osint_vendor:Quantis Consulting:L0,1
+twin-0121,osint_certification,osint_certification:G11,1
+twin-0121,osint_certification,osint_certification:G1,1
+twin-0121,osint_event,osint_event:G5,1
+twin-0121,osint_event,osint_event:Quantis Consulting:L0,1
+twin-0121,osint_social,osint_social:G22,1
+twin-0121,osint_social,osint_social:Quantis Consulting:L0,1
+twin-0122,osint_mailing_list,osint_mailing_list:G1,1
+twin-0122,osint_mailing_list,osint_mailing_list:Quantis Consulting:L1,1
+twin-0122,osint_oss_project,osint_oss_project:Quantis Consulting:L1,1
+twin-0122,osint_oss_project,osint_oss_project:G15,1
+twin-0122,osint_affiliation,osint_affiliation:Quantis Consulting:L0,1
+twin-0122,osint_affiliation,osint_affiliation:G5,1
+twin-0122,osint_vendor,osint_vendor:Quantis Consulting:L1,1
+twin-0122,osint_vendor,osint_vendor:G14,1
+twin-0122,osint_certification,osint_certification:G1,1
+twin-0122,osint_certification,osint_certification:G2,1
+twin-0122,osint_event,osint_event:Quantis Consulting:L1,1
+twin-0122,osint_social,osint_social:G29,1
+twin-0122,osint_social,osint_social:Quantis Consulting:L0,1
+twin-0123,osint_mailing_list,osint_mailing_list:G4,1
+twin-0123,osint_mailing_list,osint_mailing_list:G0,1
+twin-0123,osint_oss_project,osint_oss_project:G23,1
+twin-0123,osint_oss_project,osint_oss_project:Quantis Consulting:L1,1
+twin-0123,osint_affiliation,osint_affiliation:Quantis Consulting:L1,1
+twin-0123,osint_affiliation,osint_affiliation:G11,1
+twin-0123,osint_vendor,osint_vendor:G10,1
+twin-0123,osint_vendor,osint_vendor:Quantis Consulting:L1,1
+twin-0123,osint_certification,osint_certification:Quantis Consulting:L0,1
+twin-0123,osint_certification,osint_certification:G4,1
+twin-0123,osint_event,osint_event:Quantis Consulting:L0,1
+twin-0123,osint_event,osint_event:Quantis Consulting:L1,1
+twin-0123,osint_social,osint_social:G19,1
+twin-0123,osint_social,osint_social:Quantis Consulting:L0,1
+twin-0124,osint_mailing_list,osint_mailing_list:Quantis Consulting:L1,1
+twin-0124,osint_mailing_list,osint_mailing_list:Quantis Consulting:L0,1
+twin-0124,osint_oss_project,osint_oss_project:Quantis Consulting:L1,1
+twin-0124,osint_oss_project,osint_oss_project:G13,1
+twin-0124,osint_affiliation,osint_affiliation:Quantis Consulting:L1,1
+twin-0124,osint_vendor,osint_vendor:G1,1
+twin-0124,osint_vendor,osint_vendor:Quantis Consulting:L1,1
+twin-0124,osint_certification,osint_certification:Quantis Consulting:L0,1
+twin-0124,osint_event,osint_event:Quantis Consulting:L0,1
+twin-0124,osint_event,osint_event:G5,1
+twin-0124,osint_social,osint_social:Quantis Consulting:L0,1
+twin-0124,osint_social,osint_social:G2,1
+twin-0124,osint_social,osint_social:G11,1
+twin-0125,osint_mailing_list,osint_mailing_list:G2,1
+twin-0125,osint_mailing_list,osint_mailing_list:G10,1
+twin-0125,osint_oss_project,osint_oss_project:Quantis Consulting:L1,1
+twin-0125,osint_oss_project,osint_oss_project:G0,1
+twin-0125,osint_affiliation,osint_affiliation:Quantis Consulting:L1,1
+twin-0125,osint_affiliation,osint_affiliation:G10,1
+twin-0125,osint_vendor,osint_vendor:Quantis Consulting:L1,1
+twin-0125,osint_certification,osint_certification:G9,1
+twin-0125,osint_event,osint_event:G8,1
+twin-0125,osint_event,osint_event:G4,1
+twin-0125,osint_social,osint_social:G9,1
+twin-0125,osint_social,osint_social:Quantis Consulting:L0,1
+twin-0126,osint_mailing_list,osint_mailing_list:G4,1
+twin-0126,osint_mailing_list,osint_mailing_list:G5,1
+twin-0126,osint_oss_project,osint_oss_project:G3,1
+twin-0126,osint_oss_project,osint_oss_project:G19,1
+twin-0126,osint_affiliation,osint_affiliation:Quantis Consulting:L0,1
+twin-0126,osint_vendor,osint_vendor:G6,1
+twin-0126,osint_vendor,osint_vendor:Quantis Consulting:L1,1
+twin-0126,osint_certification,osint_certification:Quantis Consulting:L0,1
+twin-0126,osint_certification,osint_certification:G2,1
+twin-0126,osint_event,osint_event:G13,1
+twin-0126,osint_event,osint_event:G1,1
+twin-0126,osint_social,osint_social:Quantis Consulting:L0,1
+twin-0126,osint_social,osint_social:G21,1
+twin-0127,osint_mailing_list,osint_mailing_list:G9,1
+twin-0127,osint_mailing_list,osint_mailing_list:G17,1
+twin-0127,osint_oss_project,osint_oss_project:Quantis Consulting:L0,1
+twin-0127,osint_oss_project,osint_oss_project:G14,1
+twin-0127,osint_affiliation,osint_affiliation:G8,1
+twin-0127,osint_affiliation,osint_affiliation:Quantis Consulting:L1,1
+twin-0127,osint_vendor,osint_vendor:G11,1
+twin-0127,osint_vendor,osint_vendor:G12,1
+twin-0127,osint_certification,osint_certification:Quantis Consulting:L0,1
+twin-0127,osint_certification,osint_certification:G9,1
+twin-0127,osint_event,osint_event:Quantis Consulting:L0,1
+twin-0127,osint_event,osint_event:G14,1
+twin-0127,osint_social,osint_social:G7,1
+twin-0127,osint_social,osint_social:Quantis Consulting:L0,1
+twin-0128,osint_mailing_list,osint_mailing_list:Quantis Consulting:L2,1
+twin-0128,osint_mailing_list,osint_mailing_list:G12,1
+twin-0128,osint_oss_project,osint_oss_project:Quantis Consulting:L1,1
+twin-0128,osint_oss_project,osint_oss_project:Quantis Consulting:L0,1
+twin-0128,osint_affiliation,osint_affiliation:Quantis Consulting:L0,1
+twin-0128,osint_affiliation,osint_affiliation:Quantis Consulting:L1,1
+twin-0128,osint_vendor,osint_vendor:G13,1
+twin-0128,osint_vendor,osint_vendor:Quantis Consulting:L1,1
+twin-0128,osint_certification,osint_certification:Quantis Consulting:L0,1
+twin-0128,osint_certification,osint_certification:G7,1
+twin-0128,osint_event,osint_event:Quantis Consulting:L0,1
+twin-0128,osint_social,osint_social:G22,1
+twin-0128,osint_social,osint_social:G4,1
+twin-0128,osint_social,osint_social:Quantis Consulting:L0,1
+twin-0129,osint_mailing_list,osint_mailing_list:Atlas Mining Corporation:L0,1
+twin-0129,osint_oss_project,osint_oss_project:Atlas Mining Corporation:L0,1
+twin-0129,osint_affiliation,osint_affiliation:G3,1
+twin-0129,osint_affiliation,osint_affiliation:Atlas Mining Corporation:L0,1
+twin-0129,osint_vendor,osint_vendor:G0,1
+twin-0129,osint_vendor,osint_vendor:G10,1
+twin-0129,osint_certification,osint_certification:Atlas Mining Corporation:L0,1
+twin-0129,osint_certification,osint_certification:G13,1
+twin-0129,osint_event,osint_event:Atlas Mining Corporation:L0,1
+twin-0129,osint_event,osint_event:G13,1
+twin-0129,osint_social,osint_social:G27,1
+twin-0129,osint_social,osint_social:Atlas Mining Corporation:L0,1
+twin-0129,osint_social,osint_social:G24,1
+twin-0130,osint_mailing_list,osint_mailing_list:Atlas Mining Corporation:L0,1
+twin-0130,osint_mailing_list,osint_mailing_list:G8,1
+twin-0130,osint_oss_project,osint_oss_project:Atlas Mining Corporation:L1,1
+twin-0130,osint_oss_project,osint_oss_project:G24,1
+twin-0130,osint_affiliation,osint_affiliation:G4,1
+twin-0130,osint_affiliation,osint_affiliation:Atlas Mining Corporation:L0,1
+twin-0130,osint_vendor,osint_vendor:G9,1
+twin-0130,osint_vendor,osint_vendor:G11,1
+twin-0130,osint_certification,osint_certification:Atlas Mining Corporation:L0,1
+twin-0130,osint_certification,osint_certification:G14,1
+twin-0130,osint_event,osint_event:Atlas Mining Corporation:L1,1
+twin-0130,osint_event,osint_event:Atlas Mining Corporation:L0,1
+twin-0130,osint_social,osint_social:G1,1
+twin-0130,osint_social,osint_social:G6,1
+twin-0130,osint_social,osint_social:Atlas Mining Corporation:L0,1
+twin-0131,osint_mailing_list,osint_mailing_list:G8,1
+twin-0131,osint_mailing_list,osint_mailing_list:Atlas Mining Corporation:L1,1
+twin-0131,osint_oss_project,osint_oss_project:Atlas Mining Corporation:L1,1
+twin-0131,osint_affiliation,osint_affiliation:G3,1
+twin-0131,osint_affiliation,osint_affiliation:Atlas Mining Corporation:L0,1
+twin-0131,osint_vendor,osint_vendor:G3,1
+twin-0131,osint_vendor,osint_vendor:Atlas Mining Corporation:L1,1
+twin-0131,osint_certification,osint_certification:Atlas Mining Corporation:L0,1
+twin-0131,osint_certification,osint_certification:G7,1
+twin-0131,osint_event,osint_event:G0,1
+twin-0131,osint_event,osint_event:Atlas Mining Corporation:L1,1
+twin-0131,osint_social,osint_social:Atlas Mining Corporation:L0,1
+twin-0131,osint_social,osint_social:G29,1
+twin-0132,osint_mailing_list,osint_mailing_list:Atlas Mining Corporation:L2,1
+twin-0132,osint_mailing_list,osint_mailing_list:Atlas Mining Corporation:L1,1
+twin-0132,osint_oss_project,osint_oss_project:Atlas Mining Corporation:L0,1
+twin-0132,osint_oss_project,osint_oss_project:G5,1
+twin-0132,osint_affiliation,osint_affiliation:Atlas Mining Corporation:L1,1
+twin-0132,osint_affiliation,osint_affiliation:G14,1
+twin-0132,osint_vendor,osint_vendor:G3,1
+twin-0132,osint_vendor,osint_vendor:G16,1
+twin-0132,osint_certification,osint_certification:Atlas Mining Corporation:L0,1
+twin-0132,osint_certification,osint_certification:G14,1
+twin-0132,osint_event,osint_event:G11,1
+twin-0132,osint_event,osint_event:Atlas Mining Corporation:L1,1
+twin-0132,osint_social,osint_social:Atlas Mining Corporation:L0,1
+twin-0132,osint_social,osint_social:G2,1
+twin-0132,osint_social,osint_social:G6,1
+twin-0133,osint_mailing_list,osint_mailing_list:G16,1
+twin-0133,osint_mailing_list,osint_mailing_list:Atlas Mining Corporation:L2,1
+twin-0133,osint_oss_project,osint_oss_project:G15,1
+twin-0133,osint_oss_project,osint_oss_project:Atlas Mining Corporation:L0,1
+twin-0133,osint_affiliation,osint_affiliation:G9,1
+twin-0133,osint_affiliation,osint_affiliation:G4,1
+twin-0133,osint_vendor,osint_vendor:G4,1
+twin-0133,osint_vendor,osint_vendor:G0,1
+twin-0133,osint_certification,osint_certification:Atlas Mining Corporation:L0,1
+twin-0133,osint_certification,osint_certification:G10,1
+twin-0133,osint_event,osint_event:Atlas Mining Corporation:L0,1
+twin-0133,osint_event,osint_event:G10,1
+twin-0133,osint_social,osint_social:Atlas Mining Corporation:L0,1
+twin-0133,osint_social,osint_social:G29,1
+twin-0134,osint_mailing_list,osint_mailing_list:Atlas Mining Corporation:L2,1
+twin-0134,osint_mailing_list,osint_mailing_list:G18,1
+twin-0134,osint_oss_project,osint_oss_project:Atlas Mining Corporation:L0,1
+twin-0134,osint_affiliation,osint_affiliation:Atlas Mining Corporation:L0,1
+twin-0134,osint_affiliation,osint_affiliation:G2,1
+twin-0134,osint_vendor,osint_vendor:Atlas Mining Corporation:L0,1
+twin-0134,osint_vendor,osint_vendor:G1,1
+twin-0134,osint_certification,osint_certification:G1,1
+twin-0134,osint_certification,osint_certification:Atlas Mining Corporation:L0,1
+twin-0134,osint_event,osint_event:Atlas Mining Corporation:L1,1
+twin-0134,osint_event,osint_event:G7,1
+twin-0134,osint_social,osint_social:Atlas Mining Corporation:L0,1
+twin-0134,osint_social,osint_social:G9,1
+twin-0135,osint_mailing_list,osint_mailing_list:G0,1
+twin-0135,osint_mailing_list,osint_mailing_list:G2,1
+twin-0135,osint_oss_project,osint_oss_project:Atlas Mining Corporation:L0,1
+twin-0135,osint_affiliation,osint_affiliation:G1,1
+twin-0135,osint_affiliation,osint_affiliation:G2,1
+twin-0135,osint_vendor,osint_vendor:Atlas Mining Corporation:L1,1
+twin-0135,osint_vendor,osint_vendor:G1,1
+twin-0135,osint_certification,osint_certification:Atlas Mining Corporation:L0,1
+twin-0135,osint_certification,osint_certification:G3,1
+twin-0135,osint_event,osint_event:Atlas Mining Corporation:L1,1
+twin-0135,osint_event,osint_event:G10,1
+twin-0135,osint_social,osint_social:Atlas Mining Corporation:L0,1
+twin-0135,osint_social,osint_social:G15,1
+twin-0136,osint_mailing_list,osint_mailing_list:Atlas Mining Corporation:L0,1
+twin-0136,osint_mailing_list,osint_mailing_list:G12,1
+twin-0136,osint_oss_project,osint_oss_project:Atlas Mining Corporation:L0,1
+twin-0136,osint_oss_project,osint_oss_project:G20,1
+twin-0136,osint_affiliation,osint_affiliation:G5,1
+twin-0136,osint_affiliation,osint_affiliation:G13,1
+twin-0136,osint_vendor,osint_vendor:G3,1
+twin-0136,osint_vendor,osint_vendor:G5,1
+twin-0136,osint_certification,osint_certification:Atlas Mining Corporation:L0,1
+twin-0136,osint_event,osint_event:G10,1
+twin-0136,osint_event,osint_event:Atlas Mining Corporation:L1,1
+twin-0136,osint_social,osint_social:G24,1
+twin-0136,osint_social,osint_social:G10,1
+twin-0136,osint_social,osint_social:G17,1
+twin-0137,osint_mailing_list,osint_mailing_list:Marlowe Public Office:L2,1
+twin-0137,osint_mailing_list,osint_mailing_list:G11,1
+twin-0137,osint_oss_project,osint_oss_project:G12,1
+twin-0137,osint_oss_project,osint_oss_project:Marlowe Public Office:L0,1
+twin-0137,osint_affiliation,osint_affiliation:Marlowe Public Office:L0,1
+twin-0137,osint_vendor,osint_vendor:G8,1
+twin-0137,osint_vendor,osint_vendor:Marlowe Public Office:L0,1
+twin-0137,osint_certification,osint_certification:Marlowe Public Office:L0,1
+twin-0137,osint_certification,osint_certification:G17,1
+twin-0137,osint_event,osint_event:Marlowe Public Office:L1,1
+twin-0137,osint_social,osint_social:Marlowe Public Office:L0,1
+twin-0138,osint_mailing_list,osint_mailing_list:G11,1
+twin-0138,osint_mailing_list,osint_mailing_list:Marlowe Public Office:L1,1
+twin-0138,osint_oss_project,osint_oss_project:Marlowe Public Office:L0,1
+twin-0138,osint_affiliation,osint_affiliation:G10,1
+twin-0138,osint_affiliation,osint_affiliation:G3,1
+twin-0138,osint_vendor,osint_vendor:Marlowe Public Office:L1,1
+twin-0138,osint_vendor,osint_vendor:Marlowe Public Office:L0,1
+twin-0138,osint_certification,osint_certification:G19,1
+twin-0138,osint_certification,osint_certification:Marlowe Public Office:L0,1
+twin-0138,osint_event,osint_event:Marlowe Public Office:L0,1
+twin-0138,osint_event,osint_event:G8,1
+twin-0138,osint_social,osint_social:Marlowe Public Office:L0,1
+twin-0138,osint_social,osint_social:G26,1
+twin-0139,osint_mailing_list,osint_mailing_list:G17,1
+twin-0139,osint_mailing_list,osint_mailing_list:Marlowe Public Office:L2,1
+twin-0139,osint_oss_project,osint_oss_project:G21,1
+twin-0139,osint_oss_project,osint_oss_project:Marlowe Public Office:L0,1
+twin-0139,osint_affiliation,osint_affiliation:G0,1
+twin-0139,osint_affiliation,osint_affiliation:G12,1
+twin-0139,osint_vendor,osint_vendor:G15,1
+twin-0139,osint_vendor,osint_vendor:Marlowe Public Office:L0,1
+twin-0139,osint_certification,osint_certification:G16,1
+twin-0139,osint_certification,osint_certification:G15,1
+twin-0139,osint_event,osint_event:G14,1
+twin-0139,osint_event,osint_event:Marlowe Public Office:L0,1
+twin-0139,osint_social,osint_social:G5,1
+twin-0139,osint_social,osint_social:G19,1
+twin-0139,osint_social,osint_social:G18,1
+twin-0140,osint_mailing_list,osint_mailing_list:G19,1
+twin-0140,osint_mailing_list,osint_mailing_list:Marlowe Public Office:L0,1
+twin-0140,osint_oss_project,osint_oss_project:G16,1
+twin-0140,osint_oss_project,osint_oss_project:G10,1
+twin-0140,osint_affiliation,osint_affiliation:G10,1
+twin-0140,osint_affiliation,osint_affiliation:G2,1
+twin-0140,osint_vendor,osint_vendor:G13,1
+twin-0140,osint_vendor,osint_vendor:G17,1
+twin-0140,osint_certification,osint_certification:G10,1
+twin-0140,osint_certification,osint_certification:Marlowe Public Office:L0,1
+twin-0140,osint_event,osint_event:Marlowe Public Office:L1,1
+twin-0140,osint_social,osint_social:Marlowe Public Office:L0,1
+twin-0140,osint_social,osint_social:G6,1
+twin-0140,osint_social,osint_social:G25,1
+twin-0141,osint_mailing_list,osint_mailing_list:G7,1
+twin-0141,osint_mailing_list,osint_mailing_list:Marlowe Public Office:L1,1
+twin-0141,osint_oss_project,osint_oss_project:Marlowe Public Office:L0,1
+twin-0141,osint_oss_project,osint_oss_project:G22,1
+twin-0141,osint_affiliation,osint_affiliation:G2,1
+twin-0141,osint_affiliation,osint_affiliation:Marlowe Public Office:L1,1
+twin-0141,osint_vendor,osint_vendor:Marlowe Public Office:L1,1
+twin-0141,osint_vendor,osint_vendor:G14,1
+twin-0141,osint_certification,osint_certification:Marlowe Public Office:L0,1
+twin-0141,osint_event,osint_event:G2,1
+twin-0141,osint_event,osint_event:G1,1
+twin-0141,osint_social,osint_social:Marlowe Public Office:L0,1
+twin-0141,osint_social,osint_social:G12,1
+twin-0142,osint_mailing_list,osint_mailing_list:Marlowe Public Office:L2,1
+twin-0142,osint_mailing_list,osint_mailing_list:Marlowe Public Office:L0,1
+twin-0142,osint_oss_project,osint_oss_project:G16,1
+twin-0142,osint_oss_project,osint_oss_project:Marlowe Public Office:L1,1
+twin-0142,osint_affiliation,osint_affiliation:G6,1
+twin-0142,osint_affiliation,osint_affiliation:G3,1
+twin-0142,osint_vendor,osint_vendor:Marlowe Public Office:L0,1
+twin-0142,osint_vendor,osint_vendor:G16,1
+twin-0142,osint_certification,osint_certification:Marlowe Public Office:L0,1
+twin-0142,osint_event,osint_event:Marlowe Public Office:L0,1
+twin-0142,osint_event,osint_event:G10,1
+twin-0142,osint_social,osint_social:Marlowe Public Office:L0,1
+twin-0142,osint_social,osint_social:G11,1
+twin-0143,osint_mailing_list,osint_mailing_list:Marlowe Public Office:L2,1
+twin-0143,osint_mailing_list,osint_mailing_list:Marlowe Public Office:L0,1
+twin-0143,osint_oss_project,osint_oss_project:Marlowe Public Office:L0,1
+twin-0143,osint_oss_project,osint_oss_project:G20,1
+twin-0143,osint_affiliation,osint_affiliation:Marlowe Public Office:L1,1
+twin-0143,osint_affiliation,osint_affiliation:G13,1
+twin-0143,osint_vendor,osint_vendor:G14,1
+twin-0143,osint_vendor,osint_vendor:G12,1
+twin-0143,osint_certification,osint_certification:Marlowe Public Office:L0,1
+twin-0143,osint_event,osint_event:Marlowe Public Office:L1,1
+twin-0143,osint_event,osint_event:Marlowe Public Office:L0,1
+twin-0143,osint_social,osint_social:G0,1
+twin-0143,osint_social,osint_social:G9,1
+twin-0143,osint_social,osint_social:Marlowe Public Office:L0,1
+twin-0144,osint_mailing_list,osint_mailing_list:G12,1
+twin-0144,osint_mailing_list,osint_mailing_list:Beacon Telecom:L2,1
+twin-0144,osint_oss_project,osint_oss_project:G3,1
+twin-0144,osint_oss_project,osint_oss_project:Beacon Telecom:L0,1
+twin-0144,osint_affiliation,osint_affiliation:G6,1
+twin-0144,osint_affiliation,osint_affiliation:Beacon Telecom:L0,1
+twin-0144,osint_vendor,osint_vendor:G7,1
+twin-0144,osint_vendor,osint_vendor:G15,1
+twin-0144,osint_certification,osint_certification:G10,1
+twin-0144,osint_certification,osint_certification:Beacon Telecom:L0,1
+twin-0144,osint_event,osint_event:Beacon Telecom:L0,1
+twin-0144,osint_social,osint_social:G29,1
+twin-0144,osint_social,osint_social:Beacon Telecom:L0,1
+twin-0145,osint_mailing_list,osint_mailing_list:Beacon Telecom:L1,1
+twin-0145,osint_oss_project,osint_oss_project:Beacon Telecom:L1,1
+twin-0145,osint_affiliation,osint_affiliation:Beacon Telecom:L1,1
+twin-0145,osint_affiliation,osint_affiliation:G6,1
+twin-0145,osint_vendor,osint_vendor:Beacon Telecom:L1,1
+twin-0145,osint_certification,osint_certification:G14,1
+twin-0145,osint_certification,osint_certification:G15,1
+twin-0145,osint_event,osint_event:Beacon Telecom:L0,1
+twin-0145,osint_event,osint_event:Beacon Telecom:L1,1
+twin-0145,osint_social,osint_social:Beacon Telecom:L0,1
+twin-0145,osint_social,osint_social:G3,1
+twin-0146,osint_mailing_list,osint_mailing_list:Beacon Telecom:L0,1
+twin-0146,osint_mailing_list,osint_mailing_list:G0,1
+twin-0146,osint_oss_project,osint_oss_project:G6,1
+twin-0146,osint_oss_project,osint_oss_project:G21,1
+twin-0146,osint_affiliation,osint_affiliation:Beacon Telecom:L0,1
+twin-0146,osint_affiliation,osint_affiliation:G0,1
+twin-0146,osint_vendor,osint_vendor:Beacon Telecom:L1,1
+twin-0146,osint_vendor,osint_vendor:G1,1
+twin-0146,osint_certification,osint_certification:G20,1
+twin-0146,osint_certification,osint_certification:G12,1
+twin-0146,osint_event,osint_event:G0,1
+twin-0146,osint_event,osint_event:G8,1
+twin-0146,osint_social,osint_social:Beacon Telecom:L0,1
+twin-0147,osint_mailing_list,osint_mailing_list:G0,1
+twin-0147,osint_mailing_list,osint_mailing_list:G5,1
+twin-0147,osint_oss_project,osint_oss_project:G15,1
+twin-0147,osint_oss_project,osint_oss_project:Beacon Telecom:L0,1
+twin-0147,osint_affiliation,osint_affiliation:G14,1
+twin-0147,osint_affiliation,osint_affiliation:G4,1
+twin-0147,osint_vendor,osint_vendor:G15,1
+twin-0147,osint_vendor,osint_vendor:Beacon Telecom:L0,1
+twin-0147,osint_certification,osint_certification:G9,1
+twin-0147,osint_certification,osint_certification:Beacon Telecom:L0,1
+twin-0147,osint_event,osint_event:Beacon Telecom:L1,1
+twin-0147,osint_social,osint_social:Beacon Telecom:L0,1
+twin-0147,osint_social,osint_social:G5,1
+twin-0148,osint_mailing_list,osint_mailing_list:G16,1
+twin-0148,osint_mailing_list,osint_mailing_list:G19,1
+twin-0148,osint_oss_project,osint_oss_project:G13,1
+twin-0148,osint_oss_project,osint_oss_project:G19,1
+twin-0148,osint_affiliation,osint_affiliation:Beacon Telecom:L1,1
+twin-0148,osint_affiliation,osint_affiliation:G0,1
+twin-0148,osint_vendor,osint_vendor:G7,1
+twin-0148,osint_vendor,osint_vendor:G16,1
+twin-0148,osint_certification,osint_certification:Beacon Telecom:L0,1
+twin-0148,osint_certification,osint_certification:G14,1
+twin-0148,osint_event,osint_event:G11,1
+twin-0148,osint_event,osint_event:G15,1
+twin-0148,osint_social,osint_social:G26,1
+twin-0148,osint_social,osint_social:Beacon Telecom:L0,1
+twin-0149,osint_mailing_list,osint_mailing_list:Beacon Telecom:L2,1
+twin-0149,osint_oss_project,osint_oss_project:Beacon Telecom:L0,1
+twin-0149,osint_oss_project,osint_oss_project:G18,1
+twin-0149,osint_affiliation,osint_affiliation:G13,1
+twin-0149,osint_affiliation,osint_affiliation:Beacon Telecom:L0,1
+twin-0149,osint_vendor,osint_vendor:Beacon Telecom:L1,1
+twin-0149,osint_vendor,osint_vendor:G14,1
+twin-0149,osint_certification,osint_certification:Beacon Telecom:L0,1
+twin-0149,osint_event,osint_event:Beacon Telecom:L0,1
+twin-0149,osint_event,osint_event:Beacon Telecom:L1,1
+twin-0149,osint_social,osint_social:G13,1
+twin-0149,osint_social,osint_social:G14,1
+twin-0149,osint_social,osint_social:Beacon Telecom:L0,1
+twin-0150,osint_mailing_list,osint_mailing_list:Beacon Telecom:L2,1
+twin-0150,osint_mailing_list,osint_mailing_list:Beacon Telecom:L1,1
+twin-0150,osint_oss_project,osint_oss_project:Beacon Telecom:L1,1
+twin-0150,osint_oss_project,osint_oss_project:G15,1
+twin-0150,osint_affiliation,osint_affiliation:G12,1
+twin-0150,osint_affiliation,osint_affiliation:G8,1
+twin-0150,osint_vendor,osint_vendor:G3,1
+twin-0150,osint_vendor,osint_vendor:Beacon Telecom:L1,1
+twin-0150,osint_certification,osint_certification:Beacon Telecom:L0,1
+twin-0150,osint_certification,osint_certification:G2,1
+twin-0150,osint_event,osint_event:G13,1
+twin-0150,osint_event,osint_event:G7,1
+twin-0150,osint_social,osint_social:G8,1
+twin-0150,osint_social,osint_social:G0,1
+twin-0150,osint_social,osint_social:Beacon Telecom:L0,1

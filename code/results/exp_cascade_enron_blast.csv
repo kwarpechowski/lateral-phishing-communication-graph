@@ -1,0 +1,6 @@
+rezym,timing,model,auc,recall_fpr1,n_seeds
+blast,det,tab_1hop,0.6511,0.0191,8
+blast,det,tab_ctx,0.7397,0.0308,8
+blast,det,compa,0.8658,0.1918,8
+blast,det,gnn_temporal,0.7952,0.0544,8
+blast,det,gnn_temporal_shuf,0.7418,0.0476,8

@@ -1,0 +1,4 @@
+dataset,regime,timing,ks_mean,probe_auc
+CollegeMsg,blast,det,0.4352,0.7948
+CollegeMsg,stealthy,det,0.6971,0.7136
+CollegeMsg,stealthy,emp,0.1259,0.5649

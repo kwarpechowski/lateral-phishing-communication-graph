@@ -1,0 +1,4 @@
+rezym,timing,ks_mean,probe_auc
+blast,det,0.6443,0.8507
+stealthy,det,0.7598,0.7475
+stealthy,emp,0.2301,0.6208

@@ -1,0 +1,13 @@
+dataset,regime,timing,model,auc,recall_fpr1
+CollegeMsg,blast,det,tab_ctx,0.6178,0.0169
+CollegeMsg,blast,det,compa,0.8254,0.1121
+CollegeMsg,blast,det,gnn_temporal,0.6368,0.0269
+CollegeMsg,blast,det,gnn_temporal_shuf,0.5947,0.0194
+CollegeMsg,stealthy,det,tab_ctx,0.8266,0.1125
+CollegeMsg,stealthy,det,compa,0.6307,0.0049
+CollegeMsg,stealthy,det,gnn_temporal,0.8217,0.1086
+CollegeMsg,stealthy,det,gnn_temporal_shuf,0.6976,0.0516
+CollegeMsg,stealthy,emp,tab_ctx,0.6162,0.0311
+CollegeMsg,stealthy,emp,compa,0.5931,0.0026
+CollegeMsg,stealthy,emp,gnn_temporal,0.6938,0.0583
+CollegeMsg,stealthy,emp,gnn_temporal_shuf,0.7028,0.0758

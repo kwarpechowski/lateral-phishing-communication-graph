@@ -1,0 +1,17 @@
+rezim,detektor,auc_mean,ci_lo,ci_hi
+skryty,1-hop,0.636,0.616,0.655
+skryty,COMPA,0.58,0.567,0.593
+skryty,hopper,0.725,0.708,0.739
+skryty,anomaly-forest,0.725,0.71,0.739
+skryty,GCN-statyczny,0.814,0.799,0.828
+skryty,reczny-kontekst,0.691,0.676,0.705
+skryty,temporalny-GNN,0.693,0.673,0.713
+skryty,temporalny-GNN-uwaga,0.69,0.666,0.714
+naiwny,1-hop,0.695,0.686,0.705
+naiwny,COMPA,0.69,0.684,0.696
+naiwny,hopper,0.63,0.624,0.635
+naiwny,anomaly-forest,0.597,0.591,0.603
+naiwny,GCN-statyczny,0.788,0.779,0.797
+naiwny,reczny-kontekst,0.693,0.683,0.702
+naiwny,temporalny-GNN,0.811,0.803,0.819
+naiwny,temporalny-GNN-uwaga,0.804,0.795,0.813

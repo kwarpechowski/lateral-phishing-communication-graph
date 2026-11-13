@@ -1,0 +1,4 @@
+dataset,regime,timing,ks_mean,probe_auc
+email-Eu-core,blast,det,0.4549,0.7945
+email-Eu-core,stealthy,det,0.762,0.7019
+email-Eu-core,stealthy,emp,0.2348,0.5979

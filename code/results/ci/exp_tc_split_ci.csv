@@ -1,233 +1,25 @@
-config,slice,recall_fpr1,mean,ci_lo,ci_hi,n_seeds
-contact+rytm,all,0.0305,0.8157,0.8157,0.8157,1
-contact+rytm,all,0.043,0.8272,0.8272,0.8272,1
-contact+rytm,all,0.0458,0.8245,0.8245,0.8245,1
-contact+rytm,all,0.0491,0.8141,0.8141,0.8141,1
-contact+rytm,all,0.0509,0.8488,0.8488,0.8488,1
-contact+rytm,all,0.0537,0.8086,0.8086,0.8086,1
-contact+rytm,all,0.054,0.8241,0.8241,0.8241,1
-contact+rytm,all,0.0556,0.8182,0.8182,0.8182,1
-contact+rytm,all,0.0571,0.8221,0.8221,0.8221,1
-contact+rytm,all,0.0683,0.8274,0.8274,0.8274,1
-contact+rytm,all,0.0688,0.819,0.819,0.819,1
-contact+rytm,all,0.069,0.832,0.832,0.832,1
-contact+rytm,all,0.0695,0.842,0.842,0.842,1
-contact+rytm,all,0.0779,0.821,0.821,0.821,1
-contact+rytm,all,0.0863,0.834,0.834,0.834,1
-contact+rytm,all,0.0886,0.8287,0.8287,0.8287,1
-contact+rytm,all,0.0949,0.8257,0.8257,0.8257,1
-contact+rytm,all,0.0964,0.8255,0.8255,0.8255,1
-contact+rytm,all,0.1026,0.8241,0.8241,0.8241,1
-contact+rytm,all,0.1375,0.8301,0.8301,0.8301,1
-contact+rytm,in-rhythm,0.0,0.5483,0.5406,0.556,2
-contact+rytm,in-rhythm,0.0071,0.5863,0.5863,0.5863,1
-contact+rytm,in-rhythm,0.0119,0.5921,0.5921,0.5921,1
-contact+rytm,in-rhythm,0.0126,0.5785,0.5785,0.5785,1
-contact+rytm,in-rhythm,0.0134,0.5711,0.5711,0.5711,1
-contact+rytm,in-rhythm,0.0136,0.5896,0.5896,0.5896,1
-contact+rytm,in-rhythm,0.0155,0.5834,0.5834,0.5834,1
-contact+rytm,in-rhythm,0.0191,0.5786,0.5786,0.5786,1
-contact+rytm,in-rhythm,0.0192,0.5835,0.5835,0.5835,1
-contact+rytm,in-rhythm,0.0201,0.5657,0.5469,0.5846,2
-contact+rytm,in-rhythm,0.021,0.5987,0.5987,0.5987,1
-contact+rytm,in-rhythm,0.0219,0.5755,0.5755,0.5755,1
-contact+rytm,in-rhythm,0.0234,0.5778,0.5778,0.5778,1
-contact+rytm,in-rhythm,0.0253,0.566,0.566,0.566,1
-contact+rytm,in-rhythm,0.0265,0.5975,0.5975,0.5975,1
-contact+rytm,in-rhythm,0.0316,0.5751,0.5751,0.5751,1
-contact+rytm,in-rhythm,0.0333,0.6284,0.6284,0.6284,1
-contact+rytm,in-rhythm,0.039,0.6048,0.6048,0.6048,1
-contact+rytm,known-sender,0.006,0.7883,0.7883,0.7883,1
-contact+rytm,known-sender,0.0093,0.7613,0.7613,0.7613,1
-contact+rytm,known-sender,0.0121,0.7896,0.7896,0.7896,1
-contact+rytm,known-sender,0.0137,0.7722,0.7722,0.7722,1
-contact+rytm,known-sender,0.0162,0.8068,0.8068,0.8068,1
-contact+rytm,known-sender,0.027,0.8124,0.8124,0.8124,1
-contact+rytm,known-sender,0.0281,0.8008,0.8008,0.8008,1
-contact+rytm,known-sender,0.0311,0.8227,0.8227,0.8227,1
-contact+rytm,known-sender,0.033,0.7668,0.7668,0.7668,1
-contact+rytm,known-sender,0.0552,0.7727,0.7727,0.7727,1
-contact+rytm,known-sender,0.0605,0.8081,0.8081,0.8081,1
-contact+rytm,known-sender,0.0683,0.7676,0.7676,0.7676,1
-contact+rytm,known-sender,0.087,0.8003,0.8003,0.8003,1
-contact+rytm,known-sender,0.0871,0.7903,0.7903,0.7903,1
-contact+rytm,known-sender,0.0872,0.8033,0.8033,0.8033,1
-contact+rytm,known-sender,0.0909,0.7967,0.7967,0.7967,1
-contact+rytm,known-sender,0.1149,0.8211,0.8211,0.8211,1
-contact+rytm,known-sender,0.1437,0.7948,0.7948,0.7948,1
-contact+rytm,known-sender,0.1777,0.8192,0.8192,0.8192,1
-contact+rytm,known-sender,0.1875,0.8019,0.8019,0.8019,1
-contact+rytm,new-sender,0.0196,0.7956,0.7956,0.7956,1
-contact+rytm,new-sender,0.0263,0.8137,0.8137,0.8137,1
-contact+rytm,new-sender,0.0295,0.7946,0.7946,0.7946,1
-contact+rytm,new-sender,0.0303,0.8303,0.8303,0.8303,1
-contact+rytm,new-sender,0.033,0.812,0.812,0.812,1
-contact+rytm,new-sender,0.0488,0.8326,0.8326,0.8326,1
-contact+rytm,new-sender,0.05,0.7988,0.7988,0.7988,1
-contact+rytm,new-sender,0.0503,0.8147,0.8147,0.8147,1
-contact+rytm,new-sender,0.0528,0.8103,0.8103,0.8103,1
-contact+rytm,new-sender,0.0593,0.7893,0.7893,0.7893,1
-contact+rytm,new-sender,0.0602,0.8077,0.8077,0.8077,1
-contact+rytm,new-sender,0.0627,0.8127,0.8127,0.8127,1
-contact+rytm,new-sender,0.0637,0.801,0.801,0.801,1
-contact+rytm,new-sender,0.07,0.7935,0.7935,0.7935,1
-contact+rytm,new-sender,0.0836,0.8099,0.8099,0.8099,1
-contact+rytm,new-sender,0.0847,0.8074,0.8074,0.8074,1
-contact+rytm,new-sender,0.0996,0.8028,0.8028,0.8028,1
-contact+rytm,new-sender,0.1099,0.7941,0.7941,0.7941,1
-contact+rytm,new-sender,0.1151,0.8242,0.8242,0.8242,1
-contact+rytm,new-sender,0.1521,0.8062,0.8062,0.8062,1
-multiplex+rytm,all,0.026,0.8308,0.8308,0.8308,1
-multiplex+rytm,all,0.0305,0.8532,0.8532,0.8532,1
-multiplex+rytm,all,0.0423,0.8595,0.8595,0.8595,1
-multiplex+rytm,all,0.0465,0.8549,0.8549,0.8549,1
-multiplex+rytm,all,0.0483,0.864,0.864,0.864,1
-multiplex+rytm,all,0.0487,0.8515,0.8515,0.8515,1
-multiplex+rytm,all,0.0506,0.8548,0.8548,0.8548,1
-multiplex+rytm,all,0.0596,0.8577,0.8577,0.8577,1
-multiplex+rytm,all,0.063,0.8529,0.8529,0.8529,1
-multiplex+rytm,all,0.0638,0.8645,0.8645,0.8645,1
-multiplex+rytm,all,0.0675,0.8443,0.8443,0.8443,1
-multiplex+rytm,all,0.078,0.8615,0.8615,0.8615,1
-multiplex+rytm,all,0.0842,0.843,0.843,0.843,1
-multiplex+rytm,all,0.092,0.8906,0.8906,0.8906,1
-multiplex+rytm,all,0.0933,0.8646,0.8646,0.8646,1
-multiplex+rytm,all,0.0953,0.8766,0.8766,0.8766,1
-multiplex+rytm,all,0.1029,0.8519,0.8519,0.8519,1
-multiplex+rytm,all,0.1077,0.8634,0.8634,0.8634,1
-multiplex+rytm,all,0.1102,0.8468,0.8468,0.8468,1
-multiplex+rytm,all,0.1117,0.8611,0.8611,0.8611,1
-multiplex+rytm,in-rhythm,0.0,0.6346,0.6237,0.6454,4
-multiplex+rytm,in-rhythm,0.0058,0.6612,0.6612,0.6612,1
-multiplex+rytm,in-rhythm,0.0067,0.6287,0.6287,0.6287,1
-multiplex+rytm,in-rhythm,0.0071,0.6643,0.6643,0.6643,1
-multiplex+rytm,in-rhythm,0.0119,0.6025,0.6025,0.6025,1
-multiplex+rytm,in-rhythm,0.0134,0.6251,0.6251,0.6251,1
-multiplex+rytm,in-rhythm,0.0155,0.6867,0.6867,0.6867,1
-multiplex+rytm,in-rhythm,0.0187,0.6157,0.6157,0.6157,1
-multiplex+rytm,in-rhythm,0.0189,0.6558,0.6558,0.6558,1
-multiplex+rytm,in-rhythm,0.019,0.6064,0.6064,0.6064,1
-multiplex+rytm,in-rhythm,0.0192,0.6613,0.6613,0.6613,1
-multiplex+rytm,in-rhythm,0.0204,0.6381,0.6381,0.6381,1
-multiplex+rytm,in-rhythm,0.0255,0.6756,0.6756,0.6756,1
-multiplex+rytm,in-rhythm,0.0265,0.6489,0.6489,0.6489,1
-multiplex+rytm,in-rhythm,0.0267,0.6806,0.6806,0.6806,1
-multiplex+rytm,in-rhythm,0.038,0.6446,0.6446,0.6446,1
-multiplex+rytm,in-rhythm,0.0584,0.662,0.662,0.662,1
-multiplex+rytm,known-sender,0.0,0.8062,0.8062,0.8062,1
-multiplex+rytm,known-sender,0.003,0.785,0.785,0.785,1
-multiplex+rytm,known-sender,0.0093,0.7384,0.7384,0.7384,1
-multiplex+rytm,known-sender,0.0242,0.764,0.764,0.764,1
-multiplex+rytm,known-sender,0.0268,0.7873,0.7873,0.7873,1
-multiplex+rytm,known-sender,0.0292,0.7583,0.7583,0.7583,1
-multiplex+rytm,known-sender,0.0325,0.7931,0.7931,0.7931,1
-multiplex+rytm,known-sender,0.033,0.7853,0.7853,0.7853,1
-multiplex+rytm,known-sender,0.035,0.7897,0.7897,0.7897,1
-multiplex+rytm,known-sender,0.0374,0.793,0.793,0.793,1
-multiplex+rytm,known-sender,0.0377,0.8023,0.8023,0.8023,1
-multiplex+rytm,known-sender,0.0433,0.7566,0.7566,0.7566,1
-multiplex+rytm,known-sender,0.0447,0.7799,0.7799,0.7799,1
-multiplex+rytm,known-sender,0.0652,0.8355,0.8355,0.8355,1
-multiplex+rytm,known-sender,0.0756,0.8069,0.8069,0.8069,1
-multiplex+rytm,known-sender,0.0901,0.7795,0.7795,0.7795,1
-multiplex+rytm,known-sender,0.0904,0.8032,0.8032,0.8032,1
-multiplex+rytm,known-sender,0.1062,0.7903,0.7903,0.7903,1
-multiplex+rytm,known-sender,0.118,0.7944,0.7944,0.7944,1
-multiplex+rytm,known-sender,0.125,0.8042,0.8042,0.8042,1
-multiplex+rytm,new-sender,0.0366,0.906,0.906,0.906,1
-multiplex+rytm,new-sender,0.0443,0.9013,0.9013,0.9013,1
-multiplex+rytm,new-sender,0.0449,0.8884,0.8884,0.8884,1
-multiplex+rytm,new-sender,0.0489,0.9088,0.9088,0.9088,1
-multiplex+rytm,new-sender,0.05,0.8932,0.8932,0.8932,1
-multiplex+rytm,new-sender,0.0526,0.8981,0.8981,0.8981,1
-multiplex+rytm,new-sender,0.0701,0.895,0.895,0.895,1
-multiplex+rytm,new-sender,0.0722,0.9019,0.9019,0.9019,1
-multiplex+rytm,new-sender,0.0824,0.9005,0.9005,0.9005,1
-multiplex+rytm,new-sender,0.0856,0.8983,0.8983,0.8983,1
-multiplex+rytm,new-sender,0.0881,0.9077,0.9077,0.9077,1
-multiplex+rytm,new-sender,0.0976,0.9228,0.9228,0.9228,1
-multiplex+rytm,new-sender,0.1277,0.8798,0.8798,0.8798,1
-multiplex+rytm,new-sender,0.1289,0.9084,0.9084,0.9084,1
-multiplex+rytm,new-sender,0.1341,0.9018,0.9018,0.9018,1
-multiplex+rytm,new-sender,0.1481,0.9013,0.9013,0.9013,1
-multiplex+rytm,new-sender,0.1852,0.9207,0.9207,0.9207,1
-multiplex+rytm,new-sender,0.1865,0.9136,0.9136,0.9136,1
-multiplex+rytm,new-sender,0.1879,0.9066,0.9066,0.9066,1
-multiplex+rytm,new-sender,0.315,0.9148,0.9148,0.9148,1
-multiplex+rytm (osint-shuf),all,0.0162,0.8117,0.8117,0.8117,1
-multiplex+rytm (osint-shuf),all,0.0373,0.8236,0.8236,0.8236,1
-multiplex+rytm (osint-shuf),all,0.0421,0.8017,0.8017,0.8017,1
-multiplex+rytm (osint-shuf),all,0.0427,0.8382,0.8382,0.8382,1
-multiplex+rytm (osint-shuf),all,0.0431,0.8123,0.8123,0.8123,1
-multiplex+rytm (osint-shuf),all,0.0448,0.8305,0.8305,0.8305,1
-multiplex+rytm (osint-shuf),all,0.0489,0.8193,0.8193,0.8193,1
-multiplex+rytm (osint-shuf),all,0.0499,0.8143,0.8143,0.8143,1
-multiplex+rytm (osint-shuf),all,0.0513,0.8251,0.8251,0.8251,1
-multiplex+rytm (osint-shuf),all,0.0533,0.833,0.833,0.833,1
-multiplex+rytm (osint-shuf),all,0.0571,0.818,0.818,0.818,1
-multiplex+rytm (osint-shuf),all,0.0615,0.8302,0.8302,0.8302,1
-multiplex+rytm (osint-shuf),all,0.0691,0.8241,0.8241,0.8241,1
-multiplex+rytm (osint-shuf),all,0.0752,0.8243,0.8243,0.8243,1
-multiplex+rytm (osint-shuf),all,0.0918,0.83,0.83,0.83,1
-multiplex+rytm (osint-shuf),all,0.0919,0.8028,0.8028,0.8028,1
-multiplex+rytm (osint-shuf),all,0.1252,0.8252,0.8252,0.8252,1
-multiplex+rytm (osint-shuf),all,0.1398,0.8325,0.8325,0.8325,1
-multiplex+rytm (osint-shuf),all,0.1455,0.8272,0.8272,0.8272,1
-multiplex+rytm (osint-shuf),all,0.1602,0.8292,0.8292,0.8292,1
-multiplex+rytm (osint-shuf),in-rhythm,0.0,0.5651,0.5102,0.6268,3
-multiplex+rytm (osint-shuf),in-rhythm,0.0058,0.5726,0.5726,0.5726,1
-multiplex+rytm (osint-shuf),in-rhythm,0.007,0.5923,0.5923,0.5923,1
-multiplex+rytm (osint-shuf),in-rhythm,0.0077,0.5203,0.5203,0.5203,1
-multiplex+rytm (osint-shuf),in-rhythm,0.0119,0.564,0.564,0.564,1
-multiplex+rytm (osint-shuf),in-rhythm,0.013,0.5678,0.5678,0.5678,1
-multiplex+rytm (osint-shuf),in-rhythm,0.0134,0.5925,0.5925,0.5925,1
-multiplex+rytm (osint-shuf),in-rhythm,0.0143,0.5769,0.5769,0.5769,1
-multiplex+rytm (osint-shuf),in-rhythm,0.0146,0.5623,0.5623,0.5623,1
-multiplex+rytm (osint-shuf),in-rhythm,0.0189,0.5918,0.5918,0.5918,1
-multiplex+rytm (osint-shuf),in-rhythm,0.019,0.5789,0.5789,0.5789,1
-multiplex+rytm (osint-shuf),in-rhythm,0.0191,0.5828,0.5828,0.5828,1
-multiplex+rytm (osint-shuf),in-rhythm,0.0192,0.5901,0.5901,0.5901,1
-multiplex+rytm (osint-shuf),in-rhythm,0.025,0.5438,0.5438,0.5438,1
-multiplex+rytm (osint-shuf),in-rhythm,0.0272,0.5737,0.5737,0.5737,1
-multiplex+rytm (osint-shuf),in-rhythm,0.0336,0.5862,0.5862,0.5862,1
-multiplex+rytm (osint-shuf),in-rhythm,0.038,0.5561,0.5561,0.5561,1
-multiplex+rytm (osint-shuf),in-rhythm,0.0465,0.5701,0.5701,0.5701,1
-multiplex+rytm (osint-shuf),known-sender,0.0137,0.7715,0.7715,0.7715,1
-multiplex+rytm (osint-shuf),known-sender,0.0268,0.7855,0.7855,0.7855,1
-multiplex+rytm (osint-shuf),known-sender,0.0287,0.8046,0.8046,0.8046,1
-multiplex+rytm (osint-shuf),known-sender,0.0292,0.7648,0.7648,0.7648,1
-multiplex+rytm (osint-shuf),known-sender,0.033,0.7966,0.7955,0.7978,2
-multiplex+rytm (osint-shuf),known-sender,0.0357,0.8104,0.8104,0.8104,1
-multiplex+rytm (osint-shuf),known-sender,0.0363,0.7665,0.7665,0.7665,1
-multiplex+rytm (osint-shuf),known-sender,0.0482,0.8256,0.8256,0.8256,1
-multiplex+rytm (osint-shuf),known-sender,0.0483,0.7976,0.7976,0.7976,1
-multiplex+rytm (osint-shuf),known-sender,0.0497,0.8048,0.8048,0.8048,1
-multiplex+rytm (osint-shuf),known-sender,0.0619,0.7618,0.7618,0.7618,1
-multiplex+rytm (osint-shuf),known-sender,0.0667,0.7873,0.7873,0.7873,1
-multiplex+rytm (osint-shuf),known-sender,0.0807,0.8187,0.8187,0.8187,1
-multiplex+rytm (osint-shuf),known-sender,0.087,0.7761,0.7761,0.7761,1
-multiplex+rytm (osint-shuf),known-sender,0.0906,0.7985,0.7985,0.7985,1
-multiplex+rytm (osint-shuf),known-sender,0.1067,0.8041,0.8041,0.8041,1
-multiplex+rytm (osint-shuf),known-sender,0.1101,0.8059,0.8059,0.8059,1
-multiplex+rytm (osint-shuf),known-sender,0.1279,0.8169,0.8169,0.8169,1
-multiplex+rytm (osint-shuf),known-sender,0.1494,0.805,0.805,0.805,1
-multiplex+rytm (osint-shuf),new-sender,0.0139,0.8395,0.8395,0.8395,1
-multiplex+rytm (osint-shuf),new-sender,0.0187,0.7955,0.7955,0.7955,1
-multiplex+rytm (osint-shuf),new-sender,0.0263,0.8117,0.8117,0.8117,1
-multiplex+rytm (osint-shuf),new-sender,0.0353,0.7895,0.7895,0.7895,1
-multiplex+rytm (osint-shuf),new-sender,0.038,0.8133,0.8133,0.8133,1
-multiplex+rytm (osint-shuf),new-sender,0.0447,0.8111,0.8111,0.8111,1
-multiplex+rytm (osint-shuf),new-sender,0.05,0.7991,0.7991,0.7991,1
-multiplex+rytm (osint-shuf),new-sender,0.0554,0.8031,0.8031,0.8031,1
-multiplex+rytm (osint-shuf),new-sender,0.0638,0.7988,0.7988,0.7988,1
-multiplex+rytm (osint-shuf),new-sender,0.0677,0.8091,0.8091,0.8091,1
-multiplex+rytm (osint-shuf),new-sender,0.0728,0.7908,0.7908,0.7908,1
-multiplex+rytm (osint-shuf),new-sender,0.0732,0.81,0.81,0.81,1
-multiplex+rytm (osint-shuf),new-sender,0.0741,0.8323,0.8323,0.8323,1
-multiplex+rytm (osint-shuf),new-sender,0.0852,0.7929,0.7929,0.7929,1
-multiplex+rytm (osint-shuf),new-sender,0.0856,0.8055,0.8055,0.8055,1
-multiplex+rytm (osint-shuf),new-sender,0.0886,0.8096,0.8096,0.8096,1
-multiplex+rytm (osint-shuf),new-sender,0.0906,0.8243,0.8243,0.8243,1
-multiplex+rytm (osint-shuf),new-sender,0.0952,0.8125,0.8125,0.8125,1
-multiplex+rytm (osint-shuf),new-sender,0.1111,0.8423,0.8423,0.8423,1
-multiplex+rytm (osint-shuf),new-sender,0.1695,0.8206,0.8206,0.8206,1
+config,slice,metric,mean,ci_lo,ci_hi,n_seeds
+contact+rytm,all,auc,0.8256,0.8219,0.8298,20
+contact+rytm,all,recall_fpr1,0.07,0.0598,0.081,20
+contact+rytm,in-rhythm,auc,0.5808,0.5724,0.5893,20
+contact+rytm,in-rhythm,recall_fpr1,0.0187,0.0143,0.023,20
+contact+rytm,known-sender,auc,0.7948,0.7867,0.8029,20
+contact+rytm,known-sender,recall_fpr1,0.0668,0.0439,0.091,20
+contact+rytm,new-sender,auc,0.8076,0.8027,0.8127,20
+contact+rytm,new-sender,recall_fpr1,0.0651,0.0516,0.0805,20
+multiplex+rytm,all,auc,0.8574,0.8521,0.863,20
+multiplex+rytm,all,recall_fpr1,0.0711,0.0593,0.0827,20
+multiplex+rytm,in-rhythm,auc,0.6448,0.6343,0.6552,20
+multiplex+rytm,in-rhythm,recall_fpr1,0.0166,0.011,0.0233,20
+multiplex+rytm,known-sender,auc,0.7877,0.7783,0.7972,20
+multiplex+rytm,known-sender,recall_fpr1,0.0513,0.0351,0.0679,20
+multiplex+rytm,new-sender,auc,0.9034,0.899,0.9078,20
+multiplex+rytm,new-sender,recall_fpr1,0.1093,0.0817,0.1404,20
+multiplex+rytm (osint-shuf),all,auc,0.8227,0.8182,0.8268,20
+multiplex+rytm (osint-shuf),all,recall_fpr1,0.0723,0.0559,0.0904,20
+multiplex+rytm (osint-shuf),in-rhythm,auc,0.5709,0.5597,0.5818,20
+multiplex+rytm (osint-shuf),in-rhythm,recall_fpr1,0.0167,0.0114,0.0224,20
+multiplex+rytm (osint-shuf),known-sender,auc,0.7949,0.7865,0.8028,20
+multiplex+rytm (osint-shuf),known-sender,recall_fpr1,0.0632,0.0472,0.0799,20
+multiplex+rytm (osint-shuf),new-sender,auc,0.8106,0.8044,0.8172,20
+multiplex+rytm (osint-shuf),new-sender,recall_fpr1,0.068,0.0531,0.0844,20

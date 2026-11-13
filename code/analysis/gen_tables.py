@@ -228,15 +228,21 @@ def baselines():
 
 
 def realgraphs():
-    """Tab. 6 (A): Enron (oba rezymy, timing=det) + SNAP (timing=det) + CI AUC."""
+    """Tab. 6 (A): Enron + SNAP; stealthy = timing EMP (odstepy z tla — R4-A2:
+    glowna tabela rezymu stealth po usunieciu sygnatury iniekcji), blast = det."""
     en = _load("exp_cascade_enron.csv")
     sn = _load("exp_cascade_realgraphs.csv")
     ci_e = _ci("exp_cascade_enron", ["rezym", "timing", "model"])
     ci_s = _ci("exp_cascade_realgraphs", ["dataset", "regime", "timing", "model"])
     lines = []
-    by = {(r["rezym"], r["model"]): r for r in en if r.get("timing", "det") == "det"}
+    by = {
+        (r["rezym"], r["model"]): r
+        for r in en
+        if r.get("timing", "det") == ("det" if r["rezym"] == "blast" else "emp")
+    }
     for regime, rlab in [("blast", "naive blast"), ("stealthy", "stealthy attacker")]:
-        lines.append(f"\\multicolumn{{5}}{{@{{}}l}}{{\\emph{{\\quad {rlab}}}}} \\\\")
+        tim_key = "det" if regime == "blast" else "emp"
+        lines.append(f"\\multicolumn{{4}}{{@{{}}l}}{{\\emph{{\\quad {rlab}}}}} \\\\")
         det = [
             ("tab_1hop", "1-hop (tabular)"),
             ("tab_ctx", "Hand-crafted context (tab.)"),
@@ -252,24 +258,25 @@ def realgraphs():
                 continue
             r = by[(regime, key)]
             b = float(r["auc"]) == best
-            c = ci_e.get((regime, "det", key))
+            c = ci_e.get((regime, tim_key, key))
             auc_cell = _fmt_pm(c, bold=b) if c else _fmt(r["auc"], b)
             lines.append(
                 f" & {lab} & {auc_cell} & {_fmt(r['recall_fpr1'], False)} \\\\"
             )
     lines.append("\\midrule")
     lines.append(
-        "\\multicolumn{5}{@{}l}{\\emph{(b) SNAP graphs, naive blast vs "
-        "stealthy attacker, $10$~seeds}} \\\\"
+        "\\multicolumn{4}{@{}l}{\\emph{(b) SNAP graphs, naive blast vs "
+        "stealthy attacker ($\\mathbf{emp}$ timing), $10$~seeds}} \\\\"
     )
     by2 = {
         (r["dataset"], r["regime"], r["model"]): r
         for r in sn
-        if r.get("timing", "det") == "det"
+        if r.get("timing", "det") == ("det" if r["regime"] == "blast" else "emp")
     }
     for ds in ["email-Eu-core", "CollegeMsg"]:
         dsl = f"\\texttt{{{ds}}}" if ds != "CollegeMsg" else "\\texttt{CollegeMsg}"
         for regime, rlab in [("blast", "blast"), ("stealthy", "stealthy")]:
+            tim_key = "det" if regime == "blast" else "emp"
             det = [
                 ("compa", "volumetric"),
                 ("tab_ctx", "hand-crafted context"),
@@ -285,20 +292,20 @@ def realgraphs():
                     continue
                 r = by2[(ds, regime, key)]
                 b = float(r["auc"]) == best
-                c = ci_s.get((ds, regime, "det", key))
+                c = ci_s.get((ds, regime, tim_key, key))
                 auc_cell = _fmt_pm(c, bold=b) if c else _fmt(r["auc"], b)
                 pre = f"\\multirow{{3}}{{*}}{{{dsl} ({rlab})}}" if j == 0 else ""
                 lines.append(
                     f"{pre} & {lab} & {auc_cell} & {_fmt(r['recall_fpr1'], False)} \\\\"
                 )
     (OUT / "tab_realgraphs.tex").write_text("\n".join(lines), encoding="utf-8")
-    print("ok: tab_realgraphs.tex")
+    print("ok: tab_realgraphs.tex (stealthy=emp)")
 
 
 def sweep():
     """Tab. S2 (A): sweep p_infect (suplement: pelne CI [lo;hi])."""
     rows = _load("exp_cascade_sweep.csv")
-    ci = _ci("exp_cascade_sweep", ["sweep", "value", "model"])
+    ci = _ci("exp_cascade_sweep", ["sweep", "param", "model"])
     lines = []
     order = ["tab_1hop", "tab_ctx", "compa", "gnn_temporal"]
     for v in ["0.05", "0.1", "0.2", "0.3", "0.5", "0.7", "0.9"]:
@@ -311,7 +318,7 @@ def sweep():
         mx = max(vals) if vals else 0.0
         cells = []
         for m in order:
-            c = ci.get(("p_infect", v, m))
+            c = ci.get(("p_infect", str(float(v)), m))
             cells.append(_fmt_int(c, bold=(m in by and float(by[m]["auc"]) == mx)))
         lines.append(f"${v}$ & " + " & ".join(cells) + " \\\\")
     (OUT / "tab_sweep.tex").write_text("\n".join(lines), encoding="utf-8")
@@ -458,6 +465,15 @@ def susc():
     print("ok: tab_susc.tex")
 
 
+def _fmt3(v, bold=False):
+    """3 miejsca po przecinku (content fusion: 0.997 vs 0.998)."""
+    try:
+        x = f"${float(v):.3f}$"
+    except (TypeError, ValueError):
+        x = str(v)
+    return f"\\textbf{{{x}}}" if bold else x
+
+
 def content():
     """Tab. VI (B): fusion graf + tresc."""
     rows = _load("exp_content_fusion.csv")
@@ -472,9 +488,9 @@ def content():
         r = by[reg]
         mx = max(float(r["content_auc"]), float(r["mux_auc"]), float(r["fusion_auc"]))
         lines.append(
-            f"{lab} & {_fmt(r['content_auc'], float(r['content_auc']) == mx)} & "
-            f"{_fmt(r['mux_auc'], float(r['mux_auc']) == mx)} & "
-            f"{_fmt(r['fusion_auc'], float(r['fusion_auc']) == mx)} \\\\"
+            f"{lab} & {_fmt3(r['content_auc'], float(r['content_auc']) == mx)} & "
+            f"{_fmt3(r['mux_auc'], float(r['mux_auc']) == mx)} & "
+            f"{_fmt3(r['fusion_auc'], float(r['fusion_auc']) == mx)} \\\\"
         )
     (OUT / "tab_content.tex").write_text("\n".join(lines), encoding="utf-8")
     print("ok: tab_content.tex")

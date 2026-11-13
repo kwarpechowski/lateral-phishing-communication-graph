@@ -1,44 +1,11 @@
-config,recall_fpr1,mean,ci_lo,ci_hi,n_seeds
-in_rhythm (tc),0.0,0.8018,0.7968,0.807,20
-known_sender (kontakty),0.0,0.5736,0.5698,0.5776,20
-known_sender + in_rhythm,0.0,0.8256,0.8219,0.8298,20
-multiplex + tc (pelny),0.0243,0.8308,0.8308,0.8308,1
-multiplex + tc (pelny),0.0287,0.8532,0.8532,0.8532,1
-multiplex + tc (pelny),0.0365,0.8515,0.8515,0.8515,1
-multiplex + tc (pelny),0.0372,0.8595,0.8595,0.8595,1
-multiplex + tc (pelny),0.0465,0.8549,0.8549,0.8549,1
-multiplex + tc (pelny),0.0482,0.8645,0.8645,0.8645,1
-multiplex + tc (pelny),0.0483,0.864,0.864,0.864,1
-multiplex + tc (pelny),0.0498,0.8529,0.8529,0.8529,1
-multiplex + tc (pelny),0.0506,0.8548,0.8548,0.8548,1
-multiplex + tc (pelny),0.052,0.8615,0.8615,0.8615,1
-multiplex + tc (pelny),0.0596,0.8577,0.8577,0.8577,1
-multiplex + tc (pelny),0.0641,0.8443,0.8443,0.8443,1
-multiplex + tc (pelny),0.0667,0.843,0.843,0.843,1
-multiplex + tc (pelny),0.0887,0.8906,0.8906,0.8906,1
-multiplex + tc (pelny),0.0906,0.8611,0.8611,0.8611,1
-multiplex + tc (pelny),0.0915,0.8519,0.8519,0.8519,1
-multiplex + tc (pelny),0.0918,0.8646,0.8646,0.8646,1
-multiplex + tc (pelny),0.0946,0.8634,0.8634,0.8634,1
-multiplex + tc (pelny),0.0953,0.8766,0.8766,0.8766,1
-multiplex + tc (pelny),0.1102,0.8468,0.8468,0.8468,1
-multiplex bez tc,0.0034,0.6355,0.6355,0.6355,1
-multiplex bez tc,0.0036,0.6451,0.6451,0.6451,1
-multiplex bez tc,0.0065,0.6537,0.6537,0.6537,1
-multiplex bez tc,0.0066,0.6817,0.6817,0.6817,1
-multiplex bez tc,0.0068,0.6342,0.6342,0.6342,1
-multiplex bez tc,0.0086,0.6724,0.6724,0.6724,1
-multiplex bez tc,0.0102,0.6383,0.6383,0.6383,1
-multiplex bez tc,0.0103,0.6447,0.6447,0.6447,1
-multiplex bez tc,0.0116,0.6386,0.6386,0.6386,1
-multiplex bez tc,0.0124,0.6639,0.6639,0.6639,1
-multiplex bez tc,0.0135,0.6377,0.6377,0.6377,1
-multiplex bez tc,0.0156,0.6216,0.6216,0.6216,1
-multiplex bez tc,0.0162,0.6227,0.6227,0.6227,1
-multiplex bez tc,0.0163,0.6413,0.6413,0.6413,1
-multiplex bez tc,0.0178,0.6448,0.6448,0.6448,1
-multiplex bez tc,0.0187,0.6601,0.6601,0.6601,1
-multiplex bez tc,0.0226,0.6671,0.6671,0.6671,1
-multiplex bez tc,0.031,0.6642,0.6642,0.6642,1
-multiplex bez tc,0.0316,0.6563,0.6563,0.6563,1
-multiplex bez tc,0.048,0.6655,0.6655,0.6655,1
+config,metric,mean,ci_lo,ci_hi,n_seeds
+in_rhythm (tc),auc,0.8022,0.7974,0.8074,20
+in_rhythm (tc),recall_fpr1,0.0024,0.0003,0.0052,20
+known_sender (kontakty),auc,0.5736,0.5698,0.5776,20
+known_sender (kontakty),recall_fpr1,0.0,0.0,0.0,20
+known_sender + in_rhythm,auc,0.826,0.8222,0.8301,20
+known_sender + in_rhythm,recall_fpr1,0.0012,0.0,0.0034,20
+multiplex + tc (pelny),auc,0.8578,0.8527,0.8633,20
+multiplex + tc (pelny),recall_fpr1,0.0654,0.0546,0.0767,20
+multiplex bez tc,auc,0.6495,0.6425,0.6567,20
+multiplex bez tc,recall_fpr1,0.0156,0.0113,0.0206,20
