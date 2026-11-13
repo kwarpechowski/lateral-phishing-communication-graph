@@ -1,0 +1,101 @@
+% =====================================================================
+% ROZDZIAŁ 6 — Synteza
+% =====================================================================
+\chapter{Synteza: twierdzenia, pomiary i implikacje operacyjne}
+\label{rozd:synteza}
+
+\section{Od warunków do wyników: jedna tablica}
+\label{sec:s-mapa}
+
+Rozdziały empiryczne nie są ilustracjami do rozdziału formalnego ---
+jego twierdzenia zostały \emph{sformułowane pod} pomiarami, a każdy
+warunek ma swoją empiryczną instancję w paczce reprodukcyjnej.
+Tablica~\ref{tab:mapping} (rozdz.~\ref{rozd:formalny}) zamyka
+mapowanie; tu zbieramy jego wnioski po obu stronach.
+
+\paragraph{Warunek (a): przyczynowość zdarzeniowa cech.} Usunięcie
+wycieków (momentum liczone z przeszłych okien, liczniki wolumetryczne
+tylko z kubełków przeszłych, cechy stopni GNN ze splitu
+treningowego) poprzedziło przeliczenie wszystkich wyników --- i jest
+operacyjnie testowalne (\texttt{tests/test\_causality.py}: cecha
+jest przyczynowa wtedy i tylko wtedy, gdy usunięcie przyszłości nie
+zmienia jej wartości). Empiryczna dywidenda: po naprawie pozorna
+czułość rytmu $0{,}73$@1\% okazała się wartością $0{,}00$ pod
+uczciwym podziałem (rozdz.~\ref{sec:m-enron}) --- rzędy wielkości
+zawieszenia między wersją wyciekającą a uczciwą to najdokładniejszy
+pomiar ceny warunku (a) w całej rozprawie.
+
+\paragraph{Warunek (b): podział po ofiarach i organizacjach.}
+Bez rozłączności ofiar cechy agregujące po otoczeniu ofiary
+wykorzystują zdarzenia ataku z okresu ewaluacji w treningu
+(stw.~\ref{prop:split}). Podział indukcyjny po organizacjach
+(rozdz.~\ref{sec:k-stabilnosc}) pokazuje dodatkowo, że miarą
+jest wtedy \emph{transfer ryzyka}: cechy wolumetryczne
+transferują się najlepiej, sygnał odbiorczy degraduje --- zmiana
+protokołu zmienia ranking detektorów, więc protokół jest częścią
+wyniku, nie tłem.
+
+\paragraph{Warunek (c): usunięcie sygnatury iniekcji.} Sonda KS
+mierzy czysto czasowy brzeg sygnału (lemat~\ref{lem:probe}); po
+zastąpieniu odstępów iniekcji rozkładem tła detektor temporalny
+zachowuje marżę $+0{,}10$ AUC nad wolumetrycznym (Enron
+$0{,}77$ wobec $0{,}67$), podczas gdy cechy ręczne spadają do
+poziomu wolumetrycznego --- marża, która przeżywa, jest sygnałem
+interakcyjnym (tw.~\ref{thm:injection}).
+
+\paragraph{Warunek (d): realistyczna fabrykacja.} Sweep fabrykacji
+rozdziału~\ref{sec:m-fabrykacja} pokazuje erozję stopniową
+($0{,}88\to0{,}70$ przy $50\%$) z płaską kontrolą tasowania ---
+zgodnie ze stw.~\ref{prop:fab}; kontrast z fabrykatorem legacy,
+który podszywał samą kontrolę, pokazuje, że (d) jest warunkiem
+\emph{wymagającym}, nie kosmetycznym.
+
+\section{Sygnał w jednym zdaniu}
+\label{sec:s-sygnal}
+
+Po odjęciu wszystkiego, co wycieka, sygnał, który zostaje,
+jest jednego rodzaju: \emph{sparcie czasu ze strukturą grafu}
+--- fala po stronie odbiorców kaskady (rozdz.~\ref{rozd:kaskada})
+i spójność międzywarstwowa wobec prawdziwego pokrycia nadawcy
+(rozdz.~\ref{rozd:multipleks}). Sam brzeg czasowy jest
+bezużyteczny (rhythm-only $0{,}50$; po zastąpieniu sygnatury
+sonda spada do $0{,}54$--$0{,}63$), sama topologia jest
+niewystarczająca (statyczny GNN $0{,}76$ z czułością $0{,}039$),
+a sam sygnał ma mierzalne granice: fan-out $\ge2$ (punkt ślepy),
+szum etykiet (nauczony model degraduje najszybciej), prewalencja
+(triage, nie autonomiczna obrona).
+
+\section{Implikacje operacyjne dla SOC}
+\label{sec:s-soc}
+
+\paragraph{Co monitorować.} Fala odbiorcza jest własnością grafu
+komunikacji organizacji, policzalną z samych nagłówków --- pasuje do
+wewnętrznego pipeline'u triażu nie otwierającego treści. Rytm
+i profil behawioralny estymować wyłącznie z okna poprzedzającego
+okres oceny; każde rozszerzenie okna estymacji na okres oceny
+zawyża czujność rzędami wielkości.
+
+\paragraph{Gdzie monitor zawodzi.} Punkt ślepy jest konkretny:
+pojedyncza prośba o przelew z przejętego konta jest niewidoczna
+dla każdego badanego detektora --- kontrola procesowa poza
+kanałem (out-of-band) pozostaje warunkiem koniecznym, a detektor
+kaskadowy ma ją \emph{uzupełniać}, nie zastępować. Zimna
+impersonacja spoza każdej warstwy zostawia narażenie
+$\approx0{,}96$ na każdym stanowisku --- tam musi działać treść
+i proces, co potwierdza fuzja (blisko lepszego w każdym reżimie).
+
+\paragraph{Jak czytać liczby.} Przy realnej prewalencji $1{:}10^4$
+i punkcie pracy (czułość $0{,}10$; FPR $1\%$) każde wykrycie niesie
+$\sim\!10^3$ fałszywych alarmów, w reżimie skrytym $\sim\!3300$;
+punkt pracy jest trzy rzędy wielkości od progu produkcyjnego
+($4\cdot10^{-6}$, \citealp{ho2019detecting}). Detektory tej klasy
+są narzędziem rankingu dla analityków: ich wartość operacyjna
+mierzy się redukcją obciążenia analityka przy stałym budżecie
+alertów, nie samą czułością.
+
+\paragraph{Narażenie jako wielkość projektowa.} Miara
+$\mathrm{Susc}$ pozwala rozmawiać o narażeniu bez odwołań
+do psychologii: kanał dominuje rangę, a bogactwo osadzenia
+w grafie \emph{nie} kupuje ochrony (executive najbardziej
+narażeni w kanale lateral). Dla planujących kontrole oznacza
+to twardą hierarchię: najpierw kanał ataku, potem rola.

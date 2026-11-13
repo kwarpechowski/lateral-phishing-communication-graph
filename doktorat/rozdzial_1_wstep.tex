@@ -1,0 +1,230 @@
+% =====================================================================
+% ROZDZIAŁ 1 — Wstęp
+% =====================================================================
+\chapter{Wstęp}
+\label{rozd:wstep}
+
+\section{Problem i motywacja}
+\label{sec:w-problem}
+
+W poniedziałek rano przejmowane jest konto pocztowe pracownika. Zanim
+doba się skończy, jego kontakty w dwóch działach i w firmie partnerskiej
+otrzymują krótką, wiarygodną wiadomość z linkiem --- każda od kolegi, z
+którym korespondują co tydzień; część z nich klika, a godzinę później
+ich własne kontakty otrzymują tę samą wiadomość. Żaden pojedynczy
+element żadnej z tych wiadomości nie zdradza oszustwa
+\citep{butavicius2022why,sturman2025security}. To \emph{lateral phishing}:
+kampania wysłana z prawdziwego, wewnętrznego konta przejętego przez
+atakującego; w skali systemowej scharakteryzowali go \citet{ho2019detecting}
+jako ataki docierające do wielu odbiorców wewnątrz i wokół organizacji.
+Raporty FBI IC3 szacują straty spowodowane przez Business Email Compromise
+(BEC), którego lateral phishing jest odmianą „od środka", na około
+2{,}9 miliarda dolarów w~2023 roku \citep{fbi2024ic3}.
+
+W drugim scenariuszu, lustrzanym wobec pierwszego, na skrzynkę dyrektora
+finansowego trafia prośba o pilny przelew od „prezesa". Treść jest
+dopracowana, pretekst wiarygodny, a nadawca --- zewnętrzny --- respektuje
+wszystko, czego adresat oczekuje: właściwe nazwisko, właściwy projekt,
+właściwy ton \citep{dewan2014analyzing,brown2025web}; koszt takiej
+personalizacji językowe modele obniżają z każdym rokiem
+\citep{bethany2024evaluating}. To \emph{impersonacja zewnętrzna}, czyli
+spear phishing w reżimie BEC.
+
+Detekcja phishingu bywa przedstawiana jako problem niemal rozwiązany.
+Nowoczesne filtry, oparte na treści i reputacji, klasyfikują kampanie
+masowe z dokładnością $\sim$98\% na typowych benchmarkach
+\citep{birthriya2025detection,tan2020graph}. Liczba ta jest jednak
+myląca: dokładność na benchmarkach jest zdominowana przez ogon masowy,
+podczas gdy rzadki ogon ukierunkowany --- spear phishing i BEC ---
+napędza większość strat finansowych \citep{cidon2019high,ho2019detecting},
+jednocześnie z definicji omijając metody oparte na treści. Lateral phishing
+jest najtrudniejszym przypadkiem tego ogona: przejęte konto przechodzi
+każdą kontrolę tożsamości, reputacji czy relacji, bo wszystkie one są
+prawdziwe. W obu scenariuszach oszustwo nie leży w tym, \emph{co} jest
+napisane, lecz w tym, \emph{kto} pisze \emph{kiedy} --- i co dzieje się
+potem.
+
+\section{Teza rozprawy}
+\label{sec:w-teza}
+
+Rozprawa broni następującej tezy, sformułowanej w dwóch częściach.
+
+\begin{description}
+\item[T1 (sygnał).] Phishing ukierunkowany --- zarówno w wariancie lateral
+(przejęcie konta wewnętrznego), jak i w wariancie impersonacji
+zewnętrznej --- jest mierzalnym naruszeniem \emph{grafów organizacji}:
+grafu komunikacji (kto koresponduje z kim, w jakim rytmie) oraz grafu
+wiedzy domenowej (wielowarstwowa struktura relacji: kontakty,
+hierarchia, kompetencje, publiczny ślad OSINT, rytm czasowy). Sygnał
+detekcyjny dla ogona ukierunkowanego mieszka w dynamice czasowej i
+strukturalnej tych grafów, a nie w treści pojedynczej wiadomości:
+(a)~odbiorcza fala kaskady jest widoczna dla detektora temporalnego
+i degraduje łagodniej niż detekcja wolumetryczna pod atakiem skrytym,
+który rozkłada wysyłki w czasie; (b)~niespójność międzywarstwowa
+multipleksu wiedzy domenowej oddziela impersonację zewnętrzną od
+legalnych nowych nadawców --- tam, gdzie detektor oparty wyłącznie na
+kontaktach zawodzi całkowicie.
+\item[T2 (ewaluacja).] Empiryczny wynik detektora strumieniowego --- AUC,
+czułość w punkcie pracy --- mówi cokolwiek o zachowaniu w warunkach
+produkcyjnych tylko wtedy, gdy spełnione są cztery warunki
+przyczynowości: (i)~cechy są zdarzeniowo-przyczynowe (nie widzą
+przyszłości), (ii)~podział ewaluacyjny jest rozłączny po ofiarach,
+(iii)~brzegowa sygnatura czasowa iniekcji jest zmierzona i usunięta,
+(iv)~fabrykacja śladów jest losowana z rozkładu śladów prawdziwych.
+Naruszenie każdego z tych warunków --- w literaturze i we wcześniejszych
+wersjach własnych eksperymentów --- powodowało zawyżenie raportowanych liczb; rozprawa
+pokazuje to formalnie (twierdzenia z konstrukcyjnymi kontrprzykładami,
+rozdz.~\ref{rozd:formalny}) i empirycznie (pułapka wycieku rytmu:
+pozorna czułość 0{,}73 spada do 0{,}00 pod uczciwym podziałem
+czasowym).
+\end{description}
+
+Obie części łączy wspólna metoda: każda liczba w rozprawie pochodzi
+z paczki reprodukcyjnej (\texttt{code/results/*.csv}), każda przewaga
+detektora jest poddana ablacyjnej kontroli (tasowanie czasu, tasowanie
+warstw, sweep fabrykacji), a każde twierdzenie operacyjne jest
+wypowiedziane z jawną arytmetyką bazy (prewalencją): przy realnej
+częstości ataku rzędu $1{:}10^4$ klasa detektorów jest narzędziem
+\emph{rankingowym} dla analityków SOC, nie autonomiczną obroną.
+
+\section{Pytania badawcze}
+\label{sec:w-rq}
+
+Teza jest testowalna przez cztery pytania badawcze --- po dwa na każdą
+część tezy i po jednym na każdy z artykułów stanowiących podstawę
+rozdziałów empirycznych.
+
+\begin{description}
+\item[RQ1 (sygnał kaskadowy).] Czy przejęte konto, zgodne z każdą
+statyczną relacją grafu komunikacji, da się wykryć z dynamiki kaskady ---
+i czy sygnał przeżywa atakującego skrytego, który rozkłada wysyłki
+w czasie? Podteza: detektor temporalny czytający odbiorczą falę bije
+detekcję wolumetryczną w niskim FPR i degraduje pod skrytym atakiem
+mniej; przewaga znika pod kontrolą tasowania czasu i przenosi się
+kierunkowo na realne topologie (rozdz.~\ref{rozd:kaskada}).
+\item[RQ2 (granice sygnału kaskadowego).] Jakie są operacyjne granice
+tego sygnału? Podteza: sygnał wymaga fan-outu $\ge2$ (atak chirurgiczny
+na jednego odbiorcę jest niewidoczny dla wszystkich detektorów),
+degraduje łagodnie pod szumem etykiet i skalą, a przy realnej
+prewalencji detektory służą jako instrument triażu (rozdz.~\ref{rozd:kaskada}).
+\item[RQ3 (sygnał międzywarstwowy).] Czy impersonacja zewnętrzna
+oddziela się od legalnych nowych nadawców przez \emph{niespójność
+międzywarstwową} grafu wiedzy domenowej --- i czy zysk pochodzi ze
+struktury warstw, a nie z pojemności cech? Podteza: fuzja warstw z rytmem
+podnosi AUC i likwiduje fałszywe alarmy na legalnych nowych nadawcach,
+kontrola tasowania sprowadza wynik do losowego, a realny multipleks
+Enronu zachowuje operacyjną czułość pod uczciwym podziałem czasowym
+(rozdz.~\ref{rozd:multipleks}).
+\item[RQ4 (narażenie i granice).] Co graf wiedzy domenowej mówi o tym,
+\emph{kto} jest najbardziej narażony, i co się dzieje z tą klasą
+detektorów, gdy ich ewaluacja przecieka? Podteza: kanał ataku, nie ranga
+ofiar w organizacji, napędza narażenie (zimna impersonacja zostawia
+strukturową podłogę $\mathrm{Susc}\approx0{,}96$ na każdym stanowisku),
+a wyciek rytmu powoduje zawyżenie czujności detektorów behawioralnych o rzędy
+wielkości (rozdz.~\ref{rozd:multipleks}).
+\end{description}
+
+\section{Wkład rozprawy}
+\label{sec:w-wklad}
+
+Wkład naukowy rozprawy składa się z czterech elementów, mapowanych na
+rozdziały.
+
+\begin{enumerate}
+\item \textbf{Rozdział formalny} (rozdz.~\ref{rozd:formalny}):
+aksjomatyzacja warunków ewaluacji strumieniowej --- klasa cech i
+detektorów zdarzeniowo-przyczynowych, cztery mechanizmy wycieku
+(look-ahead, cechy definiujące etykietę, sygnatura iniekcji, ślepota
+wewnątrzkubełkowa) jako twierdzenia z konstrukcyjnymi kontrprzykładami,
+dekompozycja wyniku na składową czysto czasową i sprzęgającą czas
+z grafem, wynik o nierozróżnialności śladów przy realistycznej
+fabrykacji oraz arytmetyka bazy.
+\item \textbf{Formalizacja i pomiar naruszenia grafu komunikacji}
+(rozdz.~\ref{rozd:kaskada}, na bazie artykułu A, \emph{Journal of
+Network and Computer Applications}): lateral phishing jako temporalne
+naruszenie grafu komunikacji organizacji, z modelem zagrożeń obejmującym
+kaskadę naiwną i atakującego skrytego; odbiorcza fala kaskady jako
+niezmiennik detekcyjny --- hierarchia detektorów, kontrola tasowania
+czasu, wynik główny (detekcja wolumetryczna załamuje się poniżej losowego
+podstawienia pod atakiem skrytym, sygnał odbiorczy degraduje mniej
+i trzyma się powyżej losowego); replikacja mechanizmu na trzech realnych
+grafach komunikacji (Enron, \texttt{email-Eu-core}, \texttt{CollegeMsg}).
+\item \textbf{Formalizacja i pomiar naruszenia grafu wiedzy domenowej}
+(rozdz.~\ref{rozd:multipleks}, na bazie
+artykułu B, \emph{IEEE}): graf wiedzy domenowej jako multipleks,
+niespójność międzywarstwowa jako niezmiennik detekcyjny dla
+impersonacji zewnętrznej; odkrycie metodyczne --- \emph{pułapka wycieku
+rytmu} --- wraz z detektorowo-relatywną miarą narażenia
+(susceptibility) i granicą graf--treść.
+\item \textbf{Metodologia ewaluacji typu leak-aware}: protokół
+czterech zabezpieczeń (dopasowany projekt iniekcji, kontrola
+tasowania, podział indukcyjny po organizacjach, audyt szumu etykiet)
+zoperacjonalizowany w rozdziale formalnym i zastosowany w obu
+rozdziałach empirycznych; operacyjna definicja tego, co znaczy „detektor
+tej klasy działa", wraz z jawnym wyznaczeniem granic (punkt ślepy
+fan-out 1, szum etykiet, skala, próg bazowy).
+\end{enumerate}
+
+Modele uczone użyte w rozprawie --- temporal graph network z pamięcią
+węzłów i gradient boosting --- to standardowe narzędzia; wkładem jest
+ujęcie phishingu ukierunkowanego jako mierzalnego naruszenia grafów
+organizacji oraz dowód, że sygnał odbiorczy zależy od porządku
+czasowego, przenosi się kierunkowo na realne grafy i degraduje pod
+skrytością mniej niż detekcja wolumetryczna.
+
+\section{Powiązanie z artykułami}
+\label{sec:w-artykuly}
+
+Rozprawa jest zbudowana wokół dwóch powiązanych artykułów, których
+pełne teksty (po angielsku) stanowią podstawę rozdziałów empirycznych:
+
+\begin{itemize}
+\item \textbf{Artykuł A} (journal, \emph{Journal of Network and
+Computer Applications}): kaskadowy lateral phishing, temporal GNN
+przeciwko detektorom wolumetrycznym, kontrola time-shuffle, walidacja
+Enron + SNAP --- materiał rozdziału~\ref{rozd:kaskada};
+\item \textbf{Artykuł B} (konferencja IEEE): multiplex grafu wiedzy
+domenowej, niespójność międzywarstwowa, pułapka wycieku rytmu na
+Enronie, narażenie detektorowo-relatywne --- materiał
+rozdziału~\ref{rozd:multipleks};
+\item \textbf{Artykuł C} (konferencja IEEE, roboczy): graf wiedzy jako
+narzędzie operacyjne (note-grafy, CTI KG, GraphRAG) i jako cel ataku ---
+realistyczna fabrykacja śladów OSINT, trucie korpusu GraphRAG-lite
+z bramką spójności, fabrykacja trójek na publicznym FB15k-237 ---
+materiał sekcji~\ref{sec:m-kg} rozdziału~\ref{rozd:multipleks}.
+\end{itemize}
+
+Każde twierdzenie rozdziału formalnego mapuje się na konkretny
+eksperyment z paczki reprodukcyjnej (tab.~\ref{tab:mapping}
+w rozdz.~\ref{rozd:formalny}); każda liczba w rozdziałach empirycznych
+pochodzi wprost z plików \texttt{code/results/*.csv}. Dwie wcześniejsze
+usterki wycieku (momentum liczone z przyszłych kubełków, liczniki
+wolumetryczne liczone na całym strumieniu, cechy stopni GNN ze splitu
+testowego) zostały usunięte przed przeliczeniem \emph{wszystkich}
+wyników --- zgodnie z regułą: każda cecha strumieniowa liczona
+wyłącznie z przeszłości, \emph{zgodnie z pamięcią modelu temporalnego}
+(rozdz.~\ref{rozd:formalny}, def.~\ref{def:causal-feature}).
+
+\section{Struktura rozprawy}
+\label{sec:w-struktura}
+
+Rozdział~\ref{rozd:przeglad} przegląda literaturę: detekcję phishingu
+masowego i ukierunkowanego, detekcję anomalii w poczcie
+behawioralnej, sieci multiplex i grafowe modele uczone oraz rygor
+ewaluacji w bezpieczeństwie ML. Rozdział~\ref{rozd:formalny} buduje
+ramę formalną: porządek totalny zdarzeń, przyczynowość zdarzeniową,
+cztery mechanizmy wycieku, sondę czasową, kontrolę tasowania,
+realistyczną fabrykację i arytmetykę bazy --- z mapowaniem na
+eksperymenty. Rozdział~\ref{rozd:kaskada} (na bazie artykułu A)
+rozwija lateral phishing jako naruszenie grafu komunikacji w czasie:
+model, detektory, wyniki na grafie studyjnym, atakujący skryty,
+granice modelu zagrożeń, walidacja na realnych grafach i rygor
+ewaluacji. Rozdział~\ref{rozd:multipleks} (na bazie artykułu B)
+rozwija impersonację zewnętrzną jako naruszenie grafu wiedzy
+domenowej: multipleks, niespójność międzywarstwową, pułapkę wycieku
+rytmu na realnym Enronie, narażenie detektorowo-relatywne i granicę
+graf--treść. Rozdział~\ref{rozd:synteza} syntetyzuje wyniki obu
+rozdziałów empirycznych w świetle twierdzeń formalnych i wypowiada
+implikacje operacyjne dla SOC. Rozdział~\ref{rozd:zakonczenie}
+podsumowuje odpowiedzi na pytania badawcze, ograniczenia i kierunki
+przyszłej pracy.

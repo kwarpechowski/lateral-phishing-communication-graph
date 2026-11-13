@@ -1,0 +1,168 @@
+% =====================================================================
+% ROZDZIAŁ 2 — Przegląd literatury
+% =====================================================================
+\chapter{Przegląd literatury}
+\label{rozd:przeglad}
+
+Przegląd grupuje literaturę wokół miejsca, w którym rozprawa wnosi
+wkład. Sekcja~\ref{sec:p-ogon} opisuje rozjazd między detekcją phishingu
+masowego a ogonem ukierunkowanym; sekcja~\ref{sec:p-behawioralna} ---
+metody behawioralne i nagłówkowe, najbliższe technicznej rodzinie
+detektorów tej rozprawy; sekcja~\ref{sec:p-osint} --- wiedzę
+atakującego i narażenie ludzkie, czyli stronę ataku
+(spear phishingu jako naruszenia grafu wiedzy); sekcje
+\ref{sec:p-multiplex} i \ref{sec:p-gnn} --- formalizmy i modele
+grafowe; sekcja~\ref{sec:p-rygor} --- rygor ewaluacji w bezpieczeństwie
+uczenia maszynowego, do którego rozdział formalny dodaje twierdzenia.
+
+\section{Detekcja phishingu: ogon masowy i ogon ukierunkowany}
+\label{sec:p-ogon}
+
+Nowoczesne filtry pocztowe klasyfikują kampanie masowe z dokładnością
+rzędu 98\% na typowych benchmarkach \citep{birthriya2025detection,
+tan2020graph}, łącząc cechy treści, URL-i i reputacji. Dokładność ta
+jest jednak zdominowana przez ogon masowy i nie przenosi się na rzadki
+ogon ukierunkowany: phishing spear i BEC są z definicji spersonalizowane
+\citep{birthriya2025detection}, a ich treść czyta się jako normalna.
+\citet{cidon2019high} wykazali, że BEC bez ładunku (payload-free) ---
+wiadomość bez linków i załączników --- stanowi w produkcji skuteczną
+i kosztowną klasę ataków, omijającą filtry treści;
+\citet{ho2019detecting} scharakteryzowali lateral phishing na
+113~milionach wiadomości, ustalając jednocześnie operacyjny próg
+praktyczny: mniej niż 4 fałszywe alarmy na milion wiadomości
+($4\cdot10^{-6}$). Straty BEC szacuje IC3 na $\sim$2{,}9 mld USD
+w 2023 r. \citep{fbi2024ic3}. Wniosek wspólny tej linii badań brzmi:
+dla ogona ukierunkowanego sygnał treściowy jest z definicji słaby,
+bo atak respektuje wszystko, czego ofiara oczekuje
+\citep{butavicius2022why,sturman2025security,dewan2014analyzing},
+a koszt personalizacji obniżają językowe modele
+\citep{bethany2024evaluating,brown2025web}.
+
+\section{Detekcja behawioralna i nagłówkowa poczty}
+\label{sec:p-behawioralna}
+
+Metody skuteczne dla ogona ukierunkowanego odchodzą od treści.
+Profile behawioralne per nadawca --- COMPA \citep{egele2013compa}
+oraz statystyki „that ain't you" \citep{stringhini2015thataint} ---
+flagują wysyłki odbiegające od własnego profilu aktywności;
+\citet{gascon2018reading} modelują rytm pisania,
+\citet{duman2016emailprofiler} łączą nagłówki ze stylometrią,
+a \citet{luo2024characterizing} analizują infrastrukturę przekazań
+(relay). W rodzinie logów systemowych Hopper \citep{ho2021hopper}
+wykrywa lateral movement w grafach logowań, czytając ścieżkę
+przyczynową do rzadkiego celu --- ideę, którą artykuł~A przenosi
+na graf poczty jako baseline path-based. Wszystkie te detektory
+czytają jednak \emph{stronę nadawcy}: to, co atakujący kontroluje
+i świadomie rozkłada w czasie. Wkład rozprawy względem tej linii
+jest dwojaki: (i)~sygnał lokowany jest po \emph{stronie odbiorczej}
+--- w falach wśród sąsiadów ofiary, których atakujący nie może
+ukryć bez rezygnacji z fan-outu (rozdz.~\ref{rozd:kaskada});
+(ii)~rytm nadawcy, serce detekcji behawioralnej, okazuje się
+jednocześnie najłatwiejszym miejscem do nieumyślnego wycieku
+w~ewaluacji (pułapka wycieku rytmu, rozdz.~\ref{rozd:multipleks};
+formalizacja w tw.~\ref{thm:lookahead}).
+
+\section{Strona ataku: OSINT, personalizacja i narażenie ludzkie}
+\label{sec:p-osint}
+
+Spear phishing czerpie wiarygodność z otwartych źródeł (OSINT);
+automatyczne zbieranie śladów badano od wczesnych prac
+\citep{edwards2017panning}. \citet{dewan2014analyzing,dewan2017facebook}
+znaleźli jednak, że surowe cechy społecznościowe i OSINT wnosiły
+mało ponad treść i URL-e --- ostrzeżenie, które rozprawa bierze
+poważnie: OSINT działa jako \emph{konstruktor relacji} (wspólna
+lista czy afiliacja = krawędź warstwy), a nie płaska cecha
+(binarna flaga). Modele językowe radykalnie obniżyły koszt
+personalizacji: automatyczne kampanie dorównują ekspertom
+w badaniach z udziałem ludzi \citep{bethany2024evaluating},
+a realistyczne ślady OSINT można generować syntetycznie
+\citep{brown2025web}. Razem z tym, że treść może być wygenerowana
+idealnie, wynika imperatyw: obrona musi eksploatować \emph{relacje},
+nie styl.
+
+Narażenie ludzkie zależy od osobowości i kontekstu
+\citep{halevi2015spearphishing}, rośnie pod presją czasu
+i sygnałami perswazji \citep{butavicius2022why}, a świadomość
+i styl decyzyjny moderują je tylko częściowo \citep{sturman2025security}.
+Te prace mierzą stronę \emph{ludzką}; rozprawa mierzy wielkość
+komplementarną i strukturalną --- narażenie, które \emph{detektor
+zostawia} dla danej roli i kanału ataku (def. susceptibility,
+rozdz.~\ref{rozd:multipleks}).
+
+\section{Sieci multiplex i niespójność międzywarstwowa}
+\label{sec:p-multiplex}
+
+Formalizmem scalającym wiele relacji na jednym zbiorze węzłów jest
+sieć multiplex \citep{kivela2014multilayer,dedomenico2013mathematical,
+magnani2013combinatorial,jeude2019multilayer}. W modelach uczonych
+heterogeniczne GNN uczą się fuzji typów relacji: HAN
+\citep{wang2019heterogeneous}, HGT \citep{hu2020heterogeneous},
+MAGNN \citep{fu2020magnn}, przegląd reprezentacji sieci
+heterogenicznych \citep{christophides2021overview,cen2019representation}.
+Niespójność między perspektywami jako sygnał anomalii znana jest
+w wykrywaniu oszustw \citep{liu2020alleviating}; ataki na strukturę
+grafu \citep{zugner2018adversarial,zugner2019adversarial,
+dai2022towards}, ich certyfikowane granice odporności
+\citep{zugner2021certified} i obrony \citep{zhang2020gnnguard,jin2020graph,
+cai2021structural,wang2023label} mają znaczenie, bo atakujący może
+fabrykować krawędzie --- a w grafach wiedzy robi to na dwóch
+poziomach: trucie osadzeń i korpusów GraphRAG
+\citep{zhang2019poisoning,you2023mass,zou2024poisonedrag,
+wen2025fewwords,kepo2026} oraz wandalizm na publicznych grafach
+wiedzy \citep{heindorf2017wsdmcup,sarabadani2017tools,
+heindorf2019debiasing}. Co rozdziały formalny (stw.
+o fabrykacji, \ref{prop:fab}) i empiryczne B i C (sweep fabrykacji)
+traktują jako obywatela pierwszej kategorii modelu zagrożeń.
+Według wiedzy autora niespójność międzywarstwowa nie została
+dotąd operacjonalizowana jako graf wiedzy domenowej poczty
+korporacyjnej dla bezpieczeństwa; tę lukę zamyka rozdział
+\ref{rozd:multipleks}.
+
+\section{Grafowe modele uczone w czasie}
+\label{sec:p-gnn}
+
+Tematyczne sieci grafowe uczą reprezentacje na grafie statycznym;
+ich temporalny odpowiednik utrzymuje pamięć węzłów aktualizowaną
+kolejnymi interakcjami --- klasę reprezentuje TGN
+\citep{rossi2020temporal}. W rozprawie architektura temporalna
+z pamięcią węzłów (TGN-lite) jest użyta jako \emph{instrument
+pomiarowy}: różnica między nią a modelem statycznym (i spadek
+tej różnicy pod tasowaniem czasu) operacjonalizuje tezę, że
+sygnał kaskadowy jest dynamiczny, nie topologiczny. Graf
+komunikacji jako obiekt monitoringu operacyjnego jest tej samej
+natury co grafy przepływów, alertów i proweniencji stosowane
+w detekcji anomalii i intruzji \citep{nayeri2026alert,weng2024rtapt}.
+
+\section{Rygor ewaluacji detektorów bezpieczeństwa}
+\label{sec:p-rygor}
+
+Wyniki detektorów ML w bezpieczeństwie łatwo ulegają zawyżeniu: wycieki cech,
+nieuczciwe podziały i nagłówkowy AUC \citep{arp2022dos};
+świadome czasu ewaluacje pokazują, jak dylatacja czasowa
+zniekształca wyniki (TESSERACT, \citep{pendlebury2019tesseract}).
+Ta linia dostarcza protokołów; rozprawa idzie krok dalej ---
+aksjomatyzuje warunki w postaci twierdzeń o obciążeniu
+(tw. o look-ahead \ref{thm:lookahead}, stw. o podziale po
+ofiarach \ref{prop:split}, lemat o sondzie \ref{lem:probe},
+tw. o usunięciu sygnatury \ref{thm:injection}, stw. o
+kontroli tasowania \ref{prop:shuffle}, stw. o fabrykacji
+\ref{prop:fab}) i pokazuje, że pułapka wycieku rytmu
+(rozdz.~\ref{rozd:multipleks}) jest \emph{instancją}
+dokładnie tego mechanizmu, w pełni policzalną na realnym
+korporusie Enron \citep{klimt2004enron}.
+
+\section{Podsumowanie luki badawczej}
+\label{sec:p-luka}
+
+Z przeglądu wyłaniają się trzy luki, które rozprawa zamyka.
+Po pierwsze, metody dla ogona ukierunkowanego czytają stronę
+nadawcy (wolumetria, rytm, ścieżka) --- brakowało pomiaru sygnału
+po stronie odbiorczej fali kaskady, niewidocznego dla atakującego
+bez rezygnacji z fan-outu. Po drugie, wiedza organizacji
+była modelowana płasko (cechy), nie relationalnie (warstwy grafu
+wiedzy) --- brakowało operacjonalizacji niespójności międzywarstwowej
+dla impersonacji zewnętrznej. Po trzecie, rygor ewaluacji był
+protokołowy, nie twierdzeniowy --- brakowało formalnych warunków,
+pod jakimi empiryczny AUC detektora strumieniowego mówi cokolwiek
+o produkcji, oraz pomiaru, jak duży jest zysk z ich naruszenia
+na realnym korpusie.

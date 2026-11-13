@@ -1,0 +1,114 @@
+% =====================================================================
+% ROZDZIAŁ 7 — Zakończenie
+% =====================================================================
+\chapter{Zakończenie}
+\label{rozd:zakonczenie}
+
+\section{Odpowiedzi na pytania badawcze}
+\label{sec:z-rq}
+
+\paragraph{RQ1 (sygnał kaskadowy).} Tak: przejęte konto zgodne
+z każdą statyczną relacją jest wykrywalne z dynamiki kaskady.
+Hierarchia detektorów jest jednoznaczna (1-hop $0{,}70$; GNN
+statyczny $0{,}76$; ręczny kontekst $0{,}81$; temporalny GNN
+$0{,}87$ z czułością operacyjną $0{,}099$@1\%), przewaga jest
+temporalna w sensie ablacyjnym (tasowanie: $0{,}87\to0{,}73$)
+i przenosi się kierunkowo na trzy realne grafy (Enron: temporalny
+$0{,}85$, czułość $0{,}215$ pod atakiem skrytym, przy czułości
+$0{,}000$ detektora wolumetrycznego; SNAP: kontrast reżimowy
+replikowany w kierunku na obu grafach).
+
+\paragraph{RQ2 (granice).} Sygnał wymaga fan-outu $\ge2$ (atak
+na jednego odbiorcę: AUC $\approx0{,}5$ dla każdego detektora);
+propagacja nie jest konieczna (przy $p_{\mathrm{inf}}=0$ i fan-oucie
+$\ge2$ wykrywalność wraca). Sygnał degraduje łagodnie ze skalą,
+kurczy się pod szumem etykiet (nauczony model najszybciej:
+$0{,}72\to0{,}59$ przy $20\%$), a między organizacjami najlepiej
+transferują się cechy wolumetryczne. Przy realnej prewalencji
+detektory są instrumentem triażu: $\sim\!10^3$ fałszywych alarmów
+na wykrycie.
+
+\paragraph{RQ3 (sygnał międzywarstwowy).} Tak: niespójność
+międzywarstwowa oddziela impersonację zewnętrzną od legalnych
+nowych nadawców (AUC $0{,}70\to0{,}88$, fałszywe alarmy
+$100\%\to0\%$), kontrola tasowania spada do losowego, a kontrola
+tylko-OSINT i tc-split lokalizują przyczynowy margines warstw
+($+0{,}03$ AUC; $0{,}81\to0{,}90$ na plasterku nowych nadawców).
+Uczciwa ablacja pokazuje, że większość sygnału rankingowego niesie
+spójność czasowa, a wartość OSINT leży po stronie fałszywych
+alarmów; sygnał eroduje pod realistyczną fabrykacją zgodnie ze
+stwierdzeniem~\ref{prop:fab}.
+
+\paragraph{RQ4 (narażenie i granice).} Narażenie napędza kanał
+ataku, nie ranga ofiar: zimna impersonacja zostawia strukturalną
+podłogę $\mathrm{Susc}\approx0{,}96$ na każdym stanowisku, a w kanale
+lateral executive są \emph{najbardziej} narażeni --- bogactwo
+osadzenia nie kupuje ochrony. Treść i graf zawodzą na różnych
+atakach, a ich fuzja trzyma się blisko lepszego w każdym reżimie.
+Najważniejsze odkrycie metodyczne rozprawy --- pułapka wycieku
+rytmu --- pokazuje, że rytm estymowany na pełnej historii zawyża
+czujność behawioralną z $0{,}00$ (uczciwie) do $0{,}73$ (z
+wyciekiem): miara ceny naruszenia warunku przyczynowości
+na realnym korpusie.
+
+\section{Wkład rozprawy}
+\label{sec:z-wklad}
+
+Rozprawa wnosi: (i)~ramę formalną ewaluacji strumieniowej ---
+klasę cech i detektorów zdarzeniowo-przyczynowych, cztery
+mechanizmy wycieku jako twierdzenia z konstrukcyjnymi
+kontrprzykładami, dekompozycję wyniku detektora na składową
+czysto czasową i sprzęgającą czas z grafem, wynik o
+nierozróżnialności śladów przy realistycznej fabrykacji
+(rozdz.~\ref{rozd:formalny}); (ii)~pomiar i formalizację lateral
+phishingu jako naruszenia grafu komunikacji w czasie --- z
+odbiorczą falą kaskady jako niezmiennikiem, atakującym skrytym
+jako testem krytycznym i replikacją na trzech realnych
+topologiach (rozdz.~\ref{rozd:kaskada}); (iii)~pomiar
+i formalizację impersonacji zewnętrznej jako naruszenia grafu
+wiedzy domenowej --- multipleks, niespójność międzywarstwowa,
+narażenie detektorowo-relatywne i granica graf--treść
+(rozdz.~\ref{rozd:multipleks}); (iv)~metodologię ewaluacji
+leak-aware, scalającą protokoły literaturowe z warunkami
+twierdzonymi i operacjonalizowaną w paczce reprodukcyjnej, z
+jawną arytmetyką bazy i granicami wypowiedzianymi
+(rozdz.~\ref{rozd:synteza}).
+
+\section{Ograniczenia}
+\label{sec:z-ograniczenia}
+
+Złośliwość jest syntetyczna: żaden publiczny korpus nie łączy
+realnych kont z etykietowanymi przejęciami i ich propagacją, więc
+walidujemy mechanizm (rozłożona w czasie kaskada separuje się
+od ruchu legalnego dynamiką odbiorczą), nie detekcję realnych
+intruzów; warstwy OSINT są syntetyczne także na realnym grafie.
+Parametry kaskady i pacing są nasze; swepy pokazują stabilność
+hierarchii, ale atak single-recipient pozostaje poza sygnałem
+z konstrukcji. Skala jest ograniczona ($N{=}150$ w studium;
+realne grafy do $\sim\!2$k węzłów), a graf studyjny jest gęstszy
+niż typowa poczta korporacyjna --- nośnikiem mechanizmu poza
+tym ustawieniem są replikacje Enron/SNAP, z zastrzeżeniem
+kierunkowym (3--8 ziaren). Próg operacyjny pozostaje otwarty:
+nawet najlepszy punkt pracy jest rzędy wielkości od progu
+produkcyjnego ($<\!4$ FP/M); raportujemy tę lukę jako wymaganie
+otwarte, nie rozwiązane.
+
+\section{Kierunki przyszłej pracy}
+\label{sec:z-przyszla}
+
+Najbliższy krok to walidacja na korpusie z etykietowanymi,
+\emph{realnymi} przejęciami --- zamiana dowodu mechanizmu
+w pomiar wykrywalności. Model zagrożeń wymaga presji
+adaptacyjnej: atakujący, który \emph{uczy się} grafu komunikacji
+i dostosowuje pacing oraz wzorzec propagacji, by zejść pod falę
+odbiorczą, wraz z dryfem populacji \citep{pendlebury2019tesseract}.
+Po stronie modelowania: bogatszy kontekst relacyjny --- hierarchia,
+kompetencje i publiczny ślad jako warstwy na tych samych kontach ---
+i synteza obu kanałów w jednym detektorze fuzji graf--treść.
+Po stronie ewaluacji: rozdział formalny sugeruje naturalne
+rozszerzenia --- kontrola tasowania per kubełek (izolująca
+czystą składową porządku od ko-występowania) oraz fabrykator
+optymalizujący spójność, nie istnienie śladów. Wynik odbiorczy
+jest naturalnym wejściem do kolejki triażu SOC --- pod warunkiem
+ewaluacji, która wiąże go z realną redukcją obciążenia analityka
+przy stałym budżecie alertów.
