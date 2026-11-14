@@ -1,0 +1,7 @@
+contrast,fabricator,dAUC,wilcoxon_p,cliffs_d,n_seeds
+combined_vs_degree,marginal,0.1999,0.00506,1.0,10
+combined_vs_multirel,marginal,0.1498,0.00506,1.0,10
+combined_vs_degree,hr_preserving,0.2016,0.00506,1.0,10
+combined_vs_multirel,hr_preserving,0.1504,0.00506,1.0,10
+combined_vs_degree,path_preserving,-0.119,0.00506,-1.0,10
+combined_vs_multirel,path_preserving,0.0031,0.01252,0.8,10

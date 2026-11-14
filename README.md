@@ -103,6 +103,32 @@ Wszystkie liczby w artykułach pochodzą wprost z plików `code/results/*.csv`.
 Pełna mapa: `code/README.md`. Figury: `code/analysis/plot_cascade.py` i `plot_figures.py`
 (czytają `code/results/*.csv`, piszą PDF-y figur).
 
+### A3 (recenzja wewnetrzna r2): dwa harnessy i dlaczego liczby „volume" roznia sie miedzy tabelami
+
+W paczce sa DWA harnessy o roznych protokolach benign (oba z jedna regula przyczynowosci
+zdarzeniowej po A1 — liczniki i cechy widza wylacznie zdarzenia o scisle wczesniejszym
+znaczniku czasu t(e) = kubelek + pozycja na liscie):
+
+1. **harness domyslnej kaskady** (`exp_cascade._simulate`): atak = naiwna kaskada
+   (P_INFECT=0.6, H=4), benign = punktowy ruch kontaktow W RYTMIE (60/kubełek).
+   Uzywaja go: Tab. S2 (sweep p_inf), Fig. S5 (krzywa FPR), Tab. 1 (hierarchia).
+   Tu COMPA osiaga AUC 0.83-0.88 i czulosc@1% ~0.26 — jej liczniki widza rozwijajacy
+   sie burst, a benign w rytmie nie zaslania cechy nowosci czasu.
+2. **harness stealth** (`exp_cascade_stealth._simulate_stealth` oraz
+   `cascadebench.build_scenario`): atak skryty/blast z matched benign 3:1, 15% ruchu
+   POZA rytmem, 30% mimicry rytmu przez atakujacego. Uzywaja go: Tab. 2 (stealth sweep),
+   Tab. 3 (baselines), kontrasty Wilcoxona (headline-CI). Tu COMPA pod blastem spada do
+   ~0.63-0.70 AUC i czulosci 0.03-0.06: benign off-rhythm niszczy ceche nowosci czasu,
+   a mimicry odbiera bit rytmu. To NIE jest sprzecznosc danych — to dwa rozne pytania:
+   „czy volume widzi kaskade wzgledem latwego tla" (tak, 0.83) i „czy widzi ja wzgledem
+   tla dopasowanego do ataku" (ledwo, 0.63).
+
+Tozsamosc modeli (A3): **„Temporal GNN" w Tab. 1 to klasa `TemporalGNN` z
+`exp_cascade.py`** (TGN-lite z GRU-pamiecia, 120 epok, 5 ziaren) → 0.871/0.099 po A1.
+Wiersz „Library TGN" to oficjalny TGN z PyG (`exp_cascade_tgn.py`), a „TGN-lite /
+TGAT-lite" z Tab. S1 to ta sama architektura trenowana w `exp_cascade_arch.py`
+(100 epok) — roznice rzędu 0.01 AUC to epoch-count + niedeterminizm watkow, nie rozne modele.
+
 ### Komendy
 
 ```bash
@@ -149,3 +175,38 @@ zgodnie z pamięcią modelu temporalnego. Szczegóły: komentarze `% ZMIANA` w p
 
 Korpus Enron jest publiczny (Klimt & Yang, 2004); nie jest dołączony do repozytorium
 ze względu na rozmiar — wystarczy wypakować oryginalny maildir i wskazać ścieżkę.
+
+### Artykuł C (IEEE, roboczy) — graf wiedzy jako narzędzie i cel ataku
+
+Trzecia publikacja kompletu: knowledge graphs jako narzędzie operacyjne (CTI KG,
+note-grafy, GraphRAG) i jako powierzchnia ataku (fabrykacja OSINT, trucie korpusu,
+fabrykacja trójek). Dwa tory ewaluacji: kontrolowany (multipleks 150 person z flagami
+fabrykacji) i publiczny (FB15k-237). Wyniki:
+
+- **Detekcja sfabrykowanych krawędzi (RQ1) — negatywny**: przy fabrykacji i.i.d. z
+  rozkładu łącznego cechy istnienia są bez mocy (AUC ~0.50), kontrola permutacji 0.50;
+  pozorny sygnał spójności (0.56–0.65) to artefakt definicji genuineness (ujawniony).
+- **Trucie GraphRAG-lite (RQ2)**: atak zoptymalizowany pod zapytanie (recepta PoisonedRAG)
+  korumpuje 100% top-5 ofiar; bramka spójności (wsparcie wewn. LUB ≥2 niezależne ślady
+  OSINT) zeruje go przy k=0 — atakujący musi posadzić ≥2 niezależne sfałszowane publiczne
+  ślady na ofiarę. Cena na czystym korpusie: 92.5% ofiar traci z top-5 legalny
+  międzyorganizacyjny jedno-faktowy ślad (lekcja FP z artykułu B).
+- **FB15k-237 (RQ3)**: spójność relacyjna (wspólni sąsiedzi) ranguje sfabrykowane trójki
+  AUC 0.71–0.72 przy cechach istnienia 0.52 (kontrast Wilcoxon p=0.005, δ=1.0, 10 ziaren);
+  ale sens@FPR1% ≈ 0 (podłoga izolowanych trójek prawdziwych) — narzędzie triażu, nie filtr
+  progowy.
+- **Wyścig zbrojeń feature-by-feature**: fabrykator path-preserving (tail z 2-hop sąsiedztwa
+  h — przeciwnik ZNA cechę wspólnych sąsiadów) neutralizuje ją: cn AUC 0.71→0.56, combined
+  0.72→0.59, a najlepszą cechą staje się suma stopni (0.71) — czyli dokładnie ta, którą
+  fabrykatory marginalne uczyniły bezużyteczną. Sygnał nie znika, tylko się przemieszcza.
+- **Bramka w dwóch trybach**: hard (skip) i soft (demote ×0.25) — oba zerują atak
+  zoptymalizowany przy k=0; tryb demote to ranking-prior dla analityka (nic nie jest ukrywane).
+
+| Tabela w C | Skrypt (`code/experiments/`) | CSV (`code/results/`) |
+|---|---|---|
+| C: fabrykacja OSINT (Tab. I) + kontrasty | `exp_fab_detection.py` | `exp_fab_edge_detection.csv`, `exp_fab_contrasts.csv` |
+| C: trucie GraphRAG-lite (Tab. II) | `exp_rag_poison.py` | `exp_rag_poison.csv` |
+| C: FB15k-237 (Tab. III) + kontrasty | `exp_kg_poison_fb15k.py` | `exp_kg_poisoning.csv`, `exp_kg_contrasts.csv` |
+
+FB15k-237 pobierany do `code/data/fb15k237/` (publiczny, ConvE repo). Trzy skrypty są
+czystym stdlib (bez sklearn) i deterministyczne (C1/C3: 10 ziaren; C2: 5 ziaren).

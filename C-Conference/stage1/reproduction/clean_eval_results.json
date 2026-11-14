@@ -1,0 +1,802 @@
+[
+ {
+  "id": "test1",
+  "question": "how many episodes are in chicago fire season 4",
+  "gold": "23",
+  "output": "I don't know.",
+  "em": 0,
+  "f1": 0.0
+ },
+ {
+  "id": "test11",
+  "question": "who recorded i can't help falling in love with you",
+  "gold": "Elvis Presley",
+  "output": "Elvis Presley recorded \"Can't Help Falling in Love\" (his version topped the British charts in 1962).",
+  "em": 1,
+  "f1": 0.13333333333333333
+ },
+ {
+  "id": "test16",
+  "question": "what was the name of atom bomb dropped by usa on hiroshima",
+  "gold": "Little Boy",
+  "output": "\"Little Boy\" \u2014 the uranium-235 gun-type bomb dropped on Hiroshima. (The bomb dropped on Nagasaki was \"Fat Man.\")",
+  "em": 1,
+  "f1": 0.0
+ },
+ {
+  "id": "test19",
+  "question": "where are the mitochondria located in the sperm",
+  "gold": "midpiece",
+  "output": "In the sperm's midpiece, at the base of the sperm's tail (flagellum), near the sperm head.",
+  "em": 1,
+  "f1": 0.0
+ },
+ {
+  "id": "test20",
+  "question": "how many lines of symmetry are there in a equilateral triangle",
+  "gold": "3",
+  "output": "An equilateral triangle has **3 lines of symmetry** \u2014 one through each vertex and the midpoint of the opposite side.",
+  "em": 1,
+  "f1": 0.0
+ },
+ {
+  "id": "test21",
+  "question": "how many seasons of the oc are there",
+  "gold": "4",
+  "output": "I don't know. The provided contexts mention The OC's catchphrase but do not state how many seasons the show had.",
+  "em": 0,
+  "f1": 0.0
+ },
+ {
+  "id": "test31",
+  "question": "who do you meet at the gates of heaven",
+  "gold": "Saint Peter",
+  "output": "Saint Peter, who is traditionally depicted as the keeper of the \"keys to the kingdom,\" guarding the gates of heaven.",
+  "em": 1,
+  "f1": 0.058823529411764705
+ },
+ {
+  "id": "test47",
+  "question": "how long prime minister stay in office canada",
+  "gold": "four years",
+  "output": "The Canadian prime minister serves at Her Majesty's pleasure, meaning the post has no fixed term. Once appointed and sworn in by the governor general, the prime minister remains in office until he or she resigns, is dismissed, or dies. Parliament's lifespan was constitutionally limited to five years, but as of 2007, the term of a majority government is limited to four years, with election day set as the third Monday in October of the fourth calendar year after the previous polling date.",
+  "em": 1,
+  "f1": 0.015384615384615385
+ },
+ {
+  "id": "test50",
+  "question": "do all private schools have uniforms in america",
+  "gold": "no",
+  "output": "No. Not all American schools require uniforms \u2014 as of 2013, only about one fifth of American schools required uniforms, and uniform requirements are more common in lower socio-economic (public) schools than in high socio-economic or private schools.",
+  "em": 1,
+  "f1": 0.0
+ },
+ {
+  "id": "test53",
+  "question": "where did aeneas go when he left carthage",
+  "gold": "Sicily",
+  "output": "He left Carthage to continue his journey to Italy (Cumae), where he consulted the Sibyl and traveled to the Underworld to meet his father Anchises, who revealed Rome's destiny to him.",
+  "em": 0,
+  "f1": 0.0
+ },
+ {
+  "id": "test57",
+  "question": "where was the capital of the habsburg empire located",
+  "gold": "Vienna",
+  "output": "Vienna. The Habsburgs had Vienna as their permanent seat of government, and it became the capital of the Austrian Empire in 1804 and later the Austro-Hungarian Empire.",
+  "em": 1,
+  "f1": 0.047619047619047616
+ },
+ {
+  "id": "test58",
+  "question": "who plays general hux in the last jedi",
+  "gold": "Domhnall Gleeson",
+  "output": "Domhnall Gleeson.",
+  "em": 1,
+  "f1": 1.0
+ },
+ {
+  "id": "test60",
+  "question": "when were the winnie the pooh books written",
+  "gold": "1926",
+  "output": "I don't know. The contexts don't state when the Winnie the Pooh books were written.",
+  "em": 0,
+  "f1": 0.0
+ },
+ {
+  "id": "test62",
+  "question": "who wrote the theme song for mission impossible",
+  "gold": "Lalo Schifrin",
+  "output": "Lalo Schifrin composed the Mission: Impossible theme song.",
+  "em": 1,
+  "f1": 0.25
+ },
+ {
+  "id": "test64",
+  "question": "where is the slide placed on the microscope",
+  "gold": "stage",
+  "output": "The slide is placed on the **stage** of the microscope \u2014 it slides into the gap between the stage and the objective.",
+  "em": 1,
+  "f1": 0.058823529411764705
+ },
+ {
+  "id": "test70",
+  "question": "when does isle of dogs come out in us",
+  "gold": "March 23, 2018",
+  "output": "The contexts don't state the exact US release date, only that Fox Searchlight acquired distribution rights in December 2016 with plans for a 2018 release.",
+  "em": 0,
+  "f1": 0.04
+ },
+ {
+  "id": "test75",
+  "question": "how long do nhl players stay on waivers",
+  "gold": "24 hours",
+  "output": "I don't know. The contexts describe how waivers work (clearing, claiming, exemptions) but do not specify how long a player stays on waivers before clearing.",
+  "em": 0,
+  "f1": 0.0
+ },
+ {
+  "id": "test77",
+  "question": "who stepped out of the dithyrambic chorus to become the first actor",
+  "gold": "Thespis",
+  "output": "Thespis of Icaria.",
+  "em": 1,
+  "f1": 0.3333333333333333
+ },
+ {
+  "id": "test79",
+  "question": "who sings jungle book i wanna be like you",
+  "gold": "Louis Prima",
+  "output": "In the 1967 animated film, \"I Wan'na Be Like You\" was sung by Louis Prima (as King Louie). In the 2016 live-action/CGI version, it is performed by Christopher Walken, with revised lyrics written by Richard M. Sherman.",
+  "em": 1,
+  "f1": 0.06060606060606061
+ },
+ {
+  "id": "test82",
+  "question": "when did the apple iphone se come out",
+  "gold": "March 31, 2016",
+  "output": "The iPhone SE was announced on March 21, 2016 (with improved models released March 24, 2017). The context confirms the March 21, 2017 announcement of updated models, but the original launch date isn't fully stated in the context.",
+  "em": 0,
+  "f1": 0.06451612903225806
+ },
+ {
+  "id": "test87",
+  "question": "when was the first underwater cable laid beneath the english channel",
+  "gold": "1850",
+  "output": "1850.",
+  "em": 1,
+  "f1": 1.0
+ },
+ {
+  "id": "test88",
+  "question": "where is the setting for beauty and the beast",
+  "gold": "France",
+  "output": "The story is set in and around the Beast's castle, in a kingdom in France. Belle comes from a nearby village (her father Maurice is a merchant there), and much of the tale takes place inside the enchanted castle with its forbidden West Wing and the mysterious rose.",
+  "em": 1,
+  "f1": 0.0
+ },
+ {
+  "id": "test90",
+  "question": "where does the donkey talk in the bible",
+  "gold": "Numbers 22:28",
+  "output": "The donkey talks in the story of Balaam's ass (Numbers 22), where Balaam's donkey sees the angel of the Lord and speaks to him. The context mentions this story as being associated with the theme of wisdom in the Old Testament.",
+  "em": 0,
+  "f1": 0.0
+ },
+ {
+  "id": "test94",
+  "question": "who sings it's my party and i cry if i want to",
+  "gold": "Lesley Gore",
+  "output": "Lesley Gore.",
+  "em": 1,
+  "f1": 1.0
+ },
+ {
+  "id": "test106",
+  "question": "who holds the world record for the most world records",
+  "gold": "Ashrita Furman",
+  "output": "Michael Phelps holds 26 Guinness World Records, the highest number of accumulative Guinness World Records held by an athlete.",
+  "em": 0,
+  "f1": 0.0
+ },
+ {
+  "id": "test107",
+  "question": "who sang on great gig in the sky",
+  "gold": "Clare Torry",
+  "output": "Clare Torry sang on \"Great Gig in the Sky.\"",
+  "em": 1,
+  "f1": 0.2222222222222222
+ },
+ {
+  "id": "test110",
+  "question": "how many seasons of from dusk till dawn are there",
+  "gold": "3",
+  "output": "I don't know. The provided contexts discuss twilight, latitudes, and Vedic cosmology, but do not contain information about the number of seasons of \"From Dusk Till Dawn.\"",
+  "em": 0,
+  "f1": 0.0
+ },
+ {
+  "id": "test113",
+  "question": "who is responsible for introducing the principle of uniformitarianism",
+  "gold": "James Hutton",
+  "output": "William Whewell coined the term \"uniformitarianism,\" but the principle itself was introduced by Scottish geologist James Hutton (later refined by John Playfair and popularized by Charles Lyell's *Principles of Geology* in 1830).",
+  "em": 1,
+  "f1": 0.06896551724137931
+ },
+ {
+  "id": "test120",
+  "question": "when did the astros change from the national league to the american league",
+  "gold": "2013",
+  "output": "The Astros moved to the American League effective with the 2013 season. The move was announced on November 15, 2011, as a condition of the sale to Jim Crane, with 2012 being their last season in the National League.",
+  "em": 1,
+  "f1": 0.03225806451612903
+ },
+ {
+  "id": "test127",
+  "question": "jharkhand which festival is associated with cattle worship",
+  "gold": "Sohrai",
+  "output": "Sohrai is the festival associated with cattle worship in Jharkhand. It is celebrated by the Santal and Oraon people, during October\u2013November (in Ranchi) and December\u2013January (in Dumka).",
+  "em": 1,
+  "f1": 0.043478260869565216
+ },
+ {
+  "id": "test130",
+  "question": "what is the center of heredity in a cell",
+  "gold": "nucleus",
+  "output": "The nucleus (specifically the DNA/chromosomes within it) is the center of heredity in a cell.",
+  "em": 1,
+  "f1": 0.07692307692307693
+ },
+ {
+  "id": "test138",
+  "question": "what is the name of season 6 of american horror story",
+  "gold": "Roanoke",
+  "output": "American Horror Story: Roanoke",
+  "em": 1,
+  "f1": 0.25
+ },
+ {
+  "id": "test145",
+  "question": "who played big enos in smokey and the bandit",
+  "gold": "Pat McCormick",
+  "output": "Pat McCormick played Big Enos in Smokey and the Bandit.",
+  "em": 1,
+  "f1": 0.2
+ },
+ {
+  "id": "test152",
+  "question": "where does sex and the city take place",
+  "gold": "New York City",
+  "output": "New York City.",
+  "em": 1,
+  "f1": 1.0
+ },
+ {
+  "id": "test156",
+  "question": "who is considered the father of modern behaviorism",
+  "gold": "John B. Watson",
+  "output": "I don't know. The provided contexts do not identify who is considered the father of modern behaviorism.",
+  "em": 0,
+  "f1": 0.0
+ },
+ {
+  "id": "test157",
+  "question": "joined mexico and the united states to form nafta",
+  "gold": "Canada",
+  "output": "Canada joined Mexico and the United States to form NAFTA.",
+  "em": 1,
+  "f1": 0.1
+ },
+ {
+  "id": "test159",
+  "question": "where do the elves go on the boat in lord of the rings",
+  "gold": "Valinor",
+  "output": "They sail to the Undying Lands (Valinor), departing from the Grey Havens.",
+  "em": 1,
+  "f1": 0.0
+ },
+ {
+  "id": "test161",
+  "question": "who is the guy that jumped from space",
+  "gold": "Felix Baumgartner",
+  "output": "I don't know. The provided contexts don't mention a person who jumped from space. (You may be thinking of Felix Baumgartner, but that isn't in the given information.)",
+  "em": 1,
+  "f1": 0.037037037037037035
+ },
+ {
+  "id": "test164",
+  "question": "who won the american league pennant in 2017",
+  "gold": "Houston Astros",
+  "output": "The Houston Astros won the American League pennant in 2017, defeating the New York Yankees in the ALCS.",
+  "em": 1,
+  "f1": 0.14285714285714285
+ },
+ {
+  "id": "test165",
+  "question": "when did hollywood become the centre of the film industry",
+  "gold": "1910",
+  "output": "Hollywood came to the fore in the 1920s, becoming the geographical center of the American film industry and producing over 80% of the world's film output. Filmmakers had begun gravitating toward southern California earlier, attracted by the warm climate and reliable sunlight that allowed year-round outdoor filming.",
+  "em": 0,
+  "f1": 0.0
+ },
+ {
+  "id": "test166",
+  "question": "where are the cardiac and vasomotor centers found",
+  "gold": "medulla oblongata",
+  "output": "They are found in the medulla oblongata.",
+  "em": 1,
+  "f1": 0.2857142857142857
+ },
+ {
+  "id": "test177",
+  "question": "who plays the little girl in jurassic park",
+  "gold": "Ariana Richards",
+  "output": "Ariana Richards plays Lex Murphy, the young girl in Jurassic Park (1993).",
+  "em": 1,
+  "f1": 0.16666666666666666
+ },
+ {
+  "id": "test185",
+  "question": "when does star wars battlefront 2 com out",
+  "gold": "November 17, 2017",
+  "output": "Star Wars Battlefront II was released on November 17, 2017.",
+  "em": 1,
+  "f1": 0.3
+ },
+ {
+  "id": "test188",
+  "question": "how many episodes of greys anatomy season 14",
+  "gold": "24",
+  "output": "I don't know. The contexts don't state the number of episodes in season 14.",
+  "em": 0,
+  "f1": 0.0
+ },
+ {
+  "id": "test191",
+  "question": "who proposed evolution in 1859 as the basis of biological development",
+  "gold": "Charles Darwin",
+  "output": "Charles Darwin (with Alfred Russel Wallace, who jointly presented the theory with him in 1858).",
+  "em": 1,
+  "f1": 0.13333333333333333
+ },
+ {
+  "id": "test192",
+  "question": "does the jungle book take place in india",
+  "gold": "yes",
+  "output": "Yes. The Jungle Book is set in India \u2014 the original Kipling stories take place there (Kipling even noted orangutans aren't native to India, which is why King Louie wasn't in the book). Additionally, a film adaptation was shot on location in Jodhpur and Bombay, India.",
+  "em": 1,
+  "f1": 0.0
+ },
+ {
+  "id": "test208",
+  "question": "who wrote the song what child is this",
+  "gold": "William Chatterton Dix",
+  "output": "William Chatterton Dix wrote the lyrics in 1865; the tune is the traditional English folk song \"Greensleeves.\"",
+  "em": 1,
+  "f1": 0.2
+ },
+ {
+  "id": "test213",
+  "question": "who won the most mvp awards in the nba",
+  "gold": "Kareem Abdul-Jabbar",
+  "output": "Kareem Abdul-Jabbar won the most NBA regular-season MVP awards, with six.",
+  "em": 1,
+  "f1": 0.18181818181818182
+ },
+ {
+  "id": "test216",
+  "question": "patents to produce and sell inventions are conveyed by the federal government for a period\u200b of",
+  "gold": "20 years",
+  "output": "20 years from the filing date (subject to payment of maintenance fees). Note that a patent doesn't grant the right to make or sell an invention\u2014it grants the right to exclude others from making, using, selling, offering for sale, or importing it.",
+  "em": 1,
+  "f1": 0.05714285714285714
+ },
+ {
+  "id": "test226",
+  "question": "the most stable mineral at the earth's surface",
+  "gold": "quartz",
+  "output": "Quartz (\u03b1-quartz) is the most stable mineral at the Earth's surface. According to the Goldich dissolution series, low-temperature minerals (those at the bottom of Bowen's series, like quartz) are most stable because surface conditions are most similar to the conditions under which they formed. Quartz's high chemical and physical resistivity also makes it the most abundant mineral in the Earth's crust (12%).",
+  "em": 1,
+  "f1": 0.022222222222222223
+ },
+ {
+  "id": "test228",
+  "question": "how many games in a row have the uconn women's basketball team won",
+  "gold": "111",
+  "output": "According to the context, UConn won 70 consecutive games, tying the record for the longest winning streak in NCAA Division I women's college basketball history (a record they themselves set in 2003).",
+  "em": 0,
+  "f1": 0.0
+ },
+ {
+  "id": "test229",
+  "question": "when did scotland last qualify for world cup",
+  "gold": "1998",
+  "output": "Scotland last qualified for a FIFA World Cup in 1998 (the 1998 finals tournament). The context mentions they failed to qualify for the 1994 World Cup and later tournaments, with their last appearance being at eight finals tournaments overall \u2014 the most recent being 1998.",
+  "em": 1,
+  "f1": 0.02857142857142857
+ },
+ {
+  "id": "test231",
+  "question": "who plays the main character in hacksaw ridge",
+  "gold": "Andrew Garfield",
+  "output": "Andrew Garfield plays the main character, Desmond Doss, in Hacksaw Ridge.",
+  "em": 1,
+  "f1": 0.18181818181818182
+ },
+ {
+  "id": "test243",
+  "question": "where did the titanic sink at what ocean",
+  "gold": "North Atlantic Ocean",
+  "output": "The Titanic sank in the Atlantic Ocean, about 400 miles south of the Grand Banks of Newfoundland (at 41\u00b046\u2032N 50\u00b014\u2032W).",
+  "em": 0,
+  "f1": 0.05263157894736842
+ },
+ {
+  "id": "test254",
+  "question": "the concept of micro financing was developed by who in 1976",
+  "gold": "Muhammad Yunus",
+  "output": "Muhammad Yunus \u2014 he began the project in 1976 in the town of Jobra, Bangladesh, delivering small low-interest loans to the rural poor, which led to the founding of the Grameen Bank in 1983.",
+  "em": 1,
+  "f1": 0.07692307692307693
+ },
+ {
+  "id": "test256",
+  "question": "when is the world consumer right day celebrated",
+  "gold": "15 March",
+  "output": "World Consumer Rights Day is celebrated on 15 March every year.",
+  "em": 1,
+  "f1": 0.18181818181818182
+ },
+ {
+  "id": "test273",
+  "question": "when is star wars the force awakens set",
+  "gold": "30 years after Return of the Jedi",
+  "output": "The Force Awakens is set roughly thirty years after the events of Return of the Jedi.",
+  "em": 0,
+  "f1": 0.42857142857142855
+ },
+ {
+  "id": "test282",
+  "question": "who did the chiefs play in the playoffs",
+  "gold": "Tennessee Titans",
+  "output": "Based on the context, the Chiefs played the **Oakland Raiders** in the playoffs (holding a 2\u20131 playoff record against them).",
+  "em": 0,
+  "f1": 0.0
+ },
+ {
+  "id": "test291",
+  "question": "what does the adrenal gland produce that is necessary for the sympathetic nervous system to function",
+  "gold": "epinephrine",
+  "output": "The adrenal gland (specifically the adrenal medulla) produces the catecholamines **adrenaline (epinephrine)** and **noradrenaline (norepinephrine)**, which are released into the blood as part of the sympathetic nervous system's fight-or-flight (sympatho-adrenal) response.",
+  "em": 1,
+  "f1": 0.0
+ },
+ {
+  "id": "test294",
+  "question": "who was the oldest man elected president of usa",
+  "gold": "Ronald Reagan",
+  "output": "Based on the context, Dwight D. Eisenhower, elected at age 62, was the oldest man elected President since James Buchanan in 1856.",
+  "em": 0,
+  "f1": 0.0
+ },
+ {
+  "id": "test308",
+  "question": "a synonym for the content component of communication is",
+  "gold": "message",
+  "output": "The **message** \u2014 the words or raw information spoken aloud during communication.",
+  "em": 1,
+  "f1": 0.0
+ },
+ {
+  "id": "test311",
+  "question": "where do the sharks play in san jose",
+  "gold": "SAP Center at San Jose",
+  "output": "The Sharks play at the SAP Center at San Jose.",
+  "em": 1,
+  "f1": 0.625
+ },
+ {
+  "id": "test312",
+  "question": "where are more than half your bones located",
+  "gold": "axial skeleton",
+  "output": "I don't know. The contexts don't say where more than half of the body's bones are located.",
+  "em": 0,
+  "f1": 0.0
+ },
+ {
+  "id": "test315",
+  "question": "who dies in the beginning of deathly hallows part 1",
+  "gold": "Mad-Eye Moody",
+  "output": "I don't know. The provided contexts don't mention who dies at the beginning of Deathly Hallows Part 1.",
+  "em": 0,
+  "f1": 0.0
+ },
+ {
+  "id": "test317",
+  "question": "who wrote the music phantom of the opera",
+  "gold": "Andrew Lloyd Webber",
+  "output": "Andrew Lloyd Webber wrote the music for *The Phantom of the Opera*.",
+  "em": 1,
+  "f1": 0.2727272727272727
+ },
+ {
+  "id": "test318",
+  "question": "who represented the state of tennessee in the scopes trial",
+  "gold": "William Jennings Bryan",
+  "output": "I don't know \u2014 the provided contexts do not name who represented the state of Tennessee in the Scopes trial.",
+  "em": 0,
+  "f1": 0.0
+ },
+ {
+  "id": "test327",
+  "question": "what river is associated with the city of rome",
+  "gold": "Tiber",
+  "output": "The Tiber. It was sacred to Rome, marked boundaries between Etruscan, Sabine, and Latin lands, and served as a key waterway connected to the city via the Cloaca Maxima.",
+  "em": 1,
+  "f1": 0.0
+ },
+ {
+  "id": "test332",
+  "question": "who played miss wheeler in carry on teacher",
+  "gold": "Joan Sims",
+  "output": "Joan Sims played Felicity Wheeler in Carry On Teacher.",
+  "em": 1,
+  "f1": 0.2222222222222222
+ },
+ {
+  "id": "test337",
+  "question": "what are the colors of the netherlands flag",
+  "gold": "red, white, and blue",
+  "output": "Red, white, and blue (bright vermilion, white, and cobalt blue).",
+  "em": 1,
+  "f1": 0.5
+ },
+ {
+  "id": "test347",
+  "question": "when did the us dollar leave the gold standard",
+  "gold": "August 15, 1971",
+  "output": "The US dollar's convertibility to gold ended on 15 August 1971 (the \"Nixon Shock\"), when President Nixon unilaterally ended dollar-gold convertibility. In October 1976, the US government officially removed references to gold from statutes, making the dollar permanently a floating fiat currency.",
+  "em": 0,
+  "f1": 0.05405405405405406
+ },
+ {
+  "id": "test348",
+  "question": "where did the smashing pumpkins get their name",
+  "gold": "Billy Corgan",
+  "output": "I don't know. The provided contexts don't explain the origin of the band's name.",
+  "em": 0,
+  "f1": 0.0
+ },
+ {
+  "id": "test363",
+  "question": "what is the main industry in the canadian shield",
+  "gold": "mining",
+  "output": "Mining is the main industry in the Canadian Shield, which is rich in minerals such as iron, nickel, zinc, copper, gold, lead, molybdenum, uranium, diamonds, and emeralds. Logging (from its vast boreal forests) and hydro-electric power are also important industries in the region.",
+  "em": 1,
+  "f1": 0.02702702702702703
+ },
+ {
+  "id": "test369",
+  "question": "who wrote the song to make you feel my love",
+  "gold": "Bob Dylan",
+  "output": "I don't know. (The contexts don't state who wrote the song.)",
+  "em": 0,
+  "f1": 0.0
+ },
+ {
+  "id": "test371",
+  "question": "where did immigrants enter the us on the west coast",
+  "gold": "Angel Island",
+  "output": "I don't know. The contexts don't specify where immigrants entered the US on the west coast.",
+  "em": 0,
+  "f1": 0.0
+ },
+ {
+  "id": "test375",
+  "question": "what is the lead singers name of staind",
+  "gold": "Aaron Lewis",
+  "output": "Aaron Lewis is the lead singer of Staind.",
+  "em": 1,
+  "f1": 0.25
+ },
+ {
+  "id": "test379",
+  "question": "who is considered the pioneer of the roman typeface",
+  "gold": "Nicolas Jenson",
+  "output": "Nicolas Jenson, who began printing in Venice with his original roman font in 1470, is considered the pioneer of the roman typeface. His design is acknowledged as the definitive and archetypal roman face that set the pattern for most western text faces that followed.",
+  "em": 1,
+  "f1": 0.027777777777777776
+ },
+ {
+  "id": "test383",
+  "question": "who spoke the words ich bin ein berliner",
+  "gold": "John F. Kennedy",
+  "output": "U.S. President John F. Kennedy, in his June 26, 1963 speech in West Berlin.",
+  "em": 1,
+  "f1": 0.14285714285714285
+ },
+ {
+  "id": "test387",
+  "question": "where did the queen's crown come from",
+  "gold": "St Edward's Crown",
+  "output": "Based on the context, Queen Victoria's Small Diamond Crown was made in 1870 using 1,187 diamonds, created for Victoria to wear on top of her widow's cap at State Openings of Parliament. After her death in 1901, it was worn by Queen Alexandra and later Queen Mary.",
+  "em": 0,
+  "f1": 0.023809523809523808
+ },
+ {
+  "id": "test395",
+  "question": "who painted the world famous painting the last supper",
+  "gold": "Leonardo da Vinci",
+  "output": "Leonardo da Vinci painted the world-famous *The Last Supper* (though the provided context doesn't state this directly, it is the well-known answer).",
+  "em": 1,
+  "f1": 0.15
+ },
+ {
+  "id": "test397",
+  "question": "atlantic ocean's shape is similar to which english alphabet",
+  "gold": "S",
+  "output": "The letter \"S\" \u2014 the Atlantic Ocean occupies an elongated, S-shaped basin.",
+  "em": 1,
+  "f1": 0.0
+ },
+ {
+  "id": "test400",
+  "question": "what is the name given to the common currency to the european union",
+  "gold": "euro",
+  "output": "The euro.",
+  "em": 1,
+  "f1": 0.5
+ },
+ {
+  "id": "test404",
+  "question": "is there a 4th book in the kane chronicles",
+  "gold": "no",
+  "output": "No. The Kane Chronicles is a trilogy: The Red Pyramid (2010), The Throne of Fire (2011), and The Serpent's Shadow (2012), which is the third and last volume.",
+  "em": 1,
+  "f1": 0.0
+ },
+ {
+  "id": "test407",
+  "question": "the actual name of the confederate force at gettysburg was",
+  "gold": "Army of Northern Virginia",
+  "output": "The Army of Northern Virginia.",
+  "em": 1,
+  "f1": 0.8
+ },
+ {
+  "id": "test408",
+  "question": "what is the name for the ch3coo- ion",
+  "gold": "acetate ion",
+  "output": "The CH3COO\u207b ion is called the **acetate** ion (the conjugate base of acetic acid, CH3COOH).",
+  "em": 0,
+  "f1": 0.07142857142857142
+ },
+ {
+  "id": "test410",
+  "question": "who is darrell brother in the walking dead",
+  "gold": "Merle Dixon",
+  "output": "Daryl's brother is Merle Dixon.",
+  "em": 1,
+  "f1": 0.4
+ },
+ {
+  "id": "test412",
+  "question": "number 4 in roman numerals on clock faces",
+  "gold": "IV",
+  "output": "Most Roman numeral clock dials show the '4' position as 'IIII', but the Great Clock (Big Ben) faces are an exception, depicting '4' as 'IV'.",
+  "em": 1,
+  "f1": 0.0
+ },
+ {
+  "id": "test413",
+  "question": "the general term for software that is designed to damage disable or steal data is",
+  "gold": "Malware",
+  "output": "Malware.",
+  "em": 1,
+  "f1": 1.0
+ },
+ {
+  "id": "test417",
+  "question": "who played kelly taylor's mom on 90210",
+  "gold": "Ann Gillespie",
+  "output": "Ann Gillespie played Kelly Taylor's mom, Jackie Taylor, on 90210.",
+  "em": 1,
+  "f1": 0.2
+ },
+ {
+  "id": "test418",
+  "question": "who does the voice of alistair in dragon age",
+  "gold": "Steve Valentine",
+  "output": "Steve Valentine voices Alistair in Dragon Age.",
+  "em": 1,
+  "f1": 0.2857142857142857
+ },
+ {
+  "id": "test419",
+  "question": "what nfl coach has the most wins ever",
+  "gold": "Don Shula",
+  "output": "Don Shula holds the record for the most wins ever by an NFL coach (328 career regular season wins). The context notes Bill Belichick is currently tied for third all-time with 250 regular season wins.",
+  "em": 1,
+  "f1": 0.06896551724137931
+ },
+ {
+  "id": "test423",
+  "question": "who is the song diamonds and rust about",
+  "gold": "Bob Dylan",
+  "output": "Bob Dylan. Joan Baez wrote \"Diamonds and Rust\" about her relationship with Dylan ten years earlier, though she initially told Dylan it was about her ex-husband David Harris.",
+  "em": 1,
+  "f1": 0.08
+ },
+ {
+  "id": "test424",
+  "question": "who played the oldest brother in 7th heaven",
+  "gold": "Barry Watson",
+  "output": "I don't know. The context mentions Robbie has an older brother, Ronald, but does not state who played him.",
+  "em": 0,
+  "f1": 0.0
+ },
+ {
+  "id": "test426",
+  "question": "where was the war of the planet of the apes filmed",
+  "gold": "Vancouver",
+  "output": "I don't know. The contexts don't specify the filming locations for War for the Planet of the Apes.",
+  "em": 0,
+  "f1": 0.0
+ },
+ {
+  "id": "test430",
+  "question": "which term is used to identify having official power to act",
+  "gold": "authority",
+  "output": "**Authority** \u2014 specifically, official power to act is identified by the term \"authority\" (e.g., \"express actual authority\" or \"usual authority\" in the agency context).",
+  "em": 1,
+  "f1": 0.0
+ },
+ {
+  "id": "test442",
+  "question": "how many death stars are there in star wars",
+  "gold": "2",
+  "output": "Based on the context, there are **three** Death Stars:\n\n1. **Death Star I** \u2013 destroyed in *A New Hope*\n2. **Death Star II** \u2013 destroyed in *Return of the Jedi*\n3. **Death Star III** \u2013 a non-canonical station created by Leland Chee to explain the Death Star appearing in the original Star Tours ride, later explained as originating from the Habitation spheres\n\nSo canonically there are two, but a third exists in the Star Wars Legends/Star Tours continuity.",
+  "em": 1,
+  "f1": 0.0
+ },
+ {
+  "id": "test452",
+  "question": "when does season 8 of vampire diaries come out",
+  "gold": "October 21, 2016",
+  "output": "Season 8 of The Vampire Diaries began airing on October 21, 2016.",
+  "em": 1,
+  "f1": 0.25
+ },
+ {
+  "id": "test454",
+  "question": "when did harry potter and the sorcerers stone take place",
+  "gold": "1991",
+  "output": "I don't know. The contexts don't specify the time period when the story takes place.",
+  "em": 0,
+  "f1": 0.0
+ },
+ {
+  "id": "test462",
+  "question": "where is the suez canal located on a map",
+  "gold": "Egypt",
+  "output": "The Suez Canal is located in Egypt, connecting the Mediterranean Sea (north) to the Red Sea (south). It provides a sea route between Europe and Asia without ships having to sail around Africa via the Cape of Good Hope.",
+  "em": 1,
+  "f1": 0.0
+ },
+ {
+  "id": "test464",
+  "question": "how much square feet is a basketball court",
+  "gold": "4700",
+  "output": "An NBA/NCAA court is 94 by 50 feet = **4,700 square feet**. A FIBA court (28 by 15 m, ~91.9 by 49.2 ft) is about **4,520 square feet**.",
+  "em": 0,
+  "f1": 0.0
+ },
+ {
+  "id": "test466",
+  "question": "who sings i can't take my eyes off of you",
+  "gold": "Frankie Valli",
+  "output": "Frankie Valli sings \"Can't Take My Eyes Off You\" (1967), his biggest solo hit at the time, reaching No. 2 on the Billboard Hot 100.",
+  "em": 1,
+  "f1": 0.08333333333333333
+ }
+]

@@ -1,0 +1,42 @@
+name: build-paper-c
+
+on:
+  push:
+    paths:
+      - "C-Conference/**"
+      - ".github/workflows/build-paper-c.yml"
+  pull_request:
+    paths:
+      - "C-Conference/**"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Paper C (tectonic)
+        run: |
+          cd C-Conference
+          # workaround for a known tectonic bundle issue (missing loadhyph-fur.tex)
+          touch loadhyph-fur.tex
+          docker run --rm -v "$PWD:/work" -w //work fabianhauser/tectonic main.tex
+
+      - name: Check for undefined references
+        run: |
+          cd C-Conference
+          if grep -q "Reference.*undefined" main.log 2>/dev/null; then
+            echo "::error::undefined references in Paper C"
+            exit 1
+          fi
+
+      - name: Verify bibliography (all cited entries have a checked DOI/arXiv id)
+        run: |
+          cd C-Conference
+          python verify_bib.py
+
+      - name: Upload PDF
+        uses: actions/upload-artifact@v4
+        with:
+          name: paper-c-pdf
+          path: C-Conference/main.pdf
