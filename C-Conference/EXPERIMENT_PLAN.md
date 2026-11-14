@@ -82,6 +82,15 @@ this plan are appended to §7 with a dated justification.
 
 ## 7. Plan changes (append-only)
 
+- **2026-11-13 (Stage 1 executed): PoisonedRAG reproduction complete on NQ and
+  HotpotQA.** Full protocol (100 questions x 5 adv texts, Contriever, seed 12,
+  repository defaults) with NASK GLM-5.2 as the answering LLM and the white-box
+  LM_targeted attack on CPU: ASR 0.95 (NQ) and 0.98 (HotpotQA), Ret F1 0.96/1.0,
+  clean EM 0.69 (NQ). Acceptance criterion (§5) met — within/above the published
+  ~90% range; artifacts in `stage1/`. Justification for the LLM substitution:
+  no GPU/OpenAI budget; NASK GLM-5.2 is OpenAI-compatible and the ASR protocol
+  is a string match, so the substitution changes the answering model but not
+  the attack or the metric.
 - **2026-11-13 (after Checkpoint 1): LLM budget resolved.** The environment
   provides NASK GLM-5.2 via an internal OpenAI-compatible API (key
   `~/.secrets/nask-api-key`; verified HTTP 200 with a round-trip completion).
