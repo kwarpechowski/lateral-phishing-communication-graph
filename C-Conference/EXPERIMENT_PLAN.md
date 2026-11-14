@@ -34,7 +34,8 @@ this plan are appended to §7 with a dated justification.
 | Component | Candidate | Status |
 |---|---|---|
 | Pipelines (≥2 of) | Microsoft GraphRAG, LightRAG, HippoRAG 2 | verified public + MIT: HKUDS/LightRAG (EMNLP 2025), OSU-NLP-Group/HippoRAG (NeurIPS'24); `graphrag` on PyPI 3.3.0; local install pending LLM budget |
-| LLM | open 7–8B class (e.g. via ollama/vLLM) or fixed-budget API | **blocked in this environment**: no GPU, no ollama, no API key set (checked 2026-11-13); decision needed: API budget or GPU host |
+| LLM | NASK GLM-5.2 (internal API, OpenAI-compatible; key `~/.secrets/nask-api-key`, route `api.ai.nask.pl/p/ezd-spinacz/dev/glm-5-2/v1`) | ✅ verified HTTP 200 (2026-11-13, checkpoint 1 follow-up); budget = internal NASK tokens |
+| Embeddings | local Contriever (PoisonedRAG's own retriever — faithful) / local sentence-transformers for GraphRAG pipelines | NASK `ml-e5-large` route stale (404, front-end); `% TODO(author)`: current NASK embedding route if one exists |
 | Attack 1 | PoisonedRAG (official code if available) | verified: sleeeeper/PoisonedRAG, MIT, USENIX Security 2025; BEIR datasets auto-download; eval needs API LLM (PaLM2/GPT/Llama-2 token) |
 | Attack 2 | KEPo (official code if available) | **no public code found** (GitHub search 2026-11-13); reimplementation from the paper would be needed; venue verified WWW'26 (DOI 10.1145/3774904.3792547) |
 | Question sets | as used by PoisonedRAG/KEPo (MuSiQue, HotpotQA, MultiHop-RAG) | PoisonedRAG: BEIR (NQ, HotpotQA) via `prepare_dataset.py` (auto-download); KEPo's exact splits to be checked in the paper text |
@@ -81,4 +82,12 @@ this plan are appended to §7 with a dated justification.
 
 ## 7. Plan changes (append-only)
 
-- (none yet)
+- **2026-11-13 (after Checkpoint 1): LLM budget resolved.** The environment
+  provides NASK GLM-5.2 via an internal OpenAI-compatible API (key
+  `~/.secrets/nask-api-key`; verified HTTP 200 with a round-trip completion).
+  Justification: removes the Checkpoint-1 blocker for both Stage 1 (ASR
+  reproduction) and Stage 2 (RQ1/RQ2). The plan's LLM row is updated; seeds,
+  grids, and tuning budgets are unchanged. The NASK embedding route
+  (`ml-e5-large`) returns 404 and is treated as unavailable: retrieval uses
+  local Contriever, which is PoisonedRAG's own retriever and therefore the
+  faithful choice for reproduction.

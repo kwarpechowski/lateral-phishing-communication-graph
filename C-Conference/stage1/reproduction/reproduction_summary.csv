@@ -1,0 +1,3 @@
+dataset,llm,retriever,attack,protocol,asr_mean,asr_iters,ret_f1,clean_em,clean_f1,duration_min,n_questions,adv_per_query,seed
+nq,glm-5-2,contriever,LM_targeted,5 adv texts/question x 100 questions,0.95,"0.9-1.0",0.96,0.69,0.146,13,100,5,12
+hotpotqa,glm-5-2,contriever,LM_targeted,5 adv texts/question x 100 questions,0.98,"0.9-1.0",1.0,,,,17,100,5,12
